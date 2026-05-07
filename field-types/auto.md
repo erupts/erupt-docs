@@ -1,17 +1,15 @@
 # 自动推测 AUTO
 
-如果不指定 EditType 类型的情况下，可根据修饰字段类型等特征，自动推测使用组件。
+不指定 `type` 时，Erupt 会根据 Java 字段类型自动推断使用哪种编辑组件。
 
 | 字段类型 | 映射组件 |
-| :---: | :---: |
-| Integer | EditType.NUMBER |
-| Float | EditType.NUMBER |
-| Double | EditType.NUMBER |
-| Boolean | EditType.BOOLEAN |
-| Date | EditType.DATE |
-| 其他 | EditType.INPUT |
+|:---:|:---:|
+| `Integer` / `Float` / `Double` | `EditType.NUMBER` |
+| `Boolean` | `EditType.BOOLEAN` |
+| `Date` | `EditType.DATE` |
+| 其他 | `EditType.INPUT` |
 
-## 代码演示
+## 基础用法
 
 ```java
 @EruptField(

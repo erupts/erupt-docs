@@ -1,70 +1,58 @@
 # 多对一表引用 REFERENCE_TABLE
 
-通过弹出表格的方式选择关联数据，适用于多对一（`@ManyToOne`）关系。
+弹出表格供用户选择关联记录，对应 JPA `@ManyToOne` 关系。适合被关联数据以列表形式展示的场景。
 
-<!-- TODO: 添加截图 -->
-
-## 使用方法
+## 基础用法
 
 ```java
-@ManyToOne // 多对一
-@JoinColumn(name = "table")
+@ManyToOne
+@JoinColumn(name = "table_id")
 @EruptField(
     views = {
         @View(title = "顺序", column = "sort"),
         @View(title = "名称", column = "name")
     },
-    edit = @Edit(title = "多对一表格", type = EditType.REFERENCE_TABLE,
+    edit = @Edit(title = "关联表格", type = EditType.REFERENCE_TABLE,
         referenceTableType = @ReferenceTableType(id = "id", label = "name")
     )
 )
 private Table table;
 ```
 
-被引用的类定义：
+被引用的实体类：
 
 ```java
 @Entity
-@Table(name = "TABLE")
+@Table(name = "t_table")
 @Erupt(name = "表格")
 public class Table extends BaseModel {
-    
-    @EruptField(
-            views = @View(title = "顺序"),
-            edit = @Edit(title = "顺序")
-    )
+
+    @EruptField(views = @View(title = "顺序"), edit = @Edit(title = "顺序"))
     private Integer sort;
 
-    @EruptField(
-            views = @View(title = "名称"),
-            edit = @Edit(title = "名称")
-    )
+    @EruptField(views = @View(title = "名称"), edit = @Edit(title = "名称"))
     private String name;
-    
+
 }
 ```
 
-## 配置项注解定义
+## 配置项
 
 ```java
 public @interface ReferenceTableType {
-    String id() default "id"; // 多对一表中做存储的列
 
-    String label() default "name"; // 多对一表中做展示的列
+    String id() default "id";       // 关联表中用于存储的字段（主键）
 
-    String dependField() default ""; // 使根据依赖字段的值做匹配
+    String label() default "name";  // 关联表中用于展示的字段
 
-    /**
-     * 指定依赖对象中用于与当前修饰对象主键建立关联的字段。
-     * 编译结果示例：dependClass.<dependColumn> = field.primaryKey
-     */
-    String dependColumn() default "id";
+    String dependField() default ""; // 依赖的本表字段名，用于级联
+
+    String dependColumn() default "id"; // 依赖字段中用于匹配的列
+
 }
 ```
 
-## 联动使用
-
-通过 `dependField` 和 `dependColumn` 实现级联选择，例如省市区三级联动：
+## 示例：省市区级联
 
 ```java
 @ManyToOne
@@ -83,8 +71,8 @@ private Province province;
     edit = @Edit(title = "市", type = EditType.REFERENCE_TABLE,
         referenceTableType = @ReferenceTableType(
             id = "id", label = "name",
-            dependField = "province",  // 依赖的字段名
-            dependColumn = "province.id"  // 依赖对象中的关联字段
+            dependField = "province",
+            dependColumn = "province.id"
         ))
 )
 private City city;

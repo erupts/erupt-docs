@@ -1,61 +1,58 @@
 # 文件上传 ATTACHMENT
 
-<!-- TODO: 添加截图 -->
+支持图片、任意文件上传，可限制文件类型、大小和数量，存储路径可自定义。
 
-## 使用说明
-
-1. 使用需确认 application.yml 中是否存在 `erupt.uploadPath` 属性，该属性表示附件存储的实际物理位置
-2. 附件存储路径为：上传日期 + 随机字符串 + 格式 → /2020-11-15/tpq1l9.png
-3. 想更改命名规则详见：[自定义附件上传规则](/advanced/upload)
-4. 不希望将图片存储于本地磁盘中详见：[自定义附件上传规则](/advanced/upload)
-
-## 使用方法
+## 基础用法
 
 ```java
 @EruptField(
-    views = @View(title = "文件上传"),
-    edit = @Edit(title = "文件上传", type = EditType.ATTACHMENT,
+    views = @View(title = "附件"),
+    edit = @Edit(title = "附件", type = EditType.ATTACHMENT,
                  attachmentType = @AttachmentType)
 )
 private String attachment;
 ```
 
-## 配置项注解定义
+> 使用前需在 `application.yml` 中配置 `erupt.uploadPath`，指定文件的物理存储路径。  
+> 如需对接 OSS 等云存储，参见 [自定义文件上传](/advanced/upload)。
+
+## 配置项
 
 ```java
 public @interface AttachmentType {
 
-    long size() default 0; // 上传文件大小限制
+    long size() default -1;          // 文件大小限制（KB），-1 表示不限制
 
-    String path() default ""; // 文件存储附加路径
+    String path() default "";        // 存储子路径
 
-    String[] fileTypes() default {}; // 允许上传的文件类型，不填表示允许任何类型
+    String[] fileTypes() default {}; // 允许的文件扩展名，不填表示不限制
 
-    Type type() default Type.OTHER; // 上传方式
+    Type type() default Type.BASE;   // 上传类型
 
-    int maxLimit() default 1; // 上传数量限制
+    int maxLimit() default 1;        // 最多上传数量
 
     ImageType imageType() default @ImageType;
 
-    String fileSeparator() default "|"; // 多图片上传路径的分隔字符
+    String fileSeparator() default "|"; // 多文件路径分隔符
 
     enum Type {
-        BASE,  // 可上传任意文件
-        IMAGE, // 图片上传
+        BASE,  // 任意文件
+        IMAGE, // 图片（启用图片裁剪/限制宽高）
     }
 
     @interface ImageType {
-        // 宽高使用长度为2的数组，第一位是最小宽高限制，第二位是最大宽高限制
-        int[] width() default {};
-        int[] height() default {};
+        int minWidth() default 0;              // 最小宽度
+        int maxWidth() default Integer.MAX_VALUE; // 最大宽度
+        int minHeight() default 0;             // 最小高度
+        int maxHeight() default Integer.MAX_VALUE; // 最大高度
     }
 
 }
 ```
 
-## 代码演示
+## 示例
 
-图片上传：
+图片上传（最多 3 张）：
 
 ```java
 @EruptField(
@@ -66,12 +63,12 @@ public @interface AttachmentType {
 private String pic;
 ```
 
-上传 PDF：
+限定只能上传 PDF：
 
 ```java
 @EruptField(
-    edit = @Edit(title = "上传PDF文件", type = EditType.ATTACHMENT,
-                 attachmentType = @AttachmentType(fileTypes = "pdf"))
+    edit = @Edit(title = "PDF 文件", type = EditType.ATTACHMENT,
+                 attachmentType = @AttachmentType(fileTypes = {"pdf"}))
 )
 private String pdf;
 ```

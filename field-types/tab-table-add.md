@@ -1,49 +1,41 @@
 # 一对多新增 TAB_TABLE_ADD
 
-在主表编辑界面直接新增、管理子表数据的一对多（`@OneToMany`）组件，支持 JSON 字段存储。
+在主表编辑弹窗中直接新增、编辑子表数据，对应 JPA `@OneToMany`。保存主表时子表数据同步级联保存。
 
-<!-- TODO: 添加截图 -->
-
-## 使用方法
+## 基础用法
 
 ```java
-@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) // 一对多，且开启级联
-@JoinColumn(name = "this_id") // this表示当前的表名，子表会自动创建该列来标识与主表的关系
-@OrderBy // 排序
+@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+@JoinColumn(name = "main_id")
+@OrderBy
 @EruptField(
-    edit = @Edit(title = "添加多条表格数据", type = EditType.TAB_TABLE_ADD)
+    edit = @Edit(title = "子表数据", type = EditType.TAB_TABLE_ADD)
 )
-private Set<Table> tables;
+private Set<ChildTable> items;
 ```
 
-> **注意：不要使用 Lombok 的 `@Data` 注解，这会导致 Set 集合去重失效**
+> **注意**：不要在子表实体上使用 Lombok 的 `@Data` 注解，否则 `Set` 的 `equals/hashCode` 实现会导致去重异常。
 
-子表对象定义：
+子表实体类：
 
 ```java
 @Entity
-@Table(name = "TABLE")
-@Erupt(name = "表格")
-public class Table extends BaseModel {
-    
-    @EruptField(
-            views = @View(title = "顺序"),
-            edit = @Edit(title = "顺序")
-    )
+@Table(name = "t_child")
+@Erupt(name = "子表")
+public class ChildTable extends BaseModel {
+
+    @EruptField(views = @View(title = "顺序"), edit = @Edit(title = "顺序"))
     private Integer sort;
 
-    @EruptField(
-            views = @View(title = "名称"),
-            edit = @Edit(title = "名称")
-    )
+    @EruptField(views = @View(title = "名称"), edit = @Edit(title = "名称"))
     private String name;
-    
+
 }
 ```
 
-## 一对多内容存储到 JSON 字段
+## 示例：存储为 JSON 字段
 
-> 示例为 Spring Boot 3 版本，Spring Boot 2 使用可参考 hibernate-types-52 库
+适合无需关联查询、仅需 JSON 存储的场景（需 Spring Boot 3 + hibernate-types-60）：
 
 1. 添加依赖：
 
@@ -55,22 +47,13 @@ public class Table extends BaseModel {
 </dependency>
 ```
 
-2. 增加字段注解 `@JdbcTypeCode`：
+2. 字段加 `@JdbcTypeCode` 注解：
 
 ```java
-@Entity
-@Table(name = "many_json")
-@Erupt(name = "一对多内容存储到 JSON 字段")
-public class ManyJson extends BaseModel {
-    
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "json")
-    @EruptField(
-            edit = @Edit(
-                    title = "json",
-                    type = EditType.TAB_TABLE_ADD
-            )
-    )
-    private Set<Table> tables;
-}
+@JdbcTypeCode(SqlTypes.JSON)
+@Column(columnDefinition = "json")
+@EruptField(
+    edit = @Edit(title = "子数据", type = EditType.TAB_TABLE_ADD)
+)
+private Set<ChildTable> items;
 ```
