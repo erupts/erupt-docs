@@ -97,9 +97,32 @@ export default defineConfig({
             { text: 'DATE 日期', link: '/field-types/date' },
             { text: 'CHOICE 选择', link: '/field-types/select' },
             { text: 'BOOLEAN 布尔开关', link: '/field-types/boolean' },
-            { text: '媒体与富文本', link: '/field-types/media' },
-            { text: '可视化组件', link: '/field-types/visual' },
-            { text: '其他类型', link: '/field-types/other' },
+          ],
+        },
+        {
+          text: '媒体与编辑器',
+          items: [
+            { text: 'ATTACHMENT 文件上传', link: '/field-types/attachment' },
+            { text: 'HTML_EDITOR 富文本', link: '/field-types/html-editor' },
+            { text: 'CODE_EDITOR 代码编辑器', link: '/field-types/code-editor' },
+            { text: 'MARKDOWN 编辑器', link: '/field-types/markdown' },
+            { text: 'SIGNATURE 签名板', link: '/field-types/signature' },
+          ],
+        },
+        {
+          text: '可视化组件',
+          items: [
+            { text: 'MAP 地理位置', link: '/field-types/map' },
+            { text: 'COLOR 颜色选择', link: '/field-types/color' },
+            { text: 'RATE 评分器', link: '/field-types/rate' },
+          ],
+        },
+        {
+          text: '其他类型',
+          items: [
+            { text: 'TPL 自定义模板', link: '/field-types/tpl' },
+            { text: 'HIDDEN 隐藏字段', link: '/field-types/hidden' },
+            { text: 'EMPTY 空占位', link: '/field-types/empty' },
           ],
         },
         {
