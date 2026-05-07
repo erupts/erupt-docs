@@ -3,10 +3,10 @@ layout: home
 
 hero:
   name: Erupt
-  text: 注解驱动的低代码框架
-  tagline: 只写 Java 注解，零前端代码，快速生成企业级后台管理系统
+  text: 开源·低代码 ⚔ AI 大模型
+  tagline: 注解驱动开发，零前端代码，零 CURD，实现通用数据管理平台
   image:
-    src: /logo.png
+    src: /logo.svg
     alt: Erupt
   actions:
     - theme: brand
