@@ -35,6 +35,9 @@ public class EruptTest extends BaseModel {
 | `drills` | 自定义下钻关联视图，详见 [@Drill](/annotation/drill) |
 | `rowOperation` | 自定义功能按钮，详见 [@RowOperation](/annotation/row-operation) |
 | `dataProxy` | 服务层逻辑扩展（扩展已有逻辑），详见 [DataProxy](/advanced/data-proxy) |
+| `dataProxyParams` | 自定义参数，可在 `dataProxy` 内通过 `DataProxyContext.get()` 获取 |
+| `visRawTable` | 是否保留默认表格视图，默认 `true`；设为 `false` 时仅显示 `vis` 中定义的视图 |
+| `vis` | 附加视图配置（卡片、甘特图、看板等），详见 [@Vis 多视图](/annotation/vis) |
 | `param` | 自定义参数 |
 
 ## 注解文件定义
@@ -62,9 +65,13 @@ public @interface Erupt {
 
     Class<? extends DataProxy>[] dataProxy() default {}; // 代理回调接口方法集
 
+    String[] dataProxyParams() default {}; // 可在 dataProxy 内通过 DataProxyContext.get() 获取
+
     Tree tree() default @Tree; // 树节点配置
 
     LinkTree linkTree() default @LinkTree(field = ""); // 左树右表配置
+
+    Layout layout() default @Layout; // 页面布局配置
 
     KV[] param() default {}; // 自定义参数
 }

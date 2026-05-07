@@ -15,13 +15,16 @@ Erupt 的核心注解文档索引，包含所有核心功能的详细说明。
 | `@Tree` | [树形展示 @Tree](/annotation/tree) | 树形数据展示 |
 | `@LinkTree` | [左树右表 @LinkTree](/annotation/link-tree) | 左树右表布局 |
 | `@Drill` | [数据钻取 @Drill](/annotation/drill) | 数据钻取（无需外键的一对多关联） |
+| `@Vis` | [@Vis 多视图](/annotation/vis) | 卡片、甘特图、看板等多视图切换 |
 
 ## 字段注解
 
 | 注解名称 | 文档链接 | 功能描述 |
 |---------|----------|----------|
-| `@View` | [@EruptField](/annotation/erupt-field) | 表格展示配置 |
-| `@Edit` | [@EruptField](/annotation/erupt-field) | 编辑表单配置 |
+| `@EruptField` | [@EruptField](/annotation/erupt-field) | 字段声明，包含 views 和 edit |
+| `@Edit` | [@Edit](/annotation/edit) | 编辑表单配置 |
+| `@View` | [@View](/annotation/view) | 表格列展示配置 |
+| `@Search` | [@Search](/annotation/search) | 搜索栏配置 |
 | `@Dynamic` | [动态控制 @Dynamic](/annotation/dynamic) | 动态组件控制（1.13.1+） |
 
 ## 使用建议

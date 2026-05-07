@@ -49,12 +49,10 @@ private String linkClass;
 
 ### 控制行为（Ctrl）枚举
 
-- `HIDE`：隐藏组件
 - `SHOW`：显示组件
-- `READONLY`：设置为只读
-- `EDITABLE`：设置为可编辑
+- `HIDE`：隐藏组件
 - `NOTNULL`：设置为必填
-- `NULLABLE`：设置为非必填
+- `READONLY`：设置为只读
 
 ## @Readonly 只读动态控制
 
@@ -96,6 +94,8 @@ public @interface Readonly {
     boolean add() default true;
 
     boolean edit() default true;
+
+    boolean allowChange() default true; // 是否允许通过 API 修改（即便前端只读）
 
     String[] params() default {};
 

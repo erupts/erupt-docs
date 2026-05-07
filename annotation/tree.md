@@ -40,7 +40,7 @@ public @interface Tree {
 
     String id() default "id"; // 存储的列
 
-    String label() default "label"; // 展示列
+    String label() default "name"; // 展示列
 
     String pid() default ""; // 为空则以列表方式渲染
     

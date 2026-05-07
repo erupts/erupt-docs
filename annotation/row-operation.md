@@ -81,7 +81,7 @@ public @interface RowOperation {
     ExprBool show() default @ExprBool;
 
     // 按钮图标，请参考 font awesome
-    String icon() default "fa fa-ravelry";
+    String icon() default "fa fa-dot-circle-o";
 
     Mode mode() default Mode.MULTI; // 按钮触发模式
 
