@@ -39,3 +39,4 @@ build/
 /node_modules/**
 /.vitepress/cache
 /.vitepress/dist
+yarn.lock

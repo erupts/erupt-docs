@@ -60,11 +60,3 @@ public class Test extends BaseModel {
 1. 使用 `deleted` 属性做逻辑删除标识
 2. 使用 `@SQLDelete` 注解覆盖原有删除逻辑
 3. 使用 `filter` 做查询过滤
-
-## 扩展 Erupt 注解配置
-
-详见：[扩展 Erupt 注解](/advanced/extend)
-
-## 前端消息 & 弹窗组件
-
-详见：[前端消息 & 弹窗组件](/advanced/frontend-notify)
