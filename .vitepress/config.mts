@@ -13,6 +13,14 @@ export default defineConfig({
         ['meta', {name: 'theme-color', content: '#646cff'}],
     ],
 
+    vite: {
+        ssr: {
+            noExternal: [
+                '@nolebase/vitepress-plugin-enhanced-readabilities',
+            ],
+        },
+    },
+
     themeConfig: {
         logo: {light: '/logo.png', dark: '/logo.png'},
         siteTitle: 'Erupt',
@@ -195,18 +203,19 @@ export default defineConfig({
                     items: [
                         {text: '模块总览', link: '/modules/'},
                         {text: 'erupt-upms 权限管理', link: '/modules/erupt-upms'},
-                        {text: 'erupt-job 定时任务', link: '/modules/erupt-job'},
-                        {text: 'erupt-monitor 服务监控', link: '/modules/erupt-monitor'},
-                        {text: 'erupt-notice 通知模块', link: '/modules/erupt-notice'},
                         {text: 'erupt-jpa 数据库扩展', link: '/modules/erupt-jpa'},
                         {text: 'erupt-mongodb NoSQL', link: '/modules/erupt-mongodb'},
-                        {text: 'erupt-magic-api 在线IDE', link: '/modules/erupt-magic-api'},
                         {text: 'erupt-tpl 自定义页面', link: '/modules/erupt-tpl'},
-                        {text: 'erupt-ai 大模型集成', link: '/modules/erupt-ai'},
-                        {text: 'erupt-cloud 分布式', link: '/modules/erupt-cloud'},
                         {text: 'erupt-web 前端源码', link: '/modules/erupt-web'},
+
                         {text: 'erupt-websocket 实时交互', link: '/modules/erupt-websocket'},
                         {text: 'erupt-generator 代码生成', link: '/modules/erupt-generator'},
+                        {text: 'erupt-job 定时任务', link: '/modules/erupt-job'},
+                        {text: 'erupt-notice 消息通知', link: '/modules/erupt-notice'},
+                        {text: 'erupt-monitor 服务监控', link: '/modules/erupt-monitor'},
+                        {text: 'erupt-magic-api 在线IDE', link: '/modules/erupt-magic-api'},
+                        {text: 'erupt-ai 大模型集成', link: '/modules/erupt-ai'},
+                        {text: 'erupt-cloud 分布式', link: '/modules/erupt-cloud'},
                     ],
                 },
                 {
