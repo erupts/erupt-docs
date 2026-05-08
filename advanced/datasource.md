@@ -174,4 +174,6 @@ spring:
 
 ## 自定义数据源 @EruptDataProcessor
 
-通过实现 `EruptDataProcessor` 接口，可以自定义数据源，实现非关系型数据库或其他数据源的支持。
+通过实现 `IEruptDataService` 接口，可以自定义数据源，实现对外部 API、ES、MongoDB 等非关系型数据的管理。
+
+详见：[自定义数据源](/advanced/custom-datasource)

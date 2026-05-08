@@ -162,42 +162,6 @@ public class EruptTestDataProxy implements DataProxy<EruptTest>{
 
 ---
 
-## PostDataProxy 全局拦截器
-
-拦截所有 erupt 类的数据行为，包括：导出、查询、新增、修改、删除等。
-
-**版本支持**：1.13.1 及以上版本
-
-```java
-@Component
-public class FlowPostDataProxy implements DataProxy<Object> {
-
-    @Resource
-    private EruptDao eruptDao;
-
-    // 注册全局拦截器
-    @PostConstruct
-    public void post() {
-        PostDataProxy.register(FlowPostDataProxy.class);
-    }
-
-    @Override
-    public void afterFetch(Collection<Map<String, Object>> list) {
-        EruptModel eruptModel = DataProxyContext.get().getEruptModel();
-        for (Annotation annotation : eruptModel.getClazz().getDeclaredAnnotations()) {
-            if (EruptFlow.class == annotation.annotationType()) {
-                // TODO
-            }
-        }
-    }
-
-    // 其他 dataProxy 的回调参考 DataProxy 接口定义
-
-}
-```
-
----
-
 ## 通用继承 @PreDataProxy
 
 在 erupt 中可以通过继承，获取父类的组件的能力，也支持通过继承执行父组件预定义的方法。

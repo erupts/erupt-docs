@@ -4,7 +4,7 @@
 
 ### 1. 编译前端
 
-下载 erupt-web 前端源码进行编译：[YuePeng/erupt-web](https://gitee.com/erupt/erupt-web)
+下载 erupt-web 前端源码进行编译：[erupt-web](https://github.com/erupts/erupt-web)
 
 ### 2. 配置前端接口地址
 

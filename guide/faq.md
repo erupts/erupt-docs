@@ -67,12 +67,6 @@ private String id;
 
 **解决办法**：使用 `@Getter` 注解与 `@Setter` 注解代替 `@Data` 注解。
 
-## BaseModel 与 HyperModel 的作用
-
-`BaseModel` 中定义了主键信息，添加了兼容各类数据库自增模式的注解，仅仅为兼容不同数据库而准备。
-
-`HyperModel` 继承了 `BaseModel`，定义了创建时间、更新时间、创建人、更新人，只要继承 `HyperModel`，erupt 就可以帮助自动注入这几个字段的值，原理是 `HyperModel` 类上存在有 `@PreDataProxy(HyperDataProxy.class)` 注解。
-
 ## 使用 new RuntimeException() 前端不提示错误信息
 
 SpringBoot 2.2 和 2.3 异常处理的一个小变化，即 RuntimeException 错误堆栈信息需要开启配置才可抛出前端展示。解决办法：
@@ -127,7 +121,7 @@ Caused "by": "java.sql.SQLException": Incorrect string "value": '\xE7\xB3\xBB\xE
 
 库的字符集需要设置成 UTF-8，设置好后把表删除重新启动项目即可。
 
-## 一对多，多对一不创建外键关系
+## 一对多，多对一不希望创建外键关系
 
 ```java
 @ManyToOne
@@ -142,7 +136,3 @@ private Test test;
 1. 是不是使用了 `@EnableWebMvc` 注解，如果使用了，去掉它
 2. 查看是不是使用的 `WebMvcAutoConfigurationAdapter` 资源加载器
 3. 如果确实需要使用 `WebMvcConfigurationSupport` 进行资源加载，请将 `addResourceHandlers` 方法放入到你的 `WebMvcConfigurer` 文件中
-
-## 更多问题
-
-更多问题可访问：[https://www.yuque.com/erupts/guide/index](https://www.yuque.com/erupts/guide/index)

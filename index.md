@@ -6,7 +6,8 @@ hero:
   text: 开源·低代码 ⚔ AI 大模型
   tagline: 注解驱动开发，零前端代码，零 CURD，实现通用数据管理平台
   image:
-    src: /logo.svg
+    light: /logo.svg
+    dark: /logo2.svg
     alt: Erupt
   actions:
     - theme: brand

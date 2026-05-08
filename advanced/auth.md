@@ -89,8 +89,8 @@ public class TestLoginProxy implements LoginProxy {
 
 ### 登录接口
 
-```
-http://localhost:8080/erupt-api/login?account=xxx&pwd=xxxx
+```http
+GET /erupt-api/login?account={{用户名}}&pwd={{密码}}&verifyCode={{验证码}}
 ```
 
 ## 单点登录（OAuth 2.0）

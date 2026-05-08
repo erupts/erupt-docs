@@ -63,29 +63,8 @@ public class Test extends BaseModel {
 
 ## 扩展 Erupt 注解配置
 
-通过自定义注解并与 erupt 注解协同使用，可以扩展 erupt 的注解体系，为特定业务场景提供更语义化的配置方式。
+详见：[扩展 Erupt 注解](/advanced/extend)
 
-## 全局 UI 提示组件
+## 前端消息 & 弹窗组件
 
-erupt 提供了全局 UI 提示组件，可以在自定义按钮中使用：
-
-```java
-// 在 OperationHandler 的 exec 方法中返回如下字符串
-
-// 消息提示
-return "window.msg.info('This is a normal message')";
-return "window.msg.success('成功信息')";
-return "window.msg.warning('警告信息')";
-return "window.msg.error('错误信息')";
-
-// 代码预览弹窗
-return "codeModal('sql',`select * from xxx`)";
-
-// 打开新窗口
-return "window.open('https://xxxxx')";
-
-// 弹出对话框
-return "alert('message')";
-```
-
-详见：[app.js 全局 UI 组件文档](https://www.yuque.com/erupts/erupt/srxt3l6q24h9c001)
+详见：[前端消息 & 弹窗组件](/advanced/frontend-notify)

@@ -110,4 +110,4 @@ public void fun() {
 
 ## 使用 Erupt 类完成 JDBC 操作
 
-详见：[EruptDao（JDBC）](/dev/erupt-dao)
+详见：[EruptDao（JDBC）](/advanced/erupt-dao)

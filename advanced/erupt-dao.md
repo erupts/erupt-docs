@@ -221,5 +221,3 @@ public class EruptJdbc {
 Erupt 类同时支持 LambdaQuery 查询 + 动态建表能力 + Join Query，mybatis plus 的能力可以通过 EruptLambdaQuery 完全代替，请勿重复引入。
 
 如果你的服务中需要复杂的 SQL 定义，可以引入 MyBatis 执行复杂的 XML 拼接。MyBatis 是一个 jdbc 工具，JPA 是 ORM 工具，共存不会有任何问题。
-
-<!-- TODO: 添加截图 -->

@@ -35,8 +35,6 @@ public class Student extends BaseModel {
 
 前端可通过 `tags` 配置接收。
 
-<!-- TODO: 添加截图 -->
-
 ## 使用注解手动扩展
 
 ```java
@@ -58,8 +56,6 @@ public class Student extends BaseModel {
 
 请求 build 接口获取 erupt 类结构，可看到 `@Table(name = "demo_student")` 的信息已完整传递给前端。
 
-<!-- TODO: 添加截图 -->
-
 ## 使用 KV 方式扩展
 
 无需自定义注解，使用 Param 方式传递 kv 结构：
@@ -76,5 +72,3 @@ public class Student extends BaseModel {
 
 }
 ```
-
-<!-- TODO: 添加截图 -->

@@ -14,7 +14,7 @@ export default defineConfig({
     ],
 
     themeConfig: {
-        logo: '/logo.png',
+        logo: {light: '/logo.png', dark: '/logo.png'},
         siteTitle: 'Erupt',
         search: {
             provider: 'local'
@@ -24,10 +24,10 @@ export default defineConfig({
             {text: '指南', link: '/guide/', activeMatch: '/guide/'},
             {text: '注解参考', link: '/annotation/', activeMatch: '/annotation/'},
             {text: '组件类型', link: '/field-types/', activeMatch: '/field-types/'},
-            {text: '进阶功能', link: '/advanced/', activeMatch: '/advanced/'},
+            {text: '进阶', link: '/advanced/', activeMatch: '/advanced/'},
             {text: '扩展模块', link: '/modules/', activeMatch: '/modules/'},
             {text: '部署', link: '/deployment/', activeMatch: '/deployment/'},
-            {text: '开发参考', link: '/dev/', activeMatch: '/dev/'},
+            {text: '🚀 项目初始化', link: 'https://start.erupt.xyz/'},
             {
                 text: '相关链接',
                 items: [
@@ -44,6 +44,7 @@ export default defineConfig({
                 {
                     text: '开始使用',
                     items: [
+                        {text: '🚀 项目初始化', link: 'https://start.erupt.xyz/'},
                         {text: '框架介绍', link: '/guide/'},
                         {text: '快速部署', link: '/guide/quick-start'},
                         {text: '入门示例', link: '/guide/getting-started'},
@@ -83,7 +84,7 @@ export default defineConfig({
                         {text: '@Drill 数据钻取', link: '/annotation/drill'},
                         {text: '@Layout 布局定义', link: '/annotation/layout'},
                         {text: '@OrderBy 排序', link: '/annotation/order-by'},
-                        {text: '@RowOperation 行操作', link: '/annotation/row-operation'},
+                        {text: '@RowOperation 行按钮', link: '/annotation/row-operation'},
                         {text: '@Dynamic 动态控制', link: '/annotation/dynamic'},
                         {text: '@Vis 多视图', link: '/annotation/vis'},
                         {text: '卡片视图 CARD', link: '/annotation/vis-card'},
@@ -154,17 +155,36 @@ export default defineConfig({
 
             '/advanced/': [
                 {
-                    text: '进阶功能',
+                    text: '业务扩展',
                     items: [
                         {text: 'DataProxy 数据代理', link: '/advanced/data-proxy'},
-                        {text: '动态表单', link: '/advanced/dynamic-form'},
-                        {text: '登录与认证', link: '/advanced/auth'},
-                        {text: '多数据源', link: '/advanced/datasource'},
+                        {text: 'PostDataProxy 全局拦截器', link: '/advanced/post-data-proxy'},
+                        {text: '动态表单 OnChange', link: '/advanced/dynamic-form'},
                         {text: '自定义文件上传', link: '/advanced/upload'},
                         {text: '事件监听器', link: '/advanced/event-listener'},
                         {text: '国际化（i18n）', link: '/advanced/i18n'},
+                        {text: '前端消息 & 弹窗', link: '/advanced/frontend-notify'},
                         {text: '杂项功能', link: '/advanced/misc'},
+                    ],
+                },
+                {
+                    text: '开发扩展',
+                    items: [
+                        {text: '接口开发 & 操作日志', link: '/advanced/rest-api'},
+                        {text: 'EruptDao（JDBC）', link: '/advanced/erupt-dao'},
+                        {text: '工具类（util）', link: '/advanced/utils'},
+                        {text: '插件开发', link: '/advanced/plugin'},
+                        {text: '扩展 Erupt 注解', link: '/advanced/extend'},
+                    ],
+                },
+                {
+                    text: '集成接入',
+                    items: [
                         {text: '现有项目接入', link: '/advanced/integration'},
+                        {text: '登录与认证', link: '/advanced/auth'},
+                        {text: '自定义登录页', link: '/advanced/custom-login-page'},
+                        {text: '多数据源', link: '/advanced/datasource'},
+                        {text: '自定义数据源', link: '/advanced/custom-datasource'},
                     ],
                 },
             ],
@@ -174,7 +194,6 @@ export default defineConfig({
                     text: '扩展模块',
                     items: [
                         {text: '模块总览', link: '/modules/'},
-                        {text: '插件开发', link: '/dev/plugin'},
                         {text: 'erupt-upms 权限管理', link: '/modules/erupt-upms'},
                         {text: 'erupt-job 定时任务', link: '/modules/erupt-job'},
                         {text: 'erupt-monitor 服务监控', link: '/modules/erupt-monitor'},
