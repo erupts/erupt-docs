@@ -1,4 +1,4 @@
-# EruptDao（JDBC）
+# EruptDao 数据操作
 
 EruptDao 是基于 Spring Data JPA 实现的一个工具类，帮助您复用 erupt 对象，实现数据管理。
 

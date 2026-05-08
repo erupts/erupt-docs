@@ -2,9 +2,9 @@
 layout: home
 
 hero:
-  name: Erupt
-  text: 开源·低代码 ⚔ AI 大模型
-  tagline: 注解驱动开发，零前端代码，零 CURD，实现通用数据管理平台
+  name: Erupt Engine
+  text: 低代码 ⚔ AI 大模型
+  tagline: MDD 注解驱动开发，零前端代码，零 CURD，实现通用数据管理平台
   image:
     light: /logo.svg
     dark: /logo2.svg

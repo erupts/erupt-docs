@@ -1,4 +1,4 @@
-# PostDataProxy 全局拦截器
+# PostDataProxy 全局拦截
 
 ::: info
 拦截所有 erupt 类的数据行为，包括：导出、查询、新增、修改、删除等
