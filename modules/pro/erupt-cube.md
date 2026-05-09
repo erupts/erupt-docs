@@ -2,6 +2,8 @@
 
 借鉴 Google Looker 的语义层理念，为 Java 生态打造专业级大数据分析方案。数据工程师专注模型构建，数据分析师基于语义层自助完成可视化，无需多方协作，注解定义语义模型 + 拖拽完成可视化，开箱即用。
 
+<iframe src="https://www.erupt.xyz/#!/cube" width="100%" height="600" frameborder="0" style="border-radius:8px"></iframe>
+
 :::tip 付费插件
 源码交付 · 技术支持 · 免费更新迭代 · 合理需求免费实现 · erupt 相关问题优先支持 · 无 License 限制 · 无项目数量限制 · 无商用限制 · 禁止二次开源与分发
 :::

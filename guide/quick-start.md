@@ -70,7 +70,7 @@ demo -- 项目名称
 
 ### 4. 在 application.yml 中添加数据库配置
 
-示例数据库为 MySQL，其他数据库请参考：[数据源支持](/deployment/database)
+示例数据库为 MySQL，其他数据库请参考：[数据源支持](/guide/database)
 
 ```yaml
 spring:
@@ -113,16 +113,12 @@ public class DemoApplication {
 ```
 
 ### 7. 启动项目
-
-<!-- TODO: 添加截图 -->
+使用 `mvn spring-boot:run` 或 `gradle bootRun` 启动项目
 
 ### 8. 访问系统
-
 启动成功后浏览器访问：`http://localhost:8080`
 
 默认用户名密码：`erupt / erupt`（**为了您的系统安全请尽快修改默认密码**）
-
-<!-- TODO: 添加截图 -->
 
 ## 源码启动
 

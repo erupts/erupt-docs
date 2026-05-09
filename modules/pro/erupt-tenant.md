@@ -1,4 +1,4 @@
-# Erupt Tenant SaaS 多租户
+# Erupt SaaS 多租户
 
 使用 Erupt 注解低代码开发多租户能力，页面功能多租户复用且数据完全隔离，适合 SaaS 产品开发场景。
 

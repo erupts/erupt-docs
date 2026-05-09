@@ -8,20 +8,19 @@
 
 ```java
 @Erupt(
-       name = "TestDrill",
-       drills = {
-                @Drill(code = "drill", 
-                       title = "数据钻取",
-                       // 最终生成的表达式为：EruptTest.id = DrillErupt.eruptTestId
-                       link = @Link(column = "id",                 // 当前表关联列
-                                    linkErupt = DrillErupt.class,  // 目标关联表
-                                    joinColumn = "eruptTestId"))   // 目标表关联列
-       }
+    name = "TestDrill",
+    drills = {
+        @Drill(code = "drill",
+               title = "数据钻取",
+               // 最终生成的表达式为：EruptTest.id = DrillErupt.eruptTestId
+               link = @Link(column = "id",                 // 当前表关联列
+                            linkErupt = DrillErupt.class,  // 目标关联表
+                            joinColumn = "eruptTestId"))   // 目标表关联列
+    }
 )
 @Entity
 @Table
 public class EruptTest extends BaseModel {
-    
 }
 ```
 
@@ -32,28 +31,33 @@ public class EruptTest extends BaseModel {
 @Entity
 @Table
 public class DrillErupt extends BaseModel {
-    
+
     // EruptTest 表的主键
     private Long eruptTestId;
-    
+
     @EruptField(
-            views = @View(title = "文本"),
-            edit = @Edit(title = "文本", notNull = true)
+        views = @View(title = "文本"),
+        edit  = @Edit(title = "文本", notNull = true)
     )
     private String input;
-    
 }
 ```
 
-> **注意：DrillErupt 需要增加菜单权限否则会报 403 错误**
+:::warning
+DrillErupt 需要增加菜单权限，否则下钻时会报 403 错误。
+:::
+
+<img src="/drill/demo1.png" width="900">
+
+<img src="/drill/demo2.png" width="900">
 
 ## 下钻菜单权限配置（下钻提示 403）
 
 如：字典可下钻到字典项。
 
-需将字典项的类名称添加到菜单，类型：表格视图，状态：隐藏
+需将字典项的类名添加到菜单，类型：**表格视图**，状态：**隐藏**。
 
-<!-- TODO: 添加截图 -->
+<img src="/drill/menu-config.png" width="900">
 
 ## 注解配置项说明
 
@@ -66,29 +70,28 @@ public @interface Drill {
     // 名称
     String title();
 
-    // 是否折叠显示 1.12.19 及以上版本支持
+    // 是否折叠显示（1.12.19 及以上版本支持）
     boolean fold() default false;
-    
-    // 图标，请参考 font awesome
+
+    // 图标，参考 Font Awesome
     String icon() default "fa fa-sitemap";
-    
+
     // 动态控制按钮显示
     ExprBool show() default @ExprBool;
 
     Link link();
-    
 }
 ```
 
 ```java
 public @interface Link {
-    
-    // 关联的 erupt 类
+
+    // 关联的 Erupt 类
     Class<?> linkErupt();
 
-    // 关联的 erupt 类中的关联字段
+    // 关联的 Erupt 类中的关联字段
     String joinColumn();
-    
+
     // 原始类中的关联字段
     String column() default "id";
 
@@ -96,6 +99,5 @@ public @interface Link {
     String linkCondition() default "";
 
     // 结果预览：this.column = linkErupt.joinColumn [ and {linkCondition}]
-
 }
 ```

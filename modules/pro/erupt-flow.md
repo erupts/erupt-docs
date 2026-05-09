@@ -2,6 +2,8 @@
 
 通用流程引擎解决方案，完整支持流程配置、流程发起、流程审批与流程通知。零前端代码定义流程节点，配合钉钉风格的可视化流程设计界面，快速搭建企业级流程系统。Erupt 可同时作为流程表单引擎与流程配置平台使用。
 
+<iframe src="https://www.erupt.xyz/#!/flow" width="100%" height="600" frameborder="0" style="border-radius:8px"></iframe>
+
 :::tip 付费插件
 源码交付 · 技术支持 · 免费更新迭代 · 合理需求免费实现 · erupt 相关问题优先支持 · 无 License 限制 · 可多项目复用 · 禁止二次开源与分发
 :::

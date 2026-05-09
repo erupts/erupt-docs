@@ -7,7 +7,7 @@
 ```java
 @Erupt(
        name = "Erupt",              // 功能名称
-       desc = "Erupt Framework",   // 描述
+       desc = "Erupt Engine",   // 描述
        orderBy = "id desc",        // 排序表达式
        .....
 )
