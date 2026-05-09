@@ -232,6 +232,7 @@ export default defineConfig({
                         {text: 'Erupt Notice 消息通知', link: '/modules/erupt-notice'},
                         {text: 'Erupt Monitor 服务监控', link: '/modules/erupt-monitor'},
                         {text: 'Erupt Magic Api 在线IDE', link: '/modules/erupt-magic-api'},
+                        {text: 'Erupt Print 打印模块', link: '/modules/erupt-print'},
                         {text: 'Erupt Cloud 分布式', link: '/modules/erupt-cloud'},
                         {text: 'Erupt Cloud Server 部署', link: '/modules/cloud-server'},
                         {text: 'Erupt Cloud Node 部署', link: '/modules/cloud-node'},

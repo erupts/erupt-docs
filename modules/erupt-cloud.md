@@ -118,6 +118,3 @@ Node 端：
 </dependency>
 ```
 
-## 部署说明
-
-详见：[部署文档](/deployment/cloud-server)
