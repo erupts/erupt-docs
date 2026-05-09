@@ -1,8 +1,8 @@
 import {defineConfig} from 'vitepress'
 
 export default defineConfig({
-    title: 'Erupt Framework',
-    description: '注解驱动的低代码 Java 框架，零前端代码即可生成后台管理系统',
+    title: 'Erupt',
+    description: 'MDD & Annotation-driven Low-code Data platform & AI Harness',
     lang: 'zh-CN',
     lastUpdated: true,
     cleanUrls: true,
@@ -34,7 +34,7 @@ export default defineConfig({
             {text: '组件类型', link: '/field-types/', activeMatch: '/field-types/'},
             {text: '进阶', link: '/advanced/', activeMatch: '/advanced/'},
             {text: '扩展模块', link: '/modules/', activeMatch: '/modules/'},
-            {text: '部署', link: '/deployment/', activeMatch: '/deployment/'},
+            {text: '更新日志', link: '/guide/changelog'},
             {text: '🚀 项目初始化', link: 'https://start.erupt.xyz/'},
             {
                 text: '相关链接',
@@ -42,7 +42,6 @@ export default defineConfig({
                     {text: 'GitHub', link: 'https://github.com/erupts/erupt'},
                     {text: 'Gitee', link: 'https://gitee.com/erupt/erupt'},
                     {text: '在线体验', link: 'https://www.erupt.xyz/demo'},
-                    {text: '更新日志', link: '/guide/changelog'},
                 ],
             },
         ],
@@ -60,12 +59,22 @@ export default defineConfig({
                     ],
                 },
                 {
+                    text: '部署',
+                    items: [
+                        {text: '数据源支持', link: '/guide/database'},
+                        {text: '前后端分离部署', link: '/guide/separation'},
+                    ],
+                },
+                {
                     text: '其他',
                     items: [
                         {text: '常见问题 FAQ', link: '/guide/faq'},
                         {text: '更新日志', link: '/guide/changelog'},
                         {text: '升级指南', link: '/guide/upgrade'},
-                        {text: '社区与贡献', link: '/guide/community'},
+                        {text: '架构图', link: '/guide/architecture'},
+                        {text: '加入讨论', link: '/guide/community'},
+                        {text: '贡献指南', link: '/guide/contributing'},
+                        {text: '捐赠', link: '/guide/donate'},
                     ],
                 },
             ],
@@ -202,42 +211,47 @@ export default defineConfig({
                     text: '扩展模块',
                     items: [
                         {text: '模块总览', link: '/modules/'},
-                        {text: 'erupt-upms 权限管理', link: '/modules/erupt-upms'},
-                        {text: 'erupt-jpa 数据库扩展', link: '/modules/erupt-jpa'},
-                        {text: 'erupt-mongodb NoSQL', link: '/modules/erupt-mongodb'},
-                        {text: 'erupt-tpl 自定义页面', link: '/modules/erupt-tpl'},
-                        {text: 'erupt-web 前端源码', link: '/modules/erupt-web'},
-
-                        {text: 'erupt-websocket 实时交互', link: '/modules/erupt-websocket'},
-                        {text: 'erupt-generator 代码生成', link: '/modules/erupt-generator'},
-                        {text: 'erupt-job 定时任务', link: '/modules/erupt-job'},
-                        {text: 'erupt-notice 消息通知', link: '/modules/erupt-notice'},
-                        {text: 'erupt-monitor 服务监控', link: '/modules/erupt-monitor'},
-                        {text: 'erupt-magic-api 在线IDE', link: '/modules/erupt-magic-api'},
-                        {text: 'erupt-ai 大模型集成', link: '/modules/erupt-ai'},
-                        {text: 'erupt-cloud 分布式', link: '/modules/erupt-cloud'},
                     ],
                 },
                 {
-                    text: '付费插件',
+                    text: '核心模块',
                     items: [
-                        {text: 'erupt-bi 数据可视化', link: '/modules/erupt-bi'},
-                        {text: 'erupt-flow 流程引擎', link: '/modules/erupt-flow'},
-                        {text: 'erupt-tenant 多租户', link: '/modules/erupt-tenant'},
-                        {text: 'erupt-cube 语义建模', link: '/modules/erupt-cube'},
+                        {text: 'Erupt Upms 权限管理', link: '/modules/erupt-upms'},
+                        {text: 'Erupt Jpa 数据库扩展', link: '/modules/erupt-jpa'},
+                        {text: 'Erupt Mongodb NoSQL', link: '/modules/erupt-mongodb'},
+                        {text: 'Erupt Tpl 自定义页面', link: '/modules/erupt-tpl'},
+                        {text: 'Erupt Web 前端源码', link: '/modules/erupt-web'},
                     ],
                 },
-            ],
-
-            '/deployment/': [
                 {
-                    text: '部署',
+                    text: '工具模块',
                     items: [
-                        {text: '部署概览', link: '/deployment/'},
-                        {text: '数据源支持', link: '/deployment/database'},
-                        {text: '前后端分离部署', link: '/deployment/separation'},
-                        {text: 'erupt-cloud-server 部署', link: '/deployment/cloud-server'},
-                        {text: 'erupt-cloud-node 部署', link: '/deployment/cloud-node'},
+                        {text: 'Erupt Websocket 实时交互', link: '/modules/erupt-websocket'},
+                        {text: 'Erupt Generator 代码生成', link: '/modules/erupt-generator'},
+                        {text: 'Erupt Job 定时任务', link: '/modules/erupt-job'},
+                        {text: 'Erupt Notice 消息通知', link: '/modules/erupt-notice'},
+                        {text: 'Erupt Monitor 服务监控', link: '/modules/erupt-monitor'},
+                        {text: 'Erupt Magic Api 在线IDE', link: '/modules/erupt-magic-api'},
+                        {text: 'Erupt Cloud 分布式', link: '/modules/erupt-cloud'},
+                        {text: 'Erupt Cloud Server 部署', link: '/modules/cloud-server'},
+                        {text: 'Erupt Cloud Node 部署', link: '/modules/cloud-node'},
+                    ],
+                },
+                {
+                    text: 'AI 模块',
+                    items: [
+                        {text: '🐴 Erupt Ai Harness', link: '/modules/erupt-ai'},
+                        {text: '🦞 Erupt Ai Claw', link: '/modules/erupt-ai-claw'},
+                        {text: '🛠️ Erupt Ai Skill', link: 'https://github.com/erupts/erupt/tree/master/.claude/skills/erupt'},
+                    ],
+                },
+                {
+                    text: '商业模块',
+                    items: [
+                        {text: 'Erupt Chart 报表图表', link: '/modules/pro/erupt-chart'},
+                        {text: 'Erupt Flow 流程引擎', link: '/modules/pro/erupt-flow'},
+                        {text: 'Erupt SaaS 多租户', link: '/modules/pro/erupt-tenant'},
+                        {text: 'Erupt Cube BI 平台', link: '/modules/pro/erupt-cube'},
                     ],
                 },
             ],

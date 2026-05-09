@@ -85,11 +85,14 @@ public interface DataProxy<MODEL> {
     /**
      * 查询前动态注入条件
      * @param conditions 前端已传递条件
-     * @return 自定义查询条件(HQL语句)
+     * @return 自定义查询条件（JPQL WHERE 子句，不含 WHERE 关键字）
      */
     default String beforeFetch(List<Condition> conditions) { return null; }
 
-    /** 全局页面提示 */
+    /**
+     * 全局页面提示，每次打开页面时触发，返回 null 则不显示提示
+     * Alert 支持 info / warning / error / success 四种类型
+     */
     default Alert alert(List<Condition> conditions) { return null; }
 
     /**
@@ -101,6 +104,57 @@ public interface DataProxy<MODEL> {
 }
 ```
 
+## beforeFetch 条件注入
+
+`beforeFetch` 返回值为 JPQL（HQL）的 WHERE 子句，**不包含 `WHERE` 关键字**，框架会自动拼接。
+
+```java
+@Override
+public String beforeFetch(List<Condition> conditions) {
+    // 只查询当前登录用户自己的数据
+    String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+    return "createBy = '" + currentUser + "'";
+}
+```
+
+支持的语法示例：
+
+| 场景 | 返回值示例 |
+| --- | --- |
+| 等于 | `"status = 1"` |
+| 范围 | `"age between 18 and 60"` |
+| 模糊 | `"name like '%张%'"` |
+| IN | `"id in (1, 2, 3)"` |
+| 关联属性 | `"dept.id = 10"` |
+| 多条件 | `"status = 1 and deleteFlag = 0"` |
+| 子查询 | `"id in (select userId from t_order where amount > 100)"` |
+
+> 注意：这里是 JPQL 而非原生 SQL，字段名应使用 Java 实体属性名（驼峰），而非数据库列名。
+
+## validate() 与 before* 的区别
+
+| | `validate()` | `beforeAdd()` / `beforeUpdate()` |
+|---|---|---|
+| 用途 | 数据校验，不通过则拒绝操作 | 在保存前修改数据或执行业务逻辑 |
+| 适用版本 | 1.13.1+ | 全版本 |
+| 推荐场景 | 格式校验、业务规则校验 | 自动填充字段、调用外部服务 |
+
+```java
+@Override
+public void validate(EruptTest model) throws EruptException {
+    // 推荐：用于纯校验逻辑，不修改数据
+    if (model.getEndDate().before(model.getStartDate())) {
+        throw new EruptApiErrorTip("结束时间不能早于开始时间");
+    }
+}
+
+@Override
+public void beforeAdd(EruptTest model) {
+    // 推荐：用于修改/补充数据
+    model.setCreateBy(getCurrentUser());
+}
+```
+
 ## DataProxy 上下文信息获取
 
 ```java
@@ -109,14 +163,24 @@ public class EruptTestDataProxy implements DataProxy<EruptTest>{
     
     @Override
     public void afterFetch(Collection<Map<String, Object>> list) {
-        // 获取当前操作的类信息：EruptTest
+        // 获取当前操作的 Erupt 类信息（如 EruptTest.class）
         Class<?> clazz = DataProxyContext.currentClass();
-        // 获取 dataProxy 中定义的 params 参数的值
-        DataProxyContext.params();
+        // 获取 @Erupt dataProxy 中 params 参数传入的值（字符串数组）
+        String[] params = DataProxyContext.params();
+        // 获取当前 HTTP 请求对象
+        HttpServletRequest request = DataProxyContext.get(HttpServletRequest.class);
     }
     
 }
 ```
+
+`DataProxyContext` 主要方法：
+
+| 方法 | 返回值 | 说明 |
+| --- | --- | --- |
+| `currentClass()` | `Class<?>` | 当前 Erupt 实体类 |
+| `params()` | `String[]` | `@Erupt(dataProxy = {X.class, params = {"a","b"}})` 中的 params |
+| `get(Class<T>)` | `T` | 从 Spring 上下文获取 Bean |
 
 ## 单元格着色
 

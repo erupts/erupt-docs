@@ -43,7 +43,15 @@ erupt:
       scanPackages: com.hig.xxx
 ```
 
-> **注：`scanPackages` 为必填项，该配置必填且需要注意包扫描路径不要与主数据源的包扫描路径发生冲突，否则会出现多个数据源建表混乱的问题**
+> **注：`scanPackages` 为必填项，且必须与主数据源及其他数据源的扫描路径不重叠。**
+>
+> 原因：JPA 通过包扫描路径判断哪些实体类属于哪个数据源，路径重叠会导致同一个实体被多个数据源同时管理，启动时建表冲突或数据写入错误的数据源。
+> 推荐的目录结构：
+> ```
+> com.example.model          ← 主数据源实体（@EntityScan 指向此路径）
+> com.example.model.mysql    ← MySQL 附加数据源实体（scanPackages 指向此路径）
+> com.example.model.oracle   ← Oracle 附加数据源实体（scanPackages 指向此路径）
+> ```
 
 2. 修改入口类 `@EntityScan` 配置，细化包扫描路径：
 
@@ -60,7 +68,40 @@ public class EruptDemoApplication {
 }
 ```
 
-3. 增加对应数据源的 JDBC 驱动依赖
+3. 增加对应数据源的 JDBC 驱动依赖（Maven 坐标参考）：
+
+**MySQL**
+```xml
+<dependency>
+    <groupId>com.mysql</groupId>
+    <artifactId>mysql-connector-j</artifactId>
+</dependency>
+```
+
+**Oracle**
+```xml
+<dependency>
+    <groupId>com.oracle.database.jdbc</groupId>
+    <artifactId>ojdbc8</artifactId>
+    <version>21.9.0.0</version>
+</dependency>
+```
+
+**SQL Server**
+```xml
+<dependency>
+    <groupId>com.microsoft.sqlserver</groupId>
+    <artifactId>mssql-jdbc</artifactId>
+</dependency>
+```
+
+**PostgreSQL**
+```xml
+<dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+</dependency>
+```
 
 4. 将实体类中增加 `@EruptDataSource` 注解：
 

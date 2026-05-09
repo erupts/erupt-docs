@@ -44,6 +44,19 @@ public interface LoginProxy {
 }
 ```
 
+### EruptUser 字段说明
+
+`login()` 方法需要返回一个 `EruptUser` 对象，框架通过该对象识别登录用户身份。常用字段如下：
+
+| 字段 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `id` | `Integer` | 是 | 用户 ID，必须与数据库中 `erupt_user` 表的记录对应 |
+| `account` | `String` | 是 | 登录账号 |
+| `name` | `String` | 否 | 用户显示名称 |
+| `isAdmin` | `Boolean` | 否 | 是否为管理员，管理员拥有所有权限 |
+
+> `login()` 返回的 `EruptUser` 对象必须是数据库中真实存在的用户记录（`id` 有效），框架后续会根据此 `id` 查询该用户的角色和权限。若希望绕过权限体系，可将 `isAdmin` 设为 `true`。
+
 ### 方法示例
 
 ```java
@@ -62,11 +75,18 @@ public class TestLoginProxy implements LoginProxy {
 
     @Override
     public EruptUser login(String account, String pwd) {
-        // 调用默认登录方法
-        // eruptUserService.login(account, pwd);        
-        // 错误提示
-        // throw new RuntimeException("账号或密码错误"); 
-        return eruptDao.queryEntity(EruptUser.class, "account = 'bi'");
+        // 方式一：直接调用默认的用户名密码校验逻辑
+        // return eruptUserService.login(account, pwd);
+
+        // 方式二：自定义校验后，返回对应的数据库用户对象
+        // pwd 已经过加密处理：md5(md5(pwd) + account)
+        // 查询条件使用 JPQL，字段名为 Java 属性名
+        EruptUser user = eruptDao.queryEntity(EruptUser.class, "account = '" + account + "'");
+        if (user == null) {
+            throw new RuntimeException("账号不存在");
+        }
+        // 在此处对接 LDAP、第三方 SSO 等外部认证系统
+        return user;
     }
 
     @Override
@@ -121,12 +141,16 @@ public class OauthConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
+                // 允许 iframe 嵌套（Erupt 内置页面有使用）
                 .headers(h -> h.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .authorizeHttpRequests(auth -> auth
+                        // 放行 Erupt API 接口，Erupt 内部已有自己的 Token 鉴权
                         .requestMatchers("/erupt-api/**", "/erupt-cloud-api/**").permitAll()
+                        // 放行静态资源，正则含义：匹配以常见静态文件后缀结尾的 URL（支持带查询参数）
                         .requestMatchers(new RegexRequestMatcher(".*\\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot|csv|json|xml|txt)(\\?.*)?$", null))
                         .permitAll().anyRequest().authenticated()
                 )
+                // 开启 OAuth2 登录，使用 application.yml 中的提供商配置
                 .oauth2Login(Customizer.withDefaults())
                 .build();
     }
@@ -134,15 +158,48 @@ public class OauthConfig {
 }
 ```
 
-3. 增加授权页 `auth.html`，文件位置：`/resources/public/auth.html`
+3. 在 `application.yml` 中配置 OAuth2 提供商（以 GitHub 为例）：
+
+```yaml
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: your-github-client-id
+            client-secret: your-github-client-secret
+            scope: read:user, user:email
+          # 飞书示例
+          feishu:
+            client-id: your-feishu-app-id
+            client-secret: your-feishu-app-secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope: contact:user.base:readonly
+        provider:
+          feishu:
+            authorization-uri: https://open.feishu.cn/open-apis/authen/v1/authorize
+            token-uri: https://open.feishu.cn/open-apis/authen/v2/oauth/token
+            user-info-uri: https://open.feishu.cn/open-apis/authen/v1/user_info
+            user-name-attribute: name
+```
+
+4. 增加授权页 `auth.html`，文件位置：`/resources/public/auth.html`
+
+OAuth2 认证成功后，Spring Security 会重定向到此页面。该页面的作用是将 OAuth2 session 转换为 Erupt Token，并存入 `localStorage` 供前端使用。
 
 ```html
 <script>
   fetch("/erupt-api/login-token").then(res => {
-    res.text().then(data => {
-      localStorage.setItem("_token", JSON.stringify({"token": data, "account": null}))
-      location.href = "/"
-    })
+    if (res.ok) {
+      res.text().then(data => {
+        localStorage.setItem("_token", JSON.stringify({"token": data, "account": null}))
+        location.href = "/"
+      })
+    } else {
+      document.body.innerText = "授权失败，请重试"
+    }
   })
 </script>
 ```

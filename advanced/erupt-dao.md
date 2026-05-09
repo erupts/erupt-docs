@@ -36,7 +36,8 @@ public class EruptJdbc {
     @Transactional // 注意：需添加事务注解
     public void add(Student student) {
         eruptDao.persist(student);
-        // 使用 flush 方法可以在线程结束前入库，如果批处理数据建议每千次（新增、更新、删除）调用一次 flush
+        // flush 将当前事务中的挂起操作立即同步到数据库（不提交事务）
+        // 批量操作时建议每 500~1000 次调用一次，防止内存中积压过多变更导致 OOM
         eruptDao.flush();
     }
 
@@ -83,7 +84,7 @@ public class EruptLambdaQuery {
 
     public void orderBy() {
         List<EruptUser> eruptUser = eruptDao.lambdaQuery(EruptUser.class)
-            .addCondition("whiteIp is null")
+            .addCondition("whiteIp is null") // 原生 JPQL 条件，字段名使用 Java 属性名（驼峰）
             .isNotNull(EruptUser::getCreateTime)
             .offset(1).limit(2)
             .orderBy(EruptUser::getCreateTime)
@@ -173,7 +174,8 @@ public class EruptJdbc {
             .like(EruptUser::getName, "e")
             .min(EruptUser::getCreateTime);
 
-        // 注意：多数据源操作时，每次 sql 执行完成后需要手动调用关闭方法，否则会导致连接池溢出
+        // 注意：多数据源操作时必须手动关闭 EntityManager
+        // 忘记调用会导致该数据源的数据库连接无法归还连接池，最终耗尽所有连接并抛出连接超时异常
         entityManager.close();
     }
 }
@@ -215,6 +217,27 @@ public class EruptJdbc {
 | `orderByDesc` | 降序排序 |
 | `offset` | 偏移量 |
 | `limit` | 限制数量 |
+
+## addCondition 语法说明
+
+`addCondition()` 接受原始 JPQL（HQL）字符串，语法规则与 JPQL WHERE 子句相同：
+
+- **字段名**：使用 Java 实体属性名（驼峰），不是数据库列名
+- **关联属性**：用 `.` 访问，如 `dept.name = '研发部'`
+- **字符串值**：用单引号包裹，如 `status = 'active'`
+
+```java
+// 正确：使用 Java 属性名
+.addCondition("whiteIp is null")
+.addCondition("dept.id = 1")
+.addCondition("createTime > '2023-01-01'")
+
+// 错误：不要使用数据库列名
+// .addCondition("white_ip is null")  ❌
+// .addCondition("create_time > '2023-01-01'")  ❌
+```
+
+> 如需防 SQL 注入，优先使用类型安全的链式方法（`eq`、`like` 等），它们内部已使用参数化查询。`addCondition` 用于表达链式方法无法覆盖的复杂条件。
 
 ## MyBatis
 
