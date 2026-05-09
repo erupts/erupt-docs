@@ -93,6 +93,7 @@ export default withMermaid(defineConfig({
                     items: [
                         {text: '常见问题 FAQ', link: '/guide/faq'},
                         {text: '更新日志', link: '/guide/changelog'},
+                        {text: '历史版本', link: '/guide/changelog#历史版本文档'},
                         {text: '升级指南', link: '/guide/upgrade'},
                         {text: '架构图', link: '/guide/architecture'},
                         {text: '加入讨论', link: '/guide/community'},

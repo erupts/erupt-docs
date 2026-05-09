@@ -1220,11 +1220,16 @@ SqlChoiceFetchHandler 更新包位置：xyz.erupt.toolkit.handler.SqlChoiceFetch
 
 注：依赖afterFetch做转换的程序需要调整转换逻辑，如：bool choice
 
-## 1.9.x 使用文档 | 更新日志
-## 1.8.x 使用文档 | 更新日志
-## 1.7.x 使用文档 | 更新日志
-## 1.6.x 使用文档 | 更新日志
-## 1.5.x[ 使用文档](https://www.yuque.com/erupts/1.6.x) | 更新日志
-## 更早版本
+## 历史版本文档
 
-更早版本请参考旧版本文档。
+| 版本 | 使用文档 | 更新日志 |
+| --- | --- | --- |
+| 1.13.x | [使用文档](https://www.yuque.com/erupts/1.13.x) | [更新日志](https://www.yuque.com/erupts/1.13.x/wdic2w) |
+| 1.12.x | [使用文档](https://www.yuque.com/erupts/1.12.x) | [更新日志](https://www.yuque.com/erupts/1.12.x/wdic2w) |
+| 1.11.x | [使用文档](https://www.yuque.com/erupts/1.11.x) | [更新日志](https://www.yuque.com/erupts/1.11.x/wdic2w) |
+| 1.10.x | [使用文档](https://www.yuque.com/erupts/1.10.x) | [更新日志](https://www.yuque.com/erupts/1.10.x/wdic2w) |
+| 1.9.x | [使用文档](https://www.yuque.com/erupts/1.9.x) | [更新日志](https://www.yuque.com/erupts/1.9.x/wdic2w) |
+| 1.8.x | [使用文档](https://www.yuque.com/erupts/1.8.x) | [更新日志](https://www.yuque.com/erupts/1.8.x/gtma0l) |
+| 1.7.x | [使用文档](https://www.yuque.com/erupts/1.7.x) | [更新日志](https://www.yuque.com/erupts/1.7.x/wdic2w) |
+| 1.6.x | [使用文档](https://www.yuque.com/erupts/1.6.x) | [更新日志](https://www.yuque.com/erupts/1.6.x/wdic2w#UvU4Y) |
+| 1.5.x | [使用文档](https://www.yuque.com/erupts/1.6.x) | [更新日志](https://www.yuque.com/erupts/1.6.x/wdic2w#HlkSI) |
