@@ -254,6 +254,16 @@ export default defineConfig({
                         {text: 'Erupt Cube BI 平台', link: '/modules/pro/erupt-cube'},
                     ],
                 },
+                {
+                    text: '第三方插件',
+                    items: [
+                        {text: 'Erupt Dsl ORM动态查询', link: '/modules/third-party/erupt-dsl'},
+                        {text: 'Erupt Pf4j 动态加载', link: '/modules/third-party/erupt-pf4j'},
+                        {text: 'EZDML 代码生成', link: '/modules/third-party/ezdml'},
+                        {text: '公众号采集', link: '/modules/third-party/mp-crawler'},
+                        {text: 'Erupt Vote 投票插件', link: '/modules/third-party/erupt-vote'},
+                    ],
+                },
             ],
 
             '/dev/': [
