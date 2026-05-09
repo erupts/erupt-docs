@@ -9,6 +9,11 @@
     "docs:preview": "vitepress preview"
   },
   "dependencies": {
-    "@nolebase/vitepress-plugin-enhanced-readabilities": "^2.18.2"
+    "@nolebase/vitepress-plugin-enhanced-readabilities": "^2.18.2",
+    "@nolebase/vitepress-plugin-highlight-targeted-heading": "^2.18.2",
+    "@nolebase/vitepress-plugin-inline-link-preview": "^2.18.2",
+    "medium-zoom": "^1.1.0",
+    "mermaid": "^11.14.0",
+    "vitepress-plugin-mermaid": "^2.0.17"
   }
 }

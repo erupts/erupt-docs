@@ -17,6 +17,9 @@ hero:
       text: 在线体验
       link: https://www.erupt.xyz/demo
     - theme: alt
+      text: Linq.J
+      link: https://linq.erupt.xyz/
+    - theme: alt
       text: 🚀 项目初始化
       link: https://start.erupt.xyz/
 

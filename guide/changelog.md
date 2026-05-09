@@ -1,7 +1,5 @@
 # 更新日志
 
-> **推荐** 作者全新框架 → [🆕 Linq.J 通用对象查询语言](https://www.yuque.com/erupts/erupt/fl0lyrdlrbm9mg0g)
-
 ## 1.14.2（2026-04-27） <Badge type="tip" text="Spring Boot 3.5.13" />
 🐞 修复日期区间查询时分秒不生效的问题
 

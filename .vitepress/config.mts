@@ -1,12 +1,22 @@
 import {defineConfig} from 'vitepress'
+import {withMermaid} from 'vitepress-plugin-mermaid'
+import {
+    InlineLinkPreviewElementTransform
+} from '@nolebase/vitepress-plugin-inline-link-preview/markdown-it'
 
-export default defineConfig({
+export default withMermaid(defineConfig({
     title: 'Erupt',
     description: 'MDD & Annotation-driven Low-code Data platform & AI Harness',
     lang: 'zh-CN',
     lastUpdated: true,
     cleanUrls: true,
     ignoreDeadLinks: true,
+
+    markdown: {
+        config(md) {
+            md.use(InlineLinkPreviewElementTransform)
+        },
+    },
 
     head: [
         ['link', {rel: 'icon', href: '/logo.png'}],
@@ -17,6 +27,10 @@ export default defineConfig({
         ssr: {
             noExternal: [
                 '@nolebase/vitepress-plugin-enhanced-readabilities',
+                '@nolebase/vitepress-plugin-highlight-targeted-heading',
+                '@nolebase/vitepress-plugin-inline-link-preview',
+                'vitepress-plugin-mermaid',
+                'mermaid',
             ],
         },
     },
@@ -40,6 +54,7 @@ export default defineConfig({
                 text: '相关链接',
                 items: [
                     {text: '官网', link: 'https://www.erupt.xyz'},
+                    {text: 'Linq.J', link: 'https://linq.erupt.xyz/'},
                     {text: 'GitHub', link: 'https://github.com/erupts/erupt'},
                     {text: 'Gitee', link: 'https://gitee.com/erupt/erupt'},
                     {text: '在线体验', link: 'https://www.erupt.xyz/demo'},
@@ -314,4 +329,4 @@ export default defineConfig({
         sidebarMenuLabel: '菜单',
         darkModeSwitchLabel: '主题',
     },
-})
+}))
