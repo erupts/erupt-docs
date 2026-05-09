@@ -24,11 +24,18 @@ export default withMermaid(defineConfig({
     ],
 
     vite: {
+        build: {
+            rollupOptions: {
+                output: {
+                    manualChunks: {
+                        mermaid: ['mermaid'],
+                    },
+                },
+            },
+        },
         ssr: {
             noExternal: [
-                '@nolebase/vitepress-plugin-enhanced-readabilities',
-                '@nolebase/vitepress-plugin-highlight-targeted-heading',
-                '@nolebase/vitepress-plugin-inline-link-preview',
+                /^@nolebase\/.*/,           // 匹配所有 @nolebase 包,一劳永逸
                 'vitepress-plugin-mermaid',
                 'mermaid',
             ],
