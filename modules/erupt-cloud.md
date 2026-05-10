@@ -1,4 +1,4 @@
-# Erupt Cloud 分布式
+# Erupt Cloud 分布式配置中心
 
 :::tip
 分布式架构中使用 erupt 数据管理能力，构建通用云配中心，管理集群内任意服务！

@@ -1,4 +1,6 @@
-# Erupt Cloud Node 部署
+# Erupt Cloud Node
+
+> 分布式微节点，向 Cloud Server 注册并接受其调度，同时通过 Server 端的数据库配置替代本地 yml 配置文件。
 
 ## 部署 Node 节点
 
@@ -147,7 +149,13 @@ spring:
 | erupt-tookit | 工具类（如 choice 组件的 SQL 查询能力） |
 | erupt-tenant-core | 多租户能力（未开源） |
 
-## 在 Node 节点获取 Server 配置
+## 从 Server 端拉取配置（替代 yml 配置中心）
+
+Node 节点可主动向 Server 端拉取存储在数据库中的配置内容，以此替代传统配置中心的 yml 文件。配置在管理后台可视化编辑，无需修改代码或重启服务即可生效。
+
+**配置入口：**
+- 节点级配置：管理后台 → 节点管理 → 节点配置
+- 分组级配置：管理后台 → 节点组别 → 分组配置
 
 ```java
 @Component
@@ -156,13 +164,17 @@ public class Fetch {
     @Resource
     private ServerRemoteService serverRemoteService;
 
-    public void test() {
+    public void fetchConfig() {
         // 获取当前登录用户信息
         MetaUserinfo metaUserinfo = serverRemoteService.getRemoteUserInfo();
-        // 获取节点配置（配置位置：主节点 → 节点管理 → 节点配置）
+        // 拉取节点级配置（对应 Server 端节点管理中的"节点配置"字段）
         String config = serverRemoteService.getNodeConfig();
-        // 获取节点组配置（配置位置：主节点 → 节点组别 → 分组配置）
+        // 拉取分组级配置（对应 Server 端节点组别中的"分组配置"字段）
         String groupConfig = serverRemoteService.getNodeGroupConfig();
     }
 }
 ```
+
+:::tip
+配置内容格式不限，推荐使用 JSON 或 YAML 字符串，由业务代码自行解析。
+:::
