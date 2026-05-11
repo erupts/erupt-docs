@@ -16,17 +16,11 @@
 
 ## Spring Boot 部署（推荐）
 
-> **如果你觉得麻烦，可在如下仓库中拉取已配置好的演示代码**
->
-> 码云：[https://gitee.com/erupt/erupt-example](https://gitee.com/erupt/erupt-example)
->
-> Github：[https://github.com/erupts/erupt-example](https://github.com/erupts/erupt-example)
->
-> **注：不兼容 spring-boot-devtools，请勿添加此依赖**
+### 1. 一键生成项目
 
-### 1. 创建 Spring Boot 项目
+前往 **[https://start.erupt.xyz](https://start.erupt.xyz)**，按需选择模块、数据库和版本，点击「生成项目」下载压缩包并解压。
 
-前往 [Spring Initializr](https://start.spring.io)，目录结构如下：
+项目目录结构如下：
 
 ```
 demo -- 项目名称
@@ -36,41 +30,18 @@ demo -- 项目名称
 │         │    └── com.example.demo -- 包名
 │         │              └── DemoApplication -- 入口类
 │         └── resources -- 资源文件目录
-│                  └── application.properties -- 配置文件
-├── ......
+│                  ├── public
+│                  │    ├── app.js    -- 前端配置（标题、Logo 等）
+│                  │    └── home.html -- 首页布局
+│                  └── application.yml -- 配置文件
 └── pom.xml -- Maven 依赖配置
 ```
 
-### 2. 在 pom.xml 添加 erupt 依赖包
+> **注：不兼容 spring-boot-devtools，请勿添加此依赖**
 
-版本号详见：[更新日志](/guide/changelog)
+### 2. 配置数据库连接
 
-```xml
-<!--后端权限逻辑-->
-<dependency>
-  <groupId>xyz.erupt</groupId>
-  <artifactId>erupt-admin</artifactId>
-  <version>${erupt.version}</version>
-</dependency>
-<!--后台 WEB 界面，前后端分离场景，可不添加此依赖-->
-<dependency>
-  <groupId>xyz.erupt</groupId>
-  <artifactId>erupt-web</artifactId>
-  <version>${erupt.version}</version>
-</dependency>
-```
-
-### 3. 在资源目录下创建前端配置文件
-
-| 文件位置 | 功能说明 |
-| --- | --- |
-| resources/public/app.js | 前端配置文件，可修改标题、Logo，页面生命周期函数等 |
-| resources/public/app.css | 前端样式文件（可不创建） |
-| resources/public/home.html | 前端首页布局（不创建，首页会出现 404） |
-
-### 4. 在 application.yml 中添加数据库配置
-
-示例数据库为 MySQL，其他数据库请参考：[数据源支持](/guide/database)
+打开 `src/main/resources/application.yml`，修改数据库连接信息：
 
 ```yaml
 spring:
@@ -84,24 +55,44 @@ spring:
     database: mysql
 ```
 
-> 注：空库即可，表结构会自动创建
+> 注：空库即可，表结构会自动创建。其他数据库请参考：[数据源支持](/guide/database)
 
-### 5. 添加数据库驱动依赖
+### 3. 启动项目
+
+使用 `mvn spring-boot:run` 或 `gradle bootRun` 启动项目。
+
+### 4. 访问系统
+
+启动成功后浏览器访问：`http://localhost:8080`
+
+默认用户名密码：`erupt / erupt`（**为了您的系统安全请尽快修改默认密码**）
+
+## 手动集成（已有项目）
+
+如需将 erupt 集成到现有 Spring Boot 项目，按以下步骤操作。
+
+### 1. 添加依赖
+
+版本号详见：[更新日志](/guide/changelog)
 
 ```xml
+<!--后端权限逻辑-->
 <dependency>
-  <groupId>mysql</groupId>
-  <artifactId>mysql-connector-java</artifactId>
-  <version>8.0.16</version>
-  <scope>runtime</scope>
+  <groupId>xyz.erupt</groupId>
+  <artifactId>erupt-admin</artifactId>
+  <version>${erupt.version}</version>
+</dependency>
+<!--后台 WEB 界面，前后端分离场景可不添加-->
+<dependency>
+  <groupId>xyz.erupt</groupId>
+  <artifactId>erupt-web</artifactId>
+  <version>${erupt.version}</version>
 </dependency>
 ```
 
-### 6. 入口类添加注解
+### 2. 入口类添加注解
 
 ```java
-package com.example.demo;
-
 @SpringBootApplication
 @EntityScan
 @EruptScan
@@ -112,13 +103,17 @@ public class DemoApplication {
 }
 ```
 
-### 7. 启动项目
-使用 `mvn spring-boot:run` 或 `gradle bootRun` 启动项目
+### 3. 创建前端配置文件
 
-### 8. 访问系统
-启动成功后浏览器访问：`http://localhost:8080`
+| 文件位置 | 说明 |
+| --- | --- |
+| `resources/public/app.js` | 前端配置，可修改标题、Logo、生命周期函数等 |
+| `resources/public/app.css` | 前端样式（可选） |
+| `resources/public/home.html` | 首页布局（不创建则首页 404） |
 
-默认用户名密码：`erupt / erupt`（**为了您的系统安全请尽快修改默认密码**）
+### 4. 配置数据库并启动
+
+参考上方「Spring Boot 部署」第 2～4 步完成数据库配置并启动。
 
 ## 源码启动
 
@@ -143,3 +138,7 @@ Docker 部署的为 erupt-cloud-server，可以开发 erupt-cloud-node 节点来
 如果默认密码无法登录，请前往数据库查看是否有用户数据，如果表为空，在项目中找到 `.erupt` 文件夹，删除后重启即可。
 
 详见：[常见问题 FAQ](/guide/faq)
+
+## 下一步
+
+项目启动成功后，前往 [入门示例](/guide/getting-started) 了解如何用一个 Java 类创建你的第一个管理页面。
