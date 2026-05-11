@@ -15,10 +15,10 @@ hero:
       link: /guide/quick-start
     - theme: alt
       text: 在线体验
-      link: https://www.erupt.xyz/demo
+      link: https://demo.erupt.xyz
     - theme: alt
       text: 🚀 项目初始化
-      link: https://start.erupt.xyz/
+      link: https://start.erupt.xyz
 
 features:
   - icon: ✍️

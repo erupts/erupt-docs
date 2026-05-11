@@ -8,7 +8,7 @@
 源码交付 · 技术支持 · 免费更新迭代 · 合理需求免费实现 · erupt 相关问题优先支持 · 无 License 限制 · 可多项目复用 · 禁止二次开源与分发
 :::
 
-演示：[https://www.erupt.xyz/demo](https://www.erupt.xyz/demo) &nbsp; 账号：`flow` 密码：`flow`
+演示：[https://demo.erupt.xyz](https://demo.erupt.xyz) &nbsp; 账号：`flow` 密码：`flow`
 
 售前咨询请添加作者微信：
 

@@ -50,7 +50,7 @@ Erupt 是一个低代码**全栈类**框架，它使用 **Java 注解**动态生
 
 ## 在线体验
 
-演示地址：[https://www.erupt.xyz/demo](https://www.erupt.xyz/demo)
+演示地址：[https://demo.erupt.xyz](https://demo.erupt.xyz)
 
 账号密码：`guest / guest`
 

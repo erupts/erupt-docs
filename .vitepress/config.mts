@@ -62,7 +62,7 @@ export default withMermaid(defineConfig({
                     {text: 'Linq.J', link: 'https://linq.erupt.xyz/'},
                     {text: 'GitHub', link: 'https://github.com/erupts/erupt'},
                     {text: 'Gitee', link: 'https://gitee.com/erupt/erupt'},
-                    {text: '在线体验', link: 'https://www.erupt.xyz/demo'},
+                    {text: '在线体验', link: 'https://demo.erupt.xyz'},
                 ],
             },
         ],
