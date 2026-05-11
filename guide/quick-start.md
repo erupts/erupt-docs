@@ -138,3 +138,7 @@ Docker 部署的为 erupt-cloud-server，可以开发 erupt-cloud-node 节点来
 如果默认密码无法登录，请前往数据库查看是否有用户数据，如果表为空，在项目中找到 `.erupt` 文件夹，删除后重启即可。
 
 详见：[常见问题 FAQ](/guide/faq)
+
+## 下一步
+
+项目启动成功后，前往 [入门示例](/guide/getting-started) 了解如何用一个 Java 类创建你的第一个管理页面。
