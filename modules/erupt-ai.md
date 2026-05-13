@@ -19,7 +19,7 @@
 | **MCP Server** | 内置 MCP Server，Bearer 鉴权，支持 Cursor / Claude 等客户端直连 |
 | **Security** | 内置严格的接口权限控制，AI 聊天能力可以通过用户权限动态授予 |
 
-## 使用方法
+## 快速接入
 
 1. 添加依赖：
 
@@ -56,7 +56,7 @@ erupt:
 
 <img src="/ai/chat.png" width="1680">
 
-## 大模型接入 LLM
+## 驾驭任意 LLM 引擎
 
 增加对应的大模型，对应的 key 到大模型官网中申请即可。
 
@@ -68,7 +68,7 @@ erupt:
 
 <img src="/ai/llm-test.png" width="1770">
 
-## 交互式 AI 对话
+## 沉浸式 AI 对话
 
 :::tip
 与大模型自然对话，所见即所得——代码高亮、Mermaid 图表、数学公式实时渲染，支持工具自动调用与智能体编排，让每一次交互都触达 AI 的真实能力边界。
@@ -80,7 +80,7 @@ erupt:
 
 <img src="/ai/chat-math.png" width="768">
 
-## 智能体管理 Agent
+## Agent 智能体编排
 
 > 输入对应提示词后保存即可
 
@@ -109,7 +109,7 @@ public class TestPromptHandler implements EruptPromptHandler {
 
 <img src="/ai/agent-prompt.png" width="1770">
 
-## 工具扩展 Tools
+## 自定义 Tool 注入
 
 :::info
 通过 `@AiToolbox` + `@Tool` 将任意 Spring Bean 方法注册为 AI 工具，AI 在对话中可自动识别意图并调用，实现与当前系统的深度交互——查数据、触发业务、执行操作，一句话即可完成。
@@ -160,7 +160,25 @@ public class TestTools {
 
 <img src="/ai/tools-demo.png" width="760">
 
-## 挂载外部 MCP
+## 角色级 Tool 授权 <Badge type="tip" text="v1.14.3+" />
+
+:::tip
+AI 能力不再一刀切。通过为每个角色独立配置**系统提示词**与**工具权限**，让每位用户在登录后看到的是专属于其岗位的 AI——财务专员聊报表、运维工程师查日志、业务人员问数据，各得其所，互不越界。
+
+管理员天然拥有全量工具权限，其余角色按需授权，让 Claw 具备在生产环境安全部署的能力。
+:::
+
+在角色管理界面中，为目标角色勾选可调用的 Tool，并填写专属系统提示词，保存即时生效：
+
+<img src="/ai/ai-role.png" width="1270">
+
+| | 说明 |
+|---|---|
+| **管理员** | 天然拥有全量工具，无需额外配置 |
+| **其他角色** | 按界面勾选授权，未勾选的工具对该角色完全屏蔽 |
+| **系统提示词** | 每个角色可设置独立提示词，精准锚定该角色的业务上下文与回答风格 |
+
+## 接入外部 MCP 生态
 
 :::info
 接入任何外部的 MCP，支持完整的 MCP 协议，可在 erupt 平台内操作任意 MCP，如控制浏览器、操作桌面文件等。
@@ -174,7 +192,7 @@ public class TestTools {
 
 <img src="/ai/mcp-browser.png" width="1861">
 
-## 对外提供 MCP 服务
+## 内置 MCP Server
 
 :::tip
 将系统的 AI Tools 对外暴露，提供其他工具的调用，例如：Cursor、Claude Code 等
@@ -223,7 +241,7 @@ Authorization 可进入 Open API 菜单生成，值对应"秘钥"列，请注意
 
 <img src="/ai/cursor-3.png" width="431">
 
-## 动态系统提示词 System Prompt
+## 动态 System Prompt 注入
 
 :::tip
 支持**动态扩展**系统提示词，在用户发起提问时按需注入，精准控制 Token 消耗，同时提升回答的相关性与准确性。
