@@ -231,6 +231,7 @@ export default withMermaid(defineConfig({
                         {text: '自定义登录页', link: '/advanced/custom-login-page'},
                         {text: '多数据源', link: '/advanced/datasource'},
                         {text: '自定义数据源', link: '/advanced/custom-datasource'},
+                        {text: 'Open API 开放接口', link: '/advanced/open-api'},
                     ],
                 },
             ],
