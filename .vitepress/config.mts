@@ -1,6 +1,7 @@
 import {defineConfig} from 'vitepress'
 import {withMermaid} from 'vitepress-plugin-mermaid'
 import {InlineLinkPreviewElementTransform} from '@nolebase/vitepress-plugin-inline-link-preview/markdown-it'
+import {GitChangelog, GitChangelogMarkdownSection} from '@nolebase/vitepress-plugin-git-changelog/vite'
 
 export default withMermaid(defineConfig({
     title: 'Erupt',
@@ -22,6 +23,12 @@ export default withMermaid(defineConfig({
     ],
 
     vite: {
+        plugins: [
+            GitChangelog({
+                repoURL: 'https://github.com/erupts/erupt-docs',
+            }),
+            GitChangelogMarkdownSection(),
+        ],
         build: {
             rollupOptions: {
                 output: {
