@@ -2,7 +2,7 @@
 
 erupt 支持市面上所有主流数据库，甚至支持 MongoDB，也可自定义数据源。
 
-![img.png](/database/img.png)<!-- TODO: 添加截图 -->
+![数据源支持](/database/img.png)
 
 > **注意：** 使用前需导入数据库所依赖的 JDBC 包！
 

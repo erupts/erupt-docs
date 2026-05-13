@@ -289,18 +289,6 @@ export default withMermaid(defineConfig({
                 },
             ],
 
-            '/dev/': [
-                {
-                    text: '开发参考',
-                    items: [
-                        {text: '接口开发与操作日志', link: '/dev/rest-api'},
-                        {text: 'EruptDao 数据操作', link: '/dev/erupt-dao'},
-                        {text: '工具类', link: '/dev/utils'},
-                        {text: '插件开发', link: '/dev/plugin'},
-                        {text: '扩展 Erupt 注解', link: '/dev/extend'},
-                    ],
-                },
-            ],
         },
 
         socialLinks: [

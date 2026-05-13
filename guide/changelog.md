@@ -419,7 +419,7 @@ create table e_upms_user_org_division (
 
 🌟 表格支持按行数据动态调整编辑与删除能力 [⚔️ 自定义数据逻辑（ DataProxy ）](/advanced/data-proxy#BPV07)
 
-🌟 新增多租户插件，适合企业开发SaaS应用 [多租户 erupt-tenant](/modules/erupt-tenant)
+🌟 新增多租户插件，适合企业开发SaaS应用 [多租户 erupt-tenant](/modules/pro/erupt-tenant)
 
 注：当前版本有依赖冲突的问题，会导致下载功能异常，临时解决方案：pom.xml增加如下配置，锁定commons-io版本
 
@@ -794,7 +794,7 @@ md5(md5(pwd) + account) # 移除通过当前天作为加密依据
 [v 1.12.X](/guide/upgrade)
 
 ## 1.11.7(2023-05-28) <Badge type="tip" text="Spring Boot 2.7.10" />
-🌟 增加工作流模块 [erupt-flow](/modules/erupt-flow) 感谢：[@hlhutu](https://github.com/hlhutu) 贡献完整的流程引擎代码
+🌟 增加工作流模块 [erupt-flow](/modules/pro/erupt-flow) 感谢：[@hlhutu](https://github.com/hlhutu) 贡献完整的流程引擎代码
 
 ## 1.11.6 (2023-05-14) <Badge type="tip" text="Spring Boot 2.7.10" />
 🐞 修复LocalDateTime类型修饰时间字段搜索报错的bug
