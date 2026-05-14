@@ -20,8 +20,6 @@ erupt-chart 是 erupt 体系内的通用报表图表模块，零前端代码，�
 
 ---
 
-<img src="/bi/overview.jpg" width="900">
-
 <img src="/bi/demo1.png" width="900">
 
 <img src="/bi/demo2.png" width="900">
