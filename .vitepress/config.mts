@@ -248,7 +248,17 @@ export default withMermaid(defineConfig({
                     items: [
                         {text: '🐴 Erupt Ai Harness', link: '/modules/erupt-ai'},
                         {text: '🦞 Erupt Ai Claw', link: '/modules/erupt-ai-claw'},
-                        {text: '🛠️ Erupt Ai Skill', link: 'https://github.com/erupts/erupt/tree/master/.claude/skills/erupt'},
+                        {text: '🛠️ Erupt Ai Skills', link: 'https://github.com/erupts/erupt/tree/master/.claude/skills/erupt'},
+                    ],
+                },
+                {
+                    text: '核心模块',
+                    items: [
+                        {text: 'Erupt Upms 权限管理', link: '/modules/erupt-upms'},
+                        {text: 'Erupt Jpa 数据库扩展', link: '/modules/erupt-jpa'},
+                        {text: 'Erupt Mongodb NoSQL', link: '/modules/erupt-mongodb'},
+                        {text: 'Erupt Tpl 自定义页面', link: '/modules/erupt-tpl'},
+                        {text: 'Erupt Web 前端源码', link: '/modules/erupt-web'},
                     ],
                 },
                 {
@@ -270,19 +280,9 @@ export default withMermaid(defineConfig({
                     text: '商业模块',
                     items: [
                         {text: 'Erupt Chart 报表图表', link: '/modules/pro/erupt-chart'},
-                        {text: 'Erupt Flow 流程引擎', link: '/modules/pro/erupt-flow'},
                         {text: 'Erupt SaaS 多租户', link: '/modules/pro/erupt-tenant'},
+                        {text: 'Erupt Flow 流程引擎', link: '/modules/pro/erupt-flow'},
                         {text: 'Erupt Cube BI 平台', link: '/modules/pro/erupt-cube'},
-                    ],
-                },
-                {
-                    text: '核心模块',
-                    items: [
-                        {text: 'Erupt Upms 权限管理', link: '/modules/erupt-upms'},
-                        {text: 'Erupt Jpa 数据库扩展', link: '/modules/erupt-jpa'},
-                        {text: 'Erupt Mongodb NoSQL', link: '/modules/erupt-mongodb'},
-                        {text: 'Erupt Tpl 自定义页面', link: '/modules/erupt-tpl'},
-                        {text: 'Erupt Web 前端源码', link: '/modules/erupt-web'},
                     ],
                 },
                 {

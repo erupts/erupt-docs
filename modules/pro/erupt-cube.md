@@ -9,7 +9,7 @@
 **授权**：无 License 限制 · 无项目数量限制 · 无商用限制
 **限制**：禁止二次开源与分发
 
-👉 **[查看定价与购买流程 →](https://www.erupt.xyz/#!/pro)**
+👉 **[查看定价与购买流程 →](https://www.erupt.xyz/?utm_source=docs&utm_medium=tipblock&utm_campaign=pro#!/pro)**
 :::
 
 由开源 Erupt 框架团队官方出品与维护（[GitHub 3k+ ★](https://github.com/erupts/erupt) · [Gitee 5k+ ★](https://gitee.com/erupt/erupt)），避免 Kylin / Looker 等方案的厂商锁定与运维成本。
@@ -60,7 +60,7 @@ erupt-cube 同时支持两种语义模型定义方式，覆盖团队内不同角
 | 与权限体系集成 | 重新对接 | 自有用户体系，要同步 | 不含权限 | 自研 | **复用 Erupt UPMS，零成本** |
 | 厂商绑定 | 重度（Google） | 否（但社区版功能受限） | 否 | 否 | **否（源码交付）** |
 | 国产数据库支持 | 几乎没有 | 一般 | 一般 | 看实现 | **达梦 / 人大金仓 / OceanBase 等** |
-| 价格区间 | $5,000+ / 月起 | 开源 + 企业版收费 | 开源 + Cloud 收费 | 0（人力成本除外） | **一次买断 · [查看定价](https://www.erupt.xyz/#!/pro)** |
+| 价格区间 | $5,000+ / 月起 | 开源 + 企业版收费 | 开源 + Cloud 收费 | 0（人力成本除外） | **一次买断 · [查看定价](https://www.erupt.xyz/?utm_source=docs&utm_medium=cmptable&utm_campaign=pro#!/pro)** |
 
 ## 数据库支持
 

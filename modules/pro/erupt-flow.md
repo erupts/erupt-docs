@@ -9,7 +9,7 @@
 **授权**：无 License 限制 · 可多项目复用 · 无商用限制
 **限制**：禁止二次开源与分发
 
-👉 **[查看定价与购买流程 →](https://www.erupt.xyz/#!/pro)**
+👉 **[查看定价与购买流程 →](https://www.erupt.xyz/?utm_source=docs&utm_medium=tipblock&utm_campaign=pro#!/pro)**
 :::
 
 由开源 Erupt 框架团队官方出品与维护（[GitHub 3k+ ★](https://github.com/erupts/erupt) · [Gitee 5k+ ★](https://gitee.com/erupt/erupt)），私有化部署，数据不出域，合规友好。
