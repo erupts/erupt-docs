@@ -264,6 +264,7 @@ export default withMermaid(defineConfig({
                 {
                     text: '工具模块',
                     items: [
+                        {text: 'Erupt Terminal 服务终端', link: '/modules/erupt-terminal'},
                         {text: 'Erupt Websocket 实时交互', link: '/modules/erupt-websocket'},
                         {text: 'Erupt Generator 代码生成', link: '/modules/erupt-generator'},
                         {text: 'Erupt Job 定时任务', link: '/modules/erupt-job'},
