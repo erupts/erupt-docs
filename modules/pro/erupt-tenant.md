@@ -16,7 +16,7 @@
 
 售前咨询请添加作者微信：
 
-<img src="/me.jpg" width="240">
+<img src="/contact/me.jpg" width="240">
 
 ---
 

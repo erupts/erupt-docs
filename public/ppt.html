@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Erupt — 低代码全栈框架</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════
+   Erupt Blueprint Design System (inlined)
+   ══════════════════════════════════════════ */
+:root {
+  --c-bg:     #FFFFFF;
+  --c-text:   #0A0A0F;
+  --c-text2:  #6B7280;
+  --c-border: #E5E7EB;
+  --c-brand:  #4F46E5;
+  --c-grid:   rgba(0,0,0,.038);
+  --c-sans: 'Inter', -apple-system, 'PingFang SC', system-ui, sans-serif;
+  --c-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--c-sans); background: var(--c-bg); color: var(--c-text); overflow-x: hidden; }
+
+/* FRAME */
+.fr {
+  max-width: 1200px;
+  margin: 0 auto;
+  border-left: 1px solid var(--c-border);
+  border-right: 1px solid var(--c-border);
+  font-family: var(--c-sans);
+  color: var(--c-text);
+  background: var(--c-bg);
+  position: relative;
+}
+
+/* ROW */
+.r { border-bottom: 1px solid var(--c-border); }
+.r:last-child { border-bottom: none; }
+
+/* GRID */
+.g2 { display: grid; grid-template-columns: 1fr 1fr;        gap: 0; }
+.g3 { display: grid; grid-template-columns: 1fr 1fr 1fr;    gap: 0; }
+.g4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;gap: 0; }
+.g6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; }
+
+/* CELL */
+.c {
+  padding: 32px;
+  border-right: 1px solid var(--c-border);
+  border-bottom: 1px solid var(--c-border);
+  transition: background .15s;
+  position: relative;
+}
+.g2 > .c:nth-child(2n),
+.g3 > .c:nth-child(3n),
+.g4 > .c:nth-child(4n),
+.g6 > .c:nth-child(6n) { border-right: none; }
+.g2 > .c:nth-last-child(-n+2),
+.g3 > .c:nth-last-child(-n+3),
+.g4 > .c:nth-last-child(-n+4),
+.g6 > .c:nth-last-child(-n+6) { border-bottom: none; }
+.c.clickable { cursor: pointer; }
+.c.clickable:hover { background: rgba(79,70,229,.018); }
+
+/* SPLIT */
+.spl { display: flex; }
+.spl > .l { border-right: 1px solid var(--c-border); }
+
+/* DOT-GRID */
+.g-bg {
+  background-image:
+    linear-gradient(var(--c-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--c-grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* TICKS — aligned to bleed-line (bottom edge), marking the ┤├ intersections */
+.tk {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+.tk::before {
+  content: "";
+  position: absolute;
+  bottom: -7px; left: -1px;
+  border-top:    7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left:   7px solid var(--c-brand);
+  z-index: 11;
+}
+.tk::after {
+  content: "";
+  position: absolute;
+  bottom: -7px; right: -1px;
+  border-top:    7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-right:  7px solid var(--c-brand);
+  z-index: 11;
+}
+
+/* BLEED LINES */
+.bleed-lines { position: relative; }
+.bleed-lines::before, .bleed-lines::after {
+  content: "";
+  position: absolute;
+  left: 50%; transform: translateX(-50%);
+  width: 100vw; height: 1px;
+  background: var(--c-border);
+  z-index: 10;
+}
+.bleed-lines::before { display: none; }  /* top border already provided by previous row's border-bottom */
+.bleed-lines::after  { bottom: 0; }
+
+/* TYPOGRAPHY */
+.tag {
+  font-family: var(--c-mono);
+  font-size: 10.5px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--c-brand);
+  display: block;
+  margin-bottom: 12px;
+}
+.h1 { font-size: clamp(38px,5vw,62px); font-weight:700; line-height:1.1; letter-spacing:-.025em; color:var(--c-text); margin:0 0 20px; }
+.h2 { font-size: clamp(26px,3.5vw,40px); font-weight:600; line-height:1.2; color:var(--c-text); margin:0 0 12px; }
+.h3 { font-size: 15px; font-weight:600; color:var(--c-text); margin:0 0 8px; }
+.sub { font-size: 14.5px; line-height:1.65; color:var(--c-text2); margin:0; }
+
+/* BUTTONS */
+.wbtn {
+  display: inline-flex; align-items: center; gap:7px;
+  padding: 9px 20px;
+  border: 1px solid var(--c-border);
+  font-size:13px; font-weight:500; color:var(--c-text);
+  background: transparent; cursor: pointer;
+  text-decoration: none !important;
+  transition: border-color .15s, color .15s, background .15s;
+  font-family: var(--c-sans);
+  line-height: 1; white-space: nowrap;
+}
+.wbtn:hover { border-color: var(--c-brand); color: var(--c-brand); }
+.wbtn-o { border-color: var(--c-brand); color: var(--c-brand); }
+.wbtn-o:hover { background: var(--c-brand); color: #fff !important; }
+
+/* DARK CODE BLOCK */
+.cb { background:#0A0A0F; font-family:var(--c-mono); font-size:12.5px; line-height:1.75; overflow:hidden; height:100%; }
+.cb-hd { display:flex; align-items:center; padding:9px 16px; border-bottom:1px solid rgba(255,255,255,.07); gap:7px; }
+.cb-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+.cb-title { flex:1; text-align:center; font-size:11px; color:rgba(255,255,255,.22); }
+.cb-body { padding:22px 26px; color:rgba(255,255,255,.6); white-space:pre; overflow-x:auto; }
+
+/* Syntax tokens — dark context */
+.an { color:#818cf8; }
+.kw { color:#60a5fa; }
+.st { color:#86efac; }
+.cm { color:rgba(255,255,255,.28); font-style:italic; }
+.ty { color:#fbbf24; }
+.nu { color:#c084fc; }
+.pu { color:rgba(255,255,255,.38); }
+
+/* Light code block */
+.cb-light {
+  background: #fff;
+  border: 1px solid var(--c-border);
+  font-family: var(--c-mono);
+  font-size: 12.5px;
+  line-height: 1.75;
+  overflow: hidden;
+  height: 100%;
+}
+.cb-light .cb-hd {
+  background: #f8f9fb;
+  border-bottom: 1px solid var(--c-border);
+}
+.cb-light .cb-title { color: var(--c-text2); }
+.cb-light .cb-body  { color: var(--c-text); background: #fff; }
+.cb-light .an { color: var(--c-brand); }
+.cb-light .kw { color: #2563eb; }
+.cb-light .st { color: #059669; }
+.cb-light .cm { color: var(--c-text2); font-style: italic; }
+.cb-light .ty { color: #b45309; }
+.cb-light .nu { color: #7c3aed; }
+.cb-light .pu { color: #9ca3af; }
+
+/* MINI CODE */
+.mini {
+  margin-top:12px;
+  background:rgba(0,0,0,.025);
+  border:1px solid var(--c-border);
+  padding:10px 14px;
+  font-family:var(--c-mono); font-size:11px; line-height:1.65;
+  color:var(--c-text2);
+}
+.mini .an { color:var(--c-brand); }
+.mini .st { color:#059669; }
+.mini .kw { color:#2563eb; }
+
+/* REVEAL */
+.reveal { opacity:0; transform:translateY(12px); transition:opacity .6s ease, transform .6s ease; }
+.reveal.in { opacity:1; transform:none; }
+
+/* ══════════════════════════════════════════
+   Page-specific styles
+   ══════════════════════════════════════════ */
+
+/* Hero */
+.hero {
+  padding: 96px 48px 88px;
+  text-align: center;
+}
+.hero-badge {
+  display: inline-flex; align-items:center; gap:8px;
+  border: 1px solid var(--c-border);
+  padding: 5px 14px;
+  font-family: var(--c-mono); font-size:11px; letter-spacing:.1em; color:var(--c-text2);
+  margin-bottom: 32px;
+}
+.hero-badge .hi { color:var(--c-brand); }
+.hero-cta { margin-top:40px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
+
+/* Stats */
+.stat-n { font-size:28px; font-weight:700; letter-spacing:-.04em; color:var(--c-text); line-height:1; margin-bottom:8px; font-family:var(--c-mono); }
+.stat-l { font-family:var(--c-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--c-text2); }
+
+/* Section title row */
+.sec-hd { padding:56px 48px; text-align:center; }
+
+/* Ghost step number */
+.ghost-wrap { position:relative; overflow:hidden; }
+.ghost-n {
+  position:absolute; top:8px; left:16px;
+  font-family:var(--c-mono); font-size:52px; font-weight:700;
+  color:var(--c-text); opacity:.05; line-height:1;
+  pointer-events:none; user-select:none;
+}
+
+/* Module icon box */
+.mod-icon {
+  width:36px; height:36px;
+  border:1px solid var(--c-border);
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:16px; font-size:16px;
+}
+
+/* Arch layer row */
+.arch-row { display:flex; border-bottom:1px solid var(--c-border); }
+.arch-row:last-child { border-bottom:none; }
+.arch-label {
+  width:160px; flex-shrink:0;
+  padding:20px 24px;
+  border-right:1px solid var(--c-border);
+  display:flex; align-items:center;
+  font-family:var(--c-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--c-brand);
+}
+.arch-body { flex:1; padding:20px 24px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+
+/* Module tag */
+.mtag {
+  display:inline-block;
+  border:1px solid var(--c-border);
+  font-family:var(--c-mono); font-size:10.5px;
+  padding:3px 8px; color:var(--c-text2); letter-spacing:.06em;
+  margin:2px 2px 2px 0;
+}
+.mtag-o { border-color:rgba(79,70,229,.3); color:var(--c-brand); }
+
+/* Tick checkmark in feature list */
+.chk {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:18px; height:18px;
+  border:1px solid var(--c-brand);
+  flex-shrink:0; margin-top:2px; position:relative;
+}
+.chk::after {
+  content:''; display:block;
+  width:4px; height:8px;
+  border-right:1.5px solid var(--c-brand);
+  border-bottom:1.5px solid var(--c-brand);
+  transform:rotate(42deg) translate(-1px,-1px);
+}
+
+/* Arrow pipeline row */
+.pipe-row {
+  display:flex; align-items:center;
+  padding:24px 32px; gap:0;
+  border-bottom:1px solid var(--c-border);
+  flex-wrap:wrap;
+}
+.pipe-node { display:flex; align-items:center; gap:10px; font-size:13px; color:var(--c-text2); }
+.pipe-dot  { width:8px; height:8px; border:1.5px solid var(--c-brand); border-radius:50%; flex-shrink:0; }
+.pipe-line { flex:1; min-width:24px; height:1px; background:var(--c-border); position:relative; }
+.pipe-line::after {
+  content:'▶'; font-size:8px; color:var(--c-brand);
+  position:absolute; right:-5px; top:50%; transform:translateY(-50%);
+}
+
+/* Responsive */
+@media (max-width:1000px) {
+  .fr { border-left:none; border-right:none; }
+  .g4 { grid-template-columns:1fr 1fr; }
+  .g3 { grid-template-columns:1fr 1fr; }
+  .g6 { grid-template-columns:repeat(3,1fr); }
+  .spl { flex-direction:column; }
+  .spl > .l { border-right:none; border-bottom:1px solid var(--c-border); }
+}
+@media (max-width:700px) {
+  .g2,.g3,.g4 { grid-template-columns:1fr; }
+  .g6          { grid-template-columns:1fr 1fr; }
+  .g2 > .c,.g3 > .c,.g4 > .c { border-right:none; }
+  .c { padding:24px; }
+  .hero { padding:64px 24px; }
+  .sec-hd { padding:40px 24px; }
+  .arch-label { width:100px; padding:16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="fr">
+
+  <!-- ══ HERO ══ -->
+  <section class="hero r">
+    <div class="hero-badge">
+      <span class="hi">★ 8K</span> GITHUB STARS &nbsp;·&nbsp; APACHE 2.0 &nbsp;·&nbsp; SPRING BOOT 3.x
+    </div>
+    <h1 class="h1">一个注解，<span style="color:var(--c-brand)">完整后台</span></h1>
+    <p class="sub" style="max-width:640px;margin:0 auto;font-size:16px">Erupt 是注解驱动的低代码全栈框架。只需 Java 类 + <code style="font-family:var(--c-mono);font-size:13px;color:var(--c-brand)">@Erupt</code> + <code style="font-family:var(--c-mono);font-size:13px;color:var(--c-brand)">@EruptField</code>，无需前端代码、无需 Controller/Service/DAO，即可得到完整的企业管理后台。</p>
+    <div class="hero-cta">
+      <a href="https://www.erupt.xyz" class="wbtn wbtn-o">官网</a>
+      <a href="https://github.com/erupts/erupt" class="wbtn">GitHub</a>
+      <a href="https://start.erupt.xyz" class="wbtn">start.erupt.xyz</a>
+    </div>
+  </section>
+
+  <!-- ══ STATS ══ -->
+  <div class="r reveal bleed-lines">
+    <div class="g6">
+      <div class="c" style="text-align:center"><div class="stat-n">8K+</div><div class="stat-l">Total Stars</div></div>
+      <div class="c" style="text-align:center"><div class="stat-n">20+</div><div class="stat-l">组件类型</div></div>
+      <div class="c" style="text-align:center"><div class="stat-n">6+</div><div class="stat-l">数据库支持</div></div>
+      <div class="c" style="text-align:center"><div class="stat-n">2–5s</div><div class="stat-l">典型启动时间</div></div>
+      <div class="c" style="text-align:center"><div class="stat-n">0</div><div class="stat-l">前端代码</div></div>
+      <div class="c" style="text-align:center"><div class="stat-n">∞</div><div class="stat-l">扩展可能</div></div>
+    </div>
+  </div>
+
+  <!-- ══ PROBLEM ══ -->
+  <div class="r g-bg">
+    <div class="sec-hd">
+      <span class="tag">The Problem</span>
+      <h2 class="h2">企业后台开发，到底在浪费什么？</h2>
+      <p class="sub" style="max-width:580px;margin:0 auto">80% 的后台系统都是相同的 CRUD——但每次都要从零开始写 Controller、Service、DAO、前端表格、表单、权限……</p>
+    </div>
+  </div>
+
+  <div class="r reveal">
+    <div class="g3">
+      <div class="c">
+        <h3 class="h3" style="color:var(--c-brand)">重复劳动</h3>
+        <p class="sub" style="margin-top:8px">每个管理模块：Controller × 5、Service × 3、DAO × 2、前端组件 × N。同样的代码，一遍遍手写。</p>
+      </div>
+      <div class="c">
+        <h3 class="h3" style="color:var(--c-brand)">前后端协调</h3>
+        <p class="sub" style="margin-top:8px">后端改接口 → 前端改调用 → 联调 → 测试 → 上线。一个字段变更耗费半天。</p>
+      </div>
+      <div class="c">
+        <h3 class="h3" style="color:var(--c-brand)">权限系统</h3>
+        <p class="sub" style="margin-top:8px">用户、角色、菜单、行列权限、按钮权限……每个项目都要重新实现一遍。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SOLUTION ══ -->
+  <div class="r g-bg bleed-lines" style="position:relative">
+    <span class="tk"></span>
+    <div class="sec-hd">
+      <span class="tag">The Solution</span>
+      <h2 class="h2">注解即代码，代码即系统</h2>
+      <p class="sub" style="max-width:580px;margin:0 auto">Erupt 用注解描述业务意图，框架自动推导出完整的 CRUD、REST API、UI 渲染和权限管控。</p>
+    </div>
+  </div>
+
+  <div class="r reveal">
+    <div class="spl">
+      <!-- 代码窗口 -->
+      <div class="l" style="flex:1;min-width:0;">
+        <div class="cb-light">
+          <div class="cb-hd">
+            <div class="cb-dot" style="background:#ff5f57"></div>
+            <div class="cb-dot" style="background:#febc2e"></div>
+            <div class="cb-dot" style="background:#28c840"></div>
+            <div class="cb-title">SysUser.java</div>
+          </div>
+          <div class="cb-body"><span class="an">@Erupt</span><span class="pu">(</span>name <span class="pu">=</span> <span class="st">"用户管理"</span><span class="pu">)</span>
+<span class="an">@Entity</span>
+<span class="an">@Table</span><span class="pu">(</span>name <span class="pu">=</span> <span class="st">"sys_user"</span><span class="pu">)</span>
+<span class="kw">public class</span> <span class="ty">SysUser</span> <span class="pu">{</span>
+
+  <span class="an">@EruptField</span><span class="pu">(</span>
+    views <span class="pu">=</span> <span class="an">@View</span><span class="pu">(</span>title <span class="pu">=</span> <span class="st">"用户名"</span><span class="pu">),</span>
+    edit  <span class="pu">=</span> <span class="an">@Edit</span><span class="pu">(</span>
+      title <span class="pu">=</span> <span class="st">"用户名"</span><span class="pu">,</span>
+      notNull <span class="pu">=</span> <span class="kw">true</span>
+    <span class="pu">)</span>
+  <span class="pu">)</span>
+  <span class="kw">private</span> <span class="ty">String</span> username<span class="pu">;</span>
+
+  <span class="an">@EruptField</span><span class="pu">(</span>
+    views <span class="pu">=</span> <span class="an">@View</span><span class="pu">(</span>title <span class="pu">=</span> <span class="st">"邮箱"</span><span class="pu">),</span>
+    edit  <span class="pu">=</span> <span class="an">@Edit</span><span class="pu">(</span>title <span class="pu">=</span> <span class="st">"邮箱"</span><span class="pu">,</span>
+      type <span class="pu">=</span> <span class="ty">EditType</span><span class="pu">.</span>INPUT<span class="pu">)</span>
+  <span class="pu">)</span>
+  <span class="kw">private</span> <span class="ty">String</span> email<span class="pu">;</span>
+
+<span class="pu">}</span>
+
+<span class="cm">// ↑ 这就是全部代码</span></div>
+        </div>
+      </div>
+      <!-- 右侧 -->
+      <div style="flex:1;min-width:0;padding:32px;display:flex;flex-direction:column;justify-content:center;gap:20px;">
+        <div>
+          <span class="tag">Auto-generated</span>
+          <h3 class="h3">这一个类自动生成了：</h3>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:flex-start;gap:12px;border:1px solid var(--c-border);padding:14px 16px;">
+            <span class="chk"></span>
+            <div><strong style="font-size:13px">列表页</strong><p class="sub" style="font-size:12.5px;margin-top:2px">分页、排序、搜索、批量删除</p></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px;border:1px solid var(--c-border);padding:14px 16px;">
+            <span class="chk"></span>
+            <div><strong style="font-size:13px">新增 / 编辑表单</strong><p class="sub" style="font-size:12.5px;margin-top:2px">字段验证、必填提示、组件自适应</p></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px;border:1px solid var(--c-border);padding:14px 16px;">
+            <span class="chk"></span>
+            <div><strong style="font-size:13px">REST API</strong><p class="sub" style="font-size:12.5px;margin-top:2px">自动生成增删查改接口</p></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px;border:1px solid var(--c-border);padding:14px 16px;">
+            <span class="chk"></span>
+            <div><strong style="font-size:13px">权限控制</strong><p class="sub" style="font-size:12.5px;margin-top:2px">菜单、行、列、按钮级别细粒度权限</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ HOW IT WORKS ══ -->
+  <div class="r g-bg bleed-lines" style="position:relative">
+    <span class="tk"></span>
+    <div class="sec-hd">
+      <span class="tag">How It Works</span>
+      <h2 class="h2">运行机制</h2>
+      <p class="sub" style="max-width:560px;margin:0 auto">从 Java 类到完整系统，Erupt 的注解驱动管道只有四步。</p>
+    </div>
+  </div>
+
+  <!-- Pipeline -->
+  <div class="pipe-row reveal">
+    <div class="pipe-node"><div class="pipe-dot"></div>浏览器请求</div>
+    <div class="pipe-line"></div>
+    <div class="pipe-node"><div class="pipe-dot"></div>Security<br><small style="font-family:var(--c-mono);font-size:10px;color:var(--c-text2)">JWT / Session</small></div>
+    <div class="pipe-line"></div>
+    <div class="pipe-node"><div class="pipe-dot"></div>Core<br><small style="font-family:var(--c-mono);font-size:10px;color:var(--c-text2)">注解解析 → API 路由</small></div>
+    <div class="pipe-line"></div>
+    <div class="pipe-node"><div class="pipe-dot"></div>DataProxy<br><small style="font-family:var(--c-mono);font-size:10px;color:var(--c-text2)">生命周期钩子</small></div>
+    <div class="pipe-line"></div>
+    <div class="pipe-node"><div class="pipe-dot"></div>数据库</div>
+    <div class="pipe-line"></div>
+    <div class="pipe-node"><div class="pipe-dot"></div>UI Schema → 渲染</div>
+  </div>
+
+  <div class="r reveal">
+    <div class="g4">
+      <div class="c ghost-wrap">
+        <span class="ghost-n">01</span>
+        <h3 class="h3">注解扫描</h3>
+        <p class="sub" style="margin-top:8px;font-size:13px"><code style="font-family:var(--c-mono);font-size:11.5px;color:var(--c-brand)">@EruptScan</code> 启动时发现所有 <code style="font-family:var(--c-mono);font-size:11.5px;color:var(--c-brand)">@Erupt</code> 类，解析为 EruptModel 元数据注册到上下文。</p>
+      </div>
+      <div class="c ghost-wrap">
+        <span class="ghost-n">02</span>
+        <h3 class="h3">API 自动生成</h3>
+        <p class="sub" style="margin-top:8px;font-size:13px">框架根据元数据自动注册 REST 路由 <code style="font-family:var(--c-mono);font-size:10.5px">/erupt-api/data/*</code>，无需手写任何 Controller。</p>
+      </div>
+      <div class="c ghost-wrap">
+        <span class="ghost-n">03</span>
+        <h3 class="h3">Schema 传输</h3>
+        <p class="sub" style="margin-top:8px;font-size:13px">后端将 UI Schema（字段类型、验证规则、布局）序列化发送前端，Angular 动态渲染表单与列表。</p>
+      </div>
+      <div class="c ghost-wrap">
+        <span class="ghost-n">04</span>
+        <h3 class="h3">DataProxy 钩子</h3>
+        <p class="sub" style="margin-top:8px;font-size:13px">所有增删查改经过统一生命周期：<code style="font-family:var(--c-mono);font-size:10.5px">beforeAdd</code>、<code style="font-family:var(--c-mono);font-size:10.5px">afterFetch</code> 等，注入业务逻辑。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ARCHITECTURE ══ -->
+  <div class="r g-bg bleed-lines" style="position:relative">
+    <span class="tk"></span>
+    <div class="sec-hd">
+      <span class="tag">Architecture</span>
+      <h2 class="h2">分层模块架构</h2>
+      <p class="sub" style="max-width:560px;margin:0 auto">按需引入，每层独立。从核心到 AI，你只需要什么就引入什么。</p>
+    </div>
+  </div>
+
+  <div class="r reveal">
+    <div class="arch-row"><div class="arch-label">Frontend</div><div class="arch-body"><span class="mtag mtag-o">erupt-web</span><span class="sub" style="font-size:13px">Angular UI · 动态表单 · 零定制即可用</span></div></div>
+    <div class="arch-row"><div class="arch-label">Security</div><div class="arch-body"><span class="mtag">erupt-security</span><span class="sub" style="font-size:13px">JWT / Session · 接口鉴权 · Token 刷新</span></div></div>
+    <div class="arch-row" style="background:rgba(79,70,229,.018)"><div class="arch-label">Core ★</div><div class="arch-body"><span class="mtag mtag-o">erupt-core</span><span class="sub" style="font-size:13px">注解解析 · CRUD 引擎 · Schema 生成 · DataProxy</span></div></div>
+    <div class="arch-row"><div class="arch-label">UPMS</div><div class="arch-body"><span class="mtag">erupt-upms</span><span class="sub" style="font-size:13px">用户 · 角色 · 菜单 · 组织 · 字典 · 数据权限</span></div></div>
+    <div class="arch-row"><div class="arch-label">Data</div><div class="arch-body"><span class="mtag">erupt-jpa</span><span class="mtag">erupt-mongodb</span><span class="sub" style="font-size:13px">MySQL · PostgreSQL · Oracle · SQL Server · H2 · MongoDB</span></div></div>
+    <div class="arch-row"><div class="arch-label">Extensions</div><div class="arch-body"><span class="mtag">erupt-job</span><span class="mtag">erupt-monitor</span><span class="mtag">erupt-notice</span><span class="mtag">erupt-tpl</span><span class="mtag">erupt-cloud</span><span class="mtag mtag-o">erupt-ai</span><span class="mtag">erupt-magic-api</span><span class="mtag">erupt-websocket</span></div></div>
+  </div>
+
+  <!-- ══ FEATURES ══ -->
+  <div class="r g-bg bleed-lines" style="position:relative">
+    <span class="tk"></span>
+    <div class="sec-hd">
+      <span class="tag">What You Get</span>
+      <h2 class="h2">核心能力</h2>
+      <p class="sub" style="max-width:560px;margin:0 auto">开箱即用的全套企业级能力，每一项都是生产可用的。</p>
+    </div>
+  </div>
+
+  <div class="r reveal">
+    <div class="g3">
+      <div class="c">
+        <div class="mod-icon">⚙️</div>
+        <h3 class="h3">零代码 CRUD</h3>
+        <p class="sub" style="font-size:13px;margin-top:6px">增删查改、分页、批量操作、导入导出，注解声明即生效，无需一行实现代码。</p>
+        <div class="mini"><span class="an">@Erupt</span>(name = <span class="st">"商品管理"</span>,
+  filter = <span class="st">"status = 1"</span>)</div>
+      </div>
+      <div class="c">
+        <div class="mod-icon">🔐</div>
+        <h3 class="h3">细粒度权限</h3>
+        <p class="sub" style="font-size:13px;margin-top:6px">RBAC 用户角色体系，支持菜单权限、行权限（数据隔离）、列权限、按钮级别控制。</p>
+        <div class="mini">rowPolicy = <span class="st">"org_id = #{orgId}"</span>
+colPermission = <span class="an">@ColP</span>(col=<span class="st">"salary"</span>)</div>
+      </div>
+      <div class="c">
+        <div class="mod-icon">🧩</div>
+        <h3 class="h3">20+ 组件类型</h3>
+        <p class="sub" style="font-size:13px;margin-top:6px">INPUT、DATE、CHOICE、AUTO_COMPLETE、REFERENCE_TABLE、UPLOAD、CODE_EDITOR、MAP……字段类型决定渲染组件。</p>
+        <div class="mini">type = <span class="ty">EditType</span>.REFERENCE_TABLE
+type = <span class="ty">EditType</span>.UPLOAD</div>
+      </div>
+      <div class="c">
+        <div class="mod-icon">🔗</div>
+        <h3 class="h3">DataProxy 生命周期</h3>
+        <p class="sub" style="font-size:13px;margin-top:6px">统一钩子注入业务逻辑，无需继承或代理类，只需实现接口方法。</p>
+        <div class="mini"><span class="kw">void</span> beforeAdd(<span class="ty">T</span> entity);
+<span class="kw">void</span> afterFetch(Collection&lt;<span class="ty">T</span>&gt; list);
+<span class="kw">void</span> validate(<span class="ty">T</span> entity);</div>
+      </div>
+      <div class="c">
+        <div class="mod-icon">☁️</div>
+        <h3 class="h3">微服务就绪</h3>
+        <p class="sub" style="font-size:13px;margin-top:6px">erupt-cloud 提供分布式配置中心和服务管理，支持 IP 漂移、服务映射，替代 Apollo/Nacos。</p>
+      </div>
+      <div class="c">
+        <div class="mod-icon">🤖</div>
+        <h3 class="h3">AI 原生集成</h3>
+        <p class="sub" style="font-size:13px;margin-top:6px">erupt-ai 模块提供 Chat、Agent、MCP Server、Tool 注册，深度接入大模型能力。</p>
+        <div class="mini"><span class="an">@EruptAiTool</span>(name = <span class="st">"查询订单"</span>)
+<span class="kw">public</span> <span class="ty">OrderInfo</span> queryOrder(
+    <span class="ty">String</span> orderId) {...}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MODULES ══ -->
+  <div class="r g-bg bleed-lines" style="position:relative">
+    <span class="tk"></span>
+    <div class="sec-hd">
+      <span class="tag">Ecosystem</span>
+      <h2 class="h2">模块生态</h2>
+      <p class="sub" style="max-width:560px;margin:0 auto">核心开源 + 商业增强，覆盖企业研发全场景。</p>
+    </div>
+  </div>
+
+  <div class="r reveal">
+    <div class="g2">
+      <div class="c">
+        <span class="tag">Open Source</span>
+        <div style="border:1px solid var(--c-border);margin-top:4px;">
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--c-border);"><span style="font-family:var(--c-mono);font-size:11.5px;color:var(--c-brand);width:130px;flex-shrink:0">erupt-upms</span><span class="sub" style="font-size:12.5px">用户权限管理系统</span></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--c-border);"><span style="font-family:var(--c-mono);font-size:11.5px;color:var(--c-brand);width:130px;flex-shrink:0">erupt-job</span><span class="sub" style="font-size:12.5px">定时任务管理 + 日志</span></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--c-border);"><span style="font-family:var(--c-mono);font-size:11.5px;color:var(--c-brand);width:130px;flex-shrink:0">erupt-monitor</span><span class="sub" style="font-size:12.5px">系统监控 CPU/JVM/Redis</span></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--c-border);"><span style="font-family:var(--c-mono);font-size:11.5px;color:var(--c-brand);width:130px;flex-shrink:0">erupt-tpl</span><span class="sub" style="font-size:12.5px">自定义页面（Freemarker/Amis）</span></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--c-border);"><span style="font-family:var(--c-mono);font-size:11.5px;color:var(--c-brand);width:130px;flex-shrink:0">erupt-cloud</span><span class="sub" style="font-size:12.5px">分布式配置中心 + 服务管理</span></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--c-border);"><span style="font-family:var(--c-mono);font-size:11.5px;color:var(--c-brand);width:130px;flex-shrink:0">erupt-ai</span><span class="sub" style="font-size:12.5px">LLM Chat / Agent / MCP</span></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;"><span style="font-family:var(--c-mono);font-size:11.5px;color:var(--c-brand);width:130px;flex-shrink:0">erupt-magic-api</span><span class="sub" style="font-size:12.5px">浏览器内 IDE 实时写接口</span></div>
+        </div>
+      </div>
+      <div class="c">
+        <span class="tag">Pro / Commercial</span>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-top:4px;">
+          <div style="border:1px solid rgba(79,70,229,.25);padding:20px;">
+            <h3 class="h3" style="color:var(--c-brand)">erupt-flow</h3>
+            <p class="sub" style="font-size:12.5px;margin-top:6px">可视化流程引擎，钉钉风格审批流。请假、报销、资产申请……拖拽配置，代码零侵入。</p>
+          </div>
+          <div style="border:1px solid rgba(79,70,229,.25);padding:20px;">
+            <h3 class="h3" style="color:var(--c-brand)">erupt-tenant</h3>
+            <p class="sub" style="font-size:12.5px;margin-top:6px">SaaS 多租户，表级数据隔离，租户独立菜单与配置，零改动升级为 SaaS 产品。</p>
+          </div>
+          <div style="border:1px solid rgba(79,70,229,.25);padding:20px;">
+            <h3 class="h3" style="color:var(--c-brand)">erupt-cube</h3>
+            <p class="sub" style="font-size:12.5px;margin-top:6px">BI 平台，语义层 + 多维分析，对标 Google Looker，低代码配置指标、报表、数据集。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ COMPARISON ══ -->
+  <div class="r g-bg bleed-lines" style="position:relative">
+    <span class="tk"></span>
+    <div class="sec-hd">
+      <span class="tag">Comparison</span>
+      <h2 class="h2">与其他方案对比</h2>
+    </div>
+  </div>
+
+  <div class="r reveal">
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead>
+          <tr style="border-bottom:2px solid var(--c-border);">
+            <th style="padding:14px 24px;text-align:left;font-weight:600;font-size:12px;letter-spacing:.05em;color:var(--c-text2);font-family:var(--c-mono);">维度</th>
+            <th style="padding:14px 24px;text-align:center;font-weight:700;color:var(--c-brand);border-left:1px solid var(--c-border);">Erupt</th>
+            <th style="padding:14px 24px;text-align:center;color:var(--c-text2);border-left:1px solid var(--c-border);">传统全栈</th>
+            <th style="padding:14px 24px;text-align:center;color:var(--c-text2);border-left:1px solid var(--c-border);">无代码平台</th>
+            <th style="padding:14px 24px;text-align:center;color:var(--c-text2);border-left:1px solid var(--c-border);">API-First</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--c-border);">
+            <td style="padding:12px 24px;font-family:var(--c-mono);font-size:12px;color:var(--c-text2)">开发速度</td>
+            <td style="padding:12px 24px;text-align:center;border-left:1px solid var(--c-border);color:var(--c-brand);font-weight:600">★★★★★</td>
+            <td style="padding:12px 24px;text-align:center;border-left:1px solid var(--c-border);color:var(--c-text2)">★★</td>
+            <td style="padding:12px 24px;text-align:center;border-left:1px solid var(--c-border);color:var(--c-text2)">★★★★</td>
+            <td style="padding:12px 24px;text-align:center;border-left:1px solid var(--c-border);color:var(--c-text2)">★★★</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--c-border);">
+            <td style="padding:12px 24px;font-family:var(--c-mono);font-size:12px;color:var(--c-text2)">可定制性</td>
+            <td style="padding:12px 24px;text-align:center;border-left:1px solid var(--c-border);color:var(--c-brand);font-weight:600">★★★★★</td>
+            <td style="padding:12px 24px;text-align:center;border-left:1px solid var(--c-border);color:var(--c-text2)">★★★★★</td>
+            <td style="padding:12px 24px;text-align:center;border-left:1px solid var(--c-border);color:var(--c-text2)">★★</td>
+            <td style="padding:12px 24px;text-align:center;border-left:1px solid var(--c-border);color:var(--c-text2)">★★★★</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--c-border);">
+            <td style="padding:12px 24px;font-family:var(--c-mono);font-size:12px;color:var(--c-text2)">权限系统</td>
+            <td style="padding:12px 24px;text-align:center;border-left:1px solid var(--c-border);color:var(--c-brand);font-weight:600">内置完整</td>
+            <td style="padding:12px 24px;text-align:center;border-left:1px solid var(--c-border);color:var(--c-text2)">自研</td>
+            <td style="padding:12px 24px;text-align:center;border-left:1px solid var(--c-border);color:var(--c-text2)">有限</td>
+            <td style="padding:12px 24px;text-align:center;border-left:1px solid var(--c-border);color:var(--c-text2)">自研</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--c-border);">
+            <td style="padding:12px 24px;font-family:var(--c-mono);font-size:12px;color:var(--c-text2)">前端工作量</td>
+            <td style="padding:12px 24px;text-align:center;border-left:1px solid var(--c-border);color:var(--c-brand);font-weight:600">零</td>
+            <td style="padding:12px 24px;text-align:center;border-left:1px solid var(--c-border);color:var(--c-text2)">大量</td>
+            <td style="padding:12px 24px;text-align:center;border-left:1px solid var(--c-border);color:var(--c-text2)">少量</td>
+            <td style="padding:12px 24px;text-align:center;border-left:1px solid var(--c-border);color:var(--c-text2)">大量</td>
+          </tr>
+          <tr>
+            <td style="padding:12px 24px;font-family:var(--c-mono);font-size:12px;color:var(--c-text2)">供应商锁定</td>
+            <td style="padding:12px 24px;text-align:center;border-left:1px solid var(--c-border);color:var(--c-brand);font-weight:600">无（开源）</td>
+            <td style="padding:12px 24px;text-align:center;border-left:1px solid var(--c-border);color:var(--c-text2)">无</td>
+            <td style="padding:12px 24px;text-align:center;border-left:1px solid var(--c-border);color:var(--c-text2)">强锁定</td>
+            <td style="padding:12px 24px;text-align:center;border-left:1px solid var(--c-border);color:var(--c-text2)">无</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ GET STARTED ══ -->
+  <div class="r g-bg">
+    <div class="sec-hd">
+      <span class="tag">Get Started</span>
+      <h2 class="h2">三分钟启动</h2>
+      <p class="sub" style="max-width:560px;margin:0 auto">从零到运行，只需初始化项目、配置数据库、启动服务。</p>
+    </div>
+  </div>
+
+  <div class="r reveal">
+    <div class="g3">
+      <div class="c ghost-wrap">
+        <span class="ghost-n">01</span>
+        <h3 class="h3">初始化项目</h3>
+        <p class="sub" style="font-size:13px;margin-top:8px;margin-bottom:12px">访问 <strong style="color:var(--c-brand)">start.erupt.xyz</strong> 选择模块、数据库、版本，一键生成 Maven 项目骨架。</p>
+        <div class="mini">curl start.erupt.xyz/init \
+  -d <span class="st">"modules=upms,job,monitor"</span></div>
+      </div>
+      <div class="c ghost-wrap">
+        <span class="ghost-n">02</span>
+        <h3 class="h3">配置数据源</h3>
+        <p class="sub" style="font-size:13px;margin-top:8px;margin-bottom:12px">在 <code style="font-family:var(--c-mono);font-size:11px">application.yml</code> 填写数据库连接，框架自动建表。</p>
+        <div class="mini">spring.datasource:
+  url: <span class="st">jdbc:mysql://localhost/erupt</span>
+  username: <span class="st">root</span>
+  password: <span class="st">****</span></div>
+      </div>
+      <div class="c ghost-wrap">
+        <span class="ghost-n">03</span>
+        <h3 class="h3">启动 &amp; 开发</h3>
+        <p class="sub" style="font-size:13px;margin-top:8px;margin-bottom:12px">运行 Spring Boot 主类，浏览器打开管理后台。新增 <code style="font-family:var(--c-mono);font-size:11px">@Erupt</code> 类即新增模块。</p>
+        <div class="mini"><span class="cm">// 启动后访问</span>
+http://localhost:8080/</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ FOOTER ══ -->
+  <div class="r" style="padding:56px 48px;text-align:center;">
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:20px;">
+      <img src="/logo.svg" alt="Erupt" style="height:28px;" onerror="this.style.display='none'">
+      <span style="font-size:20px;font-weight:700;letter-spacing:-.02em;">Erupt Framework</span>
+    </div>
+    <p class="sub" style="font-size:13px;margin-bottom:24px">Apache 2.0 · Spring Boot 3.x · JDK 17+ · 8K+ Stars</p>
+    <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
+      <a href="https://www.erupt.xyz" class="wbtn wbtn-o" style="text-decoration:none">官方文档</a>
+      <a href="https://github.com/erupts/erupt" class="wbtn" style="text-decoration:none">GitHub</a>
+      <a href="https://start.erupt.xyz" class="wbtn" style="text-decoration:none">快速开始</a>
+    </div>
+    <p style="margin-top:40px;font-family:var(--c-mono);font-size:10px;letter-spacing:.1em;color:rgba(0,0,0,.15);text-transform:uppercase;">Built with Erupt Blueprint Design Language</p>
+  </div>
+
+
+</div>
+
+<script>
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.05 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
