@@ -360,7 +360,7 @@ create table e_upms_user_org_division (
 🌟 erupt-tpl支持[ path 路径传参](/modules/erupt-tpl#IBWWA)并且通过模板引擎通过变量名称获取。
 
 🌟 在线日志支持搜索，链接跳转，优化日志样式  
-🌟 erupt-bi 报表增加文本提示组件
+🌟 erupt-chart 报表增加文本提示组件
 
 🌟 dataProxy 支持 [alert](/advanced/data-proxy#fQSPY) 能力，在渲染数据的同时增加全局提示
 
@@ -392,7 +392,7 @@ create table e_upms_user_org_division (
 
 🌟 开源 [erupt-websocket](/modules/erupt-websocket) 模块，可在任何地方执行前端JS脚本，用于错误提示，异步结果通知等频繁交互场景
 
-🌟 erupt-tenant 兼容 erupt-bi 可开发租户报表
+🌟 erupt-tenant 兼容 erupt-chart 可开发租户报表
 
 🌟 erupt-tenant 支持域名控制，通过域名控制网页标题，图标，国际化语言，水印等信息
 
@@ -460,9 +460,9 @@ create table e_upms_user_org_division (
 
 🌟 升级 spring boot 至 2.7.18
 
-🌟 erupt-bi 表格支持显示百分比进度条
+🌟 erupt-chart 表格支持显示百分比进度条
 
-🌟 erupt-bi 表格支持配置长文本类型、链接类型
+🌟 erupt-chart 表格支持配置长文本类型、链接类型
 
 🌟 在线日志支持 JUL 的日志的 appender
 
@@ -555,15 +555,15 @@ rm .erupt/erupt-cloud-server.loaded .erupt/erupt-upms.loaded
 ## 1.12.11 (2024-04-15) <Badge type="tip" text="Spring Boot 2.7.10" />
 **🐞** 修复 mongodb 场景在字段上添加org.springframework.data.mongodb.core.mapping.Field注解不生效的 bug (感谢[iszhangsc](https://github.com/iszhangsc) 的贡献[#231](https://github.com/erupts/erupt/pull/231))
 
-**🐞** Erupt-BI 解决存在必填项时自定义模板404的 bug
+**🐞** erupt-chart 解决存在必填项时自定义模板404的 bug
 
-🧩 Erupt-BI 兼容 JDK17
+🧩 erupt-chart 兼容 JDK17
 
 🧩 筛选场景下支持清除 choice 组件已输入值
 
 🌟 无障碍能力支持灰色模式
 
-🌟 Erupt-BI 查询维度支持**参照表格**组件，表格内部支持虚拟滚动，列筛选，列排序等能力
+🌟 erupt-chart 查询维度支持**参照表格**组件，表格内部支持虚拟滚动，列筛选，列排序等能力
 
 🌟 自定义按钮增加调用时提示文本配置能力（[callHint](/annotation/row-operation#UApIg)），为空则表示不提示
 
@@ -631,22 +631,22 @@ md5(md5(pwd) + account) # 移除通过当前天作为加密依据
 
 🌟 erupt-job 增加是否记录日志配置
 
-🌟 erupt-bi 定义图表数据为空时的占位展示 UI
+🌟 erupt-chart 定义图表数据为空时的占位展示 UI
 
-🌟 erupt-bi 图表渲染自动写入ID方便自定义样式或者动态 JS 处理
+🌟 erupt-chart 图表渲染自动写入ID方便自定义样式或者动态 JS 处理
 
-🌟 erupt-bi 优化词云图交互样式
+🌟 erupt-chart 优化词云图交互样式
 
 ## 1.12.9 (2023-12-11) <Badge type="tip" text="Spring Boot 2.7.10" />
 **🐞**** **修复附件组件拖拽能力失效的 bug
 
 🧩 addBehavior支持 drill下钻值的传递，可通注入 request 对象从请求头中获取
 
-🌟 erupt-bi：图表数据支持 excel 下载
+🌟 erupt-chart：图表数据支持 excel 下载
 
-🌟 erupt-bi：图表支持备注信息展示
+🌟 erupt-chart：图表支持备注信息展示
 
-🌟 erupt-bi：图表支持列信息自适应，会根据类型自动定义列名
+🌟 erupt-chart：图表支持列信息自适应，会根据类型自动定义列名
 
 ## 1.12.8 (2023-11-28) <Badge type="tip" text="Spring Boot 2.7.10" />
 **🐞**** **解决 oracle 数据库无法自动创建 e_upms_menu 表的 bug
@@ -786,7 +786,7 @@ md5(md5(pwd) + account) # 移除通过当前天作为加密依据
 
 🌟 完全重构多语言能力，增加法语、俄语、韩语支持，全框架无死角支持国际化
 
-🌟 erupt-bi增加词云 + 桑基图 + 弦图等图表类型支持
+🌟 erupt-chart增加词云 + 桑基图 + 弦图等图表类型支持
 
 ## 1.12.x
 **1.11.x → 1.12.x升级指南详见↓**
@@ -1099,7 +1099,7 @@ md5(md5(pwd) + account) # 移除通过当前天作为加密依据
 ## 1.10.3 (2022年02月26日) <Badge type="tip" text="Spring Boot 2.6.0" />
 🐞 修复自定义按钮组件执行顺序错乱的 BUG
 
-🐞 修复 erupt-bi 有查询项不显示图表的 BUG
+🐞 修复 erupt-chart 有查询项不显示图表的 BUG
 
 🌟 菜单权限校验不区分大小写
 
@@ -1110,7 +1110,7 @@ md5(md5(pwd) + account) # 移除通过当前天作为加密依据
 
 🧩 优化使用细节，如用户表为空则会自动删除初始化标识文件（.erupt）重新初始化
 
-🌟 erupt-bi 图表查询依赖必填查询项
+🌟 erupt-chart 图表查询依赖必填查询项
 
 ## 1.10.1 (2022年02月21日) <Badge type="tip" text="Spring Boot 2.6.0" />
 🐞 修复erupt-monitor JVM内存占用量，显示不正确的 BUG
@@ -1151,9 +1151,9 @@ md5(md5(pwd) + account) # 移除通过当前天作为加密依据
 
 🌟 erupt-magic-api支持数据源与函数的权限控制
 
-🌟 erupt-bi 数据源管理支持驱动自动获取
+🌟 erupt-chart 数据源管理支持驱动自动获取
 
-🌟 erupt-bi 支持图表缓存与报表缓存功能
+🌟 erupt-chart 支持图表缓存与报表缓存功能
 
 🌟 增加 [MetaModel](/advanced/utils#18420919e0323a3fe4c3eecde0518e10) 工具类，可不关联用户表的情况下记录当前操作用户
 
