@@ -9,6 +9,8 @@ import mediumZoom from 'medium-zoom'
 import {
     NolebaseEnhancedReadabilitiesMenu,
     NolebaseEnhancedReadabilitiesScreenMenu,
+    InjectionKey,
+    LayoutMode,
 } from '@nolebase/vitepress-plugin-enhanced-readabilities/client'
 import '@nolebase/vitepress-plugin-enhanced-readabilities/client/style.css'
 
@@ -40,6 +42,16 @@ export default {
     },
 
     enhanceApp({app}) {
+        app.provide(InjectionKey, {
+            layoutSwitch: {
+                defaultMode: LayoutMode.FullWidth,
+            },
+        })
+        if (typeof localStorage !== 'undefined') {
+            const key = 'vitepress-nolebase-enhanced-readabilities-layout-switch-mode'
+            if (!localStorage.getItem(key))
+                localStorage.setItem(key, String(LayoutMode.FullWidth))
+        }
         app.use(NolebaseInlineLinkPreviewPlugin)
         app.use(NolebaseGitChangelogPlugin)
     },
