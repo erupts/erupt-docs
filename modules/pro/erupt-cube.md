@@ -24,9 +24,7 @@
 
 <img src="/cube/overview.png" width="900">
 
-<img src="/cube/semantic.png" width="739">
-
-<img src="/cube/dashboard.png" width="900">
+<img src="/cube/semantic.png" width="900">
 
 ## 语义模型解决什么问题
 

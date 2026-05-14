@@ -1,10 +1,8 @@
 import DefaultTheme from 'vitepress/theme'
 import './custom.css'
 
-import {h, onMounted, watch, nextTick} from 'vue'
+import {h} from 'vue'
 import Floating from './Floating.vue'
-import {useRoute} from 'vitepress'
-import mediumZoom from 'medium-zoom'
 
 import {
     NolebaseEnhancedReadabilitiesMenu,
@@ -56,12 +54,4 @@ export default {
         app.use(NolebaseGitChangelogPlugin)
     },
 
-    setup() {
-        const route = useRoute()
-        const initZoom = () => {
-            mediumZoom('.main img', {background: 'var(--vp-c-bg)'})
-        }
-        onMounted(initZoom)
-        watch(() => route.path, () => nextTick(initZoom))
-    },
 }
