@@ -224,6 +224,31 @@ public class EruptTestDataProxy implements DataProxy<EruptTest>{
 }
 ```
 
+## extraContent 自定义内容注入 <Badge type="tip" text="v1.14.3+" />
+
+`extraContent` 方法返回的 HTML 字符串将渲染到表格或其他视图的顶部区域，适合用于展示统计摘要、公告提示、自定义图表等补充信息。
+
+```java
+@Service
+public class EruptTestDataProxy implements DataProxy<EruptTest>{
+
+    @Override
+    public String extraContent(List<Condition> conditions) {
+        long total = eruptTestRepository.count();
+        return "<div style='padding:8px 12px;background:#f0f9ff;border-radius:6px'>"
+             + "📊 当前共 <b>" + total + "</b> 条记录"
+             + "</div>";
+    }
+    
+}
+```
+
+:::tip
+- 返回 `null` 时不展示任何内容（默认行为）
+- `conditions` 参数为当前页面的搜索条件，可据此动态渲染内容
+- 返回内容为原始 HTML，注意避免 XSS 风险，不要直接拼接用户输入
+:::
+
 ---
 
 ## 通用继承 @PreDataProxy

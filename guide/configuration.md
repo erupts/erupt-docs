@@ -6,8 +6,12 @@
 
 ```yaml
 erupt-app:
-  # 是否开启水印，1.12.0 及以上版本支持
+  # 是否开启水印，v1.12.0+ 支持
   water-mark: true
+  # 水印是否显示日期；v1.14.3+ 支持
+  water-mark-date: false
+  # 自定义水印内容；v1.14.3+ 支持
+  water-mark-content: ""
   # 登录失败几次出现验证码，值为0时表示一直需要登录验证码
   verify-code-count: 2
   # 登录密码是否加密传输，特殊场景如：LDAP登录可关闭该功能获取密码明文

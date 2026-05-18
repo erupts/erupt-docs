@@ -1,5 +1,29 @@
 # 更新日志
 
+## 1.14.3（2026-05-19） <Badge type="tip" text="Spring Boot 3.5.13" />
+
+🌟 新增 [erupt-terminal](/modules/erupt-terminal) 模块，无需 SSH 客户端，直接在后台界面操作服务器终端
+
+🌟 erupt-ai 支持 [A2A（Agent-to-Agent）协作](/modules/erupt-ai#多-agent-协作-a2a)，多个 AI 智能体可相互通信与协作分工
+
+🌟 erupt-ai 新增跨会话记忆（Memory），AI 可跨对话保留用户偏好与上下文
+
+🌟 erupt-ai 支持按角色精细管控 AI 工具权限与系统提示词，让 erupt-ai-claw 具备生产环境安全部署的能力
+
+🌟 erupt-ai 支持 Thinking Mode，在对话中展示增强推理过程
+
+🌟 erupt-ai-claw 新增 `enableExecShell` 配置项，可灵活开关 [Shell 执行能力](/modules/erupt-ai-claw#使用方法)
+
+🌟 [DataProxy](/advanced/data-proxy#extracontent-自定义内容注入) 新增 `extraContent` 方法，支持向表格或任意视图顶部注入自定义 HTML 内容
+
+🌟 [erupt-cube](/modules/pro/erupt-cube) 支持子模型、高级分组筛选、相对日期过滤，新增富文本报表、树图、热力图，KPI 及图表支持时间对比分析
+
+🌟 MAP 地图组件支持点选取坐标并集成地理编码（Geocoding）
+
+🧩 优化水印功能，感谢 [chenxiaolong8023](https://github.com/chenxiaolong8023) 贡献的代码
+
+🐞 修复 `@OnChange` 注解不支持 `ReferenceTree` 和 `ReferenceTable` 的问题
+
 ## 1.14.2（2026-04-27） <Badge type="tip" text="Spring Boot 3.5.13" />
 🐞 修复日期区间查询时分秒不生效的问题
 
