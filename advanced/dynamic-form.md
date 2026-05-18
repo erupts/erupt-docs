@@ -267,3 +267,102 @@ public interface OnChange<MODEL> {
 
 }
 ```
+
+### 动态控制字段显隐
+
+> 通过 `buildEditExpr` 返回 `edit.show` 表达式，可以根据一个字段的值动态控制其他字段的显示/隐藏。
+
+```java
+@Erupt(name = "Fund Company Detail")
+@Table(name = "fund_company_detail")
+@Entity
+@Getter
+@Setter
+public class FundCompanyDetail extends BaseModel {
+
+    @ManyToOne
+    @JoinColumn(name = "fund_nature_id")
+    @EruptField(
+            views = @View(title = "Fund Nature", column = "name"),
+            edit = @Edit(
+                    title = "Fund Nature",
+                    type = EditType.REFERENCE_TREE,
+                    notNull = true,
+                    referenceTreeType = @ReferenceTreeType(id = "id", label = "name", pid = "parent.id", leafOnly = true),
+                    onchange = FundNatureOnChange.class
+            )
+    )
+    private FundNature fundNature;
+
+    @ManyToOne
+    @JoinColumn(name = "enterprise_id")
+    @EruptField(
+            views = @View(title = "Enterprise", column = "name"),
+            edit = @Edit(
+                    title = "Enterprise",
+                    type = EditType.REFERENCE_TABLE,
+                    referenceTableType = @ReferenceTableType(id = "id", label = "name")
+            )
+    )
+    private Enterprise enterprise;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    @EruptField(
+            views = @View(title = "Customer", column = "name"),
+            edit = @Edit(
+                    title = "Customer",
+                    type = EditType.REFERENCE_TABLE,
+                    referenceTableType = @ReferenceTableType(id = "id", label = "name")
+            )
+    )
+    private Customer customer;
+
+}
+```
+
+```java
+@Component
+public class FundNatureOnChange implements OnChange<FundCompanyDetail> {
+
+    @Resource
+    private EruptDao eruptDao;
+
+    @Override
+    public Map<String, Object> populateForm(FundCompanyDetail model, String[] params) {
+        // 不需要返回数据，避免循环触发
+        return new HashMap<>();
+    }
+
+    @Override
+    public Map<String, String> buildEditExpr(FundCompanyDetail model, String[] params) {
+        Map<String, String> editExpr = new HashMap<>();
+        FundNature fn = model.getFundNature();
+
+        if (fn == null || fn.getId() == null) {
+            // 没选资金性质，隐藏所有依赖字段
+            editExpr.put("enterprise", "edit.show = false;");
+            editExpr.put("customer", "edit.show = false;");
+            return editExpr;
+        }
+
+        // 从数据库查出完整配置
+        FundNature fundNature = eruptDao.findById(FundNature.class, fn.getId());
+        if (fundNature == null) {
+            editExpr.put("enterprise", "edit.show = false;");
+            editExpr.put("customer", "edit.show = false;");
+            return editExpr;
+        }
+
+        // 根据 fundNature 配置控制字段显隐
+        editExpr.put("enterprise", "edit.show = " + Boolean.TRUE.equals(fundNature.getNeedEnterprise()) + ";");
+        editExpr.put("customer", "edit.show = " + Boolean.TRUE.equals(fundNature.getNeedCustomer()) + ";");
+
+        return editExpr;
+    }
+}
+```
+
+:::warning
+使用 `buildEditExpr` 控制字段显隐时，不要同时使用 `@Dynamic` 注解，否则可能导致前端循环触发 onchange 请求。
+:::
