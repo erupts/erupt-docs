@@ -267,3 +267,111 @@ public interface OnChange<MODEL> {
 
 }
 ```
+
+### 综合示例：字段显隐 + 数据联动
+
+> 选择订单类型后，动态显示/隐藏相关字段，并自动填充默认值。
+
+```java
+@Erupt(name = "订单")
+@Table(name = "t_order")
+@Entity
+@Getter
+@Setter
+public class Order extends BaseModel {
+
+    @EruptField(
+            views = @View(title = "订单类型"),
+            edit = @Edit(
+                    title = "订单类型",
+                    type = EditType.CHOICE,
+                    choiceType = @ChoiceType(
+                            vl = {
+                                    @VL(value = "normal", label = "普通订单"),
+                                    @VL(value = "vip", label = "VIP订单"),
+                                    @VL(value = "group", label = "团购订单")
+                            }
+                    ),
+                    notNull = true,
+                    onchange = OrderTypeOnChange.class
+            )
+    )
+    private String orderType;
+
+    @EruptField(
+            views = @View(title = "商品名称"),
+            edit = @Edit(title = "商品名称", notNull = true)
+    )
+    private String productName;
+
+    @EruptField(
+            views = @View(title = "数量"),
+            edit = @Edit(title = "数量", type = EditType.NUMBER, notNull = true)
+    )
+    private Integer quantity;
+
+    @EruptField(
+            views = @View(title = "VIP等级"),
+            edit = @Edit(title = "VIP等级", type = EditType.CHOICE,
+                    choiceType = @ChoiceType(vl = {
+                            @VL(value = "1", label = "银卡"),
+                            @VL(value = "2", label = "金卡"),
+                            @VL(value = "3", label = "钻石卡")
+                    })
+            )
+    )
+    private String vipLevel;
+
+    @EruptField(
+            views = @View(title = "团购人数"),
+            edit = @Edit(title = "团购人数", type = EditType.NUMBER)
+    )
+    private Integer groupSize;
+
+    @EruptField(
+            views = @View(title = "折扣率"),
+            edit = @Edit(title = "折扣率", type = EditType.NUMBER, readonly = @Readonly)
+    )
+    private BigDecimal discount;
+
+}
+```
+
+```java
+@Component
+public class OrderTypeOnChange implements OnChange<Order> {
+
+    @Override
+    public Map<String, Object> populateForm(Order model, String[] params) {
+        Map<String, Object> result = new HashMap<>();
+        String orderType = model.getOrderType();
+
+        // 根据订单类型自动填充折扣率
+        if ("vip".equals(orderType)) {
+            result.put("discount", new BigDecimal("0.85")); // VIP 85折
+        } else if ("group".equals(orderType)) {
+            result.put("discount", new BigDecimal("0.80")); // 团购 80折
+        } else {
+            result.put("discount", BigDecimal.ONE); // 普通无折扣
+        }
+
+        return result;
+    }
+
+    @Override
+    public Map<String, String> buildEditExpr(Order model, String[] params) {
+        Map<String, String> editExpr = new HashMap<>();
+        String orderType = model.getOrderType();
+
+        // 根据订单类型控制字段显隐
+        editExpr.put("vipLevel", "edit.show = '" + orderType + "' === 'vip';");
+        editExpr.put("groupSize", "edit.show = '" + orderType + "' === 'group';");
+
+        return editExpr;
+    }
+}
+```
+
+:::warning
+使用 `buildEditExpr` 控制字段显隐时，不要同时使用 `@Dynamic` 注解，否则可能导致前端循环触发 onchange 请求。
+:::
