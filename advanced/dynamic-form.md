@@ -268,95 +268,104 @@ public interface OnChange<MODEL> {
 }
 ```
 
-### 动态控制字段显隐
+### 综合示例：字段显隐 + 数据联动
 
-> 通过 `buildEditExpr` 返回 `edit.show` 表达式，可以根据一个字段的值动态控制其他字段的显示/隐藏。
+> 选择订单类型后，动态显示/隐藏相关字段，并自动填充默认值。
 
 ```java
-@Erupt(name = "Fund Company Detail")
-@Table(name = "fund_company_detail")
+@Erupt(name = "订单")
+@Table(name = "t_order")
 @Entity
 @Getter
 @Setter
-public class FundCompanyDetail extends BaseModel {
+public class Order extends BaseModel {
 
-    @ManyToOne
-    @JoinColumn(name = "fund_nature_id")
     @EruptField(
-            views = @View(title = "Fund Nature", column = "name"),
+            views = @View(title = "订单类型"),
             edit = @Edit(
-                    title = "Fund Nature",
-                    type = EditType.REFERENCE_TREE,
+                    title = "订单类型",
+                    type = EditType.CHOICE,
+                    choiceType = @ChoiceType(
+                            vl = {
+                                    @VL(value = "normal", label = "普通订单"),
+                                    @VL(value = "vip", label = "VIP订单"),
+                                    @VL(value = "group", label = "团购订单")
+                            }
+                    ),
                     notNull = true,
-                    referenceTreeType = @ReferenceTreeType(id = "id", label = "name", pid = "parent.id", leafOnly = true),
-                    onchange = FundNatureOnChange.class
+                    onchange = OrderTypeOnChange.class
             )
     )
-    private FundNature fundNature;
+    private String orderType;
 
-    @ManyToOne
-    @JoinColumn(name = "enterprise_id")
     @EruptField(
-            views = @View(title = "Enterprise", column = "name"),
-            edit = @Edit(
-                    title = "Enterprise",
-                    type = EditType.REFERENCE_TABLE,
-                    referenceTableType = @ReferenceTableType(id = "id", label = "name")
-            )
+            views = @View(title = "商品名称"),
+            edit = @Edit(title = "商品名称", notNull = true)
     )
-    private Enterprise enterprise;
+    private String productName;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
     @EruptField(
-            views = @View(title = "Customer", column = "name"),
-            edit = @Edit(
-                    title = "Customer",
-                    type = EditType.REFERENCE_TABLE,
-                    referenceTableType = @ReferenceTableType(id = "id", label = "name")
+            views = @View(title = "数量"),
+            edit = @Edit(title = "数量", type = EditType.NUMBER, notNull = true)
+    )
+    private Integer quantity;
+
+    @EruptField(
+            views = @View(title = "VIP等级"),
+            edit = @Edit(title = "VIP等级", type = EditType.CHOICE,
+                    choiceType = @ChoiceType(vl = {
+                            @VL(value = "1", label = "银卡"),
+                            @VL(value = "2", label = "金卡"),
+                            @VL(value = "3", label = "钻石卡")
+                    })
             )
     )
-    private Customer customer;
+    private String vipLevel;
+
+    @EruptField(
+            views = @View(title = "团购人数"),
+            edit = @Edit(title = "团购人数", type = EditType.NUMBER)
+    )
+    private Integer groupSize;
+
+    @EruptField(
+            views = @View(title = "折扣率"),
+            edit = @Edit(title = "折扣率", type = EditType.NUMBER, readonly = @Readonly)
+    )
+    private BigDecimal discount;
 
 }
 ```
 
 ```java
 @Component
-public class FundNatureOnChange implements OnChange<FundCompanyDetail> {
-
-    @Resource
-    private EruptDao eruptDao;
+public class OrderTypeOnChange implements OnChange<Order> {
 
     @Override
-    public Map<String, Object> populateForm(FundCompanyDetail model, String[] params) {
-        // 不需要返回数据，避免循环触发
-        return new HashMap<>();
+    public Map<String, Object> populateForm(Order model, String[] params) {
+        Map<String, Object> result = new HashMap<>();
+        String orderType = model.getOrderType();
+
+        // 根据订单类型自动填充折扣率
+        if ("vip".equals(orderType)) {
+            result.put("discount", new BigDecimal("0.85")); // VIP 85折
+        } else if ("group".equals(orderType)) {
+            result.put("discount", new BigDecimal("0.80")); // 团购 80折
+        } else {
+            result.put("discount", BigDecimal.ONE); // 普通无折扣
+        }
+
+        return result;
     }
 
     @Override
-    public Map<String, String> buildEditExpr(FundCompanyDetail model, String[] params) {
+    public Map<String, String> buildEditExpr(Order model, String[] params) {
         Map<String, String> editExpr = new HashMap<>();
-        FundNature fn = model.getFundNature();
+        String orderType = model.getOrderType();
 
-        if (fn == null || fn.getId() == null) {
-            // 没选资金性质，隐藏所有依赖字段
-            editExpr.put("enterprise", "edit.show = false;");
-            editExpr.put("customer", "edit.show = false;");
-            return editExpr;
-        }
-
-        // 从数据库查出完整配置
-        FundNature fundNature = eruptDao.findById(FundNature.class, fn.getId());
-        if (fundNature == null) {
-            editExpr.put("enterprise", "edit.show = false;");
-            editExpr.put("customer", "edit.show = false;");
-            return editExpr;
-        }
-
-        // 根据 fundNature 配置控制字段显隐
-        editExpr.put("enterprise", "edit.show = " + Boolean.TRUE.equals(fundNature.getNeedEnterprise()) + ";");
-        editExpr.put("customer", "edit.show = " + Boolean.TRUE.equals(fundNature.getNeedCustomer()) + ";");
+        // 根据订单类型控制字段显隐
+        editExpr.put("vipLevel", "edit.show = '" + orderType + "' === 'vip';");
+        editExpr.put("groupSize", "edit.show = '" + orderType + "' === 'group';");
 
         return editExpr;
     }
