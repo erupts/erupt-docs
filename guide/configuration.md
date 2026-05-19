@@ -111,6 +111,11 @@ window.eruptSiteConfig = {
     logoText: "erupt",
     // 注册页地址
     registerPage: "",
+    // 主题配置
+    theme: {
+        // 主题色
+        primaryColor: "#00B515"
+    },
     // 触碰用户头像后的菜单，1.12.21及以上版本支持
     userTools: [{
         text: "自定义用户工具栏",
