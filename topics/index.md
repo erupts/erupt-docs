@@ -10,6 +10,18 @@ outline: deep
 >
 > 节奏：约每月一期。
 
+<div class="topic-mp-qr">
+  <img src="/contact/mp-weixin.jpg" alt="Erupt 微信公众号" />
+  <div class="topic-mp-qr__body">
+    <div class="topic-mp-qr__tag">WeChat · 公众号</div>
+    <div class="topic-mp-qr__title">扫码关注 Erupt 公众号</div>
+    <p class="topic-mp-qr__desc">每期专题首发于此，另有版本动态、源码解读、社区精选案例。回复「<b>加群</b>」加入用户群，回复「<b>入门</b>」获取 5 分钟上手指南。</p>
+    <div class="topic-mp-qr__hint">📚 已发布专题向下滑动 → 查看历史文章</div>
+  </div>
+</div>
+
+<h2 class="topic-list__heading">历史文章 · Archive</h2>
+
 <div class="topic-list">
 
 <a class="topic-card" href="/topics/annotation-vs-canvas">
@@ -48,6 +60,65 @@ outline: deep
 :::
 
 <style>
+.topic-mp-qr {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin: 24px 0 40px;
+  padding: 20px 24px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+  background: var(--vp-c-bg-soft);
+}
+.topic-mp-qr img {
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.topic-mp-qr__body { flex: 1; min-width: 0; }
+.topic-mp-qr__tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-1);
+  margin-bottom: 6px;
+}
+.topic-mp-qr__title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.topic-mp-qr__desc {
+  margin: 0 0 8px;
+  color: var(--vp-c-text-2);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.topic-mp-qr__hint {
+  font-size: 12px;
+  color: var(--vp-c-text-3);
+}
+@media (max-width: 640px) {
+  .topic-mp-qr { flex-direction: column; text-align: center; }
+  .topic-mp-qr img { width: 140px; height: 140px; }
+}
+
+.topic-list__heading {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--vp-c-text-3);
+  border: none !important;
+  padding: 0 !important;
+  margin: 8px 0 16px !important;
+}
+
 .topic-list {
   margin: 32px 0;
   display: flex;
