@@ -60,6 +60,7 @@ export default withMermaid(defineConfig({
             {text: '组件类型', link: '/field-types/', activeMatch: '/field-types/'},
             {text: '进阶', link: '/advanced/', activeMatch: '/advanced/'},
             {text: '扩展模块', link: '/modules/', activeMatch: '/modules/'},
+            {text: '专题', link: '/topics/', activeMatch: '/topics/'},
             {text: '更新日志', link: '/guide/changelog'},
             {text: '🚀 项目初始化', link: 'https://start.erupt.xyz/'},
             {
@@ -232,6 +233,27 @@ export default withMermaid(defineConfig({
                         {text: '多数据源', link: '/advanced/datasource'},
                         {text: '自定义数据源', link: '/advanced/custom-datasource'},
                         {text: 'Open API 开放接口', link: '/advanced/open-api'},
+                    ],
+                },
+            ],
+
+            '/topics/': [
+                {
+                    text: '专题',
+                    items: [
+                        {text: '专题总览', link: '/topics/'},
+                    ],
+                },
+                {
+                    text: '第 02 期 · Design Philosophy',
+                    items: [
+                        {text: '@Erupt × DataProxy × Handler', link: '/topics/annotation-vs-canvas'},
+                    ],
+                },
+                {
+                    text: '第 01 期 · AI Harness',
+                    items: [
+                        {text: '50+ LLM × A2A × Memory', link: '/topics/50-llm-a2a-memory'},
                     ],
                 },
             ],

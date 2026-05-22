@@ -12,6 +12,20 @@ outline: deep
 
 <div class="topic-list">
 
+<a class="topic-card" href="/topics/annotation-vs-canvas">
+  <div class="topic-card__index">#02</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Design Philosophy</div>
+    <h3 class="topic-card__title">@Erupt × DataProxy × Handler：为什么我们没去做拖拽画布</h3>
+    <p class="topic-card__desc">当钉钉宜搭、简道云、JeecgBoot 全部押注"画布"或"画布生成代码"，Erupt 仍然押注源代码本身——一行 @Erupt 注解、一个 DataProxy&lt;T&gt; 扩展点、一组 Handler 接口。这一期讲清楚为什么。</p>
+    <div class="topic-card__meta">
+      <span>2026-05-22</span>
+      <span>·</span>
+      <span>9 min read</span>
+    </div>
+  </div>
+</a>
+
 <a class="topic-card" href="/topics/50-llm-a2a-memory">
   <div class="topic-card__index">#01</div>
   <div class="topic-card__body">

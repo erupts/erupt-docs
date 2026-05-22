@@ -12,3 +12,67 @@
 .main img:hover {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
+
+/* 专题文章顶部的公众号关注卡片 */
+.topic-mp-qr {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 24px 0 32px;
+    padding: 16px 20px;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 10px;
+    background: var(--vp-c-bg-soft);
+}
+
+.topic-mp-qr img {
+    width: 96px;
+    height: 96px;
+    flex: 0 0 96px;
+    object-fit: cover;
+    border-radius: 6px;
+    cursor: default !important;
+    box-shadow: none !important;
+    margin: 0;
+}
+
+.topic-mp-qr__body {
+    flex: 1;
+    min-width: 0;
+}
+
+.topic-mp-qr__title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--vp-c-text-1);
+    margin-bottom: 4px;
+}
+
+.topic-mp-qr__desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--vp-c-text-2);
+    margin: 0;
+}
+
+.topic-mp-qr__tag {
+    display: inline-block;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--vp-c-brand-1);
+    margin-bottom: 6px;
+}
+
+@media (max-width: 640px) {
+    .topic-mp-qr {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .topic-mp-qr img {
+        width: 120px;
+        height: 120px;
+        flex: 0 0 120px;
+    }
+}

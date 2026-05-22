@@ -10,6 +10,15 @@ outline: deep
 >
 > _发布于 2026-05-22 · 阅读 ~10 min_
 
+<div class="topic-mp-qr">
+  <img src="/contact/mp-weixin.jpg" alt="Erupt 微信公众号" />
+  <div class="topic-mp-qr__body">
+    <div class="topic-mp-qr__tag">WeChat · 公众号</div>
+    <div class="topic-mp-qr__title">扫码关注 Erupt 公众号</div>
+    <p class="topic-mp-qr__desc">每期专题首发于此，另有版本动态、源码解读、社区精选案例。</p>
+  </div>
+</div>
+
 [[toc]]
 
 ## 一、为什么写这篇

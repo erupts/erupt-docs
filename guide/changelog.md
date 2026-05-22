@@ -68,7 +68,7 @@
 
 🧩 重构时间格式处理逻辑，统一采用 ISO 8601（`yyyy-MM-dd'T'HH:mm:ss.SSS`）进行交互，返回时间自动跟随浏览器语言环境格式化，对国际化场景更加友好
 
-🦞 开源 [eurpt-ai-claw](https://www.yuque.com/erupts/erupt/hnx1hac9acfacb0v) 模块，可通过 AI 操作任意 Erupt 数据，支持 Skill、File、Shell 调用等能力
+🦞 开源 [erupt-ai-claw](/modules/erupt-ai-claw) 模块，可通过 AI 操作任意 Erupt 数据，支持 Skill、File、Shell 调用等能力
 
 🌟 Spring Boot 版本升级至 3.5.13
 
@@ -86,7 +86,7 @@
 
 🌟 新增 skill 文件，方便 AI 与 erupt 更好的交互：[SKILLS](https://github.com/erupts/erupt/tree/master/.claude/skills/erupt)
 
-🌟 开源 [erupt-vote](https://www.yuque.com/erupts/erupt/dlh141yu2xl1glrz) 投票插件，感谢 [@PPLINGHUFEI](https://gitee.com/PPLINGHUFEI) 的贡献
+🌟 开源 [erupt-vote](/modules/third-party/erupt-vote) 投票插件，感谢 [@PPLINGHUFEI](https://gitee.com/PPLINGHUFEI) 的贡献
 
 🌟 EruptMenu 菜单数据统一以英文存储，前端页面自动翻译为对应语言展示
 
