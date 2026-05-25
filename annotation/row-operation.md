@@ -2,7 +2,7 @@
 
 `@RowOperation` 注解用于在 Erupt 表格的操作列中添加自定义功能按钮，以实现复杂业务逻辑。
 
-<!-- TODO: 添加截图 -->
+![RowOperation 自定义操作按钮效果](/annotation/row-operation.png)
 
 ## 使用方法
 

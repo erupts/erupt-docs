@@ -61,4 +61,4 @@ public @interface Tree {
 
 ## 效果展示
 
-<!-- TODO: 添加截图 -->
+![Tree 树形展示效果](/annotation/tree.png)

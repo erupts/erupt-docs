@@ -56,9 +56,7 @@ public class Tree extends BaseModel {
 
 ## 效果演示
 
-> 配置 EruptTest 类到菜单中
-
-<!-- TODO: 添加截图 -->
+![LinkTree 左树右表效果（含固定操作列）](/annotation/link-tree.png)
 
 ## 配置项注解定义
 
