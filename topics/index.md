@@ -24,6 +24,20 @@ outline: deep
 
 <div class="topic-list">
 
+<a class="topic-card" href="/topics/jpa-superset">
+  <div class="topic-card__index">#03</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">AI × Flow × Cloud</div>
+    <h3 class="topic-card__title">当 MyBatis-Plus 还在卷 SQL DSL，Erupt 给 JPA 加了一整圈后台基础设施</h3>
+    <p class="topic-card__desc">一个 @Entity，在 Erupt 里能长出 10 种身份——UI、RBAC、REST API、Auto DDL、i18n、DataProxy、Lambda 查询、AI Agent、流程引擎、跨服务聚合。注解就是配置面，元数据 = UI = API = LLM Tool。</p>
+    <div class="topic-card__meta">
+      <span>2026-05-25</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
 <a class="topic-card" href="/topics/annotation-vs-canvas">
   <div class="topic-card__index">#02</div>
   <div class="topic-card__body">

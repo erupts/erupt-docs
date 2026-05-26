@@ -245,6 +245,12 @@ export default withMermaid(defineConfig({
                     ],
                 },
                 {
+                    text: '第 03 期 · JPA Superset',
+                    items: [
+                        {text: 'JPA × UI × RBAC × AI × Flow', link: '/topics/jpa-superset'},
+                    ],
+                },
+                {
                     text: '第 02 期 · Design Philosophy',
                     items: [
                         {text: '@Erupt × DataProxy × Handler', link: '/topics/annotation-vs-canvas'},
