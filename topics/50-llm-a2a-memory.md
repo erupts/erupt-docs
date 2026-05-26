@@ -162,10 +162,6 @@ erupt:
 
 更细节见 [erupt-ai 模块文档](/modules/erupt-ai) 与 [erupt-ai-claw](/modules/erupt-ai-claw)。
 
-## 八、下一期预告
-
-第 02 期我们会写——**Erupt Cube × LLM：让 BI 看板自己给出"为什么变了"**。继续围绕 Harness Engineering 的另一条主线展开。
-
 ---
 
 :::info 参与讨论
