@@ -361,7 +361,7 @@ export default withMermaid(defineConfig({
             lang: 'zh-CN',
             themeConfig: {
                 nav: [
-                    {text: '指南', link: '/zh/guide/', activeMatch: '/zh/guide/'},
+                    {text: '快速上手', link: '/zh/guide/', activeMatch: '/zh/guide/'},
                     {text: '注解参考', link: '/zh/annotation/', activeMatch: '/zh/annotation/'},
                     {text: '组件类型', link: '/zh/field-types/', activeMatch: '/zh/field-types/'},
                     {text: '进阶', link: '/zh/advanced/', activeMatch: '/zh/advanced/'},
