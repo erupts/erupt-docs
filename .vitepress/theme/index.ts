@@ -39,7 +39,26 @@ export default {
         })
     },
 
-    enhanceApp({app}) {
+    // @ts-ignore
+    enhanceApp({app, router}) {
+        const knownPrefixes = ['/guide', '/annotation', '/field-types', '/advanced', '/modules', '/topics']
+        const redirect = (path: string) => {
+            const lang = typeof navigator !== 'undefined' ? navigator.language : ''
+            const locale = lang.toLowerCase().startsWith('zh') ? 'zh' : 'en'
+            window.location.replace('/' + locale + path)
+        }
+        // 直接访问旧 URL（初始加载）
+        if (typeof window !== 'undefined') {
+            const path = window.location.pathname
+            if (knownPrefixes.some(p => path.startsWith(p))) redirect(path)
+        }
+        // SPA 站内导航
+        router.onBeforeRouteChange = (to: string) => {
+            if (knownPrefixes.some(p => to.startsWith(p))) {
+                redirect(to)
+                return false
+            }
+        }
         app.provide(InjectionKey, {
             layoutSwitch: {
                 defaultMode: LayoutMode.FullWidth,
