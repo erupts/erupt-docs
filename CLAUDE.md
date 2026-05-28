@@ -25,6 +25,10 @@ Key config flags:
 - `cleanUrls: true` — no `.html` suffixes in URLs
 - `ignoreDeadLinks: true` — build won't fail on broken links (but fix them anyway)
 
+### Bilingual Sync Rule
+
+**Every content change must be applied to both `zh/` and `en/` in the same edit session.** Never update one locale without updating the other. This applies to new pages, edits to existing pages, and deletions.
+
 ### Content Structure
 
 All content is duplicated across two locale roots:
