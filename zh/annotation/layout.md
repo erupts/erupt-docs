@@ -95,5 +95,3 @@ public @interface Layout {
 ## 列固定（Fixed Columns）
 
 通过 `tableLeftFixed` 和 `tableRightFixed` 属性可以锁定表格左右两侧的列，使其在水平滚动时保持可见，提升数据查看体验。
-
-<!-- TODO: 添加截图 -->
