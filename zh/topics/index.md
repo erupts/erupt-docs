@@ -24,6 +24,20 @@ outline: deep
 
 <div class="topic-list">
 
+<a class="topic-card" href="/topics/controllable-low-code">
+  <div class="topic-card__index">#05</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Design Philosophy</div>
+    <h3 class="topic-card__title">注解 × Spring × Git：史上最可控的低代码——没有"生成"这个动词</h3>
+    <p class="topic-card__desc">国内低代码 = 拖拽画布 / Node.js 在线脚本，给业务运营用。Erupt 押的是反向那条路——做给后端工程师的低代码：注解就是配置，扩展点都是 Spring Bean，真理在 Git 里，框架不向你源码目录写一个字节；17 个 LLM + A2A + Memory + @AiToolbox 是默认依赖，不是 AI 加件。</p>
+    <div class="topic-card__meta">
+      <span>2026-06-01</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
 <a class="topic-card" href="/topics/cube-llm">
   <div class="topic-card__index">#04</div>
   <div class="topic-card__body">

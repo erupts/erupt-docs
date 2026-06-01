@@ -243,6 +243,12 @@ export default withMermaid(defineConfig({
                             ],
                         },
                         {
+                            text: 'Issue 05 · Design Philosophy',
+                            items: [
+                                {text: 'Annotation × Spring × Git', link: '/en/topics/controllable-low-code'},
+                            ],
+                        },
+                        {
                             text: 'Issue 04 · BI × LLM',
                             items: [
                                 {text: 'Erupt Cube × LLM', link: '/en/topics/cube-llm'},
@@ -548,6 +554,12 @@ export default withMermaid(defineConfig({
                             text: '专题',
                             items: [
                                 {text: '专题总览', link: '/zh/topics/'},
+                            ],
+                        },
+                        {
+                            text: '第 05 期 · Design Philosophy',
+                            items: [
+                                {text: '注解 × Spring × Git', link: '/zh/topics/controllable-low-code'},
                             ],
                         },
                         {

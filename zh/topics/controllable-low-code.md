@@ -19,8 +19,6 @@ outline: deep
   </div>
 </div>
 
-[[toc]]
-
 ## 一、为什么写这篇
 
 国内低代码圈里，每隔半年就会冒一波"开发者怎么看低代码"的讨论。底下的回复几乎是同一份模板：
@@ -273,14 +271,6 @@ public class CustomerAiTools {
     <groupId>xyz.erupt</groupId>
     <artifactId>erupt-ai</artifactId>
 </dependency>
-```
-
-```yaml
-erupt:
-  ai:
-    # 17 个 provider 在后台 "LLM 配置" 菜单里全可见，
-    # 这里只演示 DeepSeek，其他同理
-    enable: true
 ```
 
 启动后进入后台菜单 **AI → LLM 配置**，新建一条 DeepSeek（或任意其他 provider），填 API key 就能在聊天框里跑。然后在你的项目里随手加一个：

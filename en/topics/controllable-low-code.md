@@ -19,8 +19,6 @@ outline: deep
   </div>
 </div>
 
-[[toc]]
-
 ## 1. Why this issue
 
 Every six months a "what do developers think of low-code?" thread surfaces in Chinese dev circles. The replies are almost a template:
@@ -273,14 +271,6 @@ Once that's running, **the AI part this issue cares about** is two extra steps �
     <groupId>xyz.erupt</groupId>
     <artifactId>erupt-ai</artifactId>
 </dependency>
-```
-
-```yaml
-erupt:
-  ai:
-    # All 17 providers are visible under the "LLM Config" admin menu;
-    # this just flips the module on.
-    enable: true
 ```
 
 Open the admin, go to **AI → LLM Config**, add a DeepSeek entry (or any other provider), paste the API key — the chat is live. Now drop a tool somewhere in your project:

@@ -24,6 +24,20 @@ outline: deep
 
 <div class="topic-list">
 
+<a class="topic-card" href="/en/topics/controllable-low-code">
+  <div class="topic-card__index">#05</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Design Philosophy</div>
+    <h3 class="topic-card__title">Annotation × Spring × Git: the most controllable low-code platform — no verb called "generate"</h3>
+    <p class="topic-card__desc">Chinese low-code = drag-and-drop canvases or on-platform Node.js editors, all built for business operators. Erupt bets on the opposite lane — low-code for backend engineers: annotations are the config, extension points are Spring beans, the source of truth lives in Git, and the framework writes zero bytes into your source tree. 17 LLMs + A2A + memory + @AiToolbox ship as default dependencies, not AI add-ons.</p>
+    <div class="topic-card__meta">
+      <span>2026-06-01</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
 <a class="topic-card" href="/en/topics/cube-llm">
   <div class="topic-card__index">#04</div>
   <div class="topic-card__body">
