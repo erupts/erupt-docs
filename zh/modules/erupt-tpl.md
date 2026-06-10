@@ -50,7 +50,7 @@ erupt-tpl 模块提供自定义页面能力，支持在菜单中嵌入自定义 
 
 ## 行按钮嵌入
 
-通过 `@RowOperation` 注解可以在列表行按钮中打开自定义模板页面：
+通过 `@RowOperation` 注解可以在列表行按钮中打开自定义模板页面，详细用法请参考 [TPL 模板弹出层](/zh/annotation/row-operation#tpl-模板弹出层)。
 
 <img src="/tpl/row-op1.png" width="700">
 

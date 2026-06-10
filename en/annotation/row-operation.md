@@ -189,6 +189,94 @@ public class DialogFormHandler implements OperationHandler<EruptTest, SimpleDial
 }
 ```
 
+## TPL Template Dialog
+
+Set `type` to `RowOperation.Type.TPL` to open a custom template page in a dialog when the button is clicked. This is ideal for complex display or interaction scenarios.
+
+:::tip
+Make sure the [erupt-tpl](/en/modules/erupt-tpl) module is imported before using this feature.
+:::
+
+```java
+@Erupt(
+    name = "Button Opens Template",
+    rowOperation = @RowOperation(
+        code = "tpl", title = "Template Button", type = RowOperation.Type.TPL,
+        tpl = @Tpl(
+            path = "/tpl/operator.ftl",           // template file path
+            tplHandler = TestErupt.class,          // data binding handler (optional)
+            engine = Tpl.Engine.FreeMarker          // default value
+        )
+    )
+)
+@Entity
+@Getter
+public class TestErupt extends BaseModel implements Tpl.TplHandler {
+
+    @EruptField(
+        views = @View(title = "Name"),
+        edit = @Edit(title = "Name")
+    )
+    private String name;
+
+    @EruptField(
+        views = @View(title = "Number"),
+        edit = @Edit(title = "Number")
+    )
+    private Integer number;
+
+    @Override
+    public void bindTplData(Map<String, Object> binding, String[] params) {
+        binding.put("title", "Selected Data");
+    }
+}
+```
+
+Template file example (`resources/tpl/operator.ftl`):
+
+```html
+<div>
+    <#-- title is bound via bindTplData -->
+    <h1 align="center">${title}</h1>
+    <table border="1" cellpadding="0" style="width: 100%">
+        <#list rows as row>
+        <tr>
+            <td>${row.id}</td>
+            <td style="background: #09f;color: #fff">${row.name}</td>
+            <td>${row.number}</td>
+        </tr>
+        </#list>
+    </table>
+</div>
+```
+
+### Pre-injected Template Variables
+
+| Variable | Description |
+|----------|-------------|
+| `request` | HttpServletRequest object |
+| `response` | HttpServletResponse object (1.6.12+) |
+| `rows` | Selected row data (array); not available when engine is native |
+
+### Closing the Dialog
+
+Call the following JS code from within the template page to close the dialog:
+
+```javascript
+window.parent.postMessage({ type: 'close' }, '*');
+```
+
+### Closing the Dialog and Refreshing Data
+
+```javascript
+window.parent.postMessage({ type: 'close-and-query' }, '*');
+```
+
+### Dialog Width and Height
+
+- **Height**: Auto-adapts to the custom page height
+- **Width**: Configure via `RowOperation → tplWidth`, must include a unit, e.g. `500px`, `80%` (1.10.13+)
+
 ## Button Permissions
 
 ```java

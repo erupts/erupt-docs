@@ -188,6 +188,94 @@ public class DialogFormHandler implements OperationHandler<EruptTest, SimpleDial
 }
 ```
 
+## TPL 模板弹出层
+
+将 `type` 设为 `RowOperation.Type.TPL`，点击按钮后会弹出自定义模板页面，适用于复杂展示或交互场景。
+
+:::tip
+使用前需确保导入了 [erupt-tpl](/zh/modules/erupt-tpl) 模块。
+:::
+
+```java
+@Erupt(
+    name = "按钮打开模板",
+    rowOperation = @RowOperation(
+        code = "tpl", title = "模板按钮", type = RowOperation.Type.TPL,
+        tpl = @Tpl(
+            path = "/tpl/operator.ftl",           // 模板文件路径
+            tplHandler = TestErupt.class,          // 数据绑定处理类（可选）
+            engine = Tpl.Engine.FreeMarker          // 缺省值
+        )
+    )
+)
+@Entity
+@Getter
+public class TestErupt extends BaseModel implements Tpl.TplHandler {
+
+    @EruptField(
+        views = @View(title = "名称"),
+        edit = @Edit(title = "名称")
+    )
+    private String name;
+
+    @EruptField(
+        views = @View(title = "数值"),
+        edit = @Edit(title = "数值")
+    )
+    private Integer number;
+
+    @Override
+    public void bindTplData(Map<String, Object> binding, String[] params) {
+        binding.put("title", "选中的数据");
+    }
+}
+```
+
+模板文件示例（`resources/tpl/operator.ftl`）：
+
+```html
+<div>
+    <#-- title 为 bindTplData 绑定的数据 -->
+    <h1 align="center">${title}</h1>
+    <table border="1" cellpadding="0" style="width: 100%">
+        <#list rows as row>
+        <tr>
+            <td>${row.id}</td>
+            <td style="background: #09f;color: #fff">${row.name}</td>
+            <td>${row.number}</td>
+        </tr>
+        </#list>
+    </table>
+</div>
+```
+
+### 模板预注入变量
+
+| 变量 | 说明 |
+|------|------|
+| `request` | HttpServletRequest 对象 |
+| `response` | HttpServletResponse 对象（1.6.12+） |
+| `rows` | 选中行的数据（数组），engine 为 native 时不支持 |
+
+### 关闭弹出层
+
+在模板页面中调用以下 JS 代码即可关闭弹出层：
+
+```javascript
+window.parent.postMessage({ type: 'close' }, '*');
+```
+
+### 关闭弹出层并刷新数据
+
+```javascript
+window.parent.postMessage({ type: 'close-and-query' }, '*');
+```
+
+### 弹出层宽高
+
+- **高度**：随自定义页面高度自适应
+- **宽度**：通过 `RowOperation → tplWidth` 配置，需指定单位，如 `500px`、`80%`（1.10.13+）
+
 ## 按钮权限
 
 ```java

@@ -50,7 +50,7 @@ Create `.ftl` files inside the `resources/tpl` directory. You can use pre-inject
 
 ## Row Button Embedding
 
-Using the `@RowOperation` annotation, you can open a custom template page from a row action button in a list view:
+Using the `@RowOperation` annotation, you can open a custom template page from a row action button in a list view. For full usage details, see [TPL Template Dialog](/en/annotation/row-operation#tpl-template-dialog).
 
 <img src="/tpl/row-op1.png" width="700">
 
