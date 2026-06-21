@@ -101,6 +101,17 @@ public interface DataProxy<MODEL> {
      */
     default void afterFetch(Collection<Map<String, Object>> list) { }
 
+    /**
+     * 独立表单视图：打开时触发，从数据源加载数据并填充 model
+     */
+    default void formViewBehavior(MODEL model) { }
+
+    /**
+     * 独立表单视图：字段校验通过后触发，将 model 持久化到数据源
+     * 抛出 EruptException 可中止保存并向用户显示错误信息
+     */
+    default void formSave(MODEL model) throws EruptException { }
+
 }
 ```
 
@@ -228,13 +239,16 @@ public class EruptTestDataProxy implements DataProxy<EruptTest>{
 
 `extraContent` 方法返回的 HTML 字符串将渲染到表格或其他视图的顶部区域，适合用于展示统计摘要、公告提示、自定义图表等补充信息。
 
+2.0.0 起方法签名增加第二个参数 `list`，可直接访问当前页查询结果：
+
 ```java
 @Service
 public class EruptTestDataProxy implements DataProxy<EruptTest>{
 
     @Override
-    public String extraContent(List<Condition> conditions) {
-        long total = eruptTestRepository.count();
+    public String extraContent(List<Condition> conditions, List<Map<String, Object>> list) {
+        // list 为当前页数据（2.0.0+），conditions 为搜索条件
+        long total = list.size();
         return "<div style='padding:8px 12px;background:#f0f9ff;border-radius:6px'>"
              + "📊 当前共 <b>" + total + "</b> 条记录"
              + "</div>";
@@ -246,6 +260,7 @@ public class EruptTestDataProxy implements DataProxy<EruptTest>{
 :::tip
 - 返回 `null` 时不展示任何内容（默认行为）
 - `conditions` 参数为当前页面的搜索条件，可据此动态渲染内容
+- `list` 参数（2.0.0+）为当前页查询结果，可直接读取展示统计信息
 - 返回内容为原始 HTML，注意避免 XSS 风险，不要直接拼接用户输入
 :::
 

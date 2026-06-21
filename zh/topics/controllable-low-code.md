@@ -83,7 +83,7 @@ public class Customer extends BaseModel {
 
     @EruptField(
         views = @View(title = "客户名"),
-        edit = @Edit(title = "客户名", notNull = true, search = @Search(vague = true))
+        edit = @Edit(title = "客户名", notNull = true, search = @Search)
     )
     private String name;
 

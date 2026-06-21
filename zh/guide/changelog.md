@@ -1,5 +1,86 @@
 # 更新日志
 
+## 2.0.0（2026-06-21） <Badge type="tip" text="Spring Boot 3.5.15" />
+
+:::warning
+2.0.0 包含多项破坏性变更，升级前请务必阅读 [1.14.x → 2.0.0 升级指南](/zh/guide/upgrade)
+:::
+
+🦞 开源 [erupt-designer](/zh/modules/erupt-designer) 模块，可在运行时可视化设计 Erupt 实体模型，并支持动态注册与一键发布到菜单
+
+🦞 开源 [erupt-print](/zh/modules/erupt-print) 模块，支持为 Erupt 实体定义模板、配置变量并一键打印
+
+🌟 [erupt-monitor](/zh/modules/erupt-monitor) **完全重写**：全新诊断监控体系，支持 JVM 诊断与 GC 状态、HikariCP API 连接池实时状态、HTTP 请求统计、Redis 健康指标监控
+
+🌟 [erupt-ai](/zh/modules/erupt-ai#agentprompt-与-contextprompt)：LLM 请求支持 `agentPrompt` 与 `contextPrompt`，可按调用场景注入上下文感知提示词
+
+🌟 [@Vis](/zh/annotation/vis) 新增日历视图（`CALENDAR`）与看板视图（`BOARD`）类型，数据可视化展示方式更多样
+
+🌟 [@Power](/zh/annotation/power) 新增 `copy` 权限开关，支持表格行一键复制
+
+🌟 [@Layout](/zh/annotation/layout) 新增 `collapseActionButton` 配置，将查看详情、修改、删除按钮折叠到下拉菜单
+
+🌟 新增 [`@GroupType` 注解](/zh/field-types/group)，支持将字段分组到可折叠面板中（`EditType.GROUP`）
+
+🌟 [`@Erupt`](/zh/annotation/erupt) 与 [`@Edit`](/zh/annotation/edit) 注解新增 `prompt` 字段，用于 AI 智能体场景的提示词配置
+
+🌟 新增 [`PASSWORD` 编辑类型](/zh/field-types/password)，密码字段独立渲染，传输更安全
+
+🌟 搜索栏支持开放式搜索，INPUT、NUMBER 等组件支持用户自主选择等于、不等于、包含、范围等搜索操作符
+
+🌟 动态下拉刷新：`ChoiceFetchHandler` / `AutoCompleteHandler` / `TagsFetchHandler` 支持按需重新加载选项
+
+🌟 新增[独立表单视图（`FormView`）](/zh/advanced/form-view)，提供专用后端接口与 `DataProxy.formViewBehavior` / `formSave` 钩子，适合单记录全页表单场景
+
+🌟 [搜索新增 `NOT_IN` 操作符，`QueryExpression` 扩展 `GT`/`GTE`/`LT`/`LTE` 比较运算](/zh/annotation/search#queryexpression-搜索操作符)
+
+🌟 Excel 导出支持仅导出已选中的行
+
+🌟 密码加密算法从 MD5 升级至 SHA-512 + 盐值，安全性大幅提升，感谢 [段鹏鹏](https://gitee.com/erupt/erupt/pulls/35) 贡献的代码
+
+🌟 Spring Boot 升级至 3.5.15
+
+🐞 修复 Ollama 模型配置中缺少 `baseUrl` 参数的问题，感谢 [canjian215215](https://github.com/canjian215215) 贡献的代码
+
+### 🎨 前端全面重构（erupt-web 2.0）
+
+> Angular 20 → 21，UI 层从架构到交互全面重写。
+
+- 全新登录页、预加载动画，新增分栏菜单（Split Menu）模式
+- 侧边栏宽度可拖拽、收藏夹支持拖拽排序，响应式布局优化
+- 表格支持列拖拽排序、列固定、列密度调整，行复制、搜索状态持久化、可折叠搜索区域
+- 左树右表布局树面板可折叠，表格-树形布局支持全屏模式
+- **表格 / 树形视图内嵌 AI 侧边面板**，无需离开当前页即可 AI 辅助分析数据
+- erupt-ai 聊天新增宽屏模式、会话搜索、输入历史导航
+- 代码编辑器支持智能提示、全屏模式；附件组件支持拖拽排序与批量更新
+- MultiChoice / Checkbox 新增全选按钮；Choice 支持颜色圆点可视化；输入框实时字数计数
+- 树形视图支持排序、节点定位；BI / Monitor 模块全屏优化
+
+### 1.14.x → 2.0.0 升级指南
+
+> 完整升级指南详见：[/zh/guide/upgrade](/zh/guide/upgrade)
+
+**破坏性变更**
+
++ **密码加密算法升级**：密码加密从 MD5 升级为 SHA-512 + 盐值（Salt）。升级向后兼容——现有用户可继续使用原 MD5 密码登录；新建或重置的密码将使用 SHA-512 + 盐值加密。感谢 [段鹏鹏](https://gitee.com/erupt/erupt/pulls/35) 贡献此安全改进。
++ **`DataProxy.extraContent` 签名变更**：新增第二个参数 `Collection<Map<String, Object>> list`。覆盖了此方法的类需更新方法签名。
++ **`AutoCompleteHandler`、`ChoiceFetchHandler`、`TagsFetchHandler` 需要泛型参数**：`fetchFilter` 方法的 `formData` 参数（`Map<String,Object>`）已替换为实际模型对象（泛型 `T`）。
++ **Excel 导入模板格式从 `.xls` 改为 `.xlsx`**：已缓存或收藏导入模板下载链接的用户需重新下载。
++ **`@Search.vague` 属性已移除**：删除所有 `vague = true` / `vague = false` 配置即可，高级搜索现为默认行为。
++ **`EruptApiModel` 类已删除**：响应模型统一改为 `R<T>`，需将代码中的 `EruptApiModel.PromptWay` 替换为 `R.PromptWay`。
++ **`ChoiceTrigger` 接口已移除**：请使用 `@ChoiceType.fetchHandler` 替代。
++ **登录、修改密码接口改为 HTTP POST**：`/login`、`/change-pwd` 接口由 GET 改为 POST，自定义登录页需同步调整请求方式。
+
+**API 变更速查**
+
+| 旧 API | 新 API |
+|--------|--------|
+| `EruptApiModel.PromptWay.MESSAGE` | `R.PromptWay.MESSAGE` |
+| `EruptApiModel.PromptWay.NOTIFY` | `R.PromptWay.NOTIFY` |
+| `@Search(vague = true)` | `@Search` |
+| `@Search(vague = false)` | `@Search(value = true)` |
+| `ChoiceTrigger` | `@ChoiceType.fetchHandler` |
+
 ## 1.14.3（2026-05-19） <Badge type="tip" text="Spring Boot 3.5.13" />
 
 🌟 新增 [erupt-terminal](/zh/modules/erupt-terminal) 模块，无需 SSH 客户端，直接在后台界面操作服务器终端
@@ -1248,6 +1329,7 @@ SqlChoiceFetchHandler 更新包位置：xyz.erupt.toolkit.handler.SqlChoiceFetch
 
 | 版本 | 使用文档 | 更新日志 |
 | --- | --- | --- |
+| 1.14.x | [使用文档](http://1-14-x.docs.erupt.xyz/) | [更新日志](http://1-14-x.docs.erupt.xyz/zh/guide/changelog) |
 | 1.13.x | [使用文档](https://www.yuque.com/erupts/1.13.x) | [更新日志](https://www.yuque.com/erupts/1.13.x/wdic2w) |
 | 1.12.x | [使用文档](https://www.yuque.com/erupts/1.12.x) | [更新日志](https://www.yuque.com/erupts/1.12.x/wdic2w) |
 | 1.11.x | [使用文档](https://www.yuque.com/erupts/1.11.x) | [更新日志](https://www.yuque.com/erupts/1.11.x/wdic2w) |

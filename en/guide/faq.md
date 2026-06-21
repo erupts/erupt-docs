@@ -8,14 +8,18 @@ Erupt initializes user data only once, marked by a `.erupt` folder. Delete the `
 
 > To disable password encryption on login, set `erupt-app.pwdTransferEncrypt` to `false` in your configuration file.
 
-```java
-// 1.12.11 and above
-md5(md5(pwd) + account)
+**2.0.0+**: The frontend applies three rounds of Base64 encoding before transmitting the password:
 
-// 1.12.10 and below
-md5(md5(pwd) + Calendar.DAY_OF_MONTH + account)
-// Calendar.DAY_OF_MONTH → Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+```javascript
+btoa(btoa(btoa(pwd)))
 ```
+
+**1.12.11 – 1.14.x**:
+
+```
+md5(md5(pwd) + account)
+```
+
 
 ## There is no DDL SQL
 

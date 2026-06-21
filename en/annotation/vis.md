@@ -35,6 +35,8 @@ public class Task extends BaseModel { ... }
 | `show` | Dynamically controls whether the tab is visible (`ExprBool`) |
 | `cardView` | Card view configuration, active when `type = CARD`, see [Card View](/en/annotation/vis-card) |
 | `ganttView` | Gantt chart configuration, active when `type = GANTT`, see [Gantt Chart](/en/annotation/vis-gantt) |
+| `calendarView` | Calendar view configuration, active when `type = CALENDAR` (2.0.0+) |
+| `boardView` | Board view configuration, active when `type = BOARD` (2.0.0+) |
 | `tplView` | Custom template configuration, active when `type = TPL` |
 
 ### Type Enum
@@ -44,6 +46,8 @@ public class Task extends BaseModel { ... }
 | `TABLE` | Table view (can be combined with field filtering) |
 | `CARD` | Card / grid view |
 | `GANTT` | Gantt chart |
+| `CALENDAR` | Calendar view, used with `calendarView` (2.0.0+) |
+| `BOARD` | Board / kanban view, used with `boardView` (2.0.0+) |
 | `TPL` | Custom template view |
 
 ## visRawTable

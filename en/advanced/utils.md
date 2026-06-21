@@ -101,10 +101,10 @@ public void fun() {
     throw new EruptApiErrorTip("Error message");
 
     // Display error as a toast message
-    throw new EruptApiErrorTip("Error message", EruptApiModel.PromptWay.MESSAGE);
+    throw new EruptApiErrorTip("Error message", R.PromptWay.MESSAGE);
 
     // Display error as a notification
-    throw new EruptApiErrorTip("Error message", EruptApiModel.PromptWay.NOTIFY);
+    throw new EruptApiErrorTip("Error message", R.PromptWay.NOTIFY);
 }
 ```
 

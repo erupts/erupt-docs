@@ -29,6 +29,7 @@ public class EruptTest extends BaseModel {
 | `viewDetails` | boolean | true | Whether viewing record details is allowed |
 | `export` | boolean | false | Whether exporting data is allowed |
 | `importable` | boolean | false | Whether importing data is allowed |
+| `copy` | boolean | true | Whether to allow one-click row copy (2.0.0+) |
 | `powerHandler` | Class | - | Implement this interface to control permissions dynamically |
 
 ## Annotation Definition
@@ -48,6 +49,8 @@ public @interface Power {
     boolean export() default false; // export data
 
     boolean importable() default false; // import data
+
+    boolean copy() default true; // one-click row copy (2.0.0+)
 
     // implement this interface to control permissions dynamically
     Class<? extends PowerHandler> powerHandler() default PowerHandler.class;

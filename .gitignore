@@ -40,3 +40,4 @@ build/
 /.vitepress/cache
 /.vitepress/dist
 yarn.lock
+.claude/settings.local.json

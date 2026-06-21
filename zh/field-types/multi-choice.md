@@ -4,8 +4,6 @@
 
 ## 基础用法
 
-静态选项：
-
 ```java
 @JdbcTypeCode(SqlTypes.JSON)
 @Column(length = 2000)
@@ -28,6 +26,44 @@ private Set<String> multiChoice;
 :::info
 `@JdbcTypeCode(SqlTypes.JSON)` 指示 Hibernate 将 `Set<String>` 序列化为 JSON 数组存入数据库单列，例如 `["A","C"]`。需要数据库列具有足够长度（建议 `length = 2000` 或更大）。
 :::
+
+## 动态列表
+
+实现 `ChoiceFetchHandler<T>` 接口，字段声明需使用 `@JdbcTypeCode(SqlTypes.JSON)` + `Set<String>`：
+
+```java
+@JdbcTypeCode(SqlTypes.JSON)
+@Column(length = 2000)
+@EruptField(
+    edit = @Edit(title = "技能标签", type = EditType.MULTI_CHOICE,
+                 multiChoiceType = @MultiChoiceType(fetchHandler = SkillFetchHandler.class))
+)
+private Set<String> skills;
+```
+
+```java
+@Component
+public class SkillFetchHandler implements ChoiceFetchHandler<MyModel> {
+
+    @Override
+    public List<VLModel> fetch(String[] params) {
+        // 初始加载，返回全量选项
+        return skillService.findAll().stream()
+            .map(s -> new VLModel(s.getCode(), s.getName()))
+            .collect(toList());
+    }
+
+    @Override
+    public List<VLModel> fetchFilter(MyModel model, String[] params) {
+        // 联动：根据同表单其他字段动态过滤可选项
+        String dept = model.getDept();
+        return skillService.findByDept(dept).stream()
+            .map(s -> new VLModel(s.getCode(), s.getName()))
+            .collect(toList());
+    }
+
+}
+```
 
 ## 配置项
 
@@ -92,15 +128,3 @@ private Set<Integer> mid;
 :::tip
 使用 `Set<Integer>` 或 `Set<String>` 作为字段类型，JPA 会自动维护中间表的增删。相比默认的 JSON 单列存储，这种方案更适合需要按选项值查询或关联的场景。
 :::
-
-## 示例：动态获取选项
-
-实现 `ChoiceFetchHandler` 接口，与 [CHOICE](/zh/field-types/choice) 完全相同：
-
-```java
-@EruptField(
-    edit = @Edit(title = "多选", type = EditType.MULTI_CHOICE,
-                 multiChoiceType = @MultiChoiceType(fetchHandler = FetchHandlerImpl.class))
-)
-private String multiChoice;
-```

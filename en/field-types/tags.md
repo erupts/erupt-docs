@@ -6,6 +6,18 @@ A tag-style multi-select component, suitable for labeling, categorization, and s
 
 ```java
 @EruptField(
+    edit = @Edit(title = "Tech Stack", type = EditType.TAGS,
+                 tagsType = @TagsType(tags = {"Java", "Python", "Go"}, allowExtension = false))
+)
+private String techStack;
+```
+
+## Dynamic List
+
+Field declaration:
+
+```java
+@EruptField(
     views = @View(title = "Tags"),
     edit = @Edit(title = "Tags", type = EditType.TAGS,
                  tagsType = @TagsType(
@@ -15,15 +27,17 @@ A tag-style multi-select component, suitable for labeling, categorization, and s
 private String tags;
 ```
 
-Implement `TagsFetchHandler` to provide options:
+Implement `TagsFetchHandler<T>` to provide options. The generic `T` is the current Erupt entity class — read `model` to access other form fields for linked filtering:
 
 ```java
 @Component
-public class MyTagsFetchHandler implements TagsFetchHandler {
+public class MyTagsFetchHandler implements TagsFetchHandler<MyModel> {
 
     @Override
-    public List<String> fetch(String[] params) {
-        return List.of("Java", "Python", "Go");
+    public List<String> fetchTags(MyModel model, String[] params) {
+        // model is the full form object — read other fields for linked filtering
+        String type = model.getType();
+        return tagService.findByType(type);
     }
 
 }
@@ -49,14 +63,5 @@ public @interface TagsType {
 }
 ```
 
-## Examples
+> **2.0.0+**: A refresh button is displayed next to TAGS fields in the edit form, allowing the dynamic tag list to be re-fetched on demand.
 
-Static tag list:
-
-```java
-@EruptField(
-    edit = @Edit(title = "Tech Stack", type = EditType.TAGS,
-                 tagsType = @TagsType(tags = {"Java", "Python", "Go"}, allowExtension = false))
-)
-private String techStack;
-```

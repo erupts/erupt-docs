@@ -101,10 +101,10 @@ public void fun() {
     throw new EruptApiErrorTip("错误信息提示");
 
     // 消息方式提示
-    throw new EruptApiErrorTip("错误信息提示", EruptApiModel.PromptWay.MESSAGE);
+    throw new EruptApiErrorTip("错误信息提示", R.PromptWay.MESSAGE);
 
     // 通知方式提示
-    throw new EruptApiErrorTip("错误信息提示", EruptApiModel.PromptWay.NOTIFY);
+    throw new EruptApiErrorTip("错误信息提示", R.PromptWay.NOTIFY);
 }
 ```
 

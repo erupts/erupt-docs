@@ -8,14 +8,18 @@
 
 > 如果不希望登录时密码加密，在配置文件中，将：`erupt-app.pwdTransferEncrypt` 设置为 false 即可
 
-```java
-// 1.12.11 及以上版本
-md5(md5(pwd) + account)
+**2.0.0 及以上版本**：前端对密码进行三次 Base64 编码后传输：
 
-// 1.12.10 及以下版本
-md5(md5(pwd) + Calendar.DAY_OF_MONTH + account)
-// Calendar.DAY_OF_MONTH → Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+```javascript
+btoa(btoa(btoa(pwd)))
 ```
+
+**1.12.11 – 1.14.x**：
+
+```
+md5(md5(pwd) + account)
+```
+
 
 ## 没有建表 SQL
 

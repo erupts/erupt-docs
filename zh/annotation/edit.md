@@ -19,6 +19,7 @@
 | `onchange` | 值变更联动（1.13.2+），详见 [OnChange](/zh/advanced/dynamic-form) |
 | `orderBy` | 排序规则，HQL order by 语法；仅当字段为关联对象时可用 |
 | `filter` | 过滤条件，HQL where 语法；仅当字段为关联对象时可用 |
+| `prompt` | AI 智能体提示词，供 erupt-ai 工具调用时注入字段级上下文，2.0.0 新增 |
 
 ## 组件类型（EditType）
 
@@ -51,6 +52,8 @@
 | `TPL` | 自定义 HTML 模板 | ❌ | ❌ |
 | `HIDDEN` | 隐藏字段 | ❌ | ❌ |
 | `EMPTY` | 空占位（仍占据表单位置） | ❌ | ❌ |
+| `PASSWORD` | [密码输入框](/zh/field-types/password)，传输加密更安全（2.0.0+） | ❌ | ❌ |
+| `GROUP` | [字段分组面板](/zh/field-types/group)，可折叠（2.0.0+） | ❌ | ❌ |
 
 ### 关联组件
 
@@ -65,3 +68,5 @@
 | `TAB_TREE` | 多对多树引用 | ❌ |
 | `TAB_TABLE_REFER` | 多对多表引用 | ❌ |
 | `TAB_TABLE_ADD` | 一对多新增 | ❌ |
+
+详细文档见 [GROUP 字段分组面板](/zh/field-types/group) 和 [PASSWORD 密码输入框](/zh/field-types/password)。

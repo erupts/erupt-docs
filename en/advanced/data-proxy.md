@@ -101,6 +101,17 @@ public interface DataProxy<MODEL> {
      */
     default void afterFetch(Collection<Map<String, Object>> list) { }
 
+    /**
+     * Form view: called on open — load data from your source and populate model fields.
+     */
+    default void formViewBehavior(MODEL model) { }
+
+    /**
+     * Form view: called on save after field validation passes — persist model to your data source.
+     * Throw EruptException to abort with a user-visible error message.
+     */
+    default void formSave(MODEL model) throws EruptException { }
+
 }
 ```
 
@@ -228,15 +239,17 @@ public class EruptTestDataProxy implements DataProxy<EruptTest>{
 
 The HTML string returned by `extraContent` is rendered at the top of the table or other view, suitable for displaying summary statistics, announcements, custom charts, and other supplementary information.
 
+In 2.0.0 a second parameter `list` was added, giving direct access to the current page's query results:
+
 ```java
 @Service
 public class EruptTestDataProxy implements DataProxy<EruptTest>{
 
     @Override
-    public String extraContent(List<Condition> conditions) {
-        long total = eruptTestRepository.count();
+    public String extraContent(List<Condition> conditions, List<Map<String, Object>> list) {
+        // list = current page data (2.0.0+); conditions = current search filters
         return "<div style='padding:8px 12px;background:#f0f9ff;border-radius:6px'>"
-             + "Total: <b>" + total + "</b> records"
+             + "Total: <b>" + list.size() + "</b> records on this page"
              + "</div>";
     }
     
@@ -246,6 +259,7 @@ public class EruptTestDataProxy implements DataProxy<EruptTest>{
 :::tip
 - Return `null` to display nothing (default behavior)
 - The `conditions` parameter contains the current page's search conditions, allowing dynamic content rendering
+- The `list` parameter (2.0.0+) provides the current page query results for inline statistics
 - The return value is raw HTML — avoid XSS risks by never concatenating user input directly
 :::
 

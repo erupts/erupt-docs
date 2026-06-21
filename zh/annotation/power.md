@@ -29,6 +29,7 @@ public class EruptTest extends BaseModel {
 | `viewDetails` | boolean | true | 是否允许查看详情 |
 | `export` | boolean | false | 是否允许导出数据 |
 | `importable` | boolean | false | 是否允许导入数据 |
+| `copy` | boolean | true | 是否允许一键复制行数据（2.0.0+） |
 | `powerHandler` | Class | - | 实现此接口动态控制权限 |
 
 ## 配置项注解定义
@@ -48,6 +49,8 @@ public @interface Power {
     boolean export() default false; // 数据导出功能
 
     boolean importable() default false; // 数据导入功能
+
+    boolean copy() default true; // 一键复制行数据（2.0.0+）
 
     // 实现此接口动态控制权限
     Class<? extends PowerHandler> powerHandler() default PowerHandler.class;
