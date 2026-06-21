@@ -248,9 +248,8 @@ public class EruptTestDataProxy implements DataProxy<EruptTest>{
     @Override
     public String extraContent(List<Condition> conditions, List<Map<String, Object>> list) {
         // list 为当前页数据（2.0.0+），conditions 为搜索条件
-        long total = list.size();
         return "<div style='padding:8px 12px;background:#f0f9ff;border-radius:6px'>"
-             + "📊 当前共 <b>" + total + "</b> 条记录"
+             + "📊 当前共 <b>" + list.size() + "</b> 条记录"
              + "</div>";
     }
     
