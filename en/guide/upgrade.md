@@ -7,6 +7,7 @@ This document covers the notable changes when upgrading from 1.14.x to 2.0.0.
 1. Upgrade Spring Boot to **3.5.15** (projects using `<parent>` with `spring-boot-starter-parent` only need to change the version number).
 2. JDK **17** is the minimum supported version (unchanged).
 3. Change the Erupt version to `2.0.0` across all modules.
+4. Projects using [erupt-cloud-node](/en/modules/erupt-cloud-node): **all node services must also be upgraded to 2.0.0**.
 
 ## Breaking Changes
 
@@ -193,27 +194,39 @@ CREATE TABLE e_designer_data (
 );
 ```
 
-## erupt-monitor Menu Rebuild
-
-2.0.0 **completely rewrites** erupt-monitor with a new diagnostics monitoring system — JVM diagnostics & GC status, HikariCP API connection pool real-time stats, HTTP request statistics, and enhanced Redis health metrics. Because the menu structure is entirely different from the old version, existing menu data cannot be migrated automatically. **You must manually clean up and restart** for the new menus to generate correctly.
-
-### Steps
-
-1. **Delete the `.erupt` directory** (located in the JVM working directory, i.e. the directory from which the application starts):
-
-   ```bash
-   rm -rf .erupt
-   ```
-
-   > The `.erupt` directory stores module-initialization marker files. Deleting it causes the framework to re-run all module menu-initialization logic on the next startup.
-
-2. **Manually delete all menus under "System Monitor"**: Log in to the admin UI → System Settings → Menu Management, find the "System Monitor" (or Monitor) root menu, and delete all its child menus as well as the root menu itself.
-
-3. **Restart the application** — the system will automatically generate the new Monitor menus.
+## Required Upgrade Actions
 
 :::warning
-If you skip these steps and upgrade directly, the monitor pages will show routing mismatches or blank pages.
+The following steps **must be completed before starting the application for the first time after the upgrade**. Skipping them will cause routing mismatches or blank pages in the affected modules.
 :::
+
+### Step 1: Delete the `.erupt` directory
+
+The `.erupt` directory (located in the JVM working directory) stores module-initialization marker files. Deleting it causes the framework to re-run all module menu-initialization logic on the next startup:
+
+```bash
+rm -rf .erupt
+```
+
+### Step 2: Manually delete stale menus
+
+Log in to the admin UI → System Settings → Menu Management, and delete the following menus as applicable:
+
+#### If using erupt-monitor
+
+2.0.0 **completely rewrites** erupt-monitor. The menu structure is entirely different from the old version and cannot be migrated automatically:
+
+Find the **"System Monitor"** (or Monitor) root menu and delete all its child menus along with the root menu itself.
+
+#### If using erupt-terminal
+
+2.0.0 refactors the terminal module's frontend UI; the old route has changed:
+
+Find the **"Terminal"** menu and delete it.
+
+### Step 3: Restart the application
+
+After restarting, the system will automatically generate the latest menus for the affected modules.
 
 ## Previous Upgrade Guides
 

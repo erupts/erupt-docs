@@ -43,6 +43,14 @@
 
 🌟 Spring Boot upgraded to 3.5.15.
 
+🌟 Operation logs now record the entity state **before** modification/deletion — the previous field values are visible in log details.
+
+🌟 erupt-ai adds [Requesty](https://requesty.ai) as a new LLM provider.
+
+🌟 OpenAPI: new `getAppid` endpoint to retrieve appid information by token.
+
+🧩 [erupt-designer](/en/modules/erupt-designer): button permissions are now auto-generated when publishing a menu.
+
 🐞 Fixed: Ollama model configuration was missing the `baseUrl` parameter — thanks to [canjian215215](https://github.com/canjian215215) for the contribution.
 
 ### 🎨 Frontend Complete Overhaul (erupt-web 2.0)
@@ -58,6 +66,8 @@
 - Code editor: smart hints and fullscreen mode; attachment component: drag-sort and batch update
 - MultiChoice / Checkbox gain a select-all button; Choice shows color dots; input shows real-time character count
 - Tree view: sort, node locate; BI / Monitor modules gain fullscreen improvements
+- Terminal module ([erupt-terminal](/en/modules/erupt-terminal)) UI integrated — multi-tab switching with real-time WebSocket communication
+- Table and modal now support dynamic action buttons — visibility can be controlled based on row data state
 
 ### 1.14.x → 2.0.0 Upgrade Guide
 

@@ -40,6 +40,14 @@
 
 🌟 Spring Boot 升级至 3.5.15
 
+🌟 操作日志新增变更前实体数据记录，修改/删除前的字段值可在日志详情中完整查看
+
+🌟 erupt-ai 新增 [Requesty](https://requesty.ai) LLM 提供商支持
+
+🌟 OpenAPI 新增 `getAppid` 接口，支持通过 token 获取 appid 信息
+
+🧩 [erupt-designer](/zh/modules/erupt-designer) 发布菜单时自动生成对应按钮权限
+
 🐞 修复 Ollama 模型配置中缺少 `baseUrl` 参数的问题，感谢 [canjian215215](https://github.com/canjian215215) 贡献的代码
 
 ### 🎨 前端全面重构（erupt-web 2.0）
@@ -55,6 +63,8 @@
 - 代码编辑器支持智能提示、全屏模式；附件组件支持拖拽排序与批量更新
 - MultiChoice / Checkbox 新增全选按钮；Choice 支持颜色圆点可视化；输入框实时字数计数
 - 树形视图支持排序、节点定位；BI / Monitor 模块全屏优化
+- 终端模块（[erupt-terminal](/zh/modules/erupt-terminal)）UI 集成，支持多标签页动态切换与 WebSocket 实时通信
+- 表格与弹窗新增动态按钮，可根据行数据状态动态控制按钮显示
 
 ### 1.14.x → 2.0.0 升级指南
 
