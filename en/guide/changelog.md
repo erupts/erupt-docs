@@ -49,6 +49,10 @@
 
 🌟 OpenAPI: new `getAppid` endpoint to retrieve appid information by token.
 
+🌟 [`EruptLambdaQuery`](/en/advanced/erupt-dao#lambdaquery) adds `or()` support for building OR-logic composite queries.
+
+🌟 [erupt-cube](/en/modules/pro/erupt-cube): measures now support `drillFields` for targeted dimension filtering in drill-down analysis.
+
 🧩 [erupt-designer](/en/modules/erupt-designer): button permissions are now auto-generated when publishing a menu.
 
 🐞 Fixed: Ollama model configuration was missing the `baseUrl` parameter — thanks to [canjian215215](https://github.com/canjian215215) for the contribution.

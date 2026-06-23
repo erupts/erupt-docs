@@ -46,6 +46,10 @@
 
 🌟 OpenAPI 新增 `getAppid` 接口，支持通过 token 获取 appid 信息
 
+🌟 [`EruptLambdaQuery`](/zh/advanced/erupt-dao#lambdaquery) 新增 `or` 条件支持，可构建 OR 逻辑的复合查询
+
+🌟 [erupt-cube](/zh/modules/pro/erupt-cube) 指标支持 `drillFields` 维度过滤，钻取分析能力增强
+
 🧩 [erupt-designer](/zh/modules/erupt-designer) 发布菜单时自动生成对应按钮权限
 
 🐞 修复 Ollama 模型配置中缺少 `baseUrl` 参数的问题，感谢 [canjian215215](https://github.com/canjian215215) 贡献的代码

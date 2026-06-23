@@ -132,6 +132,14 @@ public class EruptLambdaQuery {
         Long total = users.getTotal();
         List<EruptUser> list = users.getList();
     }
+
+    // OR 条件查询，2.0.0 及以上版本支持
+    public void orQuery() {
+        List<EruptUser> list = eruptDao.lambdaQuery(EruptUser.class)
+            .or(q -> q.eq(EruptUser::getAccount, "admin")
+                      .eq(EruptUser::getAccount, "guest"))
+            .list();
+    }
 }
 ```
 
