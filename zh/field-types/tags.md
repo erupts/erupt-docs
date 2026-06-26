@@ -6,6 +6,18 @@
 
 ```java
 @EruptField(
+    edit = @Edit(title = "技术栈", type = EditType.TAGS,
+                 tagsType = @TagsType(tags = {"Java", "Python", "Go"}, allowExtension = false))
+)
+private String techStack;
+```
+
+## 动态列表 <Badge type="tip" text="MyModel 2.0.0+" />
+
+字段声明：
+
+```java
+@EruptField(
     views = @View(title = "标签"),
     edit = @Edit(title = "标签", type = EditType.TAGS,
                  tagsType = @TagsType(
@@ -15,15 +27,17 @@
 private String tags;
 ```
 
-实现 `TagsFetchHandler` 提供选项：
+实现 `TagsFetchHandler<T>` 提供选项。泛型 `T` 为当前 Erupt 实体类，可通过 `model` 读取同表单其他字段值实现联动：
 
 ```java
 @Component
-public class MyTagsFetchHandler implements TagsFetchHandler {
+public class MyTagsFetchHandler implements TagsFetchHandler<MyModel> {
 
     @Override
-    public List<String> fetch(String[] params) {
-        return List.of("Java", "Python", "Go");
+    public List<String> fetchTags(MyModel model, String[] params) {
+        // model 为当前表单对象，可读取其他字段值进行联动过滤
+        String type = model.getType();
+        return tagService.findByType(type);
     }
 
 }
@@ -34,7 +48,7 @@ public class MyTagsFetchHandler implements TagsFetchHandler {
 ```java
 public @interface TagsType {
 
-    String joinSeparator() default "|"; // 多标签存储时的分隔符
+    String joinSeparator() default "[]"; // 存储格式：默认 "[]" 为 JSON 数组（如 ["A","B"]），可改为 "," 等字符作为分隔符
 
     boolean allowExtension() default true; // 是否允许用户输入自定义标签
 
@@ -49,14 +63,5 @@ public @interface TagsType {
 }
 ```
 
-## 示例
+> **2.0.0+**：编辑表单中 TAGS 字段旁新增刷新按钮，可按需重新拉取动态标签列表。
 
-静态标签列表：
-
-```java
-@EruptField(
-    edit = @Edit(title = "技术栈", type = EditType.TAGS,
-                 tagsType = @TagsType(tags = {"Java", "Python", "Go"}, allowExtension = false))
-)
-private String techStack;
-```

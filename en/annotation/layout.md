@@ -58,6 +58,9 @@ public @interface Layout {
     // example: tableOperatorWidth = "100px"
     String tableOperatorWidth() default "";
 
+    // collapse the row's view-details, edit, and delete buttons into a dropdown menu (2.0.0+)
+    boolean collapseActionButton() default false;
+
     enum FormSize {
         // default layout: up to three form components per row
         DEFAULT, 
@@ -91,6 +94,17 @@ Defines the table pagination mode:
 - **`BACKEND`**: Server-side pagination (default) — each page turn requests data from the server.
 - **`FRONT`**: Client-side pagination — all data is loaded at once and paginated in the browser.
 - **`NONE`**: No pagination.
+
+## collapseActionButton <Badge type="tip" text="v2.0.0+" />
+
+When `collapseActionButton = true`, the per-row **view details, edit, and delete** buttons are collapsed into a dropdown menu, reducing the width of the action column and making the table more compact.
+
+```java
+@Erupt(
+    name = "Example",
+    layout = @Layout(collapseActionButton = true)
+)
+```
 
 ## Fixed Columns
 

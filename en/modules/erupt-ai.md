@@ -288,6 +288,17 @@ The AI has persistent memory capabilities, retaining user preferences and conver
 
 Memory capabilities work out of the box with no additional configuration. The AI automatically writes key information to memory at appropriate times and retrieves it on demand in subsequent conversations.
 
+## agentPrompt and contextPrompt <Badge type="tip" text="v2.0.0+" />
+
+`LlmRequest` gains two optional fields for injecting additional prompts into a single LLM call — useful for dynamic, context-aware scenarios.
+
+| Field | Description |
+|-------|-------------|
+| `agentPrompt` | The agent-role prompt for this call — temporarily overrides the agent's system prompt |
+| `contextPrompt` | Supplemental context appended to the conversation (e.g., a summary of the currently visible data) |
+
+Both fields are passed by the frontend or integration layer when calling the chat API. Combined with `@Erupt(prompt = "...")` and `@Edit(prompt = "...")`, they allow the AI to understand the business semantics of each entity and field.
+
 ## Driving Erupt Claw
 
 [Erupt AI Claw](/en/modules/erupt-ai-claw)

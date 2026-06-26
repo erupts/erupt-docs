@@ -1,6 +1,6 @@
 # Numeric Slider SLIDER
 
-Input a value by dragging a slider, suitable for scenarios with bounded numeric ranges.
+Input a value by dragging a slider, suitable for scenarios with bounded numeric ranges. Search support (range query) was added in 2.0.0.
 
 ## Basic Usage
 

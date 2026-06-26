@@ -58,6 +58,9 @@ public @interface Layout {
     // 配置示例 tableOperatorWidth = "100px"
     String tableOperatorWidth() default "";
 
+    // 将表格行的查看详情、修改、删除按钮折叠到下拉菜单（2.0.0+）
+    boolean collapseActionButton() default false;
+
     enum FormSize {
         // 默认布局，每行显示三个表单组件
         DEFAULT, 
@@ -91,6 +94,17 @@ public @interface Layout {
 - **`BACKEND`**：后端分页（默认），每次翻页时向服务器请求数据
 - **`FRONT`**：前端分页，一次性加载所有数据到前端，由前端处理分页逻辑
 - **`NONE`**：不分页
+
+## collapseActionButton <Badge type="tip" text="v2.0.0+" />
+
+设置 `collapseActionButton = true` 后，表格每行的**查看详情、修改、删除**按钮将折叠到一个下拉菜单中，节省操作列宽度，使表格更紧凑。
+
+```java
+@Erupt(
+    name = "示例",
+    layout = @Layout(collapseActionButton = true)
+)
+```
 
 ## 列固定（Fixed Columns）
 

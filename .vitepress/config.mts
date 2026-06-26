@@ -131,9 +131,17 @@ export default withMermaid(defineConfig({
                                 {text: '@OrderBy', link: '/en/annotation/order-by'},
                                 {text: '@RowOperation', link: '/en/annotation/row-operation'},
                                 {text: '@Dynamic', link: '/en/annotation/dynamic'},
-                                {text: '@Vis', link: '/en/annotation/vis'},
-                                {text: 'CARD View', link: '/en/annotation/vis-card'},
-                                {text: 'GANTT Chart', link: '/en/annotation/vis-gantt'},
+                                {
+                                    text: '@Vis',
+                                    collapsed: false,
+                                    items: [
+                                        {text: 'Overview', link: '/en/annotation/vis'},
+                                        {text: 'CARD View', link: '/en/annotation/vis-card'},
+                                        {text: 'GANTT Chart', link: '/en/annotation/vis-gantt'},
+                                        {text: 'BOARD View', link: '/en/annotation/vis-board'},
+                                        {text: 'CALENDAR View', link: '/en/annotation/vis-calendar'},
+                                    ],
+                                },
                             ],
                         },
                     ],
@@ -145,6 +153,7 @@ export default withMermaid(defineConfig({
                                 {text: 'Overview', link: '/en/field-types/'},
                                 {text: 'AUTO', link: '/en/field-types/auto'},
                                 {text: 'INPUT', link: '/en/field-types/input'},
+                                {text: 'PASSWORD', link: '/en/field-types/password'},
                                 {text: 'TEXTAREA', link: '/en/field-types/textarea'},
                                 {text: 'NUMBER', link: '/en/field-types/number'},
                                 {text: 'SLIDER', link: '/en/field-types/slider'},
@@ -190,6 +199,7 @@ export default withMermaid(defineConfig({
                         {
                             text: 'Other Types',
                             items: [
+                                {text: 'GROUP', link: '/en/field-types/group'},
                                 {text: 'DIVIDE', link: '/en/field-types/divide'},
                                 {text: 'TPL', link: '/en/field-types/tpl'},
                                 {text: 'HIDDEN', link: '/en/field-types/hidden'},
@@ -204,22 +214,24 @@ export default withMermaid(defineConfig({
                             items: [
                                 {text: 'DataProxy', link: '/en/advanced/data-proxy'},
                                 {text: 'PostDataProxy', link: '/en/advanced/post-data-proxy'},
+                                {text: 'FormView', link: '/en/advanced/form-view'},
                                 {text: 'Dynamic Form', link: '/en/advanced/dynamic-form'},
-                                {text: 'Custom File Upload', link: '/en/advanced/upload'},
+                                {text: 'Soft Delete', link: '/en/advanced/soft-delete'},
                                 {text: 'Event Listener', link: '/en/advanced/event-listener'},
-                                {text: 'i18n', link: '/en/advanced/i18n'},
+                                {text: 'Custom File Upload', link: '/en/advanced/upload'},
                                 {text: 'Frontend Notifications', link: '/en/advanced/frontend-notify'},
-                                {text: 'Miscellaneous', link: '/en/advanced/misc'},
+                                {text: 'i18n', link: '/en/advanced/i18n'},
+                                {text: 'Hot Build', link: '/en/advanced/hot-build'},
                             ],
                         },
                         {
                             text: 'Dev Extensions',
                             items: [
-                                {text: 'REST API & Logs', link: '/en/advanced/rest-api'},
                                 {text: 'EruptDao', link: '/en/advanced/erupt-dao'},
                                 {text: 'Utilities', link: '/en/advanced/utils'},
-                                {text: 'Plugin Development', link: '/en/advanced/plugin'},
+                                {text: 'REST API & Logs', link: '/en/advanced/rest-api'},
                                 {text: 'Extend Erupt Annotations', link: '/en/advanced/extend'},
+                                {text: 'Plugin Development', link: '/en/advanced/plugin'},
                             ],
                         },
                         {
@@ -297,6 +309,7 @@ export default withMermaid(defineConfig({
                                 {text: 'Erupt Mongodb', link: '/en/modules/erupt-mongodb'},
                                 {text: 'Erupt Tpl', link: '/en/modules/erupt-tpl'},
                                 {text: 'Erupt Web', link: '/en/modules/erupt-web'},
+                                {text: 'Erupt Designer', link: '/en/modules/erupt-designer'},
                             ],
                         },
                         {
@@ -369,7 +382,7 @@ export default withMermaid(defineConfig({
                 nav: [
                     {text: '快速上手', link: '/zh/guide/', activeMatch: '/zh/guide/'},
                     {text: '注解参考', link: '/zh/annotation/', activeMatch: '/zh/annotation/'},
-                    {text: '组件类型', link: '/zh/field-types/', activeMatch: '/zh/field-types/'},
+                    {text: '字段组件', link: '/zh/field-types/', activeMatch: '/zh/field-types/'},
                     {text: '进阶', link: '/zh/advanced/', activeMatch: '/zh/advanced/'},
                     {text: '扩展模块', link: '/zh/modules/', activeMatch: '/zh/modules/'},
                     {text: '专题', link: '/zh/topics/', activeMatch: '/zh/topics/'},
@@ -445,20 +458,29 @@ export default withMermaid(defineConfig({
                                 {text: '@OrderBy 排序', link: '/zh/annotation/order-by'},
                                 {text: '@RowOperation 行按钮', link: '/zh/annotation/row-operation'},
                                 {text: '@Dynamic 动态控制', link: '/zh/annotation/dynamic'},
-                                {text: '@Vis 多视图', link: '/zh/annotation/vis'},
-                                {text: '卡片视图 CARD', link: '/zh/annotation/vis-card'},
-                                {text: '甘特图 GANTT', link: '/zh/annotation/vis-gantt'},
+                                {
+                                    text: '@Vis 多视图',
+                                    collapsed: false,
+                                    items: [
+                                        {text: '概览', link: '/zh/annotation/vis'},
+                                        {text: '卡片视图 CARD', link: '/zh/annotation/vis-card'},
+                                        {text: '甘特图 GANTT', link: '/zh/annotation/vis-gantt'},
+                                        {text: '看板视图 BOARD', link: '/zh/annotation/vis-board'},
+                                        {text: '日历视图 CALENDAR', link: '/zh/annotation/vis-calendar'},
+                                    ],
+                                },
                             ],
                         },
                     ],
 
                     '/zh/field-types/': [
                         {
-                            text: '组件类型',
+                            text: '字段组件',
                             items: [
                                 {text: '概览', link: '/zh/field-types/'},
                                 {text: 'AUTO 自动推测', link: '/zh/field-types/auto'},
                                 {text: 'INPUT 单行文本', link: '/zh/field-types/input'},
+                                {text: 'PASSWORD 密码输入框', link: '/zh/field-types/password'},
                                 {text: 'TEXTAREA 多行文本', link: '/zh/field-types/textarea'},
                                 {text: 'NUMBER 数值输入', link: '/zh/field-types/number'},
                                 {text: 'SLIDER 数字滑块', link: '/zh/field-types/slider'},
@@ -504,6 +526,7 @@ export default withMermaid(defineConfig({
                         {
                             text: '其他类型',
                             items: [
+                                {text: 'GROUP 字段分组面板', link: '/zh/field-types/group'},
                                 {text: 'DIVIDE 分割线', link: '/zh/field-types/divide'},
                                 {text: 'TPL 自定义模板', link: '/zh/field-types/tpl'},
                                 {text: 'HIDDEN 隐藏字段', link: '/zh/field-types/hidden'},
@@ -518,22 +541,24 @@ export default withMermaid(defineConfig({
                             items: [
                                 {text: '数据代理 DataProxy', link: '/zh/advanced/data-proxy'},
                                 {text: '全局拦截 PostDataProxy', link: '/zh/advanced/post-data-proxy'},
+                                {text: '独立表单视图 FormView', link: '/zh/advanced/form-view'},
                                 {text: '动态表单', link: '/zh/advanced/dynamic-form'},
-                                {text: '自定义文件上传', link: '/zh/advanced/upload'},
+                                {text: '逻辑删除', link: '/zh/advanced/soft-delete'},
                                 {text: '事件监听器', link: '/zh/advanced/event-listener'},
-                                {text: '国际化', link: '/zh/advanced/i18n'},
+                                {text: '自定义文件上传', link: '/zh/advanced/upload'},
                                 {text: '前端消息与弹窗', link: '/zh/advanced/frontend-notify'},
-                                {text: '杂项功能', link: '/zh/advanced/misc'},
+                                {text: '国际化', link: '/zh/advanced/i18n'},
+                                {text: '热构建', link: '/zh/advanced/hot-build'},
                             ],
                         },
                         {
                             text: '开发扩展',
                             items: [
-                                {text: '接口开发与操作日志', link: '/zh/advanced/rest-api'},
                                 {text: '数据库操作 EruptDao', link: '/zh/advanced/erupt-dao'},
                                 {text: '工具类', link: '/zh/advanced/utils'},
-                                {text: '插件开发', link: '/zh/advanced/plugin'},
+                                {text: '接口开发与操作日志', link: '/zh/advanced/rest-api'},
                                 {text: '扩展 Erupt 注解', link: '/zh/advanced/extend'},
+                                {text: '插件开发', link: '/zh/advanced/plugin'},
                             ],
                         },
                         {
@@ -611,6 +636,7 @@ export default withMermaid(defineConfig({
                                 {text: 'Erupt Mongodb NoSQL', link: '/zh/modules/erupt-mongodb'},
                                 {text: 'Erupt Tpl 自定义页面', link: '/zh/modules/erupt-tpl'},
                                 {text: 'Erupt Web 前端源码', link: '/zh/modules/erupt-web'},
+                                {text: 'Erupt Designer 表单设计器', link: '/zh/modules/erupt-designer'},
                             ],
                         },
                         {

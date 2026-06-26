@@ -14,20 +14,26 @@
 private String autoComplete;
 ```
 
-实现 `AutoCompleteHandler` 提供候选项：
+## 动态列表 <Badge type="tip" text="MyModel 2.0.0+" />
+
+实现 `AutoCompleteHandler<T>` 提供候选项。泛型 `T` 为当前 Erupt 实体类（约定命名为 `MyModel`），可通过 `model` 读取同表单其他字段值实现联动：
 
 ```java
 @Component
-public class MyAutoCompleteHandler implements AutoCompleteHandler {
+public class MyAutoCompleteHandler implements AutoCompleteHandler<MyModel> {
 
     @Override
-    public List<String> fetch(String val, String[] params) {
-        // val 为用户当前输入值，根据输入返回匹配的候选列表
-        return List.of("选项一", "选项二");
+    public List<Object> completeHandler(MyModel model, String val, String[] param) {
+        // val：用户当前输入值
+        // model：当前表单对象，可读取其他字段值进行联动过滤
+        String category = model.getCategory();
+        return productService.searchByCategory(category, val);
     }
 
 }
 ```
+
+> **2.0.0+**：编辑表单中 AUTO_COMPLETE 字段旁新增刷新按钮，可按需重新拉取候选项。
 
 ## 配置项
 

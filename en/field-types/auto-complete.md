@@ -14,20 +14,26 @@ A text field with input suggestion support. As the user types, candidate options
 private String autoComplete;
 ```
 
-Implement `AutoCompleteHandler` to provide candidates:
+## Dynamic List
+
+Implement `AutoCompleteHandler<T>` to provide candidates. The generic `T` is the current Erupt entity class (conventionally named `MyModel`) — read `model` to access other form fields for linked filtering <Badge type="tip" text="MyModel 2.0.0+" />:
 
 ```java
 @Component
-public class MyAutoCompleteHandler implements AutoCompleteHandler {
+public class MyAutoCompleteHandler implements AutoCompleteHandler<MyModel> {
 
     @Override
-    public List<String> fetch(String val, String[] params) {
-        // val is the user's current input; return matching candidates based on it
-        return List.of("Option 1", "Option 2");
+    public List<Object> completeHandler(MyModel model, String val, String[] param) {
+        // val: the user's current input
+        // model: the full form object — read other fields for linked filtering
+        String category = model.getCategory();
+        return productService.searchByCategory(category, val);
     }
 
 }
 ```
+
+> **2.0.0+**: A refresh button is displayed next to AUTO_COMPLETE fields in the edit form, allowing candidates to be re-fetched on demand.
 
 ## Configuration
 

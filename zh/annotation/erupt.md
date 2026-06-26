@@ -39,6 +39,7 @@ public class EruptTest extends BaseModel {
 | `visRawTable` | 是否保留默认表格视图，默认 `true`；设为 `false` 时仅显示 `vis` 中定义的视图 |
 | `vis` | 附加视图配置（卡片、甘特图、看板等），详见 [@Vis 多视图](/zh/annotation/vis) |
 | `param` | 自定义参数 |
+| `prompt` | AI 智能体提示词，供 erupt-ai 工具调用时注入上下文，2.0.0 新增 |
 
 ## 注解文件定义
 
@@ -74,5 +75,7 @@ public @interface Erupt {
     Layout layout() default @Layout; // 页面布局配置
 
     KV[] param() default {}; // 自定义参数
+
+    String prompt() default ""; // AI 智能体提示词（2.0.0+）
 }
 ```

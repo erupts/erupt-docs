@@ -4,8 +4,6 @@ A dropdown multi-select or checkbox group. The selected values are stored as a J
 
 ## Basic Usage
 
-Static options:
-
 ```java
 @JdbcTypeCode(SqlTypes.JSON)
 @Column(length = 2000)
@@ -28,6 +26,44 @@ private Set<String> multiChoice;
 :::info
 `@JdbcTypeCode(SqlTypes.JSON)` instructs Hibernate to serialize `Set<String>` as a JSON array stored in a single database column, for example `["A","C"]`. The column must be wide enough (recommended `length = 2000` or larger).
 :::
+
+## Dynamic List
+
+Implement `ChoiceFetchHandler<T>` <Badge type="tip" text="MyModel 2.0.0+" />. The field declaration must use `@JdbcTypeCode(SqlTypes.JSON)` + `Set<String>`:
+
+```java
+@JdbcTypeCode(SqlTypes.JSON)
+@Column(length = 2000)
+@EruptField(
+    edit = @Edit(title = "Skills", type = EditType.MULTI_CHOICE,
+                 multiChoiceType = @MultiChoiceType(fetchHandler = SkillFetchHandler.class))
+)
+private Set<String> skills;
+```
+
+```java
+@Component
+public class SkillFetchHandler implements ChoiceFetchHandler<MyModel> {
+
+    @Override
+    public List<VLModel> fetch(String[] params) {
+        // Called on initial load — return the full option list
+        return skillService.findAll().stream()
+            .map(s -> new VLModel(s.getCode(), s.getName()))
+            .collect(toList());
+    }
+
+    @Override
+    public List<VLModel> fetchFilter(MyModel model, String[] params) {
+        // Linked filter — read other form fields to narrow options
+        String dept = model.getDept();
+        return skillService.findByDept(dept).stream()
+            .map(s -> new VLModel(s.getCode(), s.getName()))
+            .collect(toList());
+    }
+
+}
+```
 
 ## Configuration
 
@@ -92,15 +128,3 @@ Corresponding `multi_table` schema:
 :::tip
 Using `Set<Integer>` or `Set<String>` as the field type lets JPA automatically maintain inserts and deletes on the join table. Compared to the default single-column JSON storage, this approach is better suited for scenarios that require querying or joining by option value.
 :::
-
-## Example: Dynamic Options
-
-Implement the `ChoiceFetchHandler` interface, exactly the same as [CHOICE](/en/field-types/choice):
-
-```java
-@EruptField(
-    edit = @Edit(title = "Multi-Select", type = EditType.MULTI_CHOICE,
-                 multiChoiceType = @MultiChoiceType(fetchHandler = FetchHandlerImpl.class))
-)
-private String multiChoice;
-```

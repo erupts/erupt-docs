@@ -3,6 +3,99 @@
 > Only the most recent versions are translated to English at this time.
 > For earlier versions, please refer to the [Chinese changelog](/zh/guide/changelog).
 
+## 2.0.0 (2026-06-27) <Badge type="tip" text="Spring Boot 3.5.15" />
+
+> 🚀 New modules ×2 &emsp; 🌟 New features ×21 &emsp; 🎨 Frontend 50+ updates
+
+:::warning
+2.0.0 contains multiple breaking changes. Please read the [1.14.x → 2.0.0 Upgrade Guide](/en/guide/upgrade) before upgrading.
+:::
+
+🚀 Open-sourced [erupt-designer](/en/modules/erupt-designer) — visually design Erupt entity models at runtime and publish them to the menu with one click.
+
+🚀 Open-sourced [erupt-print](/en/modules/erupt-print) — define print templates and variables for any Erupt entity and print rows with a single click.
+
+🌟 [erupt-monitor](/en/modules/erupt-monitor) **completely rewritten**: new diagnostics system covering JVM, HikariCP pool, HTTP stats, and Redis health metrics.
+
+🌟 [erupt-ai](/en/modules/erupt-ai#agentprompt-and-contextprompt): LLM requests now support `agentPrompt` and `contextPrompt` for context-aware prompt injection per invocation.
+
+🌟 [@Vis](/en/annotation/vis) adds **Calendar** (`CALENDAR`) and **Board** (`BOARD`) view types for richer data visualization.
+
+🌟 [@Power](/en/annotation/power) adds a `copy` toggle — supports one-click row duplication in tables.
+
+🌟 [@Layout](/en/annotation/layout) adds `collapseActionButton` — collapses the view-details, edit, and delete buttons into a dropdown menu.
+
+🌟 New [`@GroupType` annotation](/en/field-types/group) — group fields inside a collapsible panel (`EditType.GROUP`).
+
+🌟 [`@Erupt`](/en/annotation/erupt) and [`@Edit`](/en/annotation/edit) gain a `prompt` field for AI agent prompt configuration.
+
+🌟 New [`PASSWORD` edit type](/en/field-types/password) — password fields render and transmit more securely.
+
+🌟 Open search support — INPUT, NUMBER, and other components now let users choose the search operator (equals, not-equals, contains, range, etc.) directly in the search bar.
+
+🌟 Dynamic dropdown refresh — `ChoiceFetchHandler` / `AutoCompleteHandler` / `TagsFetchHandler` can now reload options on demand.
+
+🌟 Selection Handler interfaces are now generic — callbacks can directly access other form fields for cascading linkage.
+
+🌟 New [**FormView**](/en/advanced/form-view) — dedicated backend endpoint with `DataProxy.formViewBehavior` / `formSave` hooks for single-record full-page form scenarios.
+
+🌟 Excel export supports exporting only selected rows.
+
+🌟 Password encryption upgraded from MD5 to SHA-512 with salt for significantly improved security — thanks to [段鹏鹏](https://gitee.com/erupt/erupt/pulls/35) for the contribution ([!35](https://gitee.com/erupt/erupt/pulls/35)).
+
+🌟 Spring Boot upgraded to 3.5.15.
+
+🌟 Operation logs now record the entity state **before** modification/deletion — the previous field values are visible in log details.
+
+🌟 erupt-ai adds [Requesty](https://requesty.ai) as a new LLM provider.
+
+🌟 OpenAPI: new `getAppid` endpoint to retrieve appid information by token.
+
+🌟 [`EruptLambdaQuery`](/en/advanced/erupt-dao#lambdaquery) adds `or()` support for building OR-logic composite queries.
+
+🌟 [erupt-cube](/en/modules/pro/erupt-cube): new `drillFields` dimension filtering and `drillMeasure` measure-level drill-down support.
+
+🌟 [erupt-cube](/en/modules/pro/erupt-cube): Cube annotations gain a `prompt` field for AI-readable semantic descriptions.
+
+🧩 `dependField` now uses getter-style references with IDE field-name auto-complete.
+
+🧩 [erupt-designer](/en/modules/erupt-designer): button permissions are now auto-generated when publishing a menu.
+
+🐞 Fixed: Ollama model configuration was missing the `baseUrl` parameter — thanks to [canjian215215](https://github.com/canjian215215) for the contribution.
+
+### 🎨 Frontend Complete Overhaul (erupt-web 2.0)
+
+> Angular 20 → 21. The entire UI layer has been rewritten from architecture to interaction.
+
+- New login page and preloader animation; new **Split Menu** mode (first-level nav on left, second-level alongside)
+- Sidebar width is draggable and persisted; favourites support drag-and-drop reordering; responsive layout optimized for mobile
+- Table: column drag-sort, column pinning, column density, row copy, persistent search state, collapsible search panel
+- Left-tree panel is collapsible; table-tree layout supports fullscreen mode
+- **AI side panel embedded in table / tree views** — chat with AI about visible data without leaving the page
+- erupt-ai chat: wide-screen mode, session search, input-history navigation
+- Code editor: smart hints and fullscreen mode; attachment component: drag-sort and batch update
+- MultiChoice / Checkbox gain a select-all button; Choice shows color dots; input shows real-time character count
+- Tree view: sort, node locate; BI / Monitor modules gain fullscreen improvements
+- Terminal module ([erupt-terminal](/en/modules/erupt-terminal)) UI integrated — multi-tab switching with real-time WebSocket communication
+- Table and modal now support dynamic action buttons — visibility can be controlled based on row data state
+- erupt-flow approval UI fully redesigned with mobile-responsive master-detail layout and accessibility improvements
+- TAGS component supports `joinSeparator = "[]"` JSON array format for tag value storage and parsing
+
+### 1.14.x → 2.0.0 Upgrade Guide
+
+> Full guide: [/en/guide/upgrade](/en/guide/upgrade)
+
+**Breaking Changes**
+
++ **Password encryption upgraded**: MD5 → SHA-512 with salt. The upgrade is backward compatible — existing users can still log in with their current passwords; only new and reset passwords will use SHA-512 + salt going forward. Thanks to [段鹏鹏](https://gitee.com/erupt/erupt/pulls/35) for this security improvement.
++ **`DataProxy.extraContent` signature changed**: A second parameter `Collection<Map<String, Object>> list` has been added. Any class that overrides this method must update its signature.
++ **`AutoCompleteHandler`, `ChoiceFetchHandler`, `TagsFetchHandler` require a generic type parameter**: The `fetchFilter` method's `formData` parameter (`Map<String,Object>`) has been replaced with the actual model object (generic `T`).
++ **Excel import template format changed from `.xls` to `.xlsx`**: Users with cached or bookmarked download links must re-download the template.
++ **`@Search.vague` removed**: The `vague` property has been deleted. Remove all `vague = true` / `vague = false` from your code — advanced search is now the default behaviour.
++ **`EruptApiModel` deleted**: The response model is now `R<T>`. Replace `EruptApiModel.PromptWay` with `R.PromptWay` throughout your code.
++ **`ChoiceTrigger` interface removed**: Use `@ChoiceType.fetchHandler` instead.
++ **Login / change-password endpoints switched to HTTP POST**: `/login` and `/change-pwd` changed from GET to POST. Custom login pages must be updated accordingly.
+
 ## 1.14.3 (2026-05-19) <Badge type="tip" text="Spring Boot 3.5.13" />
 
 🌟 New [erupt-terminal](/en/modules/erupt-terminal) module — operate the server terminal directly from the admin UI, no SSH client required.
@@ -54,7 +147,7 @@
 ## 1.14.1 (2026-04-13) <Badge type="tip" text="Spring Boot 3.5.13" />
 
 :::info
-Erupt fully embraces the AI Harness initiative, delivering 🦞-grade capabilities: MCP, Skills, Memory, ReAct, context engineering, and more.
+Erupt fully embraces the AI Harness initiative, delivering 🚀-grade capabilities: MCP, Skills, Memory, ReAct, context engineering, and more.
 :::
 
 🐞 Fixed: dragging table column widths did not take effect.
@@ -73,7 +166,7 @@ Erupt fully embraces the AI Harness initiative, delivering 🦞-grade capabiliti
 
 🧩 Refactored time-format handling — all interactions now use ISO 8601 (`yyyy-MM-dd'T'HH:mm:ss.SSS`) and returned timestamps are formatted according to the browser locale, which is friendlier to internationalized scenarios.
 
-🦞 Open-sourced [erupt-ai-claw](/en/modules/erupt-ai-claw): operate any Erupt data through natural language, with Skill / File / Shell invocation.
+🚀 Open-sourced [erupt-ai-claw](/en/modules/erupt-ai-claw): operate any Erupt data through natural language, with Skill / File / Shell invocation.
 
 🌟 Spring Boot upgraded to 3.5.13.
 
@@ -125,6 +218,7 @@ For the changelog of versions older than 1.14.x, please consult the [Chinese ver
 
 | Version | Docs | Changelog |
 | --- | --- | --- |
+| 1.14.x | [Docs](http://1-14-x.docs.erupt.xyz/) | [Changelog](http://1-14-x.docs.erupt.xyz/en/guide/changelog) |
 | 1.13.x | [Docs](https://www.yuque.com/erupts/1.13.x) | [Changelog](https://www.yuque.com/erupts/1.13.x/wdic2w) |
 | 1.12.x | [Docs](https://www.yuque.com/erupts/1.12.x) | [Changelog](https://www.yuque.com/erupts/1.12.x/wdic2w) |
 | 1.11.x | [Docs](https://www.yuque.com/erupts/1.11.x) | [Changelog](https://www.yuque.com/erupts/1.11.x/wdic2w) |

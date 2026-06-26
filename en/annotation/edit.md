@@ -19,6 +19,7 @@ Configures how a field behaves in the add/edit form, including the component typ
 | `onchange` | Value-change linkage (1.13.2+), see [OnChange](/en/advanced/dynamic-form) |
 | `orderBy` | Sort rule, HQL `ORDER BY` syntax; only applicable when the field is a related object |
 | `filter` | Filter condition, HQL `WHERE` syntax; only applicable when the field is a related object |
+| `prompt` | AI agent prompt — injected as field-level context when erupt-ai invokes this field's tool, added in 2.0.0 |
 
 ## Component Types (EditType)
 
@@ -51,6 +52,8 @@ For detailed configuration options and examples for each type, see the [componen
 | `TPL` | Custom HTML template | ❌ | ❌ |
 | `HIDDEN` | Hidden field | ❌ | ❌ |
 | `EMPTY` | Empty placeholder (still occupies form space) | ❌ | ❌ |
+| `PASSWORD` | [Password input](/en/field-types/password) — rendered and transmitted more securely (2.0.0+) | ❌ | ❌ |
+| `GROUP` | [Collapsible field group panel](/en/field-types/group) (2.0.0+) | ❌ | ❌ |
 
 ### Relation Components
 
@@ -65,3 +68,5 @@ For detailed configuration options and examples for each type, see the [componen
 | `TAB_TREE` | Many-to-many tree reference | ❌ |
 | `TAB_TABLE_REFER` | Many-to-many table reference | ❌ |
 | `TAB_TABLE_ADD` | One-to-many add | ❌ |
+
+See dedicated pages: [GROUP Field Group Panel](/en/field-types/group) and [PASSWORD Password Input](/en/field-types/password).

@@ -39,6 +39,7 @@ public class EruptTest extends BaseModel {
 | `visRawTable` | Whether to keep the default table view, defaults to `true`; set to `false` to show only the views defined in `vis` |
 | `vis` | Additional view configurations (card, Gantt, kanban, etc.), see [@Vis Multi-View](/en/annotation/vis) |
 | `param` | Custom parameters |
+| `prompt` | AI agent prompt — injected as context when erupt-ai invokes this entity's tool, added in 2.0.0 |
 
 ## Annotation Definition
 
@@ -74,5 +75,7 @@ public @interface Erupt {
     Layout layout() default @Layout; // page layout configuration
 
     KV[] param() default {}; // custom parameters
+
+    String prompt() default ""; // AI agent prompt (2.0.0+)
 }
 ```
