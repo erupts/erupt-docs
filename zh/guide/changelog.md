@@ -1,6 +1,6 @@
 # 更新日志
 
-## 2.0.0（2026-06-21） <Badge type="tip" text="Spring Boot 3.5.15" />
+## 2.0.0（2026-06-27） <Badge type="tip" text="Spring Boot 3.5.15" />
 
 > 🚀 新模块开源 ×2 &emsp; 🌟 新功能 ×21 &emsp; 🎨 前端重构 50+ 项
 
@@ -92,16 +92,6 @@
 + **`EruptApiModel` 类已删除**：响应模型统一改为 `R<T>`，需将代码中的 `EruptApiModel.PromptWay` 替换为 `R.PromptWay`。
 + **`ChoiceTrigger` 接口已移除**：请使用 `@ChoiceType.fetchHandler` 替代。
 + **登录、修改密码接口改为 HTTP POST**：`/login`、`/change-pwd` 接口由 GET 改为 POST，自定义登录页需同步调整请求方式。
-
-**API 变更速查**
-
-| 旧 API | 新 API |
-|--------|--------|
-| `EruptApiModel.PromptWay.MESSAGE` | `R.PromptWay.MESSAGE` |
-| `EruptApiModel.PromptWay.NOTIFY` | `R.PromptWay.NOTIFY` |
-| `@Search(vague = true)` | `@Search` |
-| `@Search(vague = false)` | `@Search(value = true)` |
-| `ChoiceTrigger` | `@ChoiceType.fetchHandler` |
 
 ## 1.14.3（2026-05-19） <Badge type="tip" text="Spring Boot 3.5.13" />
 

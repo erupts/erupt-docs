@@ -3,7 +3,7 @@
 > Only the most recent versions are translated to English at this time.
 > For earlier versions, please refer to the [Chinese changelog](/zh/guide/changelog).
 
-## 2.0.0 (2026-06-21) <Badge type="tip" text="Spring Boot 3.5.15" />
+## 2.0.0 (2026-06-27) <Badge type="tip" text="Spring Boot 3.5.15" />
 
 > 🚀 New modules ×2 &emsp; 🌟 New features ×21 &emsp; 🎨 Frontend 50+ updates
 
@@ -95,16 +95,6 @@
 + **`EruptApiModel` deleted**: The response model is now `R<T>`. Replace `EruptApiModel.PromptWay` with `R.PromptWay` throughout your code.
 + **`ChoiceTrigger` interface removed**: Use `@ChoiceType.fetchHandler` instead.
 + **Login / change-password endpoints switched to HTTP POST**: `/login` and `/change-pwd` changed from GET to POST. Custom login pages must be updated accordingly.
-
-**Quick API Migration Reference**
-
-| Old API | New API |
-|---------|---------|
-| `EruptApiModel.PromptWay.MESSAGE` | `R.PromptWay.MESSAGE` |
-| `EruptApiModel.PromptWay.NOTIFY` | `R.PromptWay.NOTIFY` |
-| `@Search(vague = true)` | `@Search` |
-| `@Search(vague = false)` | `@Search(value = true)` |
-| `ChoiceTrigger` | `@ChoiceType.fetchHandler` |
 
 ## 1.14.3 (2026-05-19) <Badge type="tip" text="Spring Boot 3.5.13" />
 
