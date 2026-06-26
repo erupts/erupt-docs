@@ -5,15 +5,17 @@
 
 ## 2.0.0 (2026-06-21) <Badge type="tip" text="Spring Boot 3.5.15" />
 
+> 🚀 New modules ×2 &emsp; 🌟 New features ×21 &emsp; 🎨 Frontend 50+ updates
+
 :::warning
 2.0.0 contains multiple breaking changes. Please read the [1.14.x → 2.0.0 Upgrade Guide](/en/guide/upgrade) before upgrading.
 :::
 
-🦞 Open-sourced [erupt-designer](/en/modules/erupt-designer) — visually design Erupt entity models at runtime and publish them to the menu with one click.
+🚀 Open-sourced [erupt-designer](/en/modules/erupt-designer) — visually design Erupt entity models at runtime and publish them to the menu with one click.
 
-🦞 Open-sourced [erupt-print](/en/modules/erupt-print) — define print templates and variables for any Erupt entity and print rows with a single click.
+🚀 Open-sourced [erupt-print](/en/modules/erupt-print) — define print templates and variables for any Erupt entity and print rows with a single click.
 
-🌟 [erupt-monitor](/en/modules/erupt-monitor) **completely rewritten**: new diagnostics monitoring system — JVM diagnostics & GC status, HikariCP API connection pool real-time stats, HTTP request statistics, and enhanced Redis health metrics.
+🌟 [erupt-monitor](/en/modules/erupt-monitor) **completely rewritten**: new diagnostics system covering JVM, HikariCP pool, HTTP stats, and Redis health metrics.
 
 🌟 [erupt-ai](/en/modules/erupt-ai#agentprompt-and-contextprompt): LLM requests now support `agentPrompt` and `contextPrompt` for context-aware prompt injection per invocation.
 
@@ -33,11 +35,9 @@
 
 🌟 Dynamic dropdown refresh — `ChoiceFetchHandler` / `AutoCompleteHandler` / `TagsFetchHandler` can now reload options on demand.
 
-🌟 Selection component handlers are now fully generic: [`ChoiceFetchHandler<MyModel>`](/en/field-types/choice#dynamic-list), [`TagsFetchHandler<MyModel>`](/en/field-types/tags#dynamic-list), [`AutoCompleteHandler<MyModel>`](/en/field-types/auto-complete#dynamic-list) — the generic parameter is upgraded from `Map<String,Object>` to the actual model object, so `fetchFilter` / `fetchTags` / `completeHandler` can directly access other fields on the same form, enabling cross-component linkage (e.g. province → city → district cascading dropdowns).
+🌟 Selection Handler interfaces are now generic — callbacks can directly access other form fields for cascading linkage.
 
 🌟 New [**FormView**](/en/advanced/form-view) — dedicated backend endpoint with `DataProxy.formViewBehavior` / `formSave` hooks for single-record full-page form scenarios.
-
-🌟 [Search adds `NOT_IN` operator; `QueryExpression` extended with `GT` / `GTE` / `LT` / `LTE` comparisons.](/en/annotation/search#queryexpression-operators)
 
 🌟 Excel export supports exporting only selected rows.
 
@@ -53,11 +53,11 @@
 
 🌟 [`EruptLambdaQuery`](/en/advanced/erupt-dao#lambdaquery) adds `or()` support for building OR-logic composite queries.
 
-🌟 [erupt-cube](/en/modules/pro/erupt-cube): measures now support `drillFields` for targeted dimension filtering in drill-down; queries add a `drillMeasure` parameter for measure-level drill filtering.
+🌟 [erupt-cube](/en/modules/pro/erupt-cube): new `drillFields` dimension filtering and `drillMeasure` measure-level drill-down support.
 
-🌟 [erupt-cube](/en/modules/pro/erupt-cube): `@EruptCube` / `@Dimension` / `@Measure` / `@Parameter` annotations gain a `prompt` field for AI-readable field-level semantic descriptions.
+🌟 [erupt-cube](/en/modules/pro/erupt-cube): Cube annotations gain a `prompt` field for AI-readable semantic descriptions.
 
-🧩 `@ChoiceType` / `@ReferenceTreeType` / `@ReferenceTableType` and similar annotations: `dependField` now uses getter-style references, enabling IDE auto-complete for valid field names.
+🧩 `dependField` now uses getter-style references with IDE field-name auto-complete.
 
 🧩 [erupt-designer](/en/modules/erupt-designer): button permissions are now auto-generated when publishing a menu.
 
@@ -157,7 +157,7 @@
 ## 1.14.1 (2026-04-13) <Badge type="tip" text="Spring Boot 3.5.13" />
 
 :::info
-Erupt fully embraces the AI Harness initiative, delivering 🦞-grade capabilities: MCP, Skills, Memory, ReAct, context engineering, and more.
+Erupt fully embraces the AI Harness initiative, delivering 🚀-grade capabilities: MCP, Skills, Memory, ReAct, context engineering, and more.
 :::
 
 🐞 Fixed: dragging table column widths did not take effect.
@@ -176,7 +176,7 @@ Erupt fully embraces the AI Harness initiative, delivering 🦞-grade capabiliti
 
 🧩 Refactored time-format handling — all interactions now use ISO 8601 (`yyyy-MM-dd'T'HH:mm:ss.SSS`) and returned timestamps are formatted according to the browser locale, which is friendlier to internationalized scenarios.
 
-🦞 Open-sourced [erupt-ai-claw](/en/modules/erupt-ai-claw): operate any Erupt data through natural language, with Skill / File / Shell invocation.
+🚀 Open-sourced [erupt-ai-claw](/en/modules/erupt-ai-claw): operate any Erupt data through natural language, with Skill / File / Shell invocation.
 
 🌟 Spring Boot upgraded to 3.5.13.
 

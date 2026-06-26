@@ -2,15 +2,17 @@
 
 ## 2.0.0（2026-06-21） <Badge type="tip" text="Spring Boot 3.5.15" />
 
+> 🚀 新模块开源 ×2 &emsp; 🌟 新功能 ×21 &emsp; 🎨 前端重构 50+ 项
+
 :::warning
 2.0.0 包含多项破坏性变更，升级前请务必阅读 [1.14.x → 2.0.0 升级指南](/zh/guide/upgrade)
 :::
 
-🦞 开源 [erupt-designer](/zh/modules/erupt-designer) 模块，可在运行时可视化设计 Erupt 实体模型，并支持动态注册与一键发布到菜单
+🚀 开源 [erupt-designer](/zh/modules/erupt-designer) 模块，可在运行时可视化设计 Erupt 实体模型，并支持动态注册与一键发布到菜单
 
-🦞 开源 [erupt-print](/zh/modules/erupt-print) 模块，支持为 Erupt 实体定义模板、配置变量并一键打印
+🚀 开源 [erupt-print](/zh/modules/erupt-print) 模块，支持为 Erupt 实体定义模板、配置变量并一键打印
 
-🌟 [erupt-monitor](/zh/modules/erupt-monitor) **完全重写**：全新诊断监控体系，支持 JVM 诊断与 GC 状态、HikariCP API 连接池实时状态、HTTP 请求统计、Redis 健康指标监控
+🌟 [erupt-monitor](/zh/modules/erupt-monitor) **完全重写**：全新诊断监控体系，覆盖 JVM、HikariCP 连接池、HTTP 统计、Redis 健康指标
 
 🌟 [erupt-ai](/zh/modules/erupt-ai#agentprompt-与-contextprompt)：LLM 请求支持 `agentPrompt` 与 `contextPrompt`，可按调用场景注入上下文感知提示词
 
@@ -30,11 +32,9 @@
 
 🌟 动态下拉刷新：`ChoiceFetchHandler` / `AutoCompleteHandler` / `TagsFetchHandler` 支持按需重新加载选项
 
-🌟 选择类组件 Handler 接口全面泛型化：[`ChoiceFetchHandler<MyModel>`](/zh/field-types/choice#动态列表)、[`TagsFetchHandler<MyModel>`](/zh/field-types/tags#动态列表)、[`AutoCompleteHandler<MyModel>`](/zh/field-types/auto-complete#动态列表) 泛型参数由 `Map<String,Object>` 升级为实际模型对象，可在 `fetchFilter` / `fetchTags` / `completeHandler` 方法中直接访问同一表单的其他字段值，轻松实现跨组件联动（如省市区三级联动）
+🌟 选择类 Handler 接口泛型化，回调中可直接访问表单其他字段，支持级联联动
 
 🌟 新增[独立表单视图（`FormView`）](/zh/advanced/form-view)，提供专用后端接口与 `DataProxy.formViewBehavior` / `formSave` 钩子，适合单记录全页表单场景
-
-🌟 [搜索新增 `NOT_IN` 操作符，`QueryExpression` 扩展 `GT`/`GTE`/`LT`/`LTE` 比较运算](/zh/annotation/search#queryexpression-搜索操作符)
 
 🌟 Excel 导出支持仅导出已选中的行
 
@@ -50,11 +50,11 @@
 
 🌟 [`EruptLambdaQuery`](/zh/advanced/erupt-dao#lambdaquery) 新增 `or` 条件支持，可构建 OR 逻辑的复合查询
 
-🌟 [erupt-cube](/zh/modules/pro/erupt-cube) 指标支持 `drillFields` 维度过滤，钻取分析能力增强；查询新增 `drillMeasure` 参数，支持指标级下钻过滤
+🌟 [erupt-cube](/zh/modules/pro/erupt-cube) 新增 `drillFields` 维度过滤与 `drillMeasure` 指标级下钻
 
-🌟 [erupt-cube](/zh/modules/pro/erupt-cube) `@EruptCube` / `@Dimension` / `@Measure` / `@Parameter` 注解新增 `prompt` 字段，为 AI 语义分析提供字段级描述
+🌟 [erupt-cube](/zh/modules/pro/erupt-cube) Cube 注解新增 `prompt` 字段，为 AI 语义分析提供字段级描述
 
-🧩 `@ChoiceType` / `@ReferenceTreeType` / `@ReferenceTableType` 等注解的 `dependField` 属性改为 getter 风格引用，IDE 可自动补全合法字段名
+🧩 `dependField` 改为 getter 风格引用，支持 IDE 字段名自动补全
 
 🧩 [erupt-designer](/zh/modules/erupt-designer) 发布菜单时自动生成对应按钮权限
 
@@ -152,7 +152,7 @@
 
 ## 1.14.1（2026-04-13） <Badge type="tip" text="Spring Boot 3.5.13" />
 :::info
-全面拥抱 AI Harness 工程，实现 🦞 能力，支持：MCP、SKILL、Memory、ReAct、上下文工程等
+全面拥抱 AI Harness 工程，实现 🚀 能力，支持：MCP、SKILL、Memory、ReAct、上下文工程等
 :::
 
 🐞 修复表格列宽拖动失效的问题
@@ -171,7 +171,7 @@
 
 🧩 重构时间格式处理逻辑，统一采用 ISO 8601（`yyyy-MM-dd'T'HH:mm:ss.SSS`）进行交互，返回时间自动跟随浏览器语言环境格式化，对国际化场景更加友好
 
-🦞 开源 [erupt-ai-claw](/zh/modules/erupt-ai-claw) 模块，可通过 AI 操作任意 Erupt 数据，支持 Skill、File、Shell 调用等能力
+🚀 开源 [erupt-ai-claw](/zh/modules/erupt-ai-claw) 模块，可通过 AI 操作任意 Erupt 数据，支持 Skill、File、Shell 调用等能力
 
 🌟 Spring Boot 版本升级至 3.5.13
 
