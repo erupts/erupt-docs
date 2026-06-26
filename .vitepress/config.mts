@@ -382,7 +382,7 @@ export default withMermaid(defineConfig({
                 nav: [
                     {text: '快速上手', link: '/zh/guide/', activeMatch: '/zh/guide/'},
                     {text: '注解参考', link: '/zh/annotation/', activeMatch: '/zh/annotation/'},
-                    {text: '组件类型', link: '/zh/field-types/', activeMatch: '/zh/field-types/'},
+                    {text: '字段组件', link: '/zh/field-types/', activeMatch: '/zh/field-types/'},
                     {text: '进阶', link: '/zh/advanced/', activeMatch: '/zh/advanced/'},
                     {text: '扩展模块', link: '/zh/modules/', activeMatch: '/zh/modules/'},
                     {text: '专题', link: '/zh/topics/', activeMatch: '/zh/topics/'},
@@ -475,7 +475,7 @@ export default withMermaid(defineConfig({
 
                     '/zh/field-types/': [
                         {
-                            text: '组件类型',
+                            text: '字段组件',
                             items: [
                                 {text: '概览', link: '/zh/field-types/'},
                                 {text: 'AUTO 自动推测', link: '/zh/field-types/auto'},

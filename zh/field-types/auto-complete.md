@@ -14,9 +14,9 @@
 private String autoComplete;
 ```
 
-## 动态列表
+## 动态列表 <Badge type="tip" text="MyModel 2.0.0+" />
 
-实现 `AutoCompleteHandler<T>` 提供候选项。泛型 `T` 为当前 Erupt 实体类，可通过 `model` 读取同表单其他字段值实现联动：
+实现 `AutoCompleteHandler<T>` 提供候选项。泛型 `T` 为当前 Erupt 实体类（约定命名为 `MyModel`），可通过 `model` 读取同表单其他字段值实现联动：
 
 ```java
 @Component

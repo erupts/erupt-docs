@@ -33,6 +33,8 @@
 
 🌟 Dynamic dropdown refresh — `ChoiceFetchHandler` / `AutoCompleteHandler` / `TagsFetchHandler` can now reload options on demand.
 
+🌟 Selection component handlers are now fully generic: [`ChoiceFetchHandler<MyModel>`](/en/field-types/choice#dynamic-list), [`TagsFetchHandler<MyModel>`](/en/field-types/tags#dynamic-list), [`AutoCompleteHandler<MyModel>`](/en/field-types/auto-complete#dynamic-list) — the generic parameter is upgraded from `Map<String,Object>` to the actual model object, so `fetchFilter` / `fetchTags` / `completeHandler` can directly access other fields on the same form, enabling cross-component linkage (e.g. province → city → district cascading dropdowns).
+
 🌟 New [**FormView**](/en/advanced/form-view) — dedicated backend endpoint with `DataProxy.formViewBehavior` / `formSave` hooks for single-record full-page form scenarios.
 
 🌟 [Search adds `NOT_IN` operator; `QueryExpression` extended with `GT` / `GTE` / `LT` / `LTE` comparisons.](/en/annotation/search#queryexpression-operators)
@@ -51,7 +53,11 @@
 
 🌟 [`EruptLambdaQuery`](/en/advanced/erupt-dao#lambdaquery) adds `or()` support for building OR-logic composite queries.
 
-🌟 [erupt-cube](/en/modules/pro/erupt-cube): measures now support `drillFields` for targeted dimension filtering in drill-down analysis.
+🌟 [erupt-cube](/en/modules/pro/erupt-cube): measures now support `drillFields` for targeted dimension filtering in drill-down; queries add a `drillMeasure` parameter for measure-level drill filtering.
+
+🌟 [erupt-cube](/en/modules/pro/erupt-cube): `@EruptCube` / `@Dimension` / `@Measure` / `@Parameter` annotations gain a `prompt` field for AI-readable field-level semantic descriptions.
+
+🧩 `@ChoiceType` / `@ReferenceTreeType` / `@ReferenceTableType` and similar annotations: `dependField` now uses getter-style references, enabling IDE auto-complete for valid field names.
 
 🧩 [erupt-designer](/en/modules/erupt-designer): button permissions are now auto-generated when publishing a menu.
 
@@ -72,6 +78,8 @@
 - Tree view: sort, node locate; BI / Monitor modules gain fullscreen improvements
 - Terminal module ([erupt-terminal](/en/modules/erupt-terminal)) UI integrated — multi-tab switching with real-time WebSocket communication
 - Table and modal now support dynamic action buttons — visibility can be controlled based on row data state
+- erupt-flow approval UI fully redesigned with mobile-responsive master-detail layout and accessibility improvements
+- TAGS component supports `joinSeparator = "[]"` JSON array format for tag value storage and parsing
 
 ### 1.14.x → 2.0.0 Upgrade Guide
 

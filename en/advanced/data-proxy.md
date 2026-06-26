@@ -58,10 +58,8 @@ public class EruptTestDataProxy implements DataProxy<EruptTest>{
 
 ```java
 public interface DataProxy<MODEL> {
-    
-    /**
-     * Data validation. Throw EruptException if validation fails. Supported since 1.13.1+.
-     */
+
+    /** Data validation. Throw EruptException if validation fails. Since 1.13.1+ */
     default void validate(MODEL model) throws EruptException { }
 
     /** Before add */
@@ -90,16 +88,62 @@ public interface DataProxy<MODEL> {
     default String beforeFetch(List<Condition> conditions) { return null; }
 
     /**
-     * Global page alert, triggered each time the page is opened. Return null to show nothing.
+     * Post-process query results.
+     * @param list Query result set
+     */
+    default void afterFetch(Collection<Map<String, Object>> list) { }
+
+    /**
+     * Global page alert, triggered each time the page opens. Return null to show nothing.
      * Alert supports four types: info / warning / error / success
      */
     default Alert alert(List<Condition> conditions) { return null; }
 
     /**
-     * Post-process query results.
-     * @param list Query result set
+     * Custom rendered HTML; the returned string is displayed at the top of the view.
      */
-    default void afterFetch(Collection<Map<String, Object>> list) { }
+    default String extraContent(List<Condition> conditions, Collection<Map<String, Object>> list) { return null; }
+
+    /**
+     * Called when the "add new" form opens — use to pre-populate default field values.
+     */
+    default void addBehavior(MODEL model) { }
+
+    /**
+     * Called when the edit form opens, after data is loaded — use to pre-process fields before rendering.
+     */
+    default void editBehavior(MODEL model) { }
+
+    /**
+     * Called on page load to set default search field values.
+     * Map keys are entity field names; values are the default search values.
+     */
+    default void searchCondition(Map<String, Object> condition) { }
+
+    /**
+     * Called after Excel export is generated. Cast parameter to Apache POI Workbook to customize the file.
+     */
+    default void excelExport(Object workbook) { }
+
+    /**
+     * Called when an Excel file is imported (raw POI stage). Cast parameter to Apache POI Workbook.
+     */
+    default void excelImport(Object workbook) { }
+
+    /**
+     * Called after Excel data is parsed into model objects (structured stage) — use for batch validation or modification.
+     */
+    default void excelImportProcess(List<MODEL> list) { }
+
+    /**
+     * Called during print. Returns the (possibly modified) HTML content string.
+     */
+    default String print(MODEL model, String content) { return content; }
+
+    /**
+     * Returns additional rows (e.g. totals) appended after the normal table rows.
+     */
+    default List<Row> extraRow(List<Condition> conditions) { return null; }
 
     /**
      * Form view: called on open — load data from your source and populate model fields.
@@ -246,7 +290,7 @@ In 2.0.0 a second parameter `list` was added, giving direct access to the curren
 public class EruptTestDataProxy implements DataProxy<EruptTest>{
 
     @Override
-    public String extraContent(List<Condition> conditions, List<Map<String, Object>> list) {
+    public String extraContent(List<Condition> conditions, Collection<Map<String, Object>> list) {
         // list = current page data (2.0.0+); conditions = current search filters
         return "<div style='padding:8px 12px;background:#f0f9ff;border-radius:6px'>"
              + "Total: <b>" + list.size() + "</b> records on this page"
@@ -262,6 +306,145 @@ public class EruptTestDataProxy implements DataProxy<EruptTest>{
 - The `list` parameter (2.0.0+) provides the current page query results for inline statistics
 - The return value is raw HTML — avoid XSS risks by never concatenating user input directly
 :::
+
+## addBehavior / editBehavior Form Behavior
+
+- **`addBehavior`**: Triggered when the "add new" form opens. The framework instantiates an empty object then calls this method — use it to pre-populate default values.
+- **`editBehavior`**: Triggered when the edit form opens, after the record is loaded from the database. Use it to pre-process or transform field values before rendering (changes are not persisted automatically).
+
+```java
+@Service
+public class EruptTestDataProxy implements DataProxy<EruptTest> {
+
+    @Override
+    public void addBehavior(EruptTest model) {
+        // Pre-fill defaults when the add form opens
+        model.setStatus("DRAFT");
+        model.setCreator(getCurrentUser());
+    }
+
+    @Override
+    public void editBehavior(EruptTest model) {
+        // Pre-process fields before the edit form renders (not persisted)
+        if (model.getContent() != null) {
+            model.setContent(decrypt(model.getContent()));
+        }
+    }
+}
+```
+
+## searchCondition Default Search Values
+
+Triggered when the page loads to pre-set default search field values. Map keys are entity field names; values are the default search values passed to the frontend.
+
+```java
+@Service
+public class EruptTestDataProxy implements DataProxy<EruptTest> {
+
+    @Override
+    public void searchCondition(Map<String, Object> condition) {
+        // Default to the current user's own records
+        condition.put("createBy", getCurrentUser());
+        // Default status to "enabled"
+        condition.put("status", 1);
+    }
+}
+```
+
+## extraRow Custom Appended Rows
+
+Returns a list of `Row` objects appended after the normal table rows — commonly used for totals or summary rows.
+
+```java
+@Service
+public class EruptTestDataProxy implements DataProxy<EruptTest> {
+
+    @Override
+    public List<Row> extraRow(List<Condition> conditions) {
+        return List.of(
+            Row.builder()
+               .columns(List.of(
+                   new Column("Total"),
+                   new Column(String.valueOf(calcTotal(conditions)), 3)
+               ))
+               .className("total-row")
+               .build()
+        );
+    }
+}
+```
+
+`Row` / `Column` structure:
+
+| Field | Type | Description |
+|---|---|---|
+| `Row.columns` | `List<Column>` | Cell list for the row |
+| `Row.className` | `String` | CSS class for the row (optional) |
+| `Column.value` | `String` | Cell content (HTML supported) |
+| `Column.colspan` | `int` | Column span, default 1 |
+| `Column.className` | `String` | CSS class for the cell (optional) |
+
+## Excel Export / Import
+
+> Requires the `erupt-excel` module
+
+### excelExport — Customize the Export File
+
+Triggered after the Excel file is generated. Cast the parameter to Apache POI `Workbook` to modify styles, append sheets, etc.
+
+```java
+@Override
+public void excelExport(Object workbook) {
+    Workbook wb = (Workbook) workbook;
+    Sheet sheet = wb.getSheetAt(0);
+    // Insert a title row at the top
+    sheet.shiftRows(0, sheet.getLastRowNum(), 1);
+    Row titleRow = sheet.createRow(0);
+    titleRow.createCell(0).setCellValue("Data Export Report");
+}
+```
+
+### excelImport — Raw POI Stage
+
+Triggered after the Excel file is uploaded but before data is parsed. The parameter is the same `Workbook` object — use it for pre-validation or format correction.
+
+```java
+@Override
+public void excelImport(Object workbook) {
+    Workbook wb = (Workbook) workbook;
+    if (wb.getNumberOfSheets() < 1) {
+        throw new EruptApiErrorTip("Invalid Excel file format");
+    }
+}
+```
+
+### excelImportProcess — Structured Data Stage
+
+Triggered after Excel rows are parsed into model objects, before they are saved. Use it for batch validation or to fill in extra fields.
+
+```java
+@Override
+public void excelImportProcess(List<EruptTest> list) {
+    for (EruptTest item : list) {
+        if (item.getName() == null || item.getName().isBlank()) {
+            throw new EruptApiErrorTip("Some rows have an empty name — please fix the file and retry");
+        }
+        item.setCreateBy(getCurrentUser());
+    }
+}
+```
+
+## print — Print Content Processing
+
+Triggered during a print operation. Receives the model and the framework-generated HTML string. Return the final HTML to render.
+
+```java
+@Override
+public String print(EruptTest model, String content) {
+    // Append a watermark to the printed output
+    return content + "<div style='color:#ccc;font-size:12px'>Printed by: " + getCurrentUser() + "</div>";
+}
+```
 
 ---
 

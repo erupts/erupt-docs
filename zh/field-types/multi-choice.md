@@ -27,7 +27,7 @@ private Set<String> multiChoice;
 `@JdbcTypeCode(SqlTypes.JSON)` 指示 Hibernate 将 `Set<String>` 序列化为 JSON 数组存入数据库单列，例如 `["A","C"]`。需要数据库列具有足够长度（建议 `length = 2000` 或更大）。
 :::
 
-## 动态列表
+## 动态列表 <Badge type="tip" text="MyModel 2.0.0+" />
 
 实现 `ChoiceFetchHandler<T>` 接口，字段声明需使用 `@JdbcTypeCode(SqlTypes.JSON)` + `Set<String>`：
 

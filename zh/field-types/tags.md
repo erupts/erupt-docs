@@ -12,7 +12,7 @@
 private String techStack;
 ```
 
-## 动态列表
+## 动态列表 <Badge type="tip" text="MyModel 2.0.0+" />
 
 字段声明：
 
@@ -48,7 +48,7 @@ public class MyTagsFetchHandler implements TagsFetchHandler<MyModel> {
 ```java
 public @interface TagsType {
 
-    String joinSeparator() default "|"; // 多标签存储时的分隔符
+    String joinSeparator() default "[]"; // 存储格式：默认 "[]" 为 JSON 数组（如 ["A","B"]），可改为 "," 等字符作为分隔符
 
     boolean allowExtension() default true; // 是否允许用户输入自定义标签
 

@@ -16,7 +16,7 @@ private String autoComplete;
 
 ## Dynamic List
 
-Implement `AutoCompleteHandler<T>` to provide candidates. The generic `T` is the current Erupt entity class — read `model` to access other form fields for linked filtering:
+Implement `AutoCompleteHandler<T>` to provide candidates. The generic `T` is the current Erupt entity class (conventionally named `MyModel`) — read `model` to access other form fields for linked filtering <Badge type="tip" text="MyModel 2.0.0+" />:
 
 ```java
 @Component

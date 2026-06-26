@@ -29,7 +29,7 @@ private Set<String> multiChoice;
 
 ## Dynamic List
 
-Implement `ChoiceFetchHandler<T>`. The field declaration must use `@JdbcTypeCode(SqlTypes.JSON)` + `Set<String>`:
+Implement `ChoiceFetchHandler<T>` <Badge type="tip" text="MyModel 2.0.0+" />. The field declaration must use `@JdbcTypeCode(SqlTypes.JSON)` + `Set<String>`:
 
 ```java
 @JdbcTypeCode(SqlTypes.JSON)

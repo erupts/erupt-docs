@@ -27,7 +27,7 @@ Field declaration:
 private String tags;
 ```
 
-Implement `TagsFetchHandler<T>` to provide options. The generic `T` is the current Erupt entity class — read `model` to access other form fields for linked filtering:
+Implement `TagsFetchHandler<T>` to provide options. The generic `T` is the current Erupt entity class (conventionally named `MyModel`) — read `model` to access other form fields for linked filtering <Badge type="tip" text="MyModel 2.0.0+" />:
 
 ```java
 @Component
@@ -48,7 +48,7 @@ public class MyTagsFetchHandler implements TagsFetchHandler<MyModel> {
 ```java
 public @interface TagsType {
 
-    String joinSeparator() default "|"; // Separator used when storing multiple tags
+    String joinSeparator() default "[]"; // Storage format: default "[]" = JSON array (e.g. ["A","B"]); set to "," for comma-separated storage
 
     boolean allowExtension() default true; // Whether users can enter custom tags
 

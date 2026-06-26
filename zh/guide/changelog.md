@@ -30,6 +30,8 @@
 
 🌟 动态下拉刷新：`ChoiceFetchHandler` / `AutoCompleteHandler` / `TagsFetchHandler` 支持按需重新加载选项
 
+🌟 选择类组件 Handler 接口全面泛型化：[`ChoiceFetchHandler<MyModel>`](/zh/field-types/choice#动态列表)、[`TagsFetchHandler<MyModel>`](/zh/field-types/tags#动态列表)、[`AutoCompleteHandler<MyModel>`](/zh/field-types/auto-complete#动态列表) 泛型参数由 `Map<String,Object>` 升级为实际模型对象，可在 `fetchFilter` / `fetchTags` / `completeHandler` 方法中直接访问同一表单的其他字段值，轻松实现跨组件联动（如省市区三级联动）
+
 🌟 新增[独立表单视图（`FormView`）](/zh/advanced/form-view)，提供专用后端接口与 `DataProxy.formViewBehavior` / `formSave` 钩子，适合单记录全页表单场景
 
 🌟 [搜索新增 `NOT_IN` 操作符，`QueryExpression` 扩展 `GT`/`GTE`/`LT`/`LTE` 比较运算](/zh/annotation/search#queryexpression-搜索操作符)
@@ -48,7 +50,11 @@
 
 🌟 [`EruptLambdaQuery`](/zh/advanced/erupt-dao#lambdaquery) 新增 `or` 条件支持，可构建 OR 逻辑的复合查询
 
-🌟 [erupt-cube](/zh/modules/pro/erupt-cube) 指标支持 `drillFields` 维度过滤，钻取分析能力增强
+🌟 [erupt-cube](/zh/modules/pro/erupt-cube) 指标支持 `drillFields` 维度过滤，钻取分析能力增强；查询新增 `drillMeasure` 参数，支持指标级下钻过滤
+
+🌟 [erupt-cube](/zh/modules/pro/erupt-cube) `@EruptCube` / `@Dimension` / `@Measure` / `@Parameter` 注解新增 `prompt` 字段，为 AI 语义分析提供字段级描述
+
+🧩 `@ChoiceType` / `@ReferenceTreeType` / `@ReferenceTableType` 等注解的 `dependField` 属性改为 getter 风格引用，IDE 可自动补全合法字段名
 
 🧩 [erupt-designer](/zh/modules/erupt-designer) 发布菜单时自动生成对应按钮权限
 
@@ -69,6 +75,8 @@
 - 树形视图支持排序、节点定位；BI / Monitor 模块全屏优化
 - 终端模块（[erupt-terminal](/zh/modules/erupt-terminal)）UI 集成，支持多标签页动态切换与 WebSocket 实时通信
 - 表格与弹窗新增动态按钮，可根据行数据状态动态控制按钮显示
+- erupt-flow 审批组件 UI 全面重构，新增移动端响应式主从布局与无障碍优化
+- TAGS 组件支持 `joinSeparator = "[]"` JSON 数组格式标签值解析
 
 ### 1.14.x → 2.0.0 升级指南
 
