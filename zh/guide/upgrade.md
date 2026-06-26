@@ -171,28 +171,6 @@ ALTER TABLE e_upms_user ADD COLUMN salt         VARCHAR(64);
 ALTER TABLE e_upms_user ADD COLUMN encrypt_type VARCHAR(20);
 ```
 
-### erupt-designer 模块新增表
-
-仅在项目中引入了 `erupt-designer` 模块时需要以下表：
-
-```sql
-CREATE TABLE e_designer (
-  id           BIGINT PRIMARY KEY,
-  class_name   VARCHAR(64) UNIQUE NOT NULL,
-  name         VARCHAR(255),
-  remark       VARCHAR(255),
-  publish_time DATETIME,
-  config       LONGTEXT,
-  update_time  DATETIME
-);
-
-CREATE TABLE e_designer_data (
-  id    BIGINT PRIMARY KEY,
-  model VARCHAR(64) NOT NULL,
-  data  LONGTEXT,
-  INDEX idx_model (model)
-);
-```
 
 ## 升级必做操作
 
