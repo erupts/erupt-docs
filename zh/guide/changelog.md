@@ -1,6 +1,6 @@
 # 更新日志
 
-## 2.0.0（2026-06-27） <Badge type="tip" text="Spring Boot 3.5.15" />
+## 2.0.1（2026-06-29） <Badge type="tip" text="Spring Boot 3.5.15" />
 
 > 🚀 新模块开源 ×2 &emsp; 🌟 新功能 ×21 &emsp; 🎨 前端重构 50+ 项
 

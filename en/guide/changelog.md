@@ -3,7 +3,7 @@
 > Only the most recent versions are translated to English at this time.
 > For earlier versions, please refer to the [Chinese changelog](/zh/guide/changelog).
 
-## 2.0.0 (2026-06-27) <Badge type="tip" text="Spring Boot 3.5.15" />
+## 2.0.1 (2026-06-29) <Badge type="tip" text="Spring Boot 3.5.15" />
 
 > 🚀 New modules ×2 &emsp; 🌟 New features ×21 &emsp; 🎨 Frontend 50+ updates
 
