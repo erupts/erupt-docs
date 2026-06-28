@@ -117,6 +117,7 @@ export default withMermaid(defineConfig({
                             text: 'Core Annotations',
                             items: [
                                 {text: 'Overview', link: '/en/annotation/'},
+                                {text: '@EruptScan', link: '/en/annotation/erupt-scan'},
                                 {text: '@Erupt', link: '/en/annotation/erupt'},
                                 {text: '@EruptField', link: '/en/annotation/erupt-field'},
                                 {text: '@Edit', link: '/en/annotation/edit'},
@@ -459,6 +460,7 @@ export default withMermaid(defineConfig({
                             text: '核心注解',
                             items: [
                                 {text: '概览', link: '/zh/annotation/'},
+                                {text: '@EruptScan', link: '/zh/annotation/erupt-scan'},
                                 {text: '@Erupt', link: '/zh/annotation/erupt'},
                                 {text: '@EruptField', link: '/zh/annotation/erupt-field'},
                                 {text: '@Edit 编辑配置', link: '/zh/annotation/edit'},
