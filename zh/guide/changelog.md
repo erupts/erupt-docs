@@ -60,9 +60,8 @@
 
 🐞 修复 Ollama 模型配置中缺少 `baseUrl` 参数的问题，感谢 [canjian215215](https://github.com/canjian215215) 贡献的代码
 
-### 🎨 前端全面重构（erupt-web 2.0）
-
-> Angular 20 → 21，UI 层从架构到交互全面重写。
+🎨 前端全面重构（erupt-web 2.0）
+>  Angular 20 → 21，UI 层从架构到交互全面重写。
 
 - 全新登录页、预加载动画，新增分栏菜单（Split Menu）模式
 - 侧边栏宽度可拖拽、收藏夹支持拖拽排序，响应式布局优化

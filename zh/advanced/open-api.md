@@ -46,7 +46,29 @@ GET {{host}}/erupt-api/open-api/create-token?appid=xxx&secret=xxx
 | `token` | 访问令牌，用于后续接口调用 |
 | `expireTime` | Token 过期时间 |
 
-## 3. 调用 Erupt 接口
+## 3. 查询 Token 对应的 APPID 信息
+
+通过 token 反查其归属的 APPID 和名称，适用于后端服务需要验证 token 来源的场景。
+
+```http
+GET {{host}}/erupt-api/open-api/get-appid?token=xxx
+```
+
+**响应示例：**
+
+```json
+{
+  "appid": "xxx",
+  "name": "应用名称"
+}
+```
+
+| 字段 | 说明 |
+| --- | --- |
+| `appid` | 该 token 对应的 APPID |
+| `name` | Open API 应用名称 |
+
+## 4. 调用 Erupt 接口
 
 获取到 token 后，在请求头中携带 token 即可调用受保护的接口：
 

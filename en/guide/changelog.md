@@ -63,7 +63,7 @@
 
 🐞 Fixed: Ollama model configuration was missing the `baseUrl` parameter — thanks to [canjian215215](https://github.com/canjian215215) for the contribution.
 
-### 🎨 Frontend Complete Overhaul (erupt-web 2.0)
+🎨 Frontend Complete Overhaul (erupt-web 2.0)
 
 > Angular 20 → 21. The entire UI layer has been rewritten from architecture to interaction.
 

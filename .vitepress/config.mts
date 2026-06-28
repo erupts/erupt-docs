@@ -93,13 +93,18 @@ export default withMermaid(defineConfig({
                             ],
                         },
                         {
-                            text: 'More',
+                            text: 'Reference',
                             items: [
+                                {text: 'Architecture', link: '/en/guide/architecture'},
                                 {text: 'FAQ', link: '/en/guide/faq'},
+                                {text: 'Upgrade Guide', link: '/en/guide/upgrade'},
                                 {text: 'Changelog', link: '/en/guide/changelog'},
                                 {text: 'Legacy Docs', link: '/en/guide/changelog#legacy-documentation'},
-                                {text: 'Upgrade Guide', link: '/en/guide/upgrade'},
-                                {text: 'Architecture', link: '/en/guide/architecture'},
+                            ],
+                        },
+                        {
+                            text: 'Community',
+                            items: [
                                 {text: 'Community', link: '/en/guide/community'},
                                 {text: 'Contributing', link: '/en/guide/contributing'},
                                 {text: 'Donate', link: '/en/guide/donate'},
@@ -210,16 +215,26 @@ export default withMermaid(defineConfig({
 
                     '/en/advanced/': [
                         {
-                            text: 'Business Extensions',
+                            text: 'Data Lifecycle',
                             items: [
                                 {text: 'DataProxy', link: '/en/advanced/data-proxy'},
                                 {text: 'PostDataProxy', link: '/en/advanced/post-data-proxy'},
-                                {text: 'FormView', link: '/en/advanced/form-view'},
-                                {text: 'Dynamic Form', link: '/en/advanced/dynamic-form'},
-                                {text: 'Soft Delete', link: '/en/advanced/soft-delete'},
                                 {text: 'Event Listener', link: '/en/advanced/event-listener'},
-                                {text: 'Custom File Upload', link: '/en/advanced/upload'},
+                                {text: 'Soft Delete', link: '/en/advanced/soft-delete'},
+                            ],
+                        },
+                        {
+                            text: 'Form & View',
+                            items: [
+                                {text: 'Form View', link: '/en/advanced/form-view'},
+                                {text: 'Dynamic Form', link: '/en/advanced/dynamic-form'},
+                            ],
+                        },
+                        {
+                            text: 'System Features',
+                            items: [
                                 {text: 'Frontend Notifications', link: '/en/advanced/frontend-notify'},
+                                {text: 'Custom File Upload', link: '/en/advanced/upload'},
                                 {text: 'i18n', link: '/en/advanced/i18n'},
                                 {text: 'Hot Build', link: '/en/advanced/hot-build'},
                             ],
@@ -420,13 +435,18 @@ export default withMermaid(defineConfig({
                             ],
                         },
                         {
-                            text: '其他',
+                            text: '参考',
                             items: [
+                                {text: '架构图', link: '/zh/guide/architecture'},
                                 {text: '常见问题 FAQ', link: '/zh/guide/faq'},
+                                {text: '升级指南', link: '/zh/guide/upgrade'},
                                 {text: '更新日志', link: '/zh/guide/changelog'},
                                 {text: '历史版本', link: '/zh/guide/changelog#历史版本文档'},
-                                {text: '升级指南', link: '/zh/guide/upgrade'},
-                                {text: '架构图', link: '/zh/guide/architecture'},
+                            ],
+                        },
+                        {
+                            text: '社区',
+                            items: [
                                 {text: '加入讨论', link: '/zh/guide/community'},
                                 {text: '贡献指南', link: '/zh/guide/contributing'},
                                 {text: '捐赠', link: '/zh/guide/donate'},
@@ -537,16 +557,26 @@ export default withMermaid(defineConfig({
 
                     '/zh/advanced/': [
                         {
-                            text: '业务扩展',
+                            text: '数据生命周期',
                             items: [
                                 {text: '数据代理 DataProxy', link: '/zh/advanced/data-proxy'},
                                 {text: '全局拦截 PostDataProxy', link: '/zh/advanced/post-data-proxy'},
-                                {text: '独立表单视图 FormView', link: '/zh/advanced/form-view'},
-                                {text: '动态表单', link: '/zh/advanced/dynamic-form'},
-                                {text: '逻辑删除', link: '/zh/advanced/soft-delete'},
                                 {text: '事件监听器', link: '/zh/advanced/event-listener'},
-                                {text: '自定义文件上传', link: '/zh/advanced/upload'},
+                                {text: '逻辑删除', link: '/zh/advanced/soft-delete'},
+                            ],
+                        },
+                        {
+                            text: '表单与视图',
+                            items: [
+                                {text: '表单视图 FormView', link: '/zh/advanced/form-view'},
+                                {text: '动态表单', link: '/zh/advanced/dynamic-form'},
+                            ],
+                        },
+                        {
+                            text: '系统功能',
+                            items: [
                                 {text: '前端消息与弹窗', link: '/zh/advanced/frontend-notify'},
+                                {text: '自定义文件上传', link: '/zh/advanced/upload'},
                                 {text: '国际化', link: '/zh/advanced/i18n'},
                                 {text: '热构建', link: '/zh/advanced/hot-build'},
                             ],

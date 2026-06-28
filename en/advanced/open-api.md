@@ -46,7 +46,29 @@ GET {{host}}/erupt-api/open-api/create-token?appid=xxx&secret=xxx
 | `token` | Access token for subsequent API calls |
 | `expireTime` | Token expiration time |
 
-## 3. Call Erupt Endpoints
+## 3. Query APPID Info by Token
+
+Look up the APPID and name associated with a given token. Useful when a backend service needs to verify the origin of a token.
+
+```http
+GET {{host}}/erupt-api/open-api/get-appid?token=xxx
+```
+
+**Response example:**
+
+```json
+{
+  "appid": "xxx",
+  "name": "App Name"
+}
+```
+
+| Field | Description |
+| --- | --- |
+| `appid` | The APPID associated with this token |
+| `name` | Open API application name |
+
+## 4. Call Erupt Endpoints
 
 After obtaining the token, include it in the request header to call protected endpoints:
 
