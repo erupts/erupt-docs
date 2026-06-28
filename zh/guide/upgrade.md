@@ -45,6 +45,22 @@ public String extraContent(List<Condition> conditions, Collection<Map<String, Ob
 }
 ```
 
+### 3. `HTMLEDITOR` 默认编辑器改为 CKEditor
+
+**影响范围**：使用了 `EditType.HTMLEDITOR` 字段类型的模块。
+
+2.0.0 将 HTMLEDITOR 组件的默认富文本编辑器由 **UEditor** 改为 **CKEditor**。升级后，所有未显式指定编辑器类型的 HTMLEDITOR 字段将自动使用 CKEditor 渲染。
+
+**如需继续使用 UEditor**，需通过注解显式声明：
+
+```java
+@Edit(
+    type = EditType.HTMLEDITOR,
+    htmlEditorType = @HtmlEditorType(type = HtmlEditorType.Type.UEDITOR)
+)
+private String content;
+```
+
 ### 4. `AutoCompleteHandler`、`ChoiceFetchHandler`、`TagsFetchHandler` 需要泛型参数
 
 **影响范围**：实现了上述任一接口的类。

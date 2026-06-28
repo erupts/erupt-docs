@@ -45,6 +45,22 @@ public String extraContent(List<Condition> conditions, Collection<Map<String, Ob
 }
 ```
 
+### 3. `HTMLEDITOR` Default Editor Changed to CKEditor
+
+**Affected scope**: Any module using the `EditType.HTMLEDITOR` field type.
+
+In 2.0.0 the default rich-text editor for HTMLEDITOR has changed from **UEditor** to **CKEditor**. After upgrading, any HTMLEDITOR field that does not explicitly specify an editor type will automatically render with CKEditor.
+
+**To keep using UEditor**, declare it explicitly via annotation:
+
+```java
+@Edit(
+    type = EditType.HTMLEDITOR,
+    htmlEditorType = @HtmlEditorType(type = HtmlEditorType.Type.UEDITOR)
+)
+private String content;
+```
+
 ### 4. `AutoCompleteHandler`, `ChoiceFetchHandler`, `TagsFetchHandler` Require a Generic Type Parameter
 
 **Affected scope**: Classes that implement any of these interfaces.
