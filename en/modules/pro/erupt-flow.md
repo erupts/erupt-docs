@@ -42,6 +42,17 @@ Custom printing:
 
 <img src="/flow/print.png" width="900">
 
+## Drag-and-Drop Form Design with erupt-designer
+
+erupt-flow supports two ways to define workflow forms:
+
+| Approach | Description | Best For |
+|----------|-------------|----------|
+| **Annotation-driven** (default) | Declare fields in Java entity classes via `@EruptField`; the framework auto-renders them as approval forms | Dev teams, fields with complex logic |
+| **Visual designer** (with [erupt-designer](/en/modules/erupt-designer)) | Drag and drop components on a visual canvas to configure fields — no Java code required | Business users maintaining forms independently, rapid iteration |
+
+Once erupt-designer is integrated, the workflow configuration step includes a visual form design interface. Drag in text inputs, dropdowns, date pickers, attachments, and more — preview in real time, publish to go live. Both approaches can be combined: define technical fields via annotations and let business users manage domain-specific fields through the designer.
+
 ## Why Not Use Camunda / Flowable / DingTalk / Feishu Approvals?
 
 | Dimension | Camunda / Flowable | DingTalk / Feishu Approvals | Custom | **Erupt Flow** |
