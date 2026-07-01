@@ -271,6 +271,24 @@ export default withMermaid(defineConfig({
                             ],
                         },
                         {
+                            text: 'Issue 08 · Annotation DX',
+                            items: [
+                                {text: "Not a string — code with syntax", link: '/en/topics/annotation-language-injection'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 07 · Runtime Designer',
+                            items: [
+                                {text: 'ByteBuddy × Bytecode Designer', link: '/en/topics/bytecode-designer'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 06 · Secure by Default',
+                            items: [
+                                {text: '@Power × SHA512 × PowerHandler', link: '/en/topics/security-defaults'},
+                            ],
+                        },
+                        {
                             text: 'Issue 05 · Design Philosophy',
                             items: [
                                 {text: 'Annotation × Spring × Git', link: '/en/topics/controllable-low-code'},
@@ -611,6 +629,24 @@ export default withMermaid(defineConfig({
                             text: '专题',
                             items: [
                                 {text: '专题总览', link: '/zh/topics/'},
+                            ],
+                        },
+                        {
+                            text: '第 08 期 · Annotation DX',
+                            items: [
+                                {text: '注解里写的不是字符串，是有语法的代码', link: '/zh/topics/annotation-language-injection'},
+                            ],
+                        },
+                        {
+                            text: '第 07 期 · Runtime Designer',
+                            items: [
+                                {text: 'ByteBuddy × 字节码设计器', link: '/zh/topics/bytecode-designer'},
+                            ],
+                        },
+                        {
+                            text: '第 06 期 · Secure by Default',
+                            items: [
+                                {text: '@Power × SHA512 × PowerHandler', link: '/zh/topics/security-defaults'},
                             ],
                         },
                         {

@@ -24,6 +24,48 @@ outline: deep
 
 <div class="topic-list">
 
+<a class="topic-card" href="/topics/annotation-language-injection">
+  <div class="topic-card__index">#08</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Annotation DX</div>
+    <h3 class="topic-card__title">注解里写的不是字符串，是有语法的代码</h3>
+    <p class="topic-card__desc">画布党最爱的反驳是"注解就是把 SQL 写成没高亮的哑字符串"。Erupt 押反向——用 JetBrains @Language 往自己的注解属性里注入 10 种嵌入式语言（hql/sql/VTL/markdown/java…），一行 sql="..." 在 IntelliJ 里有高亮、补全、报错；@Comment 再让同一个属性对人和 AI 都自描述。</p>
+    <div class="topic-card__meta">
+      <span>2026-07-01</span>
+      <span>·</span>
+      <span>9 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/bytecode-designer">
+  <div class="topic-card__index">#07</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Runtime Designer</div>
+    <h3 class="topic-card__title">ByteBuddy × JsonAnnotationProxy × @EruptDataProcessor：我们做了设计器，但它编译成一个真 @Erupt 类</h3>
+    <p class="topic-card__desc">在线表单设计器几乎都把设计稿存成一份 JSON DSL，运行时靠解释器渲染。erupt-designer 押反向：设计稿在运行时被 ByteBuddy 编译成一个真正的 @Erupt 类，复用与手写实体完全相同的管线——Gson、反射、校验、DataProxy、@EruptFlow，无重启、无生成代码、无解释器。</p>
+    <div class="topic-card__meta">
+      <span>2026-06-17</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/security-defaults">
+  <div class="topic-card__index">#06</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Secure by Default</div>
+    <h3 class="topic-card__title">@Power × SHA512+Salt × PowerHandler：低代码的"安全"不该是上线前才补的那一栏</h3>
+    <p class="topic-card__desc">国内后台框架的安全是"配齐再上线"——RBAC、按钮权限、密码加密都是清单上的待办项。Erupt 押反向：安全是注解默认值。@Power 的 export/importable 默认 false，PowerHandler 在运行时收口，密码 MD5→SHA-512+盐 在改密时自动平滑迁移，无停机、无 rehash 脚本。</p>
+    <div class="topic-card__meta">
+      <span>2026-06-10</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
 <a class="topic-card" href="/topics/controllable-low-code">
   <div class="topic-card__index">#05</div>
   <div class="topic-card__body">
