@@ -1,6 +1,6 @@
 ---
 title: "@Power × SHA512+Salt × PowerHandler: In Low-Code, 'Security' Shouldn't Be the Column You Fill In Right Before Launch"
-description: For most domestic admin frameworks, the security checklist — RBAC menu permissions, button permissions, password encryption — is almost always a "fill it in before launch" to-do item. Erupt bets on the reverse: security is the default value of an annotation, the part the framework does for you. This issue works through the nine switches of @Power, the runtime enforcement of PowerHandler, and the smooth password migration from MD5 to SHA-512 + Salt, to make clear what "secure by default" means in engineering terms.
+description: 'For most domestic admin frameworks, the security checklist — RBAC menu permissions, button permissions, password encryption — is almost always a "fill it in before launch" to-do item. Erupt bets on the reverse: security is the default value of an annotation, the part the framework does for you. This issue works through the nine switches of @Power, the runtime enforcement of PowerHandler, and the smooth password migration from MD5 to SHA-512 + Salt, to make clear what "secure by default" means in engineering terms.'
 outline: deep
 ---
 
