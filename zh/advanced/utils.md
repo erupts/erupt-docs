@@ -52,6 +52,8 @@ public class EruptClass extends HyperModel {
 }
 ```
 
+> 继承 `LookerSelf` 后，列表查询会自动追加"仅当前用户创建的数据"这一条件；继承 `HyperModel` 后，创建人 / 创建时间 / 更新人 / 更新时间等审计字段会在增改时自动填充，无需在实体里重复声明。
+
 ### 基础模型
 
 | 可继承类名称 | 功能说明 |

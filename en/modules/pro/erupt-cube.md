@@ -48,6 +48,119 @@ Both approaches can coexist in the same project: define core complex models with
 
 > Recommended workflow: **Define core models with annotations → Use the visual interface for business self-service exploration → Stable models from exploration are converted back to annotations**.
 
+## Annotation Modeling Reference (API)
+
+A semantic model = one `@EruptCube` class. The class declares the base-table SQL and its exposed query views (Explores); fields declare dimensions and metrics with `@Dimension` / `@Measure`. Below is a complete, compilable example (from `xyz.erupt.project.cube.WorkItemStatsCube`):
+
+```java
+@Getter
+@Setter
+@EruptCube(
+        name = "Work Item Statistics",
+        sql = """
+                select wi.type         as type,
+                       wi.status       as status,
+                       u.name          as assignee_name,
+                       wi.story_points as story_points,
+                       wi.due_date     as due_date
+                from e_project_work_item wi
+                         left join e_upms_user u on wi.assignee_id = u.id
+                """
+)
+public class WorkItemStatsCube {
+
+    @Dimension(title = "Assignee", sql = "assignee_name")
+    private String assigneeName;
+
+    @Dimension(title = "Status", sql = "status")
+    private String status;
+
+    @Dimension(title = "Due Date", sql = "due_date")
+    private LocalDate dueDate;
+
+    @Measure(title = "Work Item Count", sql = "count(*)")
+    private Long workItemCount;
+
+    @Measure(title = "Overdue Count",
+             sql = "sum(case when status <> 'DONE' and due_date < current_date then 1 else 0 end)")
+    private Long overdueCount;
+
+    @Measure(title = "Story Points", sql = "sum(story_points)")
+    private Double storyPoints;
+}
+```
+
+### `@EruptCube` (class level)
+
+| Attribute | Type | Description |
+| --- | --- | --- |
+| `name` | String | Model name (required) |
+| `datasource` | String | Datasource key; blank uses the primary datasource |
+| `description` | String | Model description |
+| `sql` | String | Base-table SQL, interpreted as a sub-query or table name per `sqlType` (supports VTL templates) |
+| `sqlType` | SqlType | `SUB_QUERY` (default) / `TABLE_NAME` |
+| `explores` | Explore[] | Exposed query views; defaults to a single `overview` |
+| `prompt` | String | Prompt supplied to the AI (markdown) |
+| `tags` | String[] | Tags |
+| `dataProxy` | Class&lt;? extends CubeProxy&gt;[] | Before/after query hooks |
+
+### `@Dimension` (field level · dimension)
+
+| Attribute | Type | Description |
+| --- | --- | --- |
+| `title` | String | Dimension display name (required) |
+| `type` | FieldType | `AUTO` (default, inferred from field type) / `NUMBER` / `STRING` / `DATE` |
+| `sql` | String | GROUP BY column expression; defaults to the field name (supports VTL) |
+| `prompt` | String | AI prompt |
+| `hidden` | boolean | Whether hidden |
+| `tags` | String[] | Tags |
+
+### `@Measure` (field level · metric)
+
+| Attribute | Type | Description |
+| --- | --- | --- |
+| `title` | String | Metric display name (required) |
+| `type` | FieldType | Same as above |
+| `sql` | String | Aggregate SQL expression, e.g. `sum(amount)` (required) |
+| `drillFields` | String[] | Detail dimension fields exposed when drilling down |
+| `drillFilter` | String | Extra filter applied when drilling down |
+| `prompt` | String | AI prompt |
+| `hidden` | boolean | Whether hidden |
+| `tags` | String[] | Tags |
+
+### `@Explore` (query view)
+
+Defines the query perspectives a cube exposes; each `code` maps to a set of available dimensions / metrics.
+
+| Attribute | Type | Description |
+| --- | --- | --- |
+| `code` | String | Unique view code |
+| `name` | String | View name |
+| `where` | String | Fixed filter for this view |
+| `dimensions` | String[] | Dimensions exposed by this view (blank = all) |
+| `measures` | String[] | Metrics exposed by this view (blank = all) |
+| `parameters` | ExploreParameter[] | Runtime parameters |
+| `joins` | Join[] | Joins with other cubes |
+| `hidden` | boolean | Whether hidden |
+
+### `CubeProxy` (extension point)
+
+Implement `xyz.erupt.annotation.fun.CubeProxy` and reference it via `@EruptCube(dataProxy = ...)` to hook in before the query expression is built and after results return (row-level permissions, tenant isolation, result post-processing):
+
+```java
+public interface CubeProxy {
+
+    // Dynamically process the query expression before it is built
+    default String beforeQuery(String expr, Map<String, Object> context) {
+        return expr;
+    }
+
+    // Post-process the query result after it returns
+    default void afterQuery(List<CubeResultRow> result, Map<String, Object> context) {
+    }
+}
+```
+
 ## Why Not Use Looker / Metabase / Cube.dev / Build Your Own?
 
 | Dimension | Looker (Google) | Metabase | Cube.dev | Custom SQL Stitching | **Erupt Cube** |
