@@ -126,10 +126,10 @@ public class DemoApplication {
 ## Docker 启动
 
 ```bash
-docker push erupts/erupt-cloud-server:version
+docker push erupts/erupt:version
 ```
 
-镜像与版本信息：[https://hub.docker.com/repository/docker/erupts/erupt-cloud-server/general](https://hub.docker.com/repository/docker/erupts/erupt-cloud-server/general)
+镜像与版本信息：[https://hub.docker.com/repository/docker/erupts/erupt/general](https://hub.docker.com/repository/docker/erupts/erupt/general)
 
 Docker 部署的为 erupt-cloud-server，可以开发 erupt-cloud-node 节点来实现分布式能力。
 

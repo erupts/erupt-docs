@@ -71,9 +71,9 @@ erupt:
 Server 端支持 Docker 方式部署，新功能仅需开发 Node 节点即可：
 
 ```bash
-docker pull erupts/erupt-cloud-server:version
+docker pull erupts/erupt:version
 ```
 
-镜像版本同 Erupt 版本号，版本信息：[https://hub.docker.com/repository/docker/erupts/erupt-cloud-server/general](https://hub.docker.com/repository/docker/erupts/erupt-cloud-server/general)
+镜像版本同 Erupt 版本号，版本信息：[https://hub.docker.com/repository/docker/erupts/erupt/general](https://hub.docker.com/repository/docker/erupts/erupt/general)
 
 可参照 [更新日志](/zh/guide/changelog) 获取最新版本号。
