@@ -58,6 +58,8 @@ erupt:
   # Whether to record operation logs (default true). Logs can be viewed under System Management → Operation Logs.
   security:
     record-operate-log: true
+    # Max request body size (bytes) buffered for operation logging; larger or chunked bodies are passed through without buffering. Default 1MB (v2.0.2+)
+    record-operate-log-max-body-size: 1048576
   upms:
     # Login session length (minutes)
     expire-time-by-login: 60

@@ -21,7 +21,21 @@ public @interface Search {
 
     boolean notNull() default false; // whether this is a required search field
 
+    // Default query operator (2.0.2+), applied when the search condition does not carry one
+    // AUTO resolves by edit type (e.g. INPUT defaults to LIKE, NUMBER defaults to EQ)
+    QueryExpression operator() default QueryExpression.AUTO;
+
 }
+```
+
+**Specifying a default operator (2.0.2+):**
+
+```java
+@EruptField(
+    views = @View(title = "Name"),
+    edit = @Edit(title = "Name", search = @Search(operator = QueryExpression.EQ))
+)
+private String name;
 ```
 
 :::tip

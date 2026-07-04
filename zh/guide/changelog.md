@@ -1,5 +1,23 @@
 # 更新日志
 
+## 2.0.3（2026-07-04） <Badge type="tip" text="Spring Boot 3.5.16" />
+
+🌟 新增 [`erupt-spring-boot-starter` 与 `erupt-spring-boot-starter-all`](/zh/guide/quick-start) 启动器，一个依赖即可集成 Erupt 核心能力或全部功能模块
+
+🌟 新增 [`CALLOUT` 编辑类型](/zh/field-types/callout)，在表单中展示静态引导内容，支持 HTML 与卡片、信息、警告等多种样式，字段不采集不入库
+
+🌟 [`@Search`](/zh/annotation/search) 新增 `operator` 属性，可为搜索字段指定默认查询操作符，`AUTO` 按组件类型自动解析
+
+🌟 [erupt-print](/zh/modules/erupt-print) 打印模板支持块级模板变量，编辑器新增变量插件与打印变量自动生成，打印预览增加加载反馈
+
+🧩 操作日志增强：新增 [`record-operate-log-max-body-size`](/zh/guide/configuration) 配置限制记录的请求体大小，并完善请求上下文清理逻辑
+
+🧩 管理后台首页视觉重构：动画蓝图背景、可折叠侧边栏、终端标签页样式优化
+
+🐞 修复验证码接口图片高度参数未限制，可能被恶意利用生成超大图片的问题
+
+🐞 修复 erupt-designer 表单 `view` 字段反序列化遇到空值时报错的问题
+
 ## 2.0.1（2026-06-29） <Badge type="tip" text="Spring Boot 3.5.15" />
 
 > 🚀 新模块开源 ×2 &emsp; 🌟 新功能 ×21 &emsp; 🎨 前端重构 50+ 项

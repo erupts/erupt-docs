@@ -75,6 +75,29 @@ spring:
 
 版本号详见：[更新日志](/zh/guide/changelog)
 
+**方式一：使用 Starter（2.0.2+，推荐）**
+
+```xml
+<!--Erupt 核心启动器：包含权限管理与后台 WEB 界面-->
+<dependency>
+  <groupId>xyz.erupt</groupId>
+  <artifactId>erupt-spring-boot-starter</artifactId>
+  <version>${erupt.version}</version>
+</dependency>
+```
+
+如需一次性引入全部功能模块（任务调度、代码生成、监控、消息通知、AI、打印等），可使用 all 启动器：
+
+```xml
+<dependency>
+  <groupId>xyz.erupt</groupId>
+  <artifactId>erupt-spring-boot-starter-all</artifactId>
+  <version>${erupt.version}</version>
+</dependency>
+```
+
+**方式二：按模块引入**
+
 ```xml
 <!--后端权限逻辑-->
 <dependency>

@@ -58,6 +58,8 @@ erupt:
   # 是否记录操作日志，默认true，该功能开启后可在【系统管理 → 操作日志】中查看操作日志
   security:
     record-operate-log: true
+    # 操作日志记录的最大请求体字节数，超出或分块传输的请求体不做缓存记录，默认 1MB，2.0.2 及以上版本支持
+    record-operate-log-max-body-size: 1048576
   upms:
     # 登录 session 时长
     expire-time-by-login: 60

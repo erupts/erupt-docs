@@ -21,7 +21,21 @@ public @interface Search {
 
     boolean notNull() default false; // 是否为必填搜索项
 
+    // 默认查询操作符（2.0.2+），当搜索条件未显式指定操作符时生效
+    // AUTO 表示按组件类型自动解析（如 INPUT 默认 LIKE、NUMBER 默认 EQ）
+    QueryExpression operator() default QueryExpression.AUTO;
+
 }
+```
+
+**指定默认操作符示例（2.0.2+）：**
+
+```java
+@EruptField(
+    views = @View(title = "名称"),
+    edit = @Edit(title = "名称", search = @Search(operator = QueryExpression.EQ))
+)
+private String name;
 ```
 
 :::tip

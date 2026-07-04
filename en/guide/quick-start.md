@@ -75,6 +75,29 @@ To integrate Erupt into an existing Spring Boot project, follow the steps below.
 
 For version numbers, see the [Changelog](/en/guide/changelog).
 
+**Option 1: Use the Starter (2.0.2+, recommended)**
+
+```xml
+<!-- Erupt core starter: includes permission management and the admin web UI -->
+<dependency>
+  <groupId>xyz.erupt</groupId>
+  <artifactId>erupt-spring-boot-starter</artifactId>
+  <version>${erupt.version}</version>
+</dependency>
+```
+
+To bring in every feature module at once (job scheduling, code generation, monitoring, notifications, AI, printing, etc.), use the all-in-one starter:
+
+```xml
+<dependency>
+  <groupId>xyz.erupt</groupId>
+  <artifactId>erupt-spring-boot-starter-all</artifactId>
+  <version>${erupt.version}</version>
+</dependency>
+```
+
+**Option 2: Add modules individually**
+
 ```xml
 <!-- Backend permission logic -->
 <dependency>

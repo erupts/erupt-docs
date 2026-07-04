@@ -1,7 +1,22 @@
 # Changelog
 
-> Only the most recent versions are translated to English at this time.
-> For earlier versions, please refer to the [Chinese changelog](/zh/guide/changelog).
+## 2.0.3 (2026-07-04) <Badge type="tip" text="Spring Boot 3.5.16" />
+
+🌟 New [`erupt-spring-boot-starter` and `erupt-spring-boot-starter-all`](/en/guide/quick-start#manual-integration-existing-project) starters — integrate Erupt core or every feature module with a single dependency.
+
+🌟 New [`CALLOUT` edit type](/en/field-types/callout) — render static guidance content inside forms with HTML support and card/info/warning styles; the field is neither collected nor persisted.
+
+🌟 [`@Search`](/en/annotation/search) adds an `operator` property to specify the default query operator per field; `AUTO` resolves by edit type.
+
+🌟 [erupt-print](/en/modules/erupt-print) templates now support block-level template variables, with a new editor variable plugin, automatic print-variable generation, and loading feedback in print preview.
+
+🧩 Operation logging enhanced: new [`record-operate-log-max-body-size`](/en/guide/configuration) property caps the recorded request body size, with improved request-context cleanup.
+
+🧩 Admin home page visual refresh: animated blueprint background, collapsible sidebar, and refined terminal tab styling.
+
+🐞 Fixed unbounded captcha image height parameter that could be abused to generate oversized images.
+
+🐞 Fixed a deserialization error in erupt-designer when the form `view` field is null.
 
 ## 2.0.1 (2026-06-29) <Badge type="tip" text="Spring Boot 3.5.15" />
 
