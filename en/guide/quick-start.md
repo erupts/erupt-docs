@@ -149,10 +149,10 @@ Follow steps 2–4 of the "Spring Boot Deployment" section above.
 ## Docker
 
 ```bash
-docker push erupts/erupt-cloud-server:version
+docker push erupts/erupt:version
 ```
 
-Image and version info: [https://hub.docker.com/repository/docker/erupts/erupt-cloud-server/general](https://hub.docker.com/repository/docker/erupts/erupt-cloud-server/general)
+Image and version info: [https://hub.docker.com/repository/docker/erupts/erupt/general](https://hub.docker.com/repository/docker/erupts/erupt/general)
 
 The Docker image is `erupt-cloud-server`. You can develop `erupt-cloud-node` nodes to achieve distributed capabilities.
 

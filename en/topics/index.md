@@ -24,6 +24,48 @@ outline: deep
 
 <div class="topic-list">
 
+<a class="topic-card" href="/en/topics/annotation-language-injection">
+  <div class="topic-card__index">#08</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Annotation DX</div>
+    <h3 class="topic-card__title">What you write in an annotation isn't a string — it's code with syntax</h3>
+    <p class="topic-card__desc">The favorite rebuttal against annotation-based low-code is "annotations just turn SQL into unhighlighted dumb strings." Erupt bets the reverse — it uses JetBrains @Language to inject 10 embedded languages (hql/sql/VTL/markdown/java…) into its own annotation attributes, so a single sql="..." gets highlighting, completion, and error checking in IntelliJ; @Comment then makes the same attribute self-describing for both humans and AI.</p>
+    <div class="topic-card__meta">
+      <span>2026-07-01</span>
+      <span>·</span>
+      <span>9 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/en/topics/bytecode-designer">
+  <div class="topic-card__index">#07</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Runtime Designer</div>
+    <h3 class="topic-card__title">ByteBuddy × JsonAnnotationProxy × @EruptDataProcessor: We built a designer, but it compiles into a real @Erupt class</h3>
+    <p class="topic-card__desc">Nearly every online form designer stores the design as a JSON DSL and renders it at runtime through an interpreter. erupt-designer bets the opposite way — at runtime the design is compiled by ByteBuddy into a real @Erupt class, reusing the exact same pipeline as a hand-written entity: Gson, reflection, validation, DataProxy, @EruptFlow. No restart, no generated code, no interpreter.</p>
+    <div class="topic-card__meta">
+      <span>2026-06-17</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/en/topics/security-defaults">
+  <div class="topic-card__index">#06</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Secure by Default</div>
+    <h3 class="topic-card__title">@Power × SHA512+Salt × PowerHandler: in low-code, "security" shouldn't be the column you fill in right before launch</h3>
+    <p class="topic-card__desc">For most domestic admin frameworks, security is a "configure it before launch" checklist — RBAC, button permissions, password encryption are all to-do items. Erupt bets the reverse: security is the default value of an annotation. @Power defaults export/importable to false, PowerHandler enforces at runtime, and passwords migrate from MD5 to SHA-512+Salt automatically on the next change — no downtime, no rehash script.</p>
+    <div class="topic-card__meta">
+      <span>2026-06-10</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
 <a class="topic-card" href="/en/topics/controllable-low-code">
   <div class="topic-card__index">#05</div>
   <div class="topic-card__body">

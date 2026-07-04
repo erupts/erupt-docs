@@ -48,6 +48,121 @@ erupt-cube 同时支持两种语义模型定义方式，覆盖团队内不同角
 
 > 推荐工作流：**注解定义核心模型 → 可视化界面用于业务自助探索 → 探索后稳定下来的模型回流为注解**。
 
+## 注解建模速查（API 参考）
+
+一个语义模型 = 一个 `@EruptCube` 类，类上定义底表 SQL 与对外查询视图（Explore），字段上用 `@Dimension` / `@Measure` 声明维度与指标。下面是一个可直接编译的完整示例（源自 `xyz.erupt.project.cube.WorkItemStatsCube`）：
+
+```java
+@Getter
+@Setter
+@EruptCube(
+        name = "Work Item Statistics",
+        sql = """
+                select wi.type         as type,
+                       wi.status       as status,
+                       u.name          as assignee_name,
+                       wi.story_points as story_points,
+                       wi.due_date     as due_date
+                from e_project_work_item wi
+                         left join e_upms_user u on wi.assignee_id = u.id
+                """
+)
+public class WorkItemStatsCube {
+
+    @Dimension(title = "Assignee", sql = "assignee_name")
+    private String assigneeName;
+
+    @Dimension(title = "Status", sql = "status")
+    private String status;
+
+    @Dimension(title = "Due Date", sql = "due_date")
+    private LocalDate dueDate;
+
+    @Measure(title = "Work Item Count", sql = "count(*)")
+    private Long workItemCount;
+
+    @Measure(title = "Overdue Count",
+             sql = "sum(case when status <> 'DONE' and due_date < current_date then 1 else 0 end)")
+    private Long overdueCount;
+
+    @Measure(title = "Story Points", sql = "sum(story_points)")
+    private Double storyPoints;
+}
+```
+
+### `@EruptCube`（类级）
+
+| 属性 | 类型 | 说明 |
+| --- | --- | --- |
+| `name` | String | 模型名称（必填） |
+| `datasource` | String | 数据源 key，留空使用主数据源 |
+| `description` | String | 模型描述 |
+| `sql` | String | 底表 SQL，按 `sqlType` 解释为子查询或表名（支持 VTL 模板） |
+| `sqlType` | SqlType | `SUB_QUERY`（默认）/ `TABLE_NAME` |
+| `explores` | Explore[] | 对外暴露的查询视图，默认含一个 `overview` |
+| `prompt` | String | 提供给 AI 的提示词（markdown） |
+| `tags` | String[] | 标签 |
+| `dataProxy` | Class&lt;? extends CubeProxy&gt;[] | 查询前后钩子 |
+
+### `@Dimension`（字段级 · 维度）
+
+| 属性 | 类型 | 说明 |
+| --- | --- | --- |
+| `title` | String | 维度显示名（必填） |
+| `type` | FieldType | `AUTO`（默认，按字段类型推断）/ `NUMBER` / `STRING` / `DATE` |
+| `sql` | String | GROUP BY 列表达式，默认取字段名（支持 VTL） |
+| `prompt` | String | AI 提示词 |
+| `hidden` | boolean | 是否隐藏 |
+| `tags` | String[] | 标签 |
+
+### `@Measure`（字段级 · 指标）
+
+| 属性 | 类型 | 说明 |
+| --- | --- | --- |
+| `title` | String | 指标显示名（必填） |
+| `type` | FieldType | 同上 |
+| `sql` | String | 聚合 SQL 表达式，如 `sum(amount)`（必填） |
+| `drillFields` | String[] | 下钻时暴露的明细维度字段 |
+| `drillFilter` | String | 下钻时追加的过滤条件 |
+| `prompt` | String | AI 提示词 |
+| `hidden` | boolean | 是否隐藏 |
+| `tags` | String[] | 标签 |
+
+### `@Explore`（查询视图）
+
+定义一个 cube 对外的若干种查询视角，每个 `code` 对应一组可用维度 / 指标。
+
+| 属性 | 类型 | 说明 |
+| --- | --- | --- |
+| `code` | String | 视图唯一编码 |
+| `name` | String | 视图名称 |
+| `where` | String | 该视图的固定过滤条件 |
+| `dimensions` | String[] | 该视图暴露的维度（留空为全部） |
+| `measures` | String[] | 该视图暴露的指标（留空为全部） |
+| `parameters` | ExploreParameter[] | 运行时参数 |
+| `joins` | Join[] | 与其它 cube 的关联 |
+| `hidden` | boolean | 是否隐藏 |
+
+### `CubeProxy`（扩展点）
+
+实现 `xyz.erupt.annotation.fun.CubeProxy` 并在 `@EruptCube(dataProxy = ...)` 中引用，可在查询表达式生成前后各插一手（行级权限、租户隔离、结果加工）：
+
+```java
+public interface CubeProxy {
+
+    // 查询表达式生成前动态处理
+    default String beforeQuery(String expr, Map<String, Object> context) {
+        return expr;
+    }
+
+    // 查询结果返回后处理
+    default void afterQuery(List<CubeResultRow> result, Map<String, Object> context) {
+    }
+}
+```
+
+> 关于注解字符串在 IDE 里如何获得 SQL / VTL 语法高亮与校验，见专题 [《注解里的那行字符串，不是哑字符串》](/zh/topics/annotation-language-injection)。
+
 ## 为什么不用 Looker / Metabase / Cube.dev / 自研？
 
 | 维度 | Looker (Google) | Metabase | Cube.dev | 自研 SQL 拼接 | **Erupt Cube** |

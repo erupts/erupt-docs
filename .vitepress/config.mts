@@ -272,21 +272,39 @@ export default withMermaid(defineConfig({
                             ],
                         },
                         {
+                            text: 'Issue 08 · Annotation DX',
+                            items: [
+                                {text: 'Code With Syntax, Not a String', link: '/en/topics/annotation-language-injection'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 07 · Runtime Designer',
+                            items: [
+                                {text: 'ByteBuddy × Bytecode Designer', link: '/en/topics/bytecode-designer'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 06 · Secure by Default',
+                            items: [
+                                {text: 'Secure by Default', link: '/en/topics/security-defaults'},
+                            ],
+                        },
+                        {
                             text: 'Issue 05 · Design Philosophy',
                             items: [
-                                {text: 'Annotation × Spring × Git', link: '/en/topics/controllable-low-code'},
+                                {text: 'The most controllable low-code platform', link: '/en/topics/controllable-low-code'},
                             ],
                         },
                         {
                             text: 'Issue 04 · BI × LLM',
                             items: [
-                                {text: 'Erupt Cube × LLM', link: '/en/topics/cube-llm'},
+                                {text: 'Let Your BI Dashboard Answer "Why Did It Drop"', link: '/en/topics/cube-llm'},
                             ],
                         },
                         {
                             text: 'Issue 03 · JPA Superset',
                             items: [
-                                {text: 'JPA × UI × RBAC × AI × Flow', link: '/en/topics/jpa-superset'},
+                                {text: 'A Full Ring of Backend Infrastructure for JPA', link: '/en/topics/jpa-superset'},
                             ],
                         },
                         {
@@ -616,21 +634,39 @@ export default withMermaid(defineConfig({
                             ],
                         },
                         {
+                            text: '第 08 期 · Annotation DX',
+                            items: [
+                                {text: '注解里写的是有语法的代码', link: '/zh/topics/annotation-language-injection'},
+                            ],
+                        },
+                        {
+                            text: '第 07 期 · Runtime Designer',
+                            items: [
+                                {text: 'ByteBuddy × 字节码设计器', link: '/zh/topics/bytecode-designer'},
+                            ],
+                        },
+                        {
+                            text: '第 06 期 · Secure by Default',
+                            items: [
+                                {text: '默认安全', link: '/zh/topics/security-defaults'},
+                            ],
+                        },
+                        {
                             text: '第 05 期 · Design Philosophy',
                             items: [
-                                {text: '注解 × Spring × Git', link: '/zh/topics/controllable-low-code'},
+                                {text: '史上最可控的低代码', link: '/zh/topics/controllable-low-code'},
                             ],
                         },
                         {
                             text: '第 04 期 · BI × LLM',
                             items: [
-                                {text: 'Erupt Cube × LLM', link: '/zh/topics/cube-llm'},
+                                {text: '让 BI 看板自己回答“为什么变了”', link: '/zh/topics/cube-llm'},
                             ],
                         },
                         {
                             text: '第 03 期 · JPA Superset',
                             items: [
-                                {text: 'JPA × UI × RBAC × AI × Flow', link: '/zh/topics/jpa-superset'},
+                                {text: '给 JPA 补齐一整圈后台基础设施', link: '/zh/topics/jpa-superset'},
                             ],
                         },
                         {

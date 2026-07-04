@@ -71,9 +71,9 @@ erupt:
 The Server side supports Docker deployment. New features only require developing Node instances:
 
 ```bash
-docker pull erupts/erupt-cloud-server:version
+docker pull erupts/erupt:version
 ```
 
-The image version matches the Erupt version number. Version information: [https://hub.docker.com/repository/docker/erupts/erupt-cloud-server/general](https://hub.docker.com/repository/docker/erupts/erupt-cloud-server/general)
+The image version matches the Erupt version number. Version information: [https://hub.docker.com/repository/docker/erupts/erupt/general](https://hub.docker.com/repository/docker/erupts/erupt/general)
 
 Refer to the [Changelog](/en/guide/changelog) for the latest version number.
