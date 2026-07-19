@@ -40,7 +40,7 @@ const groups = [
             {name: 'HTML_EDITOR', desc: 'Rich text editor', link: '/en/field-types/html-editor', img: '/field-types/html-editor.png'},
             {name: 'CODE_EDITOR', desc: 'Code editor', link: '/en/field-types/code-editor', img: '/field-types/code-editor.png'},
             {name: 'MARKDOWN', desc: 'Markdown editor', link: '/en/field-types/markdown', img: '/field-types/markdown.png'},
-            {name: 'SIGNATURE', desc: 'Signature pad', link: '/en/field-types/signature', img: '/field-types/signature.png'},
+            {name: 'SIGNATURE', desc: 'Signature pad', link: '/en/field-types/signature', img: '/field-types/signature.svg'},
         ],
     },
     {

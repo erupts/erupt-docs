@@ -1,4 +1,4 @@
-# Custom Data Source
+# Custom Data Source (EruptDataService)
 
 If you want to use Erupt to manage data that lives outside a relational database, you can implement a custom data source.
 

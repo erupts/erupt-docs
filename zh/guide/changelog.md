@@ -92,7 +92,7 @@
 
 🌟 OpenAPI 新增 `getAppid` 接口，支持通过 token 获取 appid 信息
 
-🌟 [`EruptLambdaQuery`](/zh/advanced/erupt-dao#lambdaquery) 新增 `or` 条件支持，可构建 OR 逻辑的复合查询
+🌟 [`EruptLambdaQuery`](/zh/advanced/erupt-dao-lambda) 新增 `or` 条件支持，可构建 OR 逻辑的复合查询
 
 🌟 [erupt-cube](/zh/modules/pro/erupt-cube) 新增 `drillFields` 维度过滤与 `drillMeasure` 指标级下钻
 
@@ -291,10 +291,10 @@ create table e_upms_user_org_division (
 
 🌟 Erupt-AI 增加了新的大模型支持：Grok/Fireworks/MinMax/Mistral/OpenRouter/Together
 
-🌟 [LambdaQuery](/zh/advanced/erupt-dao#mxI1r) 新增 Page 分页 API，链式调用更顺滑  
+🌟 [LambdaQuery](/zh/advanced/erupt-dao-lambda) 新增 Page 分页 API，链式调用更顺滑  
 🌟 联动能力中 @ChoiceType.dependExpr 正式退役，请使用 [@ChoiceType.fetchHandler](/zh/field-types/choice#S1jRs) 替代  
 🌟 开源 [**erupt-notice** ](/zh/modules/erupt-notice) 公告、站内信、邮件、短信一键发送，消息触达零门槛  
-🌟 @Edit 支持 [**onchange**](/zh/advanced/dynamic-form) 配置，值变更即可**动态驱动注解**配置，实现任意表单联动  
+🌟 @Edit 支持 [**onchange**](/zh/annotation/on-change) 配置，值变更即可**动态驱动注解**配置，实现任意表单联动  
 🌟 可视化能力全面升级，支持：[**甘特图**、**卡片视图**](/zh/annotation/vis)、自定义视图、表格视图，数据展示更直观  
 
 🌟 在 IDEA 中配置 erupt 注解时值将会**高亮显示**，写配置如写代码
@@ -385,7 +385,7 @@ create table e_upms_user_org_division (
 
 🧩 @View→@Tpl 注解支持通过抽屉方式打开
 
-🧩 [lambdaQuery](/zh/advanced/erupt-dao#mxI1r) 支持链式调用执行 delete 方法，感谢 [luoben137](https://github.com/luoben137) 贡献的代码 [#314](https://github.com/erupts/erupt/pull/314) 
+🧩 [lambdaQuery](/zh/advanced/erupt-dao-lambda) 支持链式调用执行 delete 方法，感谢 [luoben137](https://github.com/luoben137) 贡献的代码 [#314](https://github.com/erupts/erupt/pull/314) 
 
 🧩 前端暴漏全局函数 [window.safeHtml](/zh/advanced/frontend-notify#lFjOs) 接收 html 作为参数,转换为angular可渲染的标签，用于自定义前端组件
 
@@ -458,7 +458,7 @@ create table e_upms_user_org_division (
 
 🌟 MultiChoice 组件支持[联动](/zh/field-types/multi-choice#rrSly)能力
 
-🌟 erupt-jap 支持多对一对象[ with 语法的 lambda 查询 ](/zh/advanced/erupt-dao#E78b8) 
+🌟 erupt-jap 支持多对一对象[ with 语法的 lambda 查询 ](/zh/advanced/erupt-dao-lambda#多对一查询-with-语法) 
 
 🌟 [开源erupt-ai模块](/zh/modules/erupt-ai)
 
@@ -628,7 +628,7 @@ create table e_upms_user_org_division (
 
 🌟 tagType 增加 [maxTagCount](/zh/field-types/tags#UApIg) 配置，控制最大可选择标签数
 
-🌟 [lambdaQuery](/zh/advanced/erupt-dao) 支持select返回目标对象
+🌟 [lambdaQuery](/zh/advanced/erupt-dao-lambda) 支持select返回目标对象
 
 🌟 增加 [Open API](/zh/advanced/rest-api#rUhXp) 能力，支持外部系统通过 appid + secret 获取 erupt token
 
@@ -693,7 +693,7 @@ rm .erupt/erupt-cloud-server.loaded .erupt/erupt-upms.loaded
 
 🌟 下钻支持自定义条件语法格式：类型.字段名，支持 and or等拼接语法 [@Drill → @link → linkCondition](/zh/annotation/drill#NsnOt)
 
-🌟 Lambda Query 支持[聚合函数查询](/zh/advanced/erupt-dao#mxI1r)：count、sum、avg、min、max
+🌟 Lambda Query 支持[聚合函数查询](/zh/advanced/erupt-dao-lambda)：count、sum、avg、min、max
 
 ## 1.12.12 (2024-04-29) <Badge type="tip" text="Spring Boot 2.7.10" />
 **🐞** 修复 BI 时间区间条件无法重置的 bug
@@ -742,7 +742,7 @@ rm .erupt/erupt-cloud-server.loaded .erupt/erupt-upms.loaded
 
 🌟 自定义按钮支持[代码弹出](/zh/annotation/row-operation#kdCWH)能力，配置语言与内容即可 return "codeModal('sql',`select * from xxx`)"
 
-🌟 EruptDao支持 [LambdaQuery](/zh/advanced/erupt-dao) 语法查询能力
+🌟 EruptDao支持 [LambdaQuery](/zh/advanced/erupt-dao-lambda) 语法查询能力
 
 ```java
 List<EruptUser> eruptUsers = eruptDao.lambdaQuery(EruptUser.class)

@@ -92,7 +92,7 @@
 
 🌟 OpenAPI: new `getAppid` endpoint to retrieve appid information by token.
 
-🌟 [`EruptLambdaQuery`](/en/advanced/erupt-dao#lambdaquery) adds `or()` support for building OR-logic composite queries.
+🌟 [`EruptLambdaQuery`](/en/advanced/erupt-dao-lambda) adds `or()` support for building OR-logic composite queries.
 
 🌟 [erupt-cube](/en/modules/pro/erupt-cube): new `drillFields` dimension filtering and `drillMeasure` measure-level drill-down support.
 

@@ -49,7 +49,7 @@ Let's put the whole picture up front — each of the 10 rows below is an identit
 | 4 | **Auto DDL** | Hibernate `ddl-auto: update` — change the annotation, the schema changes |
 | 5 | **i18n** (12 languages) | [`I18nTranslate.$translate(key)`](/en/advanced/i18n) + CSV dictionary |
 | 6 | **DataProxy business hooks** | [`beforeAdd / afterAdd / ...` 10+ hooks](/en/advanced/data-proxy) |
-| 7 | **Lambda queries** | [`EruptLambdaQuery<T>`](/en/advanced/erupt-dao) type-safe DSL |
+| 7 | **Lambda queries** | [`EruptLambdaQuery<T>`](/en/advanced/erupt-dao-lambda) type-safe DSL |
 | 8 | **AI Agent** | [`erupt-ai-claw`](/en/modules/erupt-ai-claw) — import and go, zero-code LLM CRUD |
 | 9 | **Approval workflow** | [`@EruptFlow`](/en/modules/pro/erupt-flow) — entity is the workflow carrier |
 | 10 | **Cross-service aggregation** | [`erupt-cloud-node-jpa`](/en/modules/cloud-node) — heartbeat reports to a central admin |

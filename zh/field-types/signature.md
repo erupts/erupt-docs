@@ -4,7 +4,7 @@
 
 **版本要求**：1.13.1+
 
-![signature](/field-types/signature.png)
+![signature](/field-types/signature.svg)
 
 ## 基础用法
 

@@ -1,4 +1,4 @@
-# PostDataProxy Global Interceptor
+# Global Interception (PostDataProxy)
 
 ::: info
 `PostDataProxy` is a global DataProxy interceptor that applies to **all** Erupt entity classes without needing to configure each `@Erupt` annotation individually.

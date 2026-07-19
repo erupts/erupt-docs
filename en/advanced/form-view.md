@@ -1,4 +1,4 @@
-# Form View
+# Form View (FormView)
 
 Renders an Erupt class as a full-page form without any table view. Designed for "single-record" scenarios such as system settings or user profile pages. Data loading and persistence are entirely the developer's responsibility via `DataProxy` — the framework performs no database operations.
 

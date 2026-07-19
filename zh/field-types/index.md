@@ -40,7 +40,7 @@ const groups = [
             {name: 'HTML_EDITOR', desc: '富文本编辑器', link: '/zh/field-types/html-editor', img: '/field-types/html-editor.png'},
             {name: 'CODE_EDITOR', desc: '代码编辑器', link: '/zh/field-types/code-editor', img: '/field-types/code-editor.png'},
             {name: 'MARKDOWN', desc: 'Markdown 编辑器', link: '/zh/field-types/markdown', img: '/field-types/markdown.png'},
-            {name: 'SIGNATURE', desc: '签名板', link: '/zh/field-types/signature', img: '/field-types/signature.png'},
+            {name: 'SIGNATURE', desc: '签名板', link: '/zh/field-types/signature', img: '/field-types/signature.svg'},
         ],
     },
     {

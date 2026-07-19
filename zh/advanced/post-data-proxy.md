@@ -1,4 +1,4 @@
-# PostDataProxy 全局拦截
+# 全局拦截（PostDataProxy）
 
 ::: info
 `PostDataProxy` 是全局 DataProxy 拦截器，对**所有** Erupt 实体类的数据操作统一生效，无需在每个 `@Erupt` 注解上单独配置。

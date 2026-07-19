@@ -128,6 +128,13 @@ export default withMermaid(defineConfig({
                             ],
                         },
                         {
+                            text: 'Dynamic Annotations',
+                            items: [
+                                {text: 'OnChange Field Linkage', link: '/en/annotation/on-change'},
+                                {text: 'ifRender Dynamic Rendering', link: '/en/annotation/if-render'},
+                            ],
+                        },
+                        {
                             text: 'Feature Annotations',
                             items: [
                                 {text: '@Filter', link: '/en/annotation/filter'},
@@ -220,50 +227,71 @@ export default withMermaid(defineConfig({
 
                     '/en/advanced/': [
                         {
-                            text: 'Data Lifecycle',
+                            text: 'Advanced',
                             items: [
-                                {text: 'DataProxy', link: '/en/advanced/data-proxy'},
-                                {text: 'PostDataProxy', link: '/en/advanced/post-data-proxy'},
-                                {text: 'Event Listener', link: '/en/advanced/event-listener'},
-                                {text: 'Soft Delete', link: '/en/advanced/soft-delete'},
+                                {text: 'Overview', link: '/en/advanced/'},
                             ],
                         },
                         {
-                            text: 'Form & View',
+                            text: 'DataProxy',
                             items: [
+                                {text: 'DataProxy Overview', link: '/en/advanced/data-proxy'},
+                                {text: 'CRUD Interception', link: '/en/advanced/data-proxy-crud'},
+                                {text: 'Form Validation', link: '/en/advanced/data-proxy-validate'},
+                                {text: 'Query Conditions', link: '/en/advanced/data-proxy-query'},
+                                {text: 'Table Display', link: '/en/advanced/data-proxy-table'},
+                                {text: 'Custom Rows', link: '/en/advanced/extra-row'},
+                                {text: 'Virtual Fields', link: '/en/advanced/virtual-field'},
+                                {text: 'Form Behaviors', link: '/en/advanced/data-proxy-form'},
                                 {text: 'Form View', link: '/en/advanced/form-view'},
-                                {text: 'Dynamic Form', link: '/en/advanced/dynamic-form'},
-                                {text: 'OnChange Data Linkage', link: '/en/advanced/on-change'},
+                                {text: 'Excel Import & Export', link: '/en/advanced/data-proxy-excel'},
+                                {text: 'Print Processing', link: '/en/advanced/data-proxy-print'},
+                                {text: 'Inherited Proxy', link: '/en/advanced/pre-data-proxy'},
                             ],
                         },
                         {
-                            text: 'System Features',
+                            text: 'EruptDao Database Operations',
+                            items: [
+                                {text: 'EruptDao Overview', link: '/en/advanced/erupt-dao'},
+                                {text: 'Chained Queries', link: '/en/advanced/erupt-dao-lambda'},
+                                {text: 'Multi-Datasource Operations', link: '/en/advanced/erupt-dao-datasource'},
+                            ],
+                        },
+                        {
+                            text: 'Data & Persistence',
+                            items: [
+                                {text: 'Global Interception', link: '/en/advanced/post-data-proxy'},
+                                {text: 'Soft Delete', link: '/en/advanced/soft-delete'},
+                                {text: 'Multiple Data Sources', link: '/en/advanced/datasource'},
+                                {text: 'Custom Data Source', link: '/en/advanced/custom-datasource'},
+                            ],
+                        },
+                        {
+                            text: 'Login & Security',
+                            items: [
+                                {text: 'Login & Authentication', link: '/en/advanced/auth'},
+                                {text: 'Custom Login Page', link: '/en/advanced/custom-login-page'},
+                                {text: 'Open API', link: '/en/advanced/open-api'},
+                            ],
+                        },
+                        {
+                            text: 'UI & Interaction',
                             items: [
                                 {text: 'Frontend Notifications', link: '/en/advanced/frontend-notify'},
                                 {text: 'Custom File Upload', link: '/en/advanced/upload'},
-                                {text: 'i18n', link: '/en/advanced/i18n'},
-                                {text: 'Hot Build', link: '/en/advanced/hot-build'},
+                                {text: 'Internationalization', link: '/en/advanced/i18n'},
                             ],
                         },
                         {
-                            text: 'Dev Extensions',
-                            items: [
-                                {text: 'EruptDao', link: '/en/advanced/erupt-dao'},
-                                {text: 'Utilities', link: '/en/advanced/utils'},
-                                {text: 'REST API & Logs', link: '/en/advanced/rest-api'},
-                                {text: 'Extend Erupt Annotations', link: '/en/advanced/extend'},
-                                {text: 'Plugin Development', link: '/en/advanced/plugin'},
-                            ],
-                        },
-                        {
-                            text: 'Integration',
+                            text: 'Development & Extension',
                             items: [
                                 {text: 'Existing Project Integration', link: '/en/advanced/integration'},
-                                {text: 'Login & Auth', link: '/en/advanced/auth'},
-                                {text: 'Custom Login Page', link: '/en/advanced/custom-login-page'},
-                                {text: 'Multiple Datasources', link: '/en/advanced/datasource'},
-                                {text: 'Custom Datasource', link: '/en/advanced/custom-datasource'},
-                                {text: 'Open API', link: '/en/advanced/open-api'},
+                                {text: 'API Development & Logs', link: '/en/advanced/rest-api'},
+                                {text: 'Event Listeners', link: '/en/advanced/event-listener'},
+                                {text: 'Utility Classes', link: '/en/advanced/utils'},
+                                {text: 'Hot Build', link: '/en/advanced/hot-build'},
+                                {text: 'Extending Erupt Annotations', link: '/en/advanced/extend'},
+                                {text: 'Plugin Development', link: '/en/advanced/plugin'},
                             ],
                         },
                     ],
@@ -492,6 +520,13 @@ export default withMermaid(defineConfig({
                             ],
                         },
                         {
+                            text: '动态注解',
+                            items: [
+                                {text: 'OnChange 字段联动', link: '/zh/annotation/on-change'},
+                                {text: 'ifRender 动态渲染', link: '/zh/annotation/if-render'},
+                            ],
+                        },
+                        {
                             text: '功能注解',
                             items: [
                                 {text: '@Filter 数据过滤', link: '/zh/annotation/filter'},
@@ -584,50 +619,71 @@ export default withMermaid(defineConfig({
 
                     '/zh/advanced/': [
                         {
-                            text: '数据生命周期',
+                            text: '进阶',
                             items: [
-                                {text: '数据代理 DataProxy', link: '/zh/advanced/data-proxy'},
-                                {text: '全局拦截 PostDataProxy', link: '/zh/advanced/post-data-proxy'},
-                                {text: '事件监听器', link: '/zh/advanced/event-listener'},
+                                {text: '进阶总览', link: '/zh/advanced/'},
+                            ],
+                        },
+                        {
+                            text: 'DataProxy 数据代理',
+                            items: [
+                                {text: 'DataProxy 概览', link: '/zh/advanced/data-proxy'},
+                                {text: 'CRUD 拦截', link: '/zh/advanced/data-proxy-crud'},
+                                {text: '表单校验', link: '/zh/advanced/data-proxy-validate'},
+                                {text: '查询条件控制', link: '/zh/advanced/data-proxy-query'},
+                                {text: '表格展示扩展', link: '/zh/advanced/data-proxy-table'},
+                                {text: '自定义行', link: '/zh/advanced/extra-row'},
+                                {text: '虚拟字段', link: '/zh/advanced/virtual-field'},
+                                {text: '表单行为', link: '/zh/advanced/data-proxy-form'},
+                                {text: '表单视图', link: '/zh/advanced/form-view'},
+                                {text: 'Excel 导入导出', link: '/zh/advanced/data-proxy-excel'},
+                                {text: '打印内容处理', link: '/zh/advanced/data-proxy-print'},
+                                {text: '通用继承', link: '/zh/advanced/pre-data-proxy'},
+                            ],
+                        },
+                        {
+                            text: 'EruptDao 数据库操作',
+                            items: [
+                                {text: 'EruptDao 概览', link: '/zh/advanced/erupt-dao'},
+                                {text: '链式查询', link: '/zh/advanced/erupt-dao-lambda'},
+                                {text: '多数据源操作', link: '/zh/advanced/erupt-dao-datasource'},
+                            ],
+                        },
+                        {
+                            text: '数据与持久化',
+                            items: [
+                                {text: '全局拦截', link: '/zh/advanced/post-data-proxy'},
                                 {text: '逻辑删除', link: '/zh/advanced/soft-delete'},
+                                {text: '多数据源', link: '/zh/advanced/datasource'},
+                                {text: '自定义数据源', link: '/zh/advanced/custom-datasource'},
                             ],
                         },
                         {
-                            text: '表单与视图',
+                            text: '登录与安全',
                             items: [
-                                {text: '表单视图 FormView', link: '/zh/advanced/form-view'},
-                                {text: '动态表单', link: '/zh/advanced/dynamic-form'},
-                                {text: 'OnChange 数据变更联动', link: '/zh/advanced/on-change'},
+                                {text: '登录与认证', link: '/zh/advanced/auth'},
+                                {text: '自定义登录页', link: '/zh/advanced/custom-login-page'},
+                                {text: '开放接口', link: '/zh/advanced/open-api'},
                             ],
                         },
                         {
-                            text: '系统功能',
+                            text: '界面与交互',
                             items: [
                                 {text: '前端消息与弹窗', link: '/zh/advanced/frontend-notify'},
                                 {text: '自定义文件上传', link: '/zh/advanced/upload'},
                                 {text: '国际化', link: '/zh/advanced/i18n'},
-                                {text: '热构建', link: '/zh/advanced/hot-build'},
                             ],
                         },
                         {
-                            text: '开发扩展',
-                            items: [
-                                {text: '数据库操作 EruptDao', link: '/zh/advanced/erupt-dao'},
-                                {text: '工具类', link: '/zh/advanced/utils'},
-                                {text: '接口开发与操作日志', link: '/zh/advanced/rest-api'},
-                                {text: '扩展 Erupt 注解', link: '/zh/advanced/extend'},
-                                {text: '插件开发', link: '/zh/advanced/plugin'},
-                            ],
-                        },
-                        {
-                            text: '集成接入',
+                            text: '开发与扩展',
                             items: [
                                 {text: '现有项目接入', link: '/zh/advanced/integration'},
-                                {text: '登录与认证', link: '/zh/advanced/auth'},
-                                {text: '自定义登录页', link: '/zh/advanced/custom-login-page'},
-                                {text: '多数据源', link: '/zh/advanced/datasource'},
-                                {text: '自定义数据源', link: '/zh/advanced/custom-datasource'},
-                                {text: 'Open API 开放接口', link: '/zh/advanced/open-api'},
+                                {text: '接口开发与操作日志', link: '/zh/advanced/rest-api'},
+                                {text: '事件监听器', link: '/zh/advanced/event-listener'},
+                                {text: '工具类', link: '/zh/advanced/utils'},
+                                {text: '热构建', link: '/zh/advanced/hot-build'},
+                                {text: '扩展 Erupt 注解', link: '/zh/advanced/extend'},
+                                {text: '插件开发', link: '/zh/advanced/plugin'},
                             ],
                         },
                     ],

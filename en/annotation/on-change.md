@@ -1,4 +1,4 @@
-# OnChange Data Linkage <Badge type="tip" text="1.13.2+" />
+# OnChange Field Linkage <Badge type="tip" text="1.13.2+" />
 
 Reacts to user input in the form in real time: you can **update the values of other fields**, or **dynamically adjust the `@Edit` annotation configuration** of other fields (such as title, description, required, etc.).
 

@@ -1,4 +1,4 @@
-# Login & Authentication
+# Login & Authentication (LoginProxy)
 
 ## Custom Login Logic with @EruptLogin
 

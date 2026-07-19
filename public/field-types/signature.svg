@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 300" font-family="-apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+  <rect width="920" height="300" fill="#ffffff"/>
+  <text x="16" y="30" font-size="16" fill="#262626">Signature Pad</text>
+  <rect x="16" y="48" width="888" height="230" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1.5"/>
+  <!-- clear button -->
+  <circle cx="866" cy="86" r="18" fill="#ffffff" stroke="#d9d9d9" stroke-width="1.5"/>
+  <g stroke="#595959" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M859 84 h14"/>
+    <path d="M862 84 v-4 a1.5 1.5 0 0 1 1.5 -1.5 h5 a1.5 1.5 0 0 1 1.5 1.5 v4"/>
+    <path d="M860.5 84 l1 9.5 h9 l1 -9.5"/>
+    <path d="M864 87.5 v4.5 M868 87.5 v4.5"/>
+  </g>
+  <!-- handwritten signature -->
+  <g stroke="#1a1a1a" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path stroke-width="4.5" d="M300 210
+      C 296 186, 306 142, 330 124
+      C 348 111, 366 118, 362 138
+      C 357 163, 322 196, 292 206
+      C 318 196, 352 186, 376 186"/>
+    <path stroke-width="4" d="M400 150
+      C 394 172, 390 192, 392 204
+      C 394 214, 404 212, 412 198
+      C 418 188, 422 176, 424 166
+      C 424 182, 426 200, 438 202
+      C 450 204, 460 188, 464 172"/>
+    <path stroke-width="4" d="M488 128
+      C 482 156, 476 186, 474 204
+      M470 168 C 482 162, 496 160, 506 162"/>
+    <path stroke-width="4" d="M534 160
+      C 522 164, 514 178, 516 192
+      C 518 204, 532 208, 544 200
+      C 556 192, 562 176, 558 164
+      C 555 156, 544 156, 534 160 Z
+      M558 168 C 562 184, 570 198, 584 200"/>
+    <path stroke-width="3.5" d="M240 232 C 380 244, 540 240, 660 224"/>
+  </g>
+</svg>

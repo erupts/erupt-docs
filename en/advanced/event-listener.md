@@ -1,4 +1,4 @@
-# Event Listeners
+# Event Listeners (@EventListener)
 
 > Supported since 1.12.17+
 >

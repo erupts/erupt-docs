@@ -1,4 +1,4 @@
-# Open API 开放接口
+# 开放接口（Open API）
 
 Erupt 支持外部系统通过 **appid + secret** 的方式获取 token，用于调用 erupt 接口，无需用户登录。
 

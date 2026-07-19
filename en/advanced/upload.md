@@ -1,4 +1,4 @@
-# Custom File Upload
+# Custom File Upload (AttachmentProxy)
 
 By implementing custom file upload rules, you can upload files to cloud object storage services such as Alibaba Cloud OSS, Qiniu Cloud, or Tencent Cloud COS, instead of storing them on the local disk.
 
