@@ -2,6 +2,9 @@
 
 弹出树形选择器供用户选择关联记录，对应 JPA `@ManyToOne` 关系。适合被关联数据具有层级结构的场景。
 
+![reference-tree](/field-types/reference-tree.png)
+![reference-tree-dialog](/field-types/reference-tree-dialog.png)
+
 ## 基础用法
 
 ```java

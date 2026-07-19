@@ -2,6 +2,8 @@
 
 Input a value by dragging a slider, suitable for scenarios with bounded numeric ranges. Search support (range query) was added in 2.0.0.
 
+![slider](/field-types/slider.png)
+
 ## Basic Usage
 
 ```java

@@ -4,6 +4,8 @@ A dedicated input component for password fields. Unlike `INPUT(type = "password"
 
 > **Added in 2.0.0**
 
+![password](/field-types/password.png)
+
 ## Basic Usage
 
 ```java

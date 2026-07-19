@@ -2,6 +2,8 @@
 
 支持 Markdown 语法的编辑器，内容以 Markdown 字符串形式存储，适合文档、说明类内容。
 
+![markdown](/field-types/markdown.png)
+
 ## 基础用法
 
 ```java

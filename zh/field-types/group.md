@@ -4,6 +4,8 @@
 
 > **2.0.0 新增**
 
+![group](/field-types/group.png)
+
 ## 基础用法
 
 ```java

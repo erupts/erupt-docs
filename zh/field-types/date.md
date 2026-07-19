@@ -2,6 +2,8 @@
 
 日期/时间选择器，字段类型为 `Date` / `LocalDate` / `LocalDateTime` 时可自动推测，支持日期、时间、月、周、年等多种模式。
 
+![date](/field-types/date.png)
+
 ## 基础用法
 
 ```java

@@ -2,6 +2,8 @@
 
 是/否切换开关，字段类型为 `Boolean` 时可自动推测，无需显式指定 `type`。
 
+![boolean](/field-types/boolean.png)
+
 ## 基础用法
 
 ```java

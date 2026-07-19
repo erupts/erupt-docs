@@ -2,6 +2,8 @@
 
 Single-line text input supporting regex validation, prefix/suffix dropdowns, password mode, and more.
 
+![input](/field-types/input.png)
+
 ## Basic Usage
 
 ```java

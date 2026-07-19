@@ -2,6 +2,8 @@
 
 An editor that supports Markdown syntax. Content is stored as a Markdown string, making it ideal for documentation and descriptive content.
 
+![markdown](/field-types/markdown.png)
+
 ## Basic Usage
 
 ```java

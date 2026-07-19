@@ -2,6 +2,8 @@
 
 多行文本输入，适合存储较长内容。
 
+![textarea](/field-types/textarea.png)
+
 ## 基础用法
 
 ```java

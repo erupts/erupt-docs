@@ -2,6 +2,9 @@
 
 Opens a tree selector for the user to select a related record. Corresponds to the JPA `@ManyToOne` relationship. Suitable when the referenced data has a hierarchical structure.
 
+![reference-tree](/field-types/reference-tree.png)
+![reference-tree-dialog](/field-types/reference-tree-dialog.png)
+
 ## Basic Usage
 
 ```java

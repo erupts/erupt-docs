@@ -2,6 +2,8 @@
 
 在表单中插入一条横向分割线，用于字段的视觉分组，不存储任何数据。
 
+![divide](/field-types/divide.png)
+
 ## 基础用法
 
 ```java

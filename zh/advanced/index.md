@@ -7,7 +7,8 @@
 | 功能 | 说明 |
 |------|------|
 | [DataProxy 数据代理](/zh/advanced/data-proxy) | 在增删改查各阶段注入自定义业务逻辑 |
-| [动态表单 OnChange](/zh/advanced/dynamic-form) | 根据条件动态控制字段显示、校验、选项等 |
+| [动态表单](/zh/advanced/dynamic-form) | 根据条件动态控制字段显示、校验、选项等 |
+| [OnChange 数据变更联动](/zh/advanced/on-change) | 根据用户输入实时联动其他字段的值与配置 |
 | [自定义文件上传](/zh/advanced/upload) | 对接 OSS、本地存储等自定义上传实现 |
 | [事件监听器](/zh/advanced/event-listener) | 监听框架内部事件，实现解耦扩展 |
 | [国际化（i18n）](/zh/advanced/i18n) | 多语言支持与自定义翻译 |

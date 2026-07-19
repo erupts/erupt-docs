@@ -2,6 +2,8 @@
 
 Numeric input field. When the field type is `Integer`, `Float`, or `Double`, the type is automatically inferred — no need to explicitly specify `type`.
 
+![number](/field-types/number.png)
+
 ## Basic Usage
 
 ```java

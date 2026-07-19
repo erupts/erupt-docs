@@ -2,6 +2,8 @@
 
 Allows adding and editing child table data directly within the parent record's edit dialog. Corresponds to JPA `@OneToMany`. Child table data is cascaded and saved when the parent record is saved.
 
+![tab-table-add](/field-types/tab-table-add.png)
+
 ## Basic Usage
 
 ```java

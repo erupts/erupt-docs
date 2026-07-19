@@ -16,7 +16,7 @@ Configures how a field behaves in the add/edit form, including the component typ
 | `readonly` | Read-only configuration, see [@Readonly](/en/annotation/dynamic) |
 | `ifRender` | Dynamically controls whether the component is rendered (`ExprBool`) |
 | `dynamic` | Dynamically controls the component state based on another field's value, see [@Dynamic](/en/annotation/dynamic) |
-| `onchange` | Value-change linkage (1.13.2+), see [OnChange](/en/advanced/dynamic-form) |
+| `onchange` | Value-change linkage (1.13.2+), see [OnChange](/en/advanced/on-change) |
 | `orderBy` | Sort rule, HQL `ORDER BY` syntax; only applicable when the field is a related object |
 | `filter` | Filter condition, HQL `WHERE` syntax; only applicable when the field is a related object |
 | `prompt` | AI agent prompt — injected as field-level context when erupt-ai invokes this field's tool, added in 2.0.0 |

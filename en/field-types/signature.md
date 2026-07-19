@@ -4,6 +4,8 @@ A handwriting signature input component. Content is stored as a Base64-encoded i
 
 **Version requirement**: 1.13.1+
 
+![signature](/field-types/signature.png)
+
 ## Basic Usage
 
 ```java

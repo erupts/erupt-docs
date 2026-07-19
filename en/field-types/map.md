@@ -2,6 +2,8 @@
 
 A map point-selection component. Users can click on a map to pick coordinates, which are stored as a string. Powered by Amap (AutoNavi).
 
+![map](/field-types/map.png)
+
 ## Basic Usage
 
 ```java

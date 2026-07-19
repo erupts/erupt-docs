@@ -2,6 +2,8 @@
 
 Displays options in a table selection panel. Checking rows establishes a many-to-many relationship, corresponding to JPA `@ManyToMany`. Suitable when options are best displayed as a list and there are a large number of them.
 
+![tab-table-refer](/field-types/tab-table-refer.png)
+
 ## Basic Usage
 
 ```java

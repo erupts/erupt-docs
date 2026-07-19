@@ -230,6 +230,7 @@ export default withMermaid(defineConfig({
                             items: [
                                 {text: 'Form View', link: '/en/advanced/form-view'},
                                 {text: 'Dynamic Form', link: '/en/advanced/dynamic-form'},
+                                {text: 'OnChange Data Linkage', link: '/en/advanced/on-change'},
                             ],
                         },
                         {
@@ -592,6 +593,7 @@ export default withMermaid(defineConfig({
                             items: [
                                 {text: '表单视图 FormView', link: '/zh/advanced/form-view'},
                                 {text: '动态表单', link: '/zh/advanced/dynamic-form'},
+                                {text: 'OnChange 数据变更联动', link: '/zh/advanced/on-change'},
                             ],
                         },
                         {

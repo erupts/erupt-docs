@@ -2,6 +2,8 @@
 
 数值输入框，字段类型为 `Integer` / `Float` / `Double` 时可自动推测，无需显式指定 `type`。
 
+![number](/field-types/number.png)
+
 ## 基础用法
 
 ```java

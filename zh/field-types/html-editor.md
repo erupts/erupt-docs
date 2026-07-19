@@ -2,6 +2,8 @@
 
 所见即所得的富文本编辑器，内容以 HTML 字符串形式存储，适合图文混排的长文本内容。
 
+![html-editor](/field-types/html-editor.png)
+
 ## 基础用法
 
 ```java

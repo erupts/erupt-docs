@@ -2,6 +2,8 @@
 
 Renders a block of static guidance content (HTML supported) inside the form — ideal for filling instructions or notices. The field is display-only: **its value is never collected by the form nor persisted to the database**, so it should be marked `@Transient`.
 
+![callout](/field-types/callout.png)
+
 ## Basic Usage
 
 ```java

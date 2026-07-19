@@ -2,6 +2,8 @@
 
 A color picker component. Users select a color via a palette, and the value is stored as a hexadecimal string (e.g. `#ff0000`).
 
+![color](/field-types/color.png)
+
 ## Basic Usage
 
 ```java

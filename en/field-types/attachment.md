@@ -2,6 +2,9 @@
 
 Supports uploading images and arbitrary files. You can restrict file type, size, and count, and the storage path is customizable.
 
+![attachment](/field-types/attachment.png)
+![attachment-image](/field-types/attachment-image.png)
+
 ## Basic Usage
 
 ```java

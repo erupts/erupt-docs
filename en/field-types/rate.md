@@ -2,6 +2,8 @@
 
 A star-rating component. Users select a rating value by clicking stars, suitable for satisfaction scores, rankings, and similar scenarios. Search support (filter by rating value) was added in 2.0.0.
 
+![rate](/field-types/rate.png)
+
 ## Basic Usage
 
 ```java

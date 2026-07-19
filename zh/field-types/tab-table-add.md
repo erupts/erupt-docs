@@ -2,6 +2,8 @@
 
 在主表编辑弹窗中直接新增、编辑子表数据，对应 JPA `@OneToMany`。保存主表时子表数据同步级联保存。
 
+![tab-table-add](/field-types/tab-table-add.png)
+
 ## 基础用法
 
 ```java

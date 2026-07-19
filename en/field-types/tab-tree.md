@@ -2,6 +2,8 @@
 
 Displays options in a tree selection panel. Checking nodes establishes a many-to-many relationship, corresponding to JPA `@ManyToMany`. Suitable when the referenced data has a hierarchical structure.
 
+![tab-tree](/field-types/tab-tree.png)
+
 ## Basic Usage
 
 ```java

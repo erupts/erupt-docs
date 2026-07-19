@@ -2,6 +2,8 @@
 
 以表格选择面板展示可选项，用户勾选行后建立多对多关系，对应 JPA `@ManyToMany`。适合选项以列表形式展示且数量较多的场景。
 
+![tab-table-refer](/field-types/tab-table-refer.png)
+
 ## 基础用法
 
 ```java

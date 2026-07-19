@@ -2,6 +2,8 @@
 
 A code editor with syntax highlighting that supports multiple programming languages. Suitable for storing SQL, JSON, scripts, and other code content.
 
+![code-editor](/field-types/code-editor.png)
+
 ## Basic Usage
 
 ```java

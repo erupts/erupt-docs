@@ -2,6 +2,8 @@
 
 带语法高亮的代码编辑器，支持多种编程语言，适合存储 SQL、JSON、脚本等代码内容。
 
+![code-editor](/field-types/code-editor.png)
+
 ## 基础用法
 
 ```java

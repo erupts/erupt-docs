@@ -2,6 +2,8 @@
 
 Inserts a horizontal dividing line in the form to visually group fields. No data is stored.
 
+![divide](/field-types/divide.png)
+
 ## Basic Usage
 
 ```java

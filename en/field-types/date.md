@@ -2,6 +2,8 @@
 
 Date/time picker. When the field type is `Date`, `LocalDate`, or `LocalDateTime`, the type is automatically inferred. Supports date, time, month, week, year, and other modes.
 
+![date](/field-types/date.png)
+
 ## Basic Usage
 
 ```java

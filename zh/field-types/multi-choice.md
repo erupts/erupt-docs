@@ -2,6 +2,9 @@
 
 下拉多选框或复选框组，选中的多个值以 JSON 数组形式存储在单个字段中。
 
+![multi-choice-checkbox](/field-types/multi-choice-checkbox.png)
+![multi-choice-select](/field-types/multi-choice-select.png)
+
 ## 基础用法
 
 ```java

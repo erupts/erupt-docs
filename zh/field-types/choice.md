@@ -2,6 +2,9 @@
 
 下拉单选框，支持静态枚举值和动态从后端获取选项。
 
+![choice-select](/field-types/choice-select.png)
+![choice-radio](/field-types/choice-radio.png)
+
 ## 基础用法
 
 ```java

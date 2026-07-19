@@ -2,6 +2,8 @@
 
 Renders field content using a FreeMarker template, allowing arbitrary HTML to be embedded. Suitable for displaying complex custom content. Requires the `erupt-tpl` module.
 
+![tpl](/field-types/tpl.png)
+
 ## Basic Usage
 
 ```java

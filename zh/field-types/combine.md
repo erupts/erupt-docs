@@ -4,6 +4,8 @@
 
 **版本要求**：1.11.4+
 
+![combine](/field-types/combine.png)
+
 ## 基础用法
 
 ```java

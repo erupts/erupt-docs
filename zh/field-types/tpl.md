@@ -2,6 +2,8 @@
 
 使用 FreeMarker 模板渲染字段内容，可嵌入任意 HTML，适合展示复杂自定义内容。需引入 `erupt-tpl` 模块。
 
+![tpl](/field-types/tpl.png)
+
 ## 基础用法
 
 ```java

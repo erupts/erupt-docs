@@ -2,6 +2,9 @@
 
 支持图片、任意文件上传，可限制文件类型、大小和数量，存储路径可自定义。
 
+![attachment](/field-types/attachment.png)
+![attachment-image](/field-types/attachment-image.png)
+
 ## 基础用法
 
 ```java

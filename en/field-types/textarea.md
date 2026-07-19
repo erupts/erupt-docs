@@ -2,6 +2,8 @@
 
 Multi-line text input, suitable for storing longer content.
 
+![textarea](/field-types/textarea.png)
+
 ## Basic Usage
 
 ```java

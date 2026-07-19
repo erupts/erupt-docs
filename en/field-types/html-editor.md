@@ -2,6 +2,8 @@
 
 A WYSIWYG rich text editor. Content is stored as an HTML string, suitable for long-form content with mixed text and images.
 
+![html-editor](/field-types/html-editor.png)
+
 ## Basic Usage
 
 ```java

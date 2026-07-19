@@ -7,7 +7,8 @@ This chapter covers Erupt's advanced usage and extension development, helping yo
 | Feature | Description |
 |------|------|
 | [DataProxy](/en/advanced/data-proxy) | Inject custom business logic at every CRUD stage |
-| [Dynamic Form (OnChange)](/en/advanced/dynamic-form) | Dynamically control field visibility, validation, options, etc. |
+| [Dynamic Form](/en/advanced/dynamic-form) | Dynamically control field visibility, validation, options, etc. |
+| [OnChange Data Linkage](/en/advanced/on-change) | React to user input by updating other fields' values and config in real time |
 | [Custom File Upload](/en/advanced/upload) | Integrate OSS, local storage, or any custom upload backend |
 | [Event Listener](/en/advanced/event-listener) | Listen to internal framework events for decoupled extension |
 | [i18n](/en/advanced/i18n) | Multilingual support and custom translations |

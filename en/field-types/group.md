@@ -4,6 +4,8 @@ Groups multiple fields into a collapsible panel to reduce form visual complexity
 
 > **Added in 2.0.0**
 
+![group](/field-types/group.png)
+
 ## Basic Usage
 
 ```java

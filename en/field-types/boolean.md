@@ -2,6 +2,8 @@
 
 A yes/no toggle switch. When the field type is `Boolean`, the type is automatically inferred — no need to explicitly specify `type`.
 
+![boolean](/field-types/boolean.png)
+
 ## Basic Usage
 
 ```java

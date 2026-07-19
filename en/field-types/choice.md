@@ -2,6 +2,9 @@
 
 A dropdown single-select field, supporting both static enum values and dynamically fetched options from the backend.
 
+![choice-select](/field-types/choice-select.png)
+![choice-radio](/field-types/choice-radio.png)
+
 ## Basic Usage
 
 ```java

@@ -4,6 +4,8 @@ Manages the data of a one-to-one associated table directly within the parent rec
 
 **Version requirement**: 1.11.4+
 
+![combine](/field-types/combine.png)
+
 ## Basic Usage
 
 ```java

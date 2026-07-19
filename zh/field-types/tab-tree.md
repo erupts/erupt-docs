@@ -2,6 +2,8 @@
 
 以树形选择面板展示可选项，用户勾选节点后建立多对多关系，对应 JPA `@ManyToMany`。适合被关联数据具有层级结构的场景。
 
+![tab-tree](/field-types/tab-tree.png)
+
 ## 基础用法
 
 ```java

@@ -2,6 +2,8 @@
 
 A tag-style multi-select component, suitable for labeling, categorization, and similar scenarios. Supports both static tag lists and dynamic fetching.
 
+![tags](/field-types/tags.png)
+
 ## Basic Usage
 
 ```java

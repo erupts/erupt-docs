@@ -2,6 +2,9 @@
 
 Opens a table popup for the user to select a related record. Corresponds to the JPA `@ManyToOne` relationship. Suitable when the referenced data is best displayed in a list format.
 
+![reference-table](/field-types/reference-table.png)
+![reference-table-dialog](/field-types/reference-table-dialog.png)
+
 ## Basic Usage
 
 ```java

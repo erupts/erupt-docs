@@ -4,6 +4,8 @@
 
 **版本要求**：1.13.1+
 
+![signature](/field-types/signature.png)
+
 ## 基础用法
 
 ```java

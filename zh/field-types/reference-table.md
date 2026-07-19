@@ -2,6 +2,9 @@
 
 弹出表格供用户选择关联记录，对应 JPA `@ManyToOne` 关系。适合被关联数据以列表形式展示的场景。
 
+![reference-table](/field-types/reference-table.png)
+![reference-table-dialog](/field-types/reference-table-dialog.png)
+
 ## 基础用法
 
 ```java
