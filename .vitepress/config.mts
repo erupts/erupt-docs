@@ -31,8 +31,9 @@ export default withMermaid(defineConfig({
         build: {
             rollupOptions: {
                 output: {
-                    manualChunks: {
-                        mermaid: ['mermaid'],
+                    // rolldown-vite only accepts the function form of manualChunks
+                    manualChunks(id: string) {
+                        if (id.includes('node_modules/mermaid')) return 'mermaid'
                     },
                 },
             },
@@ -42,6 +43,7 @@ export default withMermaid(defineConfig({
                 /^@nolebase\/.*/,
                 'vitepress-plugin-mermaid',
                 'mermaid',
+                'dayjs',
             ],
         },
     },
