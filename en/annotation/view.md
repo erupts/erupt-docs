@@ -41,6 +41,8 @@ Configures how a field is displayed as a column in the list table, including the
 | `DATE_TIME` | Date-time formatted display |
 | `BOOLEAN` | Boolean value display |
 | `NUMBER` | Numeric display |
+| `PROGRESS` | Progress bar; when the edit type is SLIDER the max value comes from `SliderType.max`, otherwise 100 (2.0.4+) |
+| `PASSWORD` | Password mask; the actual value is replaced with a placeholder and never sent to the client (2.0.4+) |
 | `MAP` | Map display |
 | `CODE` | Syntax-highlighted code display |
 | `MARKDOWN` | Rendered Markdown display |

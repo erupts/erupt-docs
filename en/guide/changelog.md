@@ -1,5 +1,31 @@
 # Changelog
 
+## 2.0.4 (2026-07-19) <Badge type="tip" text="Spring Boot 3.5.16" />
+
+🌟 New [`BUTTON` edit type](/en/field-types/button) — an in-form button that calls a backend handler with all current form values, supporting form population and dynamic field configuration.
+
+🌟 New [`@DragSort` row drag sorting](/en/annotation/erupt#drag-sort) — reorder table rows by dragging, with the result automatically persisted to the sort field.
+
+🌟 New [`PROGRESS` view type](/en/annotation/view#display-types-viewtype) — display numeric columns as progress bars; the SLIDER edit type contributes its max value automatically.
+
+🌟 New [`PASSWORD` view type](/en/annotation/view#display-types-viewtype) — sensitive fields are masked and the actual value is never sent to the client.
+
+🧩 [`PASSWORD` edit type](/en/field-types/password#masked-edit-echo) security hardening: edit echo returns only a mask placeholder; submitting it unchanged keeps the stored password.
+
+🌟 [Card view](/en/annotation/vis-card) now supports card selection, with selected-state styling wired to action buttons.
+
+🧩 Built-in forms for AI models, MCP servers, agents, and scheduled jobs gain test/validation buttons for one-click connection and configuration checks.
+
+🧩 [erupt-ai](/en/modules/erupt-ai) supports an embedded chat mode; the LLM `apiKey` is now masked with the password view.
+
+🧩 More lenient date parsing, accepting a wider range of date/time input formats.
+
+🐞 Fixed password fields not being masked in operation logs.
+
+🐞 Fixed swapped "Hidden" and "Disable" labels in the menu status enum.
+
+🐞 Fixed an error caused by the AI chat drawer opening outside the Angular zone.
+
 ## 2.0.3 (2026-07-04) <Badge type="tip" text="Spring Boot 3.5.16" />
 
 🌟 New [`erupt-spring-boot-starter` and `erupt-spring-boot-starter-all`](/en/guide/quick-start#manual-integration-existing-project) starters — integrate Erupt core or every feature module with a single dependency.

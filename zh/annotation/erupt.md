@@ -40,6 +40,7 @@ public class EruptTest extends BaseModel {
 | `vis` | 附加视图配置（卡片、甘特图、看板等），详见 [@Vis 多视图](/zh/annotation/vis) |
 | `param` | 自定义参数 |
 | `prompt` | AI 智能体提示词，供 erupt-ai 工具调用时注入上下文，2.0.0 新增 |
+| `dragSort` | 表格行拖拽排序配置，详见下方 [行拖拽排序](#drag-sort)，2.0.4 新增 |
 
 ## 注解文件定义
 
@@ -77,5 +78,31 @@ public @interface Erupt {
     KV[] param() default {}; // 自定义参数
 
     String prompt() default ""; // AI 智能体提示词（2.0.0+）
+
+    DragSort dragSort() default @DragSort(field = ""); // 行拖拽排序配置（2.0.4+）
 }
 ```
+
+## 行拖拽排序 @DragSort <Badge type="tip" text="2.0.4+" /> {#drag-sort}
+
+通过 `dragSort` 指定一个数值型排序字段后，表格支持直接拖拽行来调整顺序，拖拽结果自动持久化到该字段；未指定其他排序时，该字段将作为默认查询排序。
+
+```java
+@Erupt(
+    name = "字典项",
+    dragSort = @DragSort(field = "sort")
+)
+public class DictItem extends BaseModel {
+
+    @EruptField(
+        views = @View(title = "排序", sortable = true),
+        edit = @Edit(title = "排序", numberType = @NumberType)
+    )
+    private Integer sort;
+
+}
+```
+
+:::tip
+新增数据时可通过 `DataProxy.beforeAdd` 初始化排序值，框架内置的角色、字典项等功能均已启用该能力。
+:::

@@ -22,8 +22,16 @@ private String password;
 |----------|-----------|
 | Add | Required validation works normally; plaintext password is sent to the backend |
 | Edit | Leaving the field blank omits it from the request body — the existing stored value is preserved |
+| Edit echo | Only a mask placeholder (`••••••`) is returned; the actual password never reaches the client (2.0.4+) |
 | Table view | Field value is never rendered, preventing password exposure |
 | Search | Not supported |
+
+## Masked Edit Echo <Badge type="tip" text="2.0.4+" />
+
+When editing an existing record, the `PASSWORD` field is echoed back as a mask placeholder — the actual password value is **never** sent to the client (including password fields inside nested `COMBINE` forms):
+
+- Placeholder submitted unchanged → treated as "not modified", the stored value is kept
+- A newly typed or cleared value → overwrites as usual
 
 ## Configuration
 

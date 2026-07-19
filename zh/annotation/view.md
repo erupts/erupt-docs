@@ -41,6 +41,8 @@
 | `DATE_TIME` | 日期时间格式化展示 |
 | `BOOLEAN` | 布尔值展示 |
 | `NUMBER` | 数值展示 |
+| `PROGRESS` | 进度条展示；编辑类型为 SLIDER 时最大值取 `SliderType.max`，否则为 100（2.0.4+） |
+| `PASSWORD` | 密码掩码展示，实际值以占位符替代，不会下发到客户端（2.0.4+） |
 | `MAP` | 地图展示 |
 | `CODE` | 代码高亮展示 |
 | `MARKDOWN` | Markdown 渲染展示 |

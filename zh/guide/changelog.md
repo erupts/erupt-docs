@@ -1,5 +1,31 @@
 # 更新日志
 
+## 2.0.4（2026-07-19） <Badge type="tip" text="Spring Boot 3.5.16" />
+
+🌟 新增 [`BUTTON` 编辑类型](/zh/field-types/button)，表单内按钮点击后携带全部表单数据调用后端处理器，支持回填表单值与动态调整字段配置
+
+🌟 新增 [`@DragSort` 行拖拽排序](/zh/annotation/erupt#drag-sort)，表格支持直接拖拽行调整顺序，结果自动持久化到排序字段
+
+🌟 新增 [`PROGRESS` 视图类型](/zh/annotation/view#展示类型viewtype)，数值列以进度条形式展示，SLIDER 编辑类型自动取其最大值
+
+🌟 新增 [`PASSWORD` 视图类型](/zh/annotation/view#展示类型viewtype)，敏感字段以掩码展示，实际值不再下发到客户端
+
+🧩 [`PASSWORD` 编辑组件](/zh/field-types/password#编辑回显掩码)安全增强：编辑回显仅返回掩码占位符，占位符未修改时保留原密码
+
+🌟 [卡片视图](/zh/annotation/vis-card)支持选中卡片，选中状态与操作按钮联动
+
+🧩 AI 模型、MCP Server、智能体、定时任务等内置表单新增测试/校验按钮，连接与配置正确性一键验证
+
+🧩 [erupt-ai](/zh/modules/erupt-ai) 支持嵌入式聊天模式，LLM 的 apiKey 改用密码视图掩码展示
+
+🧩 日期解析更宽容，兼容更多日期/时间输入格式
+
+🐞 修复操作日志中密码字段未脱敏的问题
+
+🐞 修复菜单状态枚举「隐藏」与「禁用」标签互换的问题
+
+🐞 修复 AI 聊天抽屉在 Angular Zone 外打开导致的异常
+
 ## 2.0.3（2026-07-04） <Badge type="tip" text="Spring Boot 3.5.16" />
 
 🌟 新增 [`erupt-spring-boot-starter` 与 `erupt-spring-boot-starter-all`](/zh/guide/quick-start) 启动器，一个依赖即可集成 Erupt 核心能力或全部功能模块
