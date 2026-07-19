@@ -2,7 +2,6 @@
 
 A dropdown multi-select or checkbox group. The selected values are stored as a JSON array in a single field.
 
-![multi-choice-checkbox](/field-types/multi-choice-checkbox.png)
 ![multi-choice-select](/field-types/multi-choice-select.png)
 
 ## Basic Usage

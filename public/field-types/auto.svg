@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="520" viewBox="0 0 820 520">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M1,1 L7,4 L1,7" fill="none" stroke="#ff5722" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <style>
+    .mono { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; }
+    .sans { font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; }
+    .kw { fill: #24292f; font-weight: 700; }
+    .ty { fill: #2f9e8f; font-weight: 600; }
+    .id { fill: #57606a; }
+    .arrow-line { stroke: #ff5722; stroke-width: 1.6; stroke-dasharray: 5 5; opacity: .75; }
+  </style>
+
+  <rect width="820" height="520" rx="12" fill="#ffffff"/>
+
+  <!-- annotation pill -->
+  <rect x="272" y="30" width="276" height="40" rx="20" fill="#fff3ee" stroke="#ff5722" stroke-width="1.4"/>
+  <text x="410" y="55" text-anchor="middle" class="mono" font-size="16" fill="#ff5722" font-weight="700">@Edit(type = AUTO)</text>
+
+  <!-- column headers -->
+  <text x="60" y="108" class="mono" font-size="12" fill="#8c959f" letter-spacing="2">JAVA FIELD</text>
+  <text x="500" y="108" class="mono" font-size="12" fill="#8c959f" letter-spacing="2">RENDERED COMPONENT</text>
+
+  <!-- ============ row 1 : String -> INPUT ============ -->
+  <g class="mono" font-size="15">
+    <text x="60" y="160"><tspan class="kw">private</tspan> <tspan class="ty">String</tspan> <tspan class="id">name;</tspan></text>
+  </g>
+  <line x1="352" y1="155" x2="462" y2="155" class="arrow-line" marker-end="url(#arrow)"/>
+  <g>
+    <rect x="500" y="132" width="260" height="44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+    <text x="516" y="159" class="sans" font-size="14" fill="#8c959f">Text input</text>
+    <line x1="590" y1="141" x2="590" y2="167" stroke="#4b5cc4" stroke-width="1.6"/>
+    <text x="742" y="122" text-anchor="end" class="mono" font-size="11" fill="#4b5cc4">INPUT</text>
+  </g>
+
+  <!-- ============ row 2 : Boolean -> BOOLEAN ============ -->
+  <g class="mono" font-size="15">
+    <text x="60" y="258"><tspan class="kw">private</tspan> <tspan class="ty">Boolean</tspan> <tspan class="id">enable;</tspan></text>
+  </g>
+  <line x1="352" y1="253" x2="462" y2="253" class="arrow-line" marker-end="url(#arrow)"/>
+  <g>
+    <rect x="500" y="240" width="48" height="26" rx="13" fill="#4b5cc4"/>
+    <circle cx="535" cy="253" r="10" fill="#ffffff"/>
+    <text x="562" y="258" class="sans" font-size="14" fill="#57606a">On</text>
+    <text x="742" y="220" text-anchor="end" class="mono" font-size="11" fill="#4b5cc4">BOOLEAN</text>
+  </g>
+
+  <!-- ============ row 3 : Date -> DATE ============ -->
+  <g class="mono" font-size="15">
+    <text x="60" y="356"><tspan class="kw">private</tspan> <tspan class="ty">Date</tspan> <tspan class="id">createTime;</tspan></text>
+  </g>
+  <line x1="352" y1="351" x2="462" y2="351" class="arrow-line" marker-end="url(#arrow)"/>
+  <g>
+    <rect x="500" y="328" width="260" height="44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+    <text x="516" y="355" class="sans" font-size="14" fill="#24292f">2026-07-19</text>
+    <!-- calendar glyph -->
+    <rect x="724" y="338" width="22" height="22" rx="3" fill="none" stroke="#8c959f" stroke-width="1.5"/>
+    <line x1="724" y1="345" x2="746" y2="345" stroke="#8c959f" stroke-width="1.5"/>
+    <line x1="730" y1="334" x2="730" y2="340" stroke="#8c959f" stroke-width="1.5"/>
+    <line x1="740" y1="334" x2="740" y2="340" stroke="#8c959f" stroke-width="1.5"/>
+    <text x="742" y="318" text-anchor="end" class="mono" font-size="11" fill="#4b5cc4">DATE</text>
+  </g>
+
+  <!-- ============ row 4 : Integer -> NUMBER ============ -->
+  <g class="mono" font-size="15">
+    <text x="60" y="454"><tspan class="kw">private</tspan> <tspan class="ty">Integer</tspan> <tspan class="id">count;</tspan></text>
+  </g>
+  <line x1="352" y1="449" x2="462" y2="449" class="arrow-line" marker-end="url(#arrow)"/>
+  <g>
+    <rect x="500" y="426" width="260" height="44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+    <text x="516" y="453" class="sans" font-size="14" fill="#24292f">42</text>
+    <!-- steppers -->
+    <line x1="728" y1="426" x2="728" y2="470" stroke="#d0d7de" stroke-width="1.2"/>
+    <path d="M738,441 l6,-6 l6,6" fill="none" stroke="#8c959f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M738,455 l6,6 l6,-6" fill="none" stroke="#8c959f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="732" y1="448" x2="756" y2="448" stroke="#d0d7de" stroke-width="1.2"/>
+    <text x="742" y="416" text-anchor="end" class="mono" font-size="11" fill="#4b5cc4">NUMBER</text>
+  </g>
+</svg>

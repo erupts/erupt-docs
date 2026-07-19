@@ -2,6 +2,8 @@
 
 带输入联想功能的文本框，用户输入时动态匹配候选项，选项通过实现 `AutoCompleteHandler` 提供。
 
+![auto-complete](/field-types/auto-complete.png)
+
 ## 基础用法
 
 ```java

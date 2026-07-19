@@ -2,6 +2,8 @@
 
 以复选框形式展示可选项，用户勾选后建立多对多关系，对应 JPA `@ManyToMany`。适合选项数量较少的场景。
 
+![checkbox](/field-types/checkbox.png)
+
 ## 基础用法
 
 ```java

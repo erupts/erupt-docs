@@ -2,6 +2,8 @@
 
 Renders a button in the form. When clicked, it calls a backend handler with **all current form values**, allowing arbitrary business logic (e.g. connectivity tests, configuration validation). It can also populate form values and dynamically adjust the annotation configuration of other fields. The field collects no data and is not persisted — use it with `@Transient`.
 
+![button](/field-types/button.png)
+
 ## Basic Usage
 
 ```java

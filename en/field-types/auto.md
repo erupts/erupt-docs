@@ -2,6 +2,8 @@
 
 When `type` is not specified, Erupt automatically infers which edit component to use based on the Java field type.
 
+![auto](/field-types/auto.svg)
+
 | Field Type | Mapped Component |
 |:---:|:---:|
 | `Integer` / `Float` / `Double` | `EditType.NUMBER` |

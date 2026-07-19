@@ -2,6 +2,8 @@
 
 Displays options as checkboxes. Checking items establishes a many-to-many relationship, corresponding to JPA `@ManyToMany`. Suitable for scenarios with a small number of options.
 
+![checkbox](/field-types/checkbox.png)
+
 ## Basic Usage
 
 ```java

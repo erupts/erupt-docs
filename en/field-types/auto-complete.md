@@ -2,6 +2,8 @@
 
 A text field with input suggestion support. As the user types, candidate options are matched dynamically. Options are provided by implementing `AutoCompleteHandler`.
 
+![auto-complete](/field-types/auto-complete.png)
+
 ## Basic Usage
 
 ```java

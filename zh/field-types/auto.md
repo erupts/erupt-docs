@@ -2,6 +2,8 @@
 
 不指定 `type` 时，Erupt 会根据 Java 字段类型自动推断使用哪种编辑组件。
 
+![auto](/field-types/auto.svg)
+
 | 字段类型 | 映射组件 |
 |:---:|:---:|
 | `Integer` / `Float` / `Double` | `EditType.NUMBER` |
