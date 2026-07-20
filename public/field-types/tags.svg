@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250">
+  <style>.s{font-family:-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}</style>
+  <rect width="400" height="250" rx="10" fill="#ffffff"/>
+  <!-- row 1 -->
+  <rect x="48" y="88" width="78" height="32" rx="5" fill="#eef0fa" stroke="#4b5cc4" stroke-width="1.2"/>
+  <text x="60" y="109" class="s" font-size="13" fill="#4b5cc4">erupt  ×</text>
+  <rect x="136" y="88" width="104" height="32" rx="5" fill="#f5f5f5" stroke="#e8e8e8" stroke-width="1.2"/>
+  <text x="148" y="109" class="s" font-size="13" fill="#262626">low-code  ×</text>
+  <rect x="250" y="88" width="70" height="32" rx="5" fill="#f5f5f5" stroke="#e8e8e8" stroke-width="1.2"/>
+  <text x="262" y="109" class="s" font-size="13" fill="#262626">java  ×</text>
+  <!-- row 2 -->
+  <rect x="48" y="132" width="80" height="32" rx="5" fill="#f5f5f5" stroke="#e8e8e8" stroke-width="1.2"/>
+  <text x="60" y="153" class="s" font-size="13" fill="#262626">admin  ×</text>
+  <rect x="138" y="132" width="102" height="32" rx="5" fill="#ffffff" stroke="#d9d9d9" stroke-width="1.4" stroke-dasharray="4 3"/>
+  <text x="152" y="153" class="s" font-size="13" fill="#8c959f">+ New Tag</text>
+</svg>

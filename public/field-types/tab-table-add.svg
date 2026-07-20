@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250">
+  <style>.s{font-family:-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}</style>
+  <rect width="400" height="250" rx="10" fill="#ffffff"/>
+  <!-- add button -->
+  <rect x="284" y="26" width="76" height="32" rx="6" fill="#4b5cc4"/>
+  <text x="322" y="47" text-anchor="middle" class="s" font-size="13" fill="#ffffff">+ Add</text>
+  <!-- table -->
+  <rect x="40" y="70" width="320" height="150" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1.5"/>
+  <path d="M48,70 h304 a8,8 0 0 1 8,8 v22 h-320 v-22 a8,8 0 0 1 8,-8 z" fill="#fafafa"/>
+  <text x="58" y="90" class="s" font-size="12" font-weight="600" fill="#595959">Item</text>
+  <text x="190" y="90" class="s" font-size="12" font-weight="600" fill="#595959">Qty</text>
+  <text x="280" y="90" class="s" font-size="12" font-weight="600" fill="#595959">Action</text>
+  <line x1="40" y1="100" x2="360" y2="100" stroke="#f0f0f0" stroke-width="1.5"/>
+  <!-- row 1 -->
+  <text x="58" y="124" class="s" font-size="13" fill="#262626">Keyboard</text>
+  <text x="190" y="124" class="s" font-size="13" fill="#262626">2</text>
+  <text x="280" y="124" class="s" font-size="12" fill="#ff4d4f">Delete</text>
+  <line x1="40" y1="138" x2="360" y2="138" stroke="#f0f0f0" stroke-width="1.5"/>
+  <!-- row 2 -->
+  <text x="58" y="162" class="s" font-size="13" fill="#262626">Monitor</text>
+  <text x="190" y="162" class="s" font-size="13" fill="#262626">1</text>
+  <text x="280" y="162" class="s" font-size="12" fill="#ff4d4f">Delete</text>
+  <line x1="40" y1="176" x2="360" y2="176" stroke="#f0f0f0" stroke-width="1.5"/>
+  <!-- row 3 : inline editing -->
+  <rect x="54" y="184" width="110" height="28" rx="4" fill="#ffffff" stroke="#4b5cc4" stroke-width="1.4"/>
+  <text x="62" y="203" class="s" font-size="12" fill="#262626">Mouse</text>
+  <line x1="108" y1="189" x2="108" y2="207" stroke="#4b5cc4" stroke-width="1.2"/>
+  <rect x="182" y="184" width="56" height="28" rx="4" fill="#ffffff" stroke="#d9d9d9" stroke-width="1.4"/>
+  <text x="190" y="203" class="s" font-size="12" fill="#8c959f">0</text>
+  <text x="280" y="203" class="s" font-size="12" fill="#8c959f">Save</text>
+</svg>

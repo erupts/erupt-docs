@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250">
+  <style>.s{font-family:-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}</style>
+  <rect width="400" height="250" rx="10" fill="#ffffff"/>
+  <!-- ON -->
+  <rect x="130" y="72" width="76" height="38" rx="19" fill="#4b5cc4"/>
+  <path d="M150,91 l7,7 l14,-14" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="187" cy="91" r="15" fill="#ffffff"/>
+  <text x="226" y="96" class="s" font-size="14" fill="#262626">Enabled</text>
+  <!-- OFF -->
+  <rect x="130" y="140" width="76" height="38" rx="19" fill="#bfbfbf"/>
+  <circle cx="149" cy="159" r="15" fill="#ffffff"/>
+  <text x="226" y="164" class="s" font-size="14" fill="#8c959f">Disabled</text>
+</svg>

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250">
+  <style>.s{font-family:-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}</style>
+  <rect width="400" height="250" rx="10" fill="#ffffff"/>
+  <rect x="40" y="24" width="320" height="202" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1.5"/>
+  <!-- modal header -->
+  <text x="58" y="50" class="s" font-size="14" font-weight="600" fill="#262626">Select Record</text>
+  <g stroke="#8c959f" stroke-width="1.6" stroke-linecap="round">
+    <line x1="336" y1="38" x2="348" y2="50"/><line x1="348" y1="38" x2="336" y2="50"/>
+  </g>
+  <line x1="40" y1="64" x2="360" y2="64" stroke="#f0f0f0" stroke-width="1.5"/>
+  <!-- table header -->
+  <rect x="41" y="65" width="318" height="30" fill="#fafafa"/>
+  <text x="88" y="85" class="s" font-size="12" font-weight="600" fill="#595959">Name</text>
+  <text x="240" y="85" class="s" font-size="12" font-weight="600" fill="#595959">Code</text>
+  <line x1="40" y1="95" x2="360" y2="95" stroke="#f0f0f0" stroke-width="1.5"/>
+  <!-- row 1 -->
+  <circle cx="66" cy="112" r="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1.8"/>
+  <text x="88" y="117" class="s" font-size="13" fill="#595959">Finance</text>
+  <text x="240" y="117" class="s" font-size="13" fill="#8c959f">FIN</text>
+  <line x1="40" y1="129" x2="360" y2="129" stroke="#f0f0f0" stroke-width="1.5"/>
+  <!-- row 2 : selected -->
+  <rect x="41" y="130" width="318" height="33" fill="#eef0fa"/>
+  <circle cx="66" cy="146" r="8" fill="#ffffff" stroke="#4b5cc4" stroke-width="1.8"/>
+  <circle cx="66" cy="146" r="4" fill="#4b5cc4"/>
+  <text x="88" y="151" class="s" font-size="13" fill="#262626">R&amp;D Center</text>
+  <text x="240" y="151" class="s" font-size="13" fill="#8c959f">RD</text>
+  <line x1="40" y1="163" x2="360" y2="163" stroke="#f0f0f0" stroke-width="1.5"/>
+  <!-- row 3 -->
+  <circle cx="66" cy="180" r="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1.8"/>
+  <text x="88" y="185" class="s" font-size="13" fill="#595959">Sales</text>
+  <text x="240" y="185" class="s" font-size="13" fill="#8c959f">SLS</text>
+  <!-- footer -->
+  <line x1="40" y1="196" x2="360" y2="196" stroke="#f0f0f0" stroke-width="1.5"/>
+  <rect x="296" y="202" width="52" height="18" rx="4" fill="#4b5cc4"/>
+  <text x="322" y="215" text-anchor="middle" class="s" font-size="11" fill="#ffffff">OK</text>
+</svg>

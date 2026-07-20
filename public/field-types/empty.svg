@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250">
+  <style>.m{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace}</style>
+  <rect width="400" height="250" rx="10" fill="#ffffff"/>
+  <!-- real field -->
+  <rect x="40" y="72" width="150" height="44" rx="6" fill="#ffffff" stroke="#d9d9d9" stroke-width="1.5"/>
+  <rect x="54" y="90" width="86" height="8" rx="4" fill="#e8e8e8"/>
+  <!-- empty placeholder cell -->
+  <rect x="210" y="72" width="150" height="44" rx="6" fill="none" stroke="#d9d9d9" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="285" y="99" text-anchor="middle" class="m" font-size="10" fill="#bfbfbf" letter-spacing="2">EMPTY</text>
+  <!-- next row -->
+  <rect x="40" y="134" width="320" height="44" rx="6" fill="#ffffff" stroke="#d9d9d9" stroke-width="1.5"/>
+  <rect x="54" y="152" width="150" height="8" rx="4" fill="#e8e8e8"/>
+</svg>

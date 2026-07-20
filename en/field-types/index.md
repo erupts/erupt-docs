@@ -12,34 +12,34 @@ const groups = [
         title: 'Basic Components',
         items: [
             {name: 'AUTO', desc: 'Inferred from field type', link: '/en/field-types/auto', img: '/field-types/auto.svg'},
-            {name: 'INPUT', desc: 'Single-line text input', link: '/en/field-types/input', img: '/field-types/input.png'},
-            {name: 'PASSWORD', desc: 'Password input', link: '/en/field-types/password', img: '/field-types/password.png'},
-            {name: 'TEXTAREA', desc: 'Multi-line text input', link: '/en/field-types/textarea', img: '/field-types/textarea.png'},
-            {name: 'NUMBER', desc: 'Numeric input', link: '/en/field-types/number', img: '/field-types/number.png'},
-            {name: 'SLIDER', desc: 'Slider input', link: '/en/field-types/slider', img: '/field-types/slider.png'},
-            {name: 'DATE', desc: 'Date & time picker', link: '/en/field-types/date', img: '/field-types/date.png'},
-            {name: 'BOOLEAN', desc: 'Boolean switch', link: '/en/field-types/boolean', img: '/field-types/boolean.png'},
-            {name: 'MAP', desc: 'Geo-location picker', link: '/en/field-types/map', img: '/field-types/map.png'},
-            {name: 'COLOR', desc: 'Color picker', link: '/en/field-types/color', img: '/field-types/color.png'},
-            {name: 'RATE', desc: 'Rating', link: '/en/field-types/rate', img: '/field-types/rate.png'},
+            {name: 'INPUT', desc: 'Single-line text input', link: '/en/field-types/input', img: '/field-types/input.svg'},
+            {name: 'PASSWORD', desc: 'Password input', link: '/en/field-types/password', img: '/field-types/password.svg'},
+            {name: 'TEXTAREA', desc: 'Multi-line text input', link: '/en/field-types/textarea', img: '/field-types/textarea.svg'},
+            {name: 'NUMBER', desc: 'Numeric input', link: '/en/field-types/number', img: '/field-types/number.svg'},
+            {name: 'SLIDER', desc: 'Slider input', link: '/en/field-types/slider', img: '/field-types/slider.svg'},
+            {name: 'DATE', desc: 'Date & time picker', link: '/en/field-types/date', img: '/field-types/date.svg'},
+            {name: 'BOOLEAN', desc: 'Boolean switch', link: '/en/field-types/boolean', img: '/field-types/boolean.svg'},
+            {name: 'MAP', desc: 'Geo-location picker', link: '/en/field-types/map', img: '/field-types/map.svg'},
+            {name: 'COLOR', desc: 'Color picker', link: '/en/field-types/color', img: '/field-types/color.svg'},
+            {name: 'RATE', desc: 'Rating', link: '/en/field-types/rate', img: '/field-types/rate.svg'},
         ],
     },
     {
         title: 'Choice Components',
         items: [
-            {name: 'CHOICE', desc: 'Single choice', link: '/en/field-types/choice', img: '/field-types/choice-radio.png'},
-            {name: 'MULTI_CHOICE', desc: 'Multiple choice', link: '/en/field-types/multi-choice', img: '/field-types/multi-choice-select.png'},
-            {name: 'TAGS', desc: 'Tag selector', link: '/en/field-types/tags', img: '/field-types/tags.png'},
-            {name: 'AUTO_COMPLETE', desc: 'Auto-complete', link: '/en/field-types/auto-complete', img: '/field-types/auto-complete.png'},
+            {name: 'CHOICE', desc: 'Single choice', link: '/en/field-types/choice', img: '/field-types/choice.svg'},
+            {name: 'MULTI_CHOICE', desc: 'Multiple choice', link: '/en/field-types/multi-choice', img: '/field-types/multi-choice.svg'},
+            {name: 'TAGS', desc: 'Tag selector', link: '/en/field-types/tags', img: '/field-types/tags.svg'},
+            {name: 'AUTO_COMPLETE', desc: 'Auto-complete', link: '/en/field-types/auto-complete', img: '/field-types/auto-complete.svg'},
         ],
     },
     {
         title: 'Media & Editors',
         items: [
-            {name: 'ATTACHMENT', desc: 'File & image upload', link: '/en/field-types/attachment', img: '/field-types/attachment.png'},
-            {name: 'HTML_EDITOR', desc: 'Rich text editor', link: '/en/field-types/html-editor', img: '/field-types/html-editor.png'},
-            {name: 'CODE_EDITOR', desc: 'Code editor', link: '/en/field-types/code-editor', img: '/field-types/code-editor.png'},
-            {name: 'MARKDOWN', desc: 'Markdown editor', link: '/en/field-types/markdown', img: '/field-types/markdown.png'},
+            {name: 'ATTACHMENT', desc: 'File & image upload', link: '/en/field-types/attachment', img: '/field-types/attachment.svg'},
+            {name: 'HTML_EDITOR', desc: 'Rich text editor', link: '/en/field-types/html-editor', img: '/field-types/html-editor.svg'},
+            {name: 'CODE_EDITOR', desc: 'Code editor', link: '/en/field-types/code-editor', img: '/field-types/code-editor.svg'},
+            {name: 'MARKDOWN', desc: 'Markdown editor', link: '/en/field-types/markdown', img: '/field-types/markdown.svg'},
             {name: 'SIGNATURE', desc: 'Signature pad', link: '/en/field-types/signature', img: '/field-types/signature.svg'},
         ],
     },
@@ -49,25 +49,25 @@ const groups = [
         noteLink: '/en/field-types/relation',
         noteLinkText: 'Relation Components Overview',
         items: [
-            {name: 'REFERENCE_TABLE', desc: 'Table dialog picker · many-to-one', link: '/en/field-types/reference-table', img: '/field-types/reference-table.png'},
-            {name: 'REFERENCE_TREE', desc: 'Tree dialog picker · many-to-one', link: '/en/field-types/reference-tree', img: '/field-types/reference-tree.png'},
-            {name: 'CHECKBOX', desc: 'Checkboxes · many-to-many', link: '/en/field-types/checkbox', img: '/field-types/checkbox.png'},
-            {name: 'TAB_TREE', desc: 'Tree selector · many-to-many', link: '/en/field-types/tab-tree', img: '/field-types/tab-tree.png'},
-            {name: 'TAB_TABLE_REFER', desc: 'Table selector · many-to-many', link: '/en/field-types/tab-table-refer', img: '/field-types/tab-table-refer.png'},
-            {name: 'TAB_TABLE_ADD', desc: 'Nested child records · one-to-many', link: '/en/field-types/tab-table-add', img: '/field-types/tab-table-add.png'},
-            {name: 'COMBINE', desc: 'Nested form, JSON storage · one-to-one', link: '/en/field-types/combine', img: '/field-types/combine.png'},
+            {name: 'REFERENCE_TABLE', desc: 'Table dialog picker · many-to-one', link: '/en/field-types/reference-table', img: '/field-types/reference-table.svg'},
+            {name: 'REFERENCE_TREE', desc: 'Tree dialog picker · many-to-one', link: '/en/field-types/reference-tree', img: '/field-types/reference-tree.svg'},
+            {name: 'CHECKBOX', desc: 'Checkboxes · many-to-many', link: '/en/field-types/checkbox', img: '/field-types/checkbox.svg'},
+            {name: 'TAB_TREE', desc: 'Tree selector · many-to-many', link: '/en/field-types/tab-tree', img: '/field-types/tab-tree.svg'},
+            {name: 'TAB_TABLE_REFER', desc: 'Table selector · many-to-many', link: '/en/field-types/tab-table-refer', img: '/field-types/tab-table-refer.svg'},
+            {name: 'TAB_TABLE_ADD', desc: 'Nested child records · one-to-many', link: '/en/field-types/tab-table-add', img: '/field-types/tab-table-add.svg'},
+            {name: 'COMBINE', desc: 'Nested form, JSON storage · one-to-one', link: '/en/field-types/combine', img: '/field-types/combine.svg'},
         ],
     },
     {
         title: 'Other Types',
         items: [
-            {name: 'GROUP', desc: 'Field grouping', link: '/en/field-types/group', img: '/field-types/group.png'},
-            {name: 'DIVIDE', desc: 'Horizontal divider', link: '/en/field-types/divide', img: '/field-types/divide.png'},
-            {name: 'CALLOUT', desc: 'Callout message block', link: '/en/field-types/callout', img: '/field-types/callout.png'},
-            {name: 'BUTTON', desc: 'Action button', link: '/en/field-types/button', img: '/field-types/button.png'},
-            {name: 'TPL', desc: 'Custom HTML template', link: '/en/field-types/tpl', img: '/field-types/tpl.png'},
-            {name: 'HIDDEN', desc: 'Hidden field', link: '/en/field-types/hidden', img: null},
-            {name: 'EMPTY', desc: 'Empty placeholder', link: '/en/field-types/empty', img: null},
+            {name: 'GROUP', desc: 'Field grouping', link: '/en/field-types/group', img: '/field-types/group.svg'},
+            {name: 'DIVIDE', desc: 'Horizontal divider', link: '/en/field-types/divide', img: '/field-types/divide.svg'},
+            {name: 'CALLOUT', desc: 'Callout message block', link: '/en/field-types/callout', img: '/field-types/callout.svg'},
+            {name: 'BUTTON', desc: 'Action button', link: '/en/field-types/button', img: '/field-types/button.svg'},
+            {name: 'TPL', desc: 'Custom HTML template', link: '/en/field-types/tpl', img: '/field-types/tpl.svg'},
+            {name: 'HIDDEN', desc: 'Hidden field', link: '/en/field-types/hidden', img: '/field-types/hidden.svg'},
+            {name: 'EMPTY', desc: 'Empty placeholder', link: '/en/field-types/empty', img: '/field-types/empty.svg'},
         ],
     },
 ]
@@ -267,17 +267,21 @@ Erupt provides 30+ field components, specified via `@Edit(type = EditType.XXX)`,
     align-items: center;
     justify-content: center;
     padding: 12px;
-    background: #efefef;
+    background-color: #F0F9FC;
+    background-image: radial-gradient(rgba(20, 18, 11, .10) 1px, transparent 1px);
+    background-size: 14px 14px;
 }
 
 .dark .ft-card-img {
-    background: #1A170F;
+    background-color: #1A170F;
+    background-image: radial-gradient(rgba(79, 200, 236, .13) 1px, transparent 1px);
 }
 
 .ft-card-img img {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
+    filter: drop-shadow(2px 2px 0 rgba(20, 18, 11, .10));
 }
 
 .ft-placeholder {

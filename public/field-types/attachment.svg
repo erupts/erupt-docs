@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250">
+  <style>.s{font-family:-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}</style>
+  <rect width="400" height="250" rx="10" fill="#ffffff"/>
+  <!-- drop zone -->
+  <rect x="40" y="32" width="320" height="118" rx="8" fill="#fafafa" stroke="#d9d9d9" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <g stroke="#4b5cc4" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M200,64 v30 M188,76 l12,-12 l12,12"/>
+    <path d="M176,102 v8 h48 v-8"/>
+  </g>
+  <text x="200" y="134" text-anchor="middle" class="s" font-size="12" fill="#8c959f">Click or drag file to upload</text>
+  <!-- uploaded file -->
+  <rect x="40" y="168" width="320" height="42" rx="6" fill="#ffffff" stroke="#f0f0f0" stroke-width="1.5"/>
+  <path d="M62,194 l12,-12 a5,5 0 0 1 7,7 l-13,13 a8.5,8.5 0 0 1 -12,-12 l12,-12" fill="none" stroke="#8c959f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="94" y="194" class="s" font-size="13" fill="#262626">logo.png</text>
+  <circle cx="334" cy="189" r="9" fill="#52c41a"/>
+  <path d="M330,189 l3,3 l6,-6" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

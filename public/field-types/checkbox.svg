@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250">
+  <style>.s{font-family:-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}</style>
+  <rect width="400" height="250" rx="10" fill="#ffffff"/>
+  <!-- checked -->
+  <rect x="120" y="64" width="22" height="22" rx="5" fill="#4b5cc4"/>
+  <path d="M126,75 l5,5 l9,-9" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="156" y="80" class="s" font-size="14" fill="#262626">Read</text>
+  <!-- checked -->
+  <rect x="120" y="114" width="22" height="22" rx="5" fill="#4b5cc4"/>
+  <path d="M126,125 l5,5 l9,-9" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="156" y="130" class="s" font-size="14" fill="#262626">Write</text>
+  <!-- unchecked -->
+  <rect x="120" y="164" width="22" height="22" rx="5" fill="#ffffff" stroke="#d9d9d9" stroke-width="2"/>
+  <text x="156" y="180" class="s" font-size="14" fill="#595959">Delete</text>
+</svg>

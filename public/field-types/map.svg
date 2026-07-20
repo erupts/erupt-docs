@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250">
+  <style>.s{font-family:-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}</style>
+  <rect width="400" height="250" rx="10" fill="#ffffff"/>
+  <defs>
+    <clipPath id="mapClip"><rect x="40" y="36" width="320" height="178" rx="8"/></clipPath>
+  </defs>
+  <rect x="40" y="36" width="320" height="178" rx="8" fill="#fafafa" stroke="#d9d9d9" stroke-width="1.5"/>
+  <g clip-path="url(#mapClip)">
+    <!-- blocks -->
+    <rect x="60" y="56" width="90" height="60" fill="#f0f0f0"/>
+    <rect x="170" y="56" width="120" height="40" fill="#f0f0f0"/>
+    <rect x="60" y="140" width="70" height="55" fill="#f0f0f0"/>
+    <rect x="250" y="120" width="95" height="75" fill="#f0f0f0"/>
+    <!-- roads -->
+    <line x1="40" y1="126" x2="360" y2="118" stroke="#ffffff" stroke-width="10"/>
+    <line x1="158" y1="36" x2="166" y2="214" stroke="#ffffff" stroke-width="10"/>
+    <line x1="238" y1="36" x2="232" y2="214" stroke="#ffffff" stroke-width="7"/>
+    <!-- river -->
+    <path d="M300,36 C 320,80 290,140 330,214" fill="none" stroke="#dbe9f5" stroke-width="14"/>
+  </g>
+  <!-- pin -->
+  <ellipse cx="200" cy="152" rx="14" ry="4" fill="rgba(0,0,0,.12)"/>
+  <path d="M200,92 c-14,0 -24,10 -24,24 c0,17 24,34 24,34 c0,0 24,-17 24,-34 c0,-14 -10,-24 -24,-24 z" fill="#4b5cc4"/>
+  <circle cx="200" cy="115" r="8" fill="#ffffff"/>
+  <!-- zoom control -->
+  <rect x="326" y="160" width="24" height="44" rx="4" fill="#ffffff" stroke="#d9d9d9" stroke-width="1.2"/>
+  <line x1="326" y1="182" x2="350" y2="182" stroke="#d9d9d9" stroke-width="1.2"/>
+  <g stroke="#595959" stroke-width="1.6" stroke-linecap="round">
+    <line x1="333" y1="171" x2="343" y2="171"/>
+    <line x1="338" y1="166" x2="338" y2="176"/>
+    <line x1="333" y1="193" x2="343" y2="193"/>
+  </g>
+</svg>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250">
+  <style>.s{font-family:-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}</style>
+  <rect width="400" height="250" rx="10" fill="#ffffff"/>
+  <rect x="40" y="56" width="320" height="9" rx="4.5" fill="#e8e8e8"/>
+  <rect x="40" y="78" width="236" height="9" rx="4.5" fill="#e8e8e8"/>
+  <!-- divider with text -->
+  <line x1="40" y1="127" x2="158" y2="127" stroke="#d9d9d9" stroke-width="1.5"/>
+  <text x="200" y="132" text-anchor="middle" class="s" font-size="13" font-weight="600" fill="#262626">Section</text>
+  <line x1="242" y1="127" x2="360" y2="127" stroke="#d9d9d9" stroke-width="1.5"/>
+  <rect x="40" y="168" width="320" height="9" rx="4.5" fill="#e8e8e8"/>
+  <rect x="40" y="190" width="188" height="9" rx="4.5" fill="#e8e8e8"/>
+</svg>

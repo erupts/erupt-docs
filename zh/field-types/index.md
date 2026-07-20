@@ -12,34 +12,34 @@ const groups = [
         title: '基础组件',
         items: [
             {name: 'AUTO', desc: '根据字段类型自动推断', link: '/zh/field-types/auto', img: '/field-types/auto.svg'},
-            {name: 'INPUT', desc: '单行文本输入框', link: '/zh/field-types/input', img: '/field-types/input.png'},
-            {name: 'PASSWORD', desc: '密码输入框', link: '/zh/field-types/password', img: '/field-types/password.png'},
-            {name: 'TEXTAREA', desc: '多行文本输入框', link: '/zh/field-types/textarea', img: '/field-types/textarea.png'},
-            {name: 'NUMBER', desc: '数值输入框', link: '/zh/field-types/number', img: '/field-types/number.png'},
-            {name: 'SLIDER', desc: '滑动输入条', link: '/zh/field-types/slider', img: '/field-types/slider.png'},
-            {name: 'DATE', desc: '日期时间选择器', link: '/zh/field-types/date', img: '/field-types/date.png'},
-            {name: 'BOOLEAN', desc: '布尔开关', link: '/zh/field-types/boolean', img: '/field-types/boolean.png'},
-            {name: 'MAP', desc: '地理位置选择', link: '/zh/field-types/map', img: '/field-types/map.png'},
-            {name: 'COLOR', desc: '颜色选择器', link: '/zh/field-types/color', img: '/field-types/color.png'},
-            {name: 'RATE', desc: '评分器', link: '/zh/field-types/rate', img: '/field-types/rate.png'},
+            {name: 'INPUT', desc: '单行文本输入框', link: '/zh/field-types/input', img: '/field-types/input.svg'},
+            {name: 'PASSWORD', desc: '密码输入框', link: '/zh/field-types/password', img: '/field-types/password.svg'},
+            {name: 'TEXTAREA', desc: '多行文本输入框', link: '/zh/field-types/textarea', img: '/field-types/textarea.svg'},
+            {name: 'NUMBER', desc: '数值输入框', link: '/zh/field-types/number', img: '/field-types/number.svg'},
+            {name: 'SLIDER', desc: '滑动输入条', link: '/zh/field-types/slider', img: '/field-types/slider.svg'},
+            {name: 'DATE', desc: '日期时间选择器', link: '/zh/field-types/date', img: '/field-types/date.svg'},
+            {name: 'BOOLEAN', desc: '布尔开关', link: '/zh/field-types/boolean', img: '/field-types/boolean.svg'},
+            {name: 'MAP', desc: '地理位置选择', link: '/zh/field-types/map', img: '/field-types/map.svg'},
+            {name: 'COLOR', desc: '颜色选择器', link: '/zh/field-types/color', img: '/field-types/color.svg'},
+            {name: 'RATE', desc: '评分器', link: '/zh/field-types/rate', img: '/field-types/rate.svg'},
         ],
     },
     {
         title: '选择类组件',
         items: [
-            {name: 'CHOICE', desc: '单选', link: '/zh/field-types/choice', img: '/field-types/choice-radio.png'},
-            {name: 'MULTI_CHOICE', desc: '多选', link: '/zh/field-types/multi-choice', img: '/field-types/multi-choice-select.png'},
-            {name: 'TAGS', desc: '标签选择器', link: '/zh/field-types/tags', img: '/field-types/tags.png'},
-            {name: 'AUTO_COMPLETE', desc: '自动完成', link: '/zh/field-types/auto-complete', img: '/field-types/auto-complete.png'},
+            {name: 'CHOICE', desc: '单选', link: '/zh/field-types/choice', img: '/field-types/choice.svg'},
+            {name: 'MULTI_CHOICE', desc: '多选', link: '/zh/field-types/multi-choice', img: '/field-types/multi-choice.svg'},
+            {name: 'TAGS', desc: '标签选择器', link: '/zh/field-types/tags', img: '/field-types/tags.svg'},
+            {name: 'AUTO_COMPLETE', desc: '自动完成', link: '/zh/field-types/auto-complete', img: '/field-types/auto-complete.svg'},
         ],
     },
     {
         title: '媒体与编辑器',
         items: [
-            {name: 'ATTACHMENT', desc: '附件、图片上传', link: '/zh/field-types/attachment', img: '/field-types/attachment.png'},
-            {name: 'HTML_EDITOR', desc: '富文本编辑器', link: '/zh/field-types/html-editor', img: '/field-types/html-editor.png'},
-            {name: 'CODE_EDITOR', desc: '代码编辑器', link: '/zh/field-types/code-editor', img: '/field-types/code-editor.png'},
-            {name: 'MARKDOWN', desc: 'Markdown 编辑器', link: '/zh/field-types/markdown', img: '/field-types/markdown.png'},
+            {name: 'ATTACHMENT', desc: '附件、图片上传', link: '/zh/field-types/attachment', img: '/field-types/attachment.svg'},
+            {name: 'HTML_EDITOR', desc: '富文本编辑器', link: '/zh/field-types/html-editor', img: '/field-types/html-editor.svg'},
+            {name: 'CODE_EDITOR', desc: '代码编辑器', link: '/zh/field-types/code-editor', img: '/field-types/code-editor.svg'},
+            {name: 'MARKDOWN', desc: 'Markdown 编辑器', link: '/zh/field-types/markdown', img: '/field-types/markdown.svg'},
             {name: 'SIGNATURE', desc: '签名板', link: '/zh/field-types/signature', img: '/field-types/signature.svg'},
         ],
     },
@@ -49,25 +49,25 @@ const groups = [
         noteLink: '/zh/field-types/relation',
         noteLinkText: '关联组件概览',
         items: [
-            {name: 'REFERENCE_TABLE', desc: '表格弹窗选择 · 多对一', link: '/zh/field-types/reference-table', img: '/field-types/reference-table.png'},
-            {name: 'REFERENCE_TREE', desc: '树形弹窗选择 · 多对一', link: '/zh/field-types/reference-tree', img: '/field-types/reference-tree.png'},
-            {name: 'CHECKBOX', desc: '复选框 · 多对多', link: '/zh/field-types/checkbox', img: '/field-types/checkbox.png'},
-            {name: 'TAB_TREE', desc: '树形选择 · 多对多', link: '/zh/field-types/tab-tree', img: '/field-types/tab-tree.png'},
-            {name: 'TAB_TABLE_REFER', desc: '表格选择 · 多对多', link: '/zh/field-types/tab-table-refer', img: '/field-types/tab-table-refer.png'},
-            {name: 'TAB_TABLE_ADD', desc: '嵌套新增子记录 · 一对多', link: '/zh/field-types/tab-table-add', img: '/field-types/tab-table-add.png'},
-            {name: 'COMBINE', desc: '嵌套新增，支持 JSON 存储 · 一对一', link: '/zh/field-types/combine', img: '/field-types/combine.png'},
+            {name: 'REFERENCE_TABLE', desc: '表格弹窗选择 · 多对一', link: '/zh/field-types/reference-table', img: '/field-types/reference-table.svg'},
+            {name: 'REFERENCE_TREE', desc: '树形弹窗选择 · 多对一', link: '/zh/field-types/reference-tree', img: '/field-types/reference-tree.svg'},
+            {name: 'CHECKBOX', desc: '复选框 · 多对多', link: '/zh/field-types/checkbox', img: '/field-types/checkbox.svg'},
+            {name: 'TAB_TREE', desc: '树形选择 · 多对多', link: '/zh/field-types/tab-tree', img: '/field-types/tab-tree.svg'},
+            {name: 'TAB_TABLE_REFER', desc: '表格选择 · 多对多', link: '/zh/field-types/tab-table-refer', img: '/field-types/tab-table-refer.svg'},
+            {name: 'TAB_TABLE_ADD', desc: '嵌套新增子记录 · 一对多', link: '/zh/field-types/tab-table-add', img: '/field-types/tab-table-add.svg'},
+            {name: 'COMBINE', desc: '嵌套新增，支持 JSON 存储 · 一对一', link: '/zh/field-types/combine', img: '/field-types/combine.svg'},
         ],
     },
     {
         title: '其他组件',
         items: [
-            {name: 'GROUP', desc: '字段分组', link: '/zh/field-types/group', img: '/field-types/group.png'},
-            {name: 'DIVIDE', desc: '横向分割线', link: '/zh/field-types/divide', img: '/field-types/divide.png'},
-            {name: 'CALLOUT', desc: '提示信息块', link: '/zh/field-types/callout', img: '/field-types/callout.png'},
-            {name: 'BUTTON', desc: '操作按钮', link: '/zh/field-types/button', img: '/field-types/button.png'},
-            {name: 'TPL', desc: '自定义 HTML 模板', link: '/zh/field-types/tpl', img: '/field-types/tpl.png'},
-            {name: 'HIDDEN', desc: '隐藏字段', link: '/zh/field-types/hidden', img: null},
-            {name: 'EMPTY', desc: '空占位', link: '/zh/field-types/empty', img: null},
+            {name: 'GROUP', desc: '字段分组', link: '/zh/field-types/group', img: '/field-types/group.svg'},
+            {name: 'DIVIDE', desc: '横向分割线', link: '/zh/field-types/divide', img: '/field-types/divide.svg'},
+            {name: 'CALLOUT', desc: '提示信息块', link: '/zh/field-types/callout', img: '/field-types/callout.svg'},
+            {name: 'BUTTON', desc: '操作按钮', link: '/zh/field-types/button', img: '/field-types/button.svg'},
+            {name: 'TPL', desc: '自定义 HTML 模板', link: '/zh/field-types/tpl', img: '/field-types/tpl.svg'},
+            {name: 'HIDDEN', desc: '隐藏字段', link: '/zh/field-types/hidden', img: '/field-types/hidden.svg'},
+            {name: 'EMPTY', desc: '空占位', link: '/zh/field-types/empty', img: '/field-types/empty.svg'},
         ],
     },
 ]
@@ -267,17 +267,21 @@ Erupt 提供了 30+ 种字段组件，通过 `@Edit(type = EditType.XXX)` 指定
     align-items: center;
     justify-content: center;
     padding: 12px;
-    background: #efefef;
+    background-color: #F0F9FC;
+    background-image: radial-gradient(rgba(20, 18, 11, .10) 1px, transparent 1px);
+    background-size: 14px 14px;
 }
 
 .dark .ft-card-img {
-    background: #1A170F;
+    background-color: #1A170F;
+    background-image: radial-gradient(rgba(79, 200, 236, .13) 1px, transparent 1px);
 }
 
 .ft-card-img img {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
+    filter: drop-shadow(2px 2px 0 rgba(20, 18, 11, .10));
 }
 
 .ft-placeholder {

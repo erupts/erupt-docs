@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250">
+  <style>.s{font-family:-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}.m{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace}</style>
+  <rect width="400" height="250" rx="10" fill="#ffffff"/>
+  <rect x="40" y="32" width="320" height="186" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1.5"/>
+  <line x1="200" y1="32" x2="200" y2="218" stroke="#f0f0f0" stroke-width="1.5"/>
+  <!-- source -->
+  <g class="m" font-size="12">
+    <text x="56" y="68"><tspan fill="#4b5cc4"># </tspan><tspan fill="#262626">Erupt</tspan></text>
+    <text x="56" y="100" fill="#595959">A **low-code**</text>
+    <text x="56" y="122" fill="#595959">framework.</text>
+    <text x="56" y="156"><tspan fill="#4b5cc4">- </tspan><tspan fill="#595959">simple</tspan></text>
+    <text x="56" y="180"><tspan fill="#4b5cc4">- </tspan><tspan fill="#595959">fast</tspan></text>
+  </g>
+  <!-- preview -->
+  <text x="216" y="70" class="s" font-size="17" font-weight="700" fill="#262626">Erupt</text>
+  <line x1="216" y1="80" x2="344" y2="80" stroke="#f0f0f0" stroke-width="1.5"/>
+  <rect x="216" y="94" width="72" height="8" rx="4" fill="#e8e8e8"/>
+  <rect x="294" y="94" width="50" height="8" rx="4" fill="#262626" opacity=".75"/>
+  <rect x="216" y="114" width="96" height="8" rx="4" fill="#e8e8e8"/>
+  <circle cx="221" cy="156" r="2.5" fill="#595959"/>
+  <rect x="232" y="152" width="64" height="8" rx="4" fill="#e8e8e8"/>
+  <circle cx="221" cy="180" r="2.5" fill="#595959"/>
+  <rect x="232" y="176" width="44" height="8" rx="4" fill="#e8e8e8"/>
+</svg>
