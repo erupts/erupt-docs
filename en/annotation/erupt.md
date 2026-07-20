@@ -40,7 +40,7 @@ public class EruptTest extends BaseModel {
 | `vis` | Additional view configurations (card, Gantt, kanban, etc.), see [@Vis Multi-View](/en/annotation/vis) |
 | `param` | Custom parameters |
 | `prompt` | AI agent prompt — injected as context when erupt-ai invokes this entity's tool, added in 2.0.0 |
-| `dragSort` | Row drag-sort configuration, see [Row Drag Sort](#drag-sort) below, added in 2.0.4 |
+| `dragSort` | Row drag-sort configuration, see [@DragSort](/en/annotation/drag-sort), added in 2.0.4 |
 
 ## Annotation Definition
 
@@ -82,27 +82,3 @@ public @interface Erupt {
     DragSort dragSort() default @DragSort(field = ""); // row drag-sort configuration (2.0.4+)
 }
 ```
-
-## Row Drag Sort @DragSort <Badge type="tip" text="2.0.4+" /> {#drag-sort}
-
-Once a numeric sort field is specified via `dragSort`, table rows can be reordered by dragging, and the result is automatically persisted to that field. When no explicit sort is given, the field is used as the default query sort.
-
-```java
-@Erupt(
-    name = "Dict Item",
-    dragSort = @DragSort(field = "sort")
-)
-public class DictItem extends BaseModel {
-
-    @EruptField(
-        views = @View(title = "Sort", sortable = true),
-        edit = @Edit(title = "Sort", numberType = @NumberType)
-    )
-    private Integer sort;
-
-}
-```
-
-:::tip
-Initialize the sort value for new records via `DataProxy.beforeAdd`. Built-in features such as roles and dict items already have this capability enabled.
-:::

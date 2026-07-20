@@ -4,7 +4,7 @@
 
 🌟 New [`BUTTON` edit type](/en/field-types/button) — an in-form button that calls a backend handler with all current form values, supporting form population and dynamic field configuration.
 
-🌟 New [`@DragSort` row drag sorting](/en/annotation/erupt#drag-sort) — reorder table rows by dragging, with the result automatically persisted to the sort field.
+🌟 New [`@DragSort` row drag sorting](/en/annotation/drag-sort) — reorder table rows by dragging, with the result automatically persisted to the sort field.
 
 🌟 New [`PROGRESS` view type](/en/annotation/view#display-types-viewtype) — display numeric columns as progress bars; the SLIDER edit type contributes its max value automatically.
 

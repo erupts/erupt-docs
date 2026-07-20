@@ -1,4 +1,4 @@
-# @Dynamic 表单动态控制
+# Dynamic 动态控制
 
 ## @Dynamic 注解
 

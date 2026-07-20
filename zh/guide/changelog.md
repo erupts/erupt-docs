@@ -4,7 +4,7 @@
 
 🌟 新增 [`BUTTON` 编辑类型](/zh/field-types/button)，表单内按钮点击后携带全部表单数据调用后端处理器，支持回填表单值与动态调整字段配置
 
-🌟 新增 [`@DragSort` 行拖拽排序](/zh/annotation/erupt#drag-sort)，表格支持直接拖拽行调整顺序，结果自动持久化到排序字段
+🌟 新增 [`@DragSort` 行拖拽排序](/zh/annotation/drag-sort)，表格支持直接拖拽行调整顺序，结果自动持久化到排序字段
 
 🌟 新增 [`PROGRESS` 视图类型](/zh/annotation/view#展示类型viewtype)，数值列以进度条形式展示，SLIDER 编辑类型自动取其最大值
 

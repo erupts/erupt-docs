@@ -25,6 +25,7 @@ const trees = [
             {attr: 'tree', anno: '@Tree', desc: 'Tree-based data display', link: '/en/annotation/tree'},
             {attr: 'linkTree', anno: '@LinkTree', desc: 'Tree-on-the-left, table-on-the-right layout', link: '/en/annotation/link-tree'},
             {attr: 'layout', anno: '@Layout', desc: 'Page layout and pagination', link: '/en/annotation/layout'},
+            {attr: 'dragSort', anno: '@DragSort', desc: 'Row drag-sort for tables', link: '/en/annotation/drag-sort'},
             {
                 attr: 'vis', anno: '@Vis', desc: 'Multi-view switching', link: '/en/annotation/vis',
                 tags: [

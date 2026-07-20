@@ -1,4 +1,4 @@
-# Dynamic Form Control @Dynamic
+# Dynamic Form Control
 
 ## @Dynamic Annotation
 
