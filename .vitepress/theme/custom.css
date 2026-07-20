@@ -20,9 +20,15 @@
     gap: 20px;
     margin: 24px 0 32px;
     padding: 16px 20px;
-    border: 1px solid var(--vp-c-divider);
-    border-radius: 10px;
-    background: var(--vp-c-bg-soft);
+    border: 2px solid #14120B;
+    background: #FFF9EE;
+    box-shadow: 5px 5px 0 #14120B;
+}
+
+.dark .topic-mp-qr {
+    border-color: #F0E8D6;
+    background: #201C12;
+    box-shadow: 5px 5px 0 #F0E8D6;
 }
 
 .topic-mp-qr img {
@@ -30,7 +36,8 @@
     height: 96px;
     flex: 0 0 96px;
     object-fit: cover;
-    border-radius: 6px;
+    border: 1.5px solid #14120B;
+    border-radius: 0;
     cursor: default !important;
     box-shadow: none !important;
     margin: 0;
@@ -43,7 +50,7 @@
 
 .topic-mp-qr__title {
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 800;
     color: var(--vp-c-text-1);
     margin-bottom: 4px;
 }
@@ -51,17 +58,25 @@
 .topic-mp-qr__desc {
     font-size: 13px;
     line-height: 1.6;
-    color: var(--vp-c-text-2);
+    color: #5C5647;
     margin: 0;
+}
+
+.dark .topic-mp-qr__desc {
+    color: #B0A78F;
 }
 
 .topic-mp-qr__tag {
     display: inline-block;
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
     font-size: 11px;
+    font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--vp-c-brand-1);
+    color: #14120B;
+    background: #4FC8EC;
+    border: 1.5px solid #14120B;
+    padding: 1px 8px;
     margin-bottom: 6px;
 }
 
@@ -75,4 +90,207 @@
         height: 120px;
         flex: 0 0 120px;
     }
+}
+
+/* ── Raft 风格左侧菜单 ─────────────────── */
+.VPSidebar {
+    background: #FFFFFF !important;
+    border-right: 2px solid #14120B;
+}
+
+.dark .VPSidebar {
+    background: #17140D !important;
+    border-right-color: #F0E8D6;
+}
+
+/* 分组标题：粗体 + 青色方块标记 */
+.VPSidebar .VPSidebarItem.level-0 > .item > .text {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 800;
+    color: #14120B;
+}
+
+.dark .VPSidebar .VPSidebarItem.level-0 > .item > .text {
+    color: #F0E8D6;
+}
+
+.VPSidebar .VPSidebarItem.level-0 > .item > .text::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: #4FC8EC;
+    border: 1.5px solid #14120B;
+    flex-shrink: 0;
+}
+
+/* 普通链接 */
+.VPSidebar .VPSidebarItem .link > .text {
+    color: #5C5647;
+    transition: color .15s;
+}
+
+.dark .VPSidebar .VPSidebarItem .link > .text {
+    color: #B0A78F;
+}
+
+.VPSidebar .VPSidebarItem .link:hover > .text {
+    color: #14120B;
+}
+
+.dark .VPSidebar .VPSidebarItem .link:hover > .text {
+    color: #F0E8D6;
+}
+
+/* 当前页：青色高亮块 */
+.VPSidebar .VPSidebarItem.is-active > .item > .link > .text {
+    display: inline-block;
+    color: #14120B !important;
+    font-weight: 700;
+    background: #4FC8EC;
+    border: 1.5px solid #14120B;
+    padding: 0 8px;
+    margin-left: -9.5px;
+}
+
+/* 树形指示线用墨色 */
+.VPSidebar {
+    --vp-c-brand-1: #14120B;
+}
+
+.dark .VPSidebar {
+    --vp-c-brand-1: #F0E8D6;
+}
+
+/* ── Raft 风格顶部导航 ─────────────────── */
+.VPNavBar {
+    background: #FFFFFF !important;
+    border-bottom: 2px solid #14120B !important;
+}
+
+.dark .VPNavBar {
+    background: #17140D !important;
+    border-bottom-color: #F0E8D6 !important;
+}
+
+.VPNavBar .content-body {
+    background: transparent !important;
+}
+
+.VPNavBar .divider {
+    display: none !important;
+}
+
+/* 站点标题 */
+.VPNavBarTitle .title {
+    font-weight: 800 !important;
+}
+
+/* 菜单链接 */
+.VPNavBarMenuLink {
+    font-weight: 700 !important;
+    color: #5C5647 !important;
+}
+
+.dark .VPNavBarMenuLink {
+    color: #B0A78F !important;
+}
+
+.VPNavBarMenuLink:hover {
+    color: #14120B !important;
+}
+
+.dark .VPNavBarMenuLink:hover {
+    color: #F0E8D6 !important;
+}
+
+.VPNavBarMenuLink.active {
+    color: #14120B !important;
+    text-decoration: underline;
+    text-decoration-color: #4FC8EC;
+    text-decoration-thickness: 2.5px;
+    text-underline-offset: 7px;
+}
+
+.dark .VPNavBarMenuLink.active {
+    color: #F0E8D6 !important;
+}
+
+/* 下拉菜单面板 */
+.VPMenu {
+    border: 2px solid #14120B !important;
+    border-radius: 0 !important;
+    box-shadow: 5px 5px 0 #14120B !important;
+    background: #FFFFFF !important;
+}
+
+.dark .VPMenu {
+    border-color: #F0E8D6 !important;
+    box-shadow: 5px 5px 0 #F0E8D6 !important;
+    background: #201C12 !important;
+}
+
+/* 明暗切换开关 */
+.VPSwitch {
+    border: 1.5px solid #14120B !important;
+    background: #FFFFFF !important;
+}
+
+.dark .VPSwitch {
+    border-color: #F0E8D6 !important;
+    background: #1A170F !important;
+}
+
+/* 移动端二级导航条 */
+.VPLocalNav {
+    background: #FFFFFF !important;
+    border-bottom: 2px solid #14120B !important;
+}
+
+.dark .VPLocalNav {
+    background: #17140D !important;
+    border-bottom-color: #F0E8D6 !important;
+}
+
+/* ── 侧栏与导航交界修正 ─────────────────── */
+/* 去掉站点标题下的默认灰线 */
+.VPNavBarTitle.has-sidebar .title {
+    border-bottom-color: transparent !important;
+}
+
+/* 侧栏顶部遮罩：改为奶油底并延续导航的 2px 底边 */
+.VPSidebar .curtain {
+    background: #FFFFFF !important;
+    border-bottom: 2px solid #14120B;
+}
+
+.dark .VPSidebar .curtain {
+    background: #17140D !important;
+    border-bottom-color: #F0E8D6;
+}
+
+/* ── 全站底色：统一白色，区域间靠 2px 线条分界 ── */
+:root {
+    --vp-c-bg: #FFFFFF;
+    --vp-c-bg-alt: #FFFFFF;
+    /* markdown 内容（代码块、表格）保持 VitePress 默认，soft/divider 不覆盖 */
+    --vp-code-block-bg: #f6f6f7;
+}
+
+.dark {
+    --vp-c-bg: #17140D;
+    --vp-c-bg-alt: #17140D;
+    --vp-code-block-bg: #161618;
+}
+
+/* ── 搜索按钮：无底色，仅描边（保持默认圆角形态） ── */
+.VPNavBarSearchButton {
+    background: transparent !important;
+    border: 1.5px solid #14120B !important;
+}
+
+.dark .VPNavBarSearchButton {
+    background: transparent !important;
+    border-color: #F0E8D6 !important;
 }

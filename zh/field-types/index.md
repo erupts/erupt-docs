@@ -120,24 +120,34 @@ Erupt 提供了 30+ 种字段组件，通过 `@Edit(type = EditType.XXX)` 指定
     left: 14px;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--vp-c-text-3);
+    color: rgba(20, 18, 11, .45);
     pointer-events: none;
+}
+
+.dark .ft-search-icon {
+    color: rgba(240, 232, 214, .45);
 }
 
 .ft-search input {
     width: 100%;
     padding: 10px 16px 10px 40px;
-    border: 1px solid var(--vp-c-divider);
-    border-radius: 8px;
-    background: var(--vp-c-bg);
-    color: var(--vp-c-text-1);
+    border: 2px solid #14120B;
+    border-radius: 0;
+    background: #FFFFFF;
+    color: #14120B;
     font-size: 14px;
     outline: none;
-    transition: border-color .2s;
+    transition: box-shadow .15s;
+}
+
+.dark .ft-search input {
+    border-color: #F0E8D6;
+    background: #201C12;
+    color: #F0E8D6;
 }
 
 .ft-search input:focus {
-    border-color: var(--vp-c-brand-1);
+    box-shadow: 3px 3px 0 #4FC8EC;
 }
 
 .ft-group-title {
@@ -145,30 +155,36 @@ Erupt 提供了 30+ 种字段组件，通过 `@Edit(type = EditType.XXX)` 指定
     padding-top: 16px;
     border-top: none;
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 800;
 }
 
 .ft-count {
+    font-family: var(--vp-font-family-mono);
     margin-left: 8px;
-    font-size: 12px;
-    font-weight: 400;
-    color: var(--vp-c-text-3);
-    background: var(--vp-c-bg-soft);
-    border-radius: 10px;
-    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 800;
+    color: #14120B;
+    background: #4FC8EC;
+    border: 1.5px solid #14120B;
+    border-radius: 0;
+    padding: 1px 8px;
     vertical-align: 2px;
 }
 
 .ft-note {
     font-size: 13px;
-    color: var(--vp-c-text-2);
+    color: #5C5647;
     margin: 4px 0 0;
+}
+
+.dark .ft-note {
+    color: #B0A78F;
 }
 
 .ft-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
+    gap: 18px;
     margin: 16px 0 8px;
 }
 
@@ -186,19 +202,27 @@ Erupt 提供了 30+ 种字段组件，通过 `@Edit(type = EditType.XXX)` 指定
 
 .ft-card {
     display: block;
-    border: 1px solid var(--vp-c-divider);
-    border-radius: 8px;
+    border: 2px solid #14120B;
+    border-radius: 0;
     overflow: hidden;
     text-decoration: none !important;
     color: inherit !important;
-    background: var(--vp-c-bg);
-    transition: box-shadow .2s, border-color .2s, transform .2s;
+    background: #FFFFFF;
+    transition: box-shadow .15s, transform .15s;
+}
+
+.dark .ft-card {
+    border-color: #F0E8D6;
+    background: #201C12;
 }
 
 .ft-card:hover {
-    border-color: var(--vp-c-brand-1);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, .08);
-    transform: translateY(-2px);
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 #14120B;
+}
+
+.dark .ft-card:hover {
+    box-shadow: 5px 5px 0 #F0E8D6;
 }
 
 .ft-card-head {
@@ -206,23 +230,35 @@ Erupt 提供了 30+ 种字段组件，通过 `@Edit(type = EditType.XXX)` 指定
     align-items: baseline;
     gap: 8px;
     padding: 10px 14px;
-    border-bottom: 1px dashed var(--vp-c-divider);
+    border-bottom: 2px solid #14120B;
+}
+
+.dark .ft-card-head {
+    border-bottom-color: #F0E8D6;
 }
 
 .ft-name {
     font-family: var(--vp-font-family-mono);
     font-size: 13px;
-    font-weight: 600;
-    color: var(--vp-c-text-1);
+    font-weight: 800;
+    color: #14120B;
     white-space: nowrap;
+}
+
+.dark .ft-name {
+    color: #F0E8D6;
 }
 
 .ft-desc {
     font-size: 12px;
-    color: var(--vp-c-text-2);
+    color: #5C5647;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.dark .ft-desc {
+    color: #B0A78F;
 }
 
 .ft-card-img {
@@ -231,26 +267,38 @@ Erupt 提供了 30+ 种字段组件，通过 `@Edit(type = EditType.XXX)` 指定
     align-items: center;
     justify-content: center;
     padding: 12px;
-    background: var(--vp-c-bg-soft);
+    background: #efefef;
+}
+
+.dark .ft-card-img {
+    background: #1A170F;
 }
 
 .ft-card-img img {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
-    border-radius: 4px;
 }
 
 .ft-placeholder {
     font-family: var(--vp-font-family-mono);
     font-size: 16px;
+    font-weight: 800;
     letter-spacing: 1px;
-    color: var(--vp-c-text-3);
+    color: rgba(20, 18, 11, .35);
+}
+
+.dark .ft-placeholder {
+    color: rgba(240, 232, 214, .35);
 }
 
 .ft-empty {
     margin: 48px 0;
     text-align: center;
-    color: var(--vp-c-text-3);
+    color: #5C5647;
+}
+
+.dark .ft-empty {
+    color: #B0A78F;
 }
 </style>

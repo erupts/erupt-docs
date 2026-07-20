@@ -127,24 +127,34 @@ All official modules share the same version as the erupt core, managed via `${er
     left: 14px;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--vp-c-text-3);
+    color: rgba(20, 18, 11, .45);
     pointer-events: none;
+}
+
+.dark .md-search-icon {
+    color: rgba(240, 232, 214, .45);
 }
 
 .md-search input {
     width: 100%;
     padding: 10px 16px 10px 40px;
-    border: 1px solid var(--vp-c-divider);
-    border-radius: 8px;
-    background: var(--vp-c-bg);
-    color: var(--vp-c-text-1);
+    border: 2px solid #14120B;
+    border-radius: 0;
+    background: #FFFFFF;
+    color: #14120B;
     font-size: 14px;
     outline: none;
-    transition: border-color .2s;
+    transition: box-shadow .15s;
+}
+
+.dark .md-search input {
+    border-color: #F0E8D6;
+    background: #201C12;
+    color: #F0E8D6;
 }
 
 .md-search input:focus {
-    border-color: var(--vp-c-brand-1);
+    box-shadow: 3px 3px 0 #4FC8EC;
 }
 
 .md-group-title {
@@ -152,36 +162,40 @@ All official modules share the same version as the erupt core, managed via `${er
     padding-top: 16px;
     border-top: none;
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 800;
 }
 
 .md-badge {
+    font-family: var(--vp-font-family-mono);
     margin-left: 8px;
-    font-size: 11px;
-    font-weight: 700;
+    font-size: 10.5px;
+    font-weight: 800;
     letter-spacing: .05em;
-    color: var(--vp-c-brand-1);
-    border: 1px solid var(--vp-c-brand-1);
-    border-radius: 4px;
-    padding: 1px 6px;
+    color: #14120B;
+    background: #F585B4;
+    border: 1.5px solid #14120B;
+    border-radius: 0;
+    padding: 1px 7px;
     vertical-align: 3px;
 }
 
 .md-count {
+    font-family: var(--vp-font-family-mono);
     margin-left: 8px;
-    font-size: 12px;
-    font-weight: 400;
-    color: var(--vp-c-text-3);
-    background: var(--vp-c-bg-soft);
-    border-radius: 10px;
-    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 800;
+    color: #14120B;
+    background: #4FC8EC;
+    border: 1.5px solid #14120B;
+    border-radius: 0;
+    padding: 1px 8px;
     vertical-align: 2px;
 }
 
 .md-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
+    gap: 16px;
     margin: 16px 0 8px;
 }
 
@@ -201,19 +215,27 @@ All official modules share the same version as the erupt core, managed via `${er
     display: flex;
     gap: 12px;
     align-items: flex-start;
-    border: 1px solid var(--vp-c-divider);
-    border-radius: 10px;
+    border: 2px solid #14120B;
+    border-radius: 0;
     padding: 14px;
     text-decoration: none !important;
     color: inherit !important;
-    background: var(--vp-c-bg);
-    transition: box-shadow .2s, border-color .2s, transform .2s;
+    background: #FFFFFF;
+    transition: box-shadow .15s, transform .15s;
+}
+
+.dark .md-card {
+    border-color: #F0E8D6;
+    background: #201C12;
 }
 
 .md-card:hover {
-    border-color: var(--vp-c-brand-1);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, .08);
-    transform: translateY(-2px);
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 #14120B;
+}
+
+.dark .md-card:hover {
+    box-shadow: 5px 5px 0 #F0E8D6;
 }
 
 .md-icon {
@@ -224,8 +246,14 @@ All official modules share the same version as the erupt core, managed via `${er
     align-items: center;
     justify-content: center;
     font-size: 22px;
-    background: var(--vp-c-bg-soft);
-    border-radius: 10px;
+    background: #FFF9EE;
+    border: 1.5px solid #14120B;
+    border-radius: 0;
+}
+
+.dark .md-icon {
+    background: #1A170F;
+    border-color: #F0E8D6;
 }
 
 .md-body {
@@ -243,51 +271,73 @@ All official modules share the same version as the erupt core, managed via `${er
 
 .md-head b {
     font-size: 14px;
-    font-weight: 600;
-    color: var(--vp-c-text-1);
+    font-weight: 800;
+    color: #14120B;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
+.dark .md-head b {
+    color: #F0E8D6;
+}
+
 .md-pro {
     flex: 0 0 auto;
     font-style: normal;
-    font-size: 10px;
-    font-weight: 700;
-    color: #fff;
-    background: var(--vp-c-brand-1);
-    border-radius: 3px;
+    font-family: var(--vp-font-family-mono);
+    font-size: 9.5px;
+    font-weight: 800;
+    color: #14120B;
+    background: #F585B4;
+    border: 1.5px solid #14120B;
+    border-radius: 0;
     padding: 1px 5px;
 }
 
 .md-ext {
     font-style: normal;
     font-size: 12px;
-    color: var(--vp-c-text-3);
+    color: rgba(20, 18, 11, .5);
+}
+
+.dark .md-ext {
+    color: rgba(240, 232, 214, .5);
 }
 
 .md-artifact {
     font-family: var(--vp-font-family-mono);
     font-size: 11.5px;
-    color: var(--vp-c-text-3);
+    color: rgba(20, 18, 11, .5);
     background: none;
     padding: 0;
+}
+
+.dark .md-artifact {
+    color: rgba(240, 232, 214, .5);
 }
 
 .md-desc {
     font-size: 12.5px;
     line-height: 1.55;
-    color: var(--vp-c-text-2);
+    color: #5C5647;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
+.dark .md-desc {
+    color: #B0A78F;
+}
+
 .md-empty {
     margin: 48px 0;
     text-align: center;
-    color: var(--vp-c-text-3);
+    color: #5C5647;
+}
+
+.dark .md-empty {
+    color: #B0A78F;
 }
 </style>

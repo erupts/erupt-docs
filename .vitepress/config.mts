@@ -62,10 +62,10 @@ export default withMermaid(defineConfig({
                     {text: 'Modules', link: '/en/modules/', activeMatch: '/en/modules/'},
                     {text: 'Topics', link: '/en/topics/', activeMatch: '/en/topics/'},
                     {text: 'Changelog', link: '/en/guide/changelog'},
-                    {text: '🚀 Project Init', link: 'https://start.erupt.xyz/'},
                     {
                         text: 'Links',
                         items: [
+                            {text: '🚀 Project Init', link: 'https://start.erupt.xyz/'},
                             {text: 'Website', link: 'https://www.erupt.xyz'},
                             {text: 'Linq.J', link: 'https://linq.erupt.xyz/'},
                             {text: 'GitHub', link: 'https://github.com/erupts/erupt'},
@@ -454,10 +454,10 @@ export default withMermaid(defineConfig({
                     {text: '扩展模块', link: '/zh/modules/', activeMatch: '/zh/modules/'},
                     {text: '专题', link: '/zh/topics/', activeMatch: '/zh/topics/'},
                     {text: '更新日志', link: '/zh/guide/changelog'},
-                    {text: '🚀 项目初始化', link: 'https://start.erupt.xyz/'},
                     {
                         text: '相关链接',
                         items: [
+                            {text: '🚀 项目初始化', link: 'https://start.erupt.xyz/'},
                             {text: '官网', link: 'https://www.erupt.xyz'},
                             {text: 'Linq.J', link: 'https://linq.erupt.xyz/'},
                             {text: 'GitHub', link: 'https://github.com/erupts/erupt'},

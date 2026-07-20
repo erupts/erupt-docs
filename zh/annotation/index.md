@@ -102,10 +102,16 @@ Erupt 的注解体系由**类级**与**字段级**两条主线构成：`@Erupt` 
 <style scoped>
 .an-root {
     margin: 28px 0;
-    border: 1px solid var(--vp-c-divider);
-    border-radius: 12px;
+    border: 2px solid #14120B;
     padding: 18px 22px 14px;
-    background: var(--vp-c-bg);
+    background: #FFFFFF;
+    box-shadow: 5px 5px 0 #14120B;
+}
+
+.dark .an-root {
+    border-color: #F0E8D6;
+    background: #201C12;
+    box-shadow: 5px 5px 0 #F0E8D6;
 }
 
 .an-root-head {
@@ -118,27 +124,38 @@ Erupt 的注解体系由**类级**与**字段级**两条主线构成：`@Erupt` 
 .an-root-anno {
     font-family: var(--vp-font-family-mono);
     font-size: 20px;
-    font-weight: 700;
-    color: var(--vp-c-brand-1);
+    font-weight: 800;
+    color: #14120B;
     text-decoration: none !important;
 }
 
+.dark .an-root-anno {
+    color: #F0E8D6;
+}
+
 .an-root-anno:hover {
-    text-decoration: underline !important;
+    background: #4FC8EC;
+    color: #14120B;
 }
 
 .an-note {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--vp-c-brand-1);
-    border: 1px solid var(--vp-c-brand-1);
-    border-radius: 4px;
-    padding: 1px 7px;
+    font-family: var(--vp-font-family-mono);
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: .06em;
+    color: #14120B;
+    background: #4FC8EC;
+    border: 1.5px solid #14120B;
+    padding: 1px 8px;
 }
 
 .an-root-desc {
     font-size: 13.5px;
-    color: var(--vp-c-text-2);
+    color: #5C5647;
+}
+
+.dark .an-root-desc {
+    color: #B0A78F;
 }
 
 .an-tree {
@@ -164,9 +181,8 @@ Erupt 的注解体系由**类级**与**字段级**两条主线构成：`@Erupt` 
     top: -6px;
     width: 14px;
     height: 24px;
-    border-left: 1.5px solid var(--vp-c-divider);
-    border-bottom: 1.5px solid var(--vp-c-divider);
-    border-bottom-left-radius: 7px;
+    border-left: 1.5px solid rgba(20, 18, 11, .3);
+    border-bottom: 1.5px solid rgba(20, 18, 11, .3);
 }
 
 .an-tree li:not(:last-child)::after {
@@ -176,7 +192,15 @@ Erupt 的注解体系由**类级**与**字段级**两条主线构成：`@Erupt` 
     top: 18px;
     bottom: -6px;
     width: 1.5px;
-    background: var(--vp-c-divider);
+    background: rgba(20, 18, 11, .3);
+}
+
+.dark .an-tree li::before {
+    border-color: rgba(240, 232, 214, .3);
+}
+
+.dark .an-tree li:not(:last-child)::after {
+    background: rgba(240, 232, 214, .3);
 }
 
 .an-row {
@@ -185,42 +209,59 @@ Erupt 的注解体系由**类级**与**字段级**两条主线构成：`@Erupt` 
     gap: 8px;
     padding: 5px 10px;
     margin-left: -10px;
-    border-radius: 8px;
     flex-wrap: wrap;
 }
 
 .an-row:hover {
-    background: var(--vp-c-bg-soft);
+    background: rgba(79, 200, 236, .15);
 }
 
 .an-attr {
     font-family: var(--vp-font-family-mono);
     font-size: 12.5px;
-    color: var(--vp-c-text-3);
+    color: rgba(20, 18, 11, .5);
     background: none;
     padding: 0;
+}
+
+.dark .an-attr {
+    color: rgba(240, 232, 214, .5);
 }
 
 .an-anno {
     font-family: var(--vp-font-family-mono);
     font-size: 14px;
-    font-weight: 700;
-    color: var(--vp-c-brand-1);
+    font-weight: 800;
+    color: #14120B;
     text-decoration: none !important;
     white-space: nowrap;
+    border-bottom: 2px solid #4FC8EC;
+}
+
+.dark .an-anno {
+    color: #F0E8D6;
 }
 
 .an-anno:hover {
-    text-decoration: underline !important;
+    background: #4FC8EC;
+    color: #14120B;
 }
 
 .an-anno.plain {
-    color: var(--vp-c-text-1);
+    border-bottom-color: #BCA0F2;
+}
+
+.an-anno.plain:hover {
+    background: #BCA0F2;
 }
 
 .an-desc {
     font-size: 13px;
-    color: var(--vp-c-text-2);
+    color: #5C5647;
+}
+
+.dark .an-desc {
+    color: #B0A78F;
 }
 
 .an-tags {
@@ -233,17 +274,23 @@ Erupt 的注解体系由**类级**与**字段级**两条主线构成：`@Erupt` 
 .an-tag {
     font-family: var(--vp-font-family-mono);
     font-size: 11px;
-    color: var(--vp-c-text-2);
-    border: 1px solid var(--vp-c-divider);
-    border-radius: 99px;
+    font-weight: 700;
+    color: #14120B;
+    border: 1.5px solid #14120B;
     padding: 2px 10px;
     text-decoration: none !important;
-    transition: color .15s, border-color .15s;
+    transition: background .15s;
+}
+
+.dark .an-tag {
+    color: #F0E8D6;
+    border-color: #F0E8D6;
 }
 
 .an-tag:hover {
-    color: var(--vp-c-brand-1);
-    border-color: var(--vp-c-brand-1);
+    background: #4FC8EC;
+    color: #14120B;
+    border-color: #14120B;
 }
 
 @media (max-width: 560px) {
