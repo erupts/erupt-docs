@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Erupt Engine · Annotation-driven Low-Code Platform
+title: Erupt · AI + Low-Code Platform
 gitChangelog: false
 ---
 

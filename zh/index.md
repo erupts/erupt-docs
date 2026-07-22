@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Erupt Engine · 注解驱动的低代码平台
+title: Erupt · AI 低代码平台
 gitChangelog: false
 ---
 
