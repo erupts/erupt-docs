@@ -25,6 +25,7 @@ const trees = [
             {attr: 'tree', anno: '@Tree', desc: '树形数据展示', link: '/zh/annotation/tree'},
             {attr: 'linkTree', anno: '@LinkTree', desc: '左树右表布局', link: '/zh/annotation/link-tree'},
             {attr: 'layout', anno: '@Layout', desc: '页面布局与分页配置', link: '/zh/annotation/layout'},
+            {attr: 'dragSort', anno: '@DragSort', desc: '表格行拖拽排序', link: '/zh/annotation/drag-sort'},
             {
                 attr: 'vis', anno: '@Vis', desc: '多视图切换', link: '/zh/annotation/vis',
                 tags: [

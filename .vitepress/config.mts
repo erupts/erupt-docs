@@ -132,6 +132,7 @@ export default withMermaid(defineConfig({
                             items: [
                                 {text: 'OnChange Field Linkage', link: '/en/annotation/on-change'},
                                 {text: 'ifRender Dynamic Rendering', link: '/en/annotation/if-render'},
+                                {text: 'Dynamic Form Control', link: '/en/annotation/dynamic'},
                             ],
                         },
                         {
@@ -145,7 +146,7 @@ export default withMermaid(defineConfig({
                                 {text: '@Layout', link: '/en/annotation/layout'},
                                 {text: '@OrderBy', link: '/en/annotation/order-by'},
                                 {text: '@RowOperation', link: '/en/annotation/row-operation'},
-                                {text: '@Dynamic', link: '/en/annotation/dynamic'},
+                                {text: '@DragSort', link: '/en/annotation/drag-sort'},
                                 {
                                     text: '@Vis',
                                     collapsed: false,
@@ -524,6 +525,7 @@ export default withMermaid(defineConfig({
                             items: [
                                 {text: 'OnChange 字段联动', link: '/zh/annotation/on-change'},
                                 {text: 'ifRender 动态渲染', link: '/zh/annotation/if-render'},
+                                {text: 'Dynamic 动态控制', link: '/zh/annotation/dynamic'},
                             ],
                         },
                         {
@@ -537,7 +539,7 @@ export default withMermaid(defineConfig({
                                 {text: '@Layout 布局定义', link: '/zh/annotation/layout'},
                                 {text: '@OrderBy 排序', link: '/zh/annotation/order-by'},
                                 {text: '@RowOperation 行按钮', link: '/zh/annotation/row-operation'},
-                                {text: '@Dynamic 动态控制', link: '/zh/annotation/dynamic'},
+                                {text: '@DragSort 行拖拽排序', link: '/zh/annotation/drag-sort'},
                                 {
                                     text: '@Vis 多视图',
                                     collapsed: false,
