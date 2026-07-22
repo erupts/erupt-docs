@@ -17,7 +17,7 @@ export default withMermaid(defineConfig({
     },
 
     head: [
-        ['link', {rel: 'icon', href: '/logo.png'}],
+        ['link', {rel: 'icon', href: '/icon.svg'}],
         ['meta', {name: 'theme-color', content: '#646cff'}],
     ],
 
@@ -836,7 +836,7 @@ export default withMermaid(defineConfig({
     },
 
     themeConfig: {
-        logo: {light: '/logo.png', dark: '/logo.png'},
+        logo: {light: '/icon.svg', dark: '/icon.svg'},
         siteTitle: 'Erupt',
         search: {
             provider: 'local'
