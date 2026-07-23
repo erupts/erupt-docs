@@ -255,7 +255,7 @@ create table e_upms_user_org_division (
 
 For the changelog of versions older than 1.14.x, please consult the [Chinese version](/zh/guide/changelog) — an English translation will be provided in a future iteration.
 
-## Legacy Version Documentation
+## Legacy Documentation
 
 | Version | Docs | Changelog |
 | --- | --- | --- |
