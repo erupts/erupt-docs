@@ -162,7 +162,7 @@ const t = computed(() => dict[props.lang] || dict.zh)
 <style>
 /* ---- page-level tokens (html.eh-home) ---- */
 .eh-home {
-    --rf-bg: #FFF9EE;
+    --rf-bg: #FFFFFF;
     --rf-paper: #FFFFFF;
     --rf-ink: #14120B;
     --rf-line: #14120B;
