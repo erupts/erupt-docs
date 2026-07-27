@@ -399,7 +399,7 @@ export default withMermaid(defineConfig({
                         {
                             text: 'Commercial Modules',
                             items: [
-                                {text: 'Erupt Chart', link: '/en/modules/pro/erupt-chart'},
+                                {text: 'Erupt Report', link: '/en/modules/pro/erupt-report'},
                                 {text: 'Erupt SaaS Multi-tenant', link: '/en/modules/pro/erupt-tenant'},
                                 {text: 'Erupt Flow', link: '/en/modules/pro/erupt-flow'},
                                 {text: 'Erupt Cube BI', link: '/en/modules/pro/erupt-cube'},
@@ -792,7 +792,7 @@ export default withMermaid(defineConfig({
                         {
                             text: '商业模块',
                             items: [
-                                {text: 'Erupt Chart 报表图表', link: '/zh/modules/pro/erupt-chart'},
+                                {text: 'Erupt Report 报表图表', link: '/zh/modules/pro/erupt-report'},
                                 {text: 'Erupt SaaS 多租户', link: '/zh/modules/pro/erupt-tenant'},
                                 {text: 'Erupt Flow 流程引擎', link: '/zh/modules/pro/erupt-flow'},
                                 {text: 'Erupt Cube BI 平台', link: '/zh/modules/pro/erupt-cube'},

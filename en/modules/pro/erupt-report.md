@@ -1,6 +1,10 @@
-# Erupt Chart Low-Code Data Visualization
+# Erupt Report Low-Code Data Visualization
 
-erupt-chart is the general-purpose report and chart module within the Erupt ecosystem. Zero frontend code — configuration alone is sufficient for data analysis capabilities. Supports defining reports and charts purely with SQL. **Zero frontend and backend code** for complex data analysis, supporting dozens of query dimensions, dozens of chart components, and dynamic functions. Ideal for teams with SQL expertise who need visualization capabilities.
+erupt-report is the general-purpose report and chart module within the Erupt ecosystem. Zero frontend code — configuration alone is sufficient for data analysis capabilities. Supports defining reports and charts purely with SQL. **Zero frontend and backend code** for complex data analysis, supporting dozens of query dimensions, dozens of chart components, and dynamic functions. Ideal for teams with SQL expertise who need visualization capabilities.
+
+:::warning 🎉 Open Source Announcement
+erupt-report will be officially open-sourced on **August 23, 2026**. Stay tuned.
+:::
 
 :::tip Commercial Module
 **Includes**: Full source code · All future version upgrades · Technical support · Priority Erupt-related support · Reasonable feature requests implemented for free · Continuous capability iteration
@@ -40,7 +44,7 @@ For pre-sales inquiries, add the author on WeChat:
 
 ## Why Not Use DataEase / Superset / Build Your Own?
 
-| Dimension | Custom ECharts Components | DataEase / Superset | **Erupt Chart** |
+| Dimension | Custom ECharts Components | DataEase / Superset | **Erupt Report** |
 | --- | --- | --- | --- |
 | Deployment Cost | 0 (integrated into the business project) | Separate BI server + database required | **0 (integrated into the business project)** |
 | Tech Stack | One stack each for frontend and backend | Multiple stacks: Java/Vue + Python/Node | **Pure Java + annotations** |
@@ -52,17 +56,17 @@ For pre-sales inquiries, add the author on WeChat:
 ## FAQ
 
 **Q1 · What is the difference from the open-source Erupt?**
-Open-source Erupt provides `@Erupt` + `@EruptField` base annotation capabilities (CRUD, forms, lists). erupt-chart is a commercial module that additionally provides the visualization configuration layer for reports and charts — this capability is not included in the open-source version and will not be open-sourced in the future.
+Open-source Erupt provides `@Erupt` + `@EruptField` base annotation capabilities (CRUD, forms, lists). erupt-report is a commercial module that additionally provides the visualization configuration layer for reports and charts. This module will be officially open-sourced on **August 23, 2026**.
 
 **Q2 · How is it delivered?**
-After payment, provide your GitHub username. The author will add you as a collaborator to the private repository `erupts/erupt-chart`. You can clone the source code directly, compile locally, reference as needed, and will receive an integration document.
+After payment, provide your GitHub username. The author will add you as a collaborator to the private repository `erupts/erupt-report`. You can clone the source code directly, compile locally, reference as needed, and will receive an integration document.
 
 **Q3 · Do I need to pay again for future version upgrades?**
 No. One-time purchase = you have access to the current and all future versions. The private repository's master branch is continuously updated; just `git pull`.
 
 **Q4 · What about project count / commercial use / reselling?**
 - **No project count limits**: Deploy in as many internal or outsourced projects as you like
-- **No commercial restrictions**: Can be used in commercial products (including selling your finished product, but you may not sell the erupt-chart source code itself)
+- **No commercial restrictions**: Can be used in commercial products (including selling your finished product, but you may not sell the erupt-report source code itself)
 - **Reselling**: Redistribution and secondary open-sourcing are prohibited; company name or entity changes can apply for license migration
 
 **Q5 · Trial / Refunds?**

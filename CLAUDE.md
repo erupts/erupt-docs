@@ -57,7 +57,7 @@ markdown — always download them first with `curl` and reference via `/module-n
 | AI Module    | erupt-ai, erupt-ai-claw, erupt-ai-skill (external link)                                       |
 | Core Module  | upms, jpa, mongodb, tpl, web                                                                  |
 | Tool Moudle  | websocket, generator, job, notice, monitor, magic-api, print, cloud, cloud-server, cloud-node |
-| Pro Module   | pro/erupt-chart, pro/erupt-flow, pro/erupt-tenant, pro/erupt-cube                             |
+| Pro Module   | pro/erupt-report, pro/erupt-flow, pro/erupt-tenant, pro/erupt-cube                             |
 | Third Module | third-party/*                                                                                 |
 
 ### Mermaid Diagrams

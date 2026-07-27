@@ -47,7 +47,7 @@ const groups = [
         title: 'Commercial Modules',
         badge: 'PRO',
         items: [
-            {icon: '📊', name: 'Erupt Chart', artifact: 'erupt-chart', desc: 'SQL-defined charts and reports, zero frontend/backend code', link: '/en/modules/pro/erupt-chart', pro: true},
+            {icon: '📊', name: 'Erupt Report', artifact: 'erupt-report', desc: 'SQL-defined charts and reports, zero frontend/backend code', link: '/en/modules/pro/erupt-report', pro: true},
             {icon: '🏢', name: 'Erupt SaaS Multi-tenant', artifact: 'erupt-tenant', desc: 'Reuse features across tenants with full data isolation', link: '/en/modules/pro/erupt-tenant', pro: true},
             {icon: '🔀', name: 'Erupt Flow', artifact: 'erupt-flow', desc: 'Universal workflow engine with visual process designer', link: '/en/modules/pro/erupt-flow', pro: true},
             {icon: '🧊', name: 'Erupt Cube BI', artifact: 'erupt-cube', desc: 'Semantic-layer BI: model with annotations, analyze by drag-and-drop', link: '/en/modules/pro/erupt-cube', pro: true},
