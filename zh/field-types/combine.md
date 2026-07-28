@@ -42,4 +42,17 @@ public class DemoExt extends BaseModel {
 
 ## 示例：存储为 JSON 字段
 
-用法与 [TAB_TABLE_ADD](/zh/field-types/tab-table-add) 的 JSON 存储方式相同，将 `@OneToOne` 改为对应的 JSON 注解即可。
+适合无需关联查询、仅需 JSON 存储的场景。Hibernate 6（Spring Boot 3）原生支持 JSON 映射，去掉 `@OneToOne` 与 `@JoinColumn`，字段加 `@JdbcTypeCode(SqlTypes.JSON)` 注解即可，无需额外依赖：
+
+```java
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+@JdbcTypeCode(SqlTypes.JSON)
+@EruptField(
+    edit = @Edit(title = "扩展信息", type = EditType.COMBINE)
+)
+private DemoExt ext;
+```
+
+此时 `DemoExt` 无需声明为 `@Entity`，整个对象将以 JSON 格式序列化存储在主表的单个字段中。

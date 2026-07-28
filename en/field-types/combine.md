@@ -42,4 +42,17 @@ public class DemoExt extends BaseModel {
 
 ## Example: Store as a JSON Field
 
-The usage is the same as the JSON storage approach in [TAB_TABLE_ADD](/en/field-types/tab-table-add). Simply replace `@OneToOne` with the corresponding JSON annotation.
+Suitable for scenarios where no relational queries are needed and JSON storage is sufficient. Hibernate 6 (Spring Boot 3) supports JSON mapping natively — remove `@OneToOne` and `@JoinColumn`, then annotate the field with `@JdbcTypeCode(SqlTypes.JSON)`, no extra dependency required:
+
+```java
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+@JdbcTypeCode(SqlTypes.JSON)
+@EruptField(
+    edit = @Edit(title = "Extension Info", type = EditType.COMBINE)
+)
+private DemoExt ext;
+```
+
+In this case `DemoExt` no longer needs to be declared as an `@Entity` — the whole object is serialized as JSON and stored in a single column of the parent table.
