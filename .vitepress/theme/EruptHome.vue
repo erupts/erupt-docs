@@ -172,7 +172,6 @@ const t = computed(() => dict[props.lang] || dict.zh)
     --rf-cyan: #4FC8EC;
     --rf-green: #93D655;
     --rf-purple: #BCA0F2;
-    --rf-yellow: #FFD84D;
     background: var(--rf-bg);
 }
 
@@ -322,7 +321,7 @@ const t = computed(() => dict[props.lang] || dict.zh)
 }
 
 .rf-btn-main {
-    background: var(--rf-yellow);
+    background: var(--rf-pink);
     color: var(--black);
 }
 
@@ -423,7 +422,7 @@ const t = computed(() => dict[props.lang] || dict.zh)
     white-space: pre;
 }
 
-.rf-code .a { color: #FFD84D; font-weight: 700; }
+.rf-code .a { color: #F585B4; font-weight: 700; }
 .rf-code .k { color: #4FC8EC; font-weight: 700; }
 .rf-code .s { color: #93D655; }
 
@@ -490,7 +489,7 @@ const t = computed(() => dict[props.lang] || dict.zh)
 
 .rf-ui-btn-acc {
     color: var(--black);
-    background: var(--rf-yellow);
+    background: var(--rf-pink);
 }
 
 .rf-ui-row {
