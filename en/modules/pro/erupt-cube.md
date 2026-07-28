@@ -198,8 +198,8 @@ Looker takes the semantic layer concept to the extreme with **LookML**: the core
 **Q1 · What is the difference from the open-source Erupt?**
 Open-source Erupt provides basic CRUD, forms, and simple report capabilities. erupt-cube is a commercial module that introduces a complete semantic layer + multi-data-source + drag-and-drop analysis + dashboard capabilities — this is not included in the open-source version and will not be open-sourced in the future.
 
-**Q2 · What is the relationship between erupt-chart and erupt-cube?**
-- **erupt-chart**: Configures charts directly with SQL; suitable for **developers with SQL skills** to quickly build fixed reports
+**Q2 · What is the relationship between erupt-report and erupt-cube?**
+- **erupt-report**: Configures charts directly with SQL; suitable for **developers with SQL skills** to quickly build fixed reports
 - **erupt-cube**: A semantic layer-based BI platform; suitable for **data analysts doing self-service drag-and-drop analysis**, covering more complex OLAP scenarios
 
 Both can be used independently or together (chart serves developers, cube serves business analysts). If the team is large with dedicated data analysts, going straight to cube is recommended.

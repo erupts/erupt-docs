@@ -41,7 +41,7 @@ Used to manage the system menu list and interface permissions. Menu types and th
 | Page Route | Route path | Router hash value |
 | Button | Permission string | Controls button visibility |
 | Interface Name | Interface name | Interface permission string |
-| Report | Report code | Requires the erupt-chart module |
+| Report | Report code | Requires the erupt-report module |
 | Template | Template filename (under the tpl directory) | Requires the erupt-tpl module |
 | Full Screen | Route path | Displays page in full screen |
 

@@ -162,7 +162,7 @@ const t = computed(() => dict[props.lang] || dict.zh)
 <style>
 /* ---- page-level tokens (html.eh-home) ---- */
 .eh-home {
-    --rf-bg: #FFF9EE;
+    --rf-bg: #FFFFFF;
     --rf-paper: #FFFFFF;
     --rf-ink: #14120B;
     --rf-line: #14120B;
@@ -172,6 +172,7 @@ const t = computed(() => dict[props.lang] || dict.zh)
     --rf-cyan: #4FC8EC;
     --rf-green: #93D655;
     --rf-purple: #BCA0F2;
+    --rf-yellow: #FFD84D;
     background: var(--rf-bg);
 }
 
@@ -321,7 +322,7 @@ const t = computed(() => dict[props.lang] || dict.zh)
 }
 
 .rf-btn-main {
-    background: var(--rf-pink);
+    background: var(--rf-yellow);
     color: var(--black);
 }
 
@@ -422,7 +423,7 @@ const t = computed(() => dict[props.lang] || dict.zh)
     white-space: pre;
 }
 
-.rf-code .a { color: #F585B4; font-weight: 700; }
+.rf-code .a { color: #FFD84D; font-weight: 700; }
 .rf-code .k { color: #4FC8EC; font-weight: 700; }
 .rf-code .s { color: #93D655; }
 
@@ -489,7 +490,7 @@ const t = computed(() => dict[props.lang] || dict.zh)
 
 .rf-ui-btn-acc {
     color: var(--black);
-    background: var(--rf-pink);
+    background: var(--rf-yellow);
 }
 
 .rf-ui-row {
