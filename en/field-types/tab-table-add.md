@@ -37,23 +37,13 @@ public class ChildTable extends BaseModel {
 
 ## Example: Store as a JSON Field
 
-Suitable for scenarios where no relational queries are needed and JSON storage is sufficient (requires Spring Boot 3 + hibernate-types-60):
-
-1. Add the dependency:
-
-```xml
-<dependency>
-    <groupId>com.vladmihalcea</groupId>
-    <artifactId>hibernate-types-60</artifactId>
-    <version>2.21.1</version>
-</dependency>
-```
-
-2. Annotate the field with `@JdbcTypeCode`:
+Suitable for scenarios where no relational queries are needed and JSON storage is sufficient. Hibernate 6 (Spring Boot 3) supports JSON mapping natively — simply annotate the field with `@JdbcTypeCode(SqlTypes.JSON)`, no extra dependency required:
 
 ```java
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 @JdbcTypeCode(SqlTypes.JSON)
-@Column(columnDefinition = "json")
 @EruptField(
     edit = @Edit(title = "Child Data", type = EditType.TAB_TABLE_ADD)
 )

@@ -37,23 +37,13 @@ public class ChildTable extends BaseModel {
 
 ## 示例：存储为 JSON 字段
 
-适合无需关联查询、仅需 JSON 存储的场景（需 Spring Boot 3 + hibernate-types-60）：
-
-1. 添加依赖：
-
-```xml
-<dependency>
-    <groupId>com.vladmihalcea</groupId>
-    <artifactId>hibernate-types-60</artifactId>
-    <version>2.21.1</version>
-</dependency>
-```
-
-2. 字段加 `@JdbcTypeCode` 注解：
+适合无需关联查询、仅需 JSON 存储的场景。Hibernate 6（Spring Boot 3）原生支持 JSON 映射，字段加 `@JdbcTypeCode(SqlTypes.JSON)` 注解即可，无需额外依赖：
 
 ```java
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 @JdbcTypeCode(SqlTypes.JSON)
-@Column(columnDefinition = "json")
 @EruptField(
     edit = @Edit(title = "子数据", type = EditType.TAB_TABLE_ADD)
 )
