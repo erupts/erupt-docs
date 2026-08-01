@@ -397,9 +397,21 @@ export default withMermaid(defineConfig({
                             ],
                         },
                         {
+                            text: 'Erupt Chart',
+                            items: [
+                                {text: 'Introduction & Setup', link: '/en/modules/erupt-chart/'},
+                                {text: 'Data Sources', link: '/en/modules/erupt-chart/datasource'},
+                                {text: 'Report Handlers', link: '/en/modules/erupt-chart/handler'},
+                                {text: 'Reference Dimensions', link: '/en/modules/erupt-chart/dimension'},
+                                {text: 'Function Management', link: '/en/modules/erupt-chart/function'},
+                                {text: 'Report Configuration', link: '/en/modules/erupt-chart/report-config'},
+                                {text: 'Publishing Reports', link: '/en/modules/erupt-chart/publish'},
+                                {text: 'FAQ', link: '/en/modules/erupt-chart/faq'},
+                            ],
+                        },
+                        {
                             text: 'Commercial Modules',
                             items: [
-                                {text: 'Erupt Report', link: '/en/modules/pro/erupt-report'},
                                 {text: 'Erupt SaaS Multi-tenant', link: '/en/modules/pro/erupt-tenant'},
                                 {text: 'Erupt Flow', link: '/en/modules/pro/erupt-flow'},
                                 {text: 'Erupt Cube BI', link: '/en/modules/pro/erupt-cube'},
@@ -790,9 +802,21 @@ export default withMermaid(defineConfig({
                             ],
                         },
                         {
+                            text: 'Erupt Chart 报表图表',
+                            items: [
+                                {text: '介绍与安装', link: '/zh/modules/erupt-chart/'},
+                                {text: '数据源管理', link: '/zh/modules/erupt-chart/datasource'},
+                                {text: '报表处理类', link: '/zh/modules/erupt-chart/handler'},
+                                {text: '参照维度', link: '/zh/modules/erupt-chart/dimension'},
+                                {text: '函数管理', link: '/zh/modules/erupt-chart/function'},
+                                {text: '报表配置', link: '/zh/modules/erupt-chart/report-config'},
+                                {text: '发布报表', link: '/zh/modules/erupt-chart/publish'},
+                                {text: '常见问题', link: '/zh/modules/erupt-chart/faq'},
+                            ],
+                        },
+                        {
                             text: '商业模块',
                             items: [
-                                {text: 'Erupt Report 报表图表', link: '/zh/modules/pro/erupt-report'},
                                 {text: 'Erupt SaaS 多租户', link: '/zh/modules/pro/erupt-tenant'},
                                 {text: 'Erupt Flow 流程引擎', link: '/zh/modules/pro/erupt-flow'},
                                 {text: 'Erupt Cube BI 平台', link: '/zh/modules/pro/erupt-cube'},

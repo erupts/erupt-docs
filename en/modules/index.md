@@ -38,6 +38,7 @@ const groups = [
             {icon: '📈', name: 'Erupt Monitor', artifact: 'erupt-monitor', desc: 'Live CPU, JVM, connection pool and online-user monitoring', link: '/en/modules/erupt-monitor'},
             {icon: '🪄', name: 'Erupt Magic Api', artifact: 'erupt-magic-api', desc: 'Online IDE for building HTTP APIs in the browser', link: '/en/modules/erupt-magic-api'},
             {icon: '🖨️', name: 'Erupt Print', artifact: 'erupt-print', desc: 'HTML-template printing for receipts and reports', link: '/en/modules/erupt-print'},
+            {icon: '📊', name: 'Erupt Chart', artifact: 'erupt-chart', desc: 'Reports and charts defined in pure SQL, multi-dimensional analysis', link: '/en/modules/erupt-chart/'},
             {icon: '☁️', name: 'Erupt Cloud', artifact: 'erupt-cloud', desc: 'Distributed config center, database tables replace yml', link: '/en/modules/erupt-cloud'},
             {icon: '🛰️', name: 'Erupt Cloud Server', artifact: 'erupt-cloud-server', desc: 'Node management hub: registration and dispatch', link: '/en/modules/cloud-server'},
             {icon: '📦', name: 'Erupt Cloud Node', artifact: 'erupt-cloud-node', desc: 'Distributed micro node managed by Cloud Server', link: '/en/modules/cloud-node'},
@@ -47,7 +48,6 @@ const groups = [
         title: 'Commercial Modules',
         badge: 'PRO',
         items: [
-            {icon: '📊', name: 'Erupt Report', artifact: 'erupt-report', desc: 'SQL-defined charts and reports, zero frontend/backend code', link: '/en/modules/pro/erupt-report', pro: true},
             {icon: '🏢', name: 'Erupt SaaS Multi-tenant', artifact: 'erupt-tenant', desc: 'Reuse features across tenants with full data isolation', link: '/en/modules/pro/erupt-tenant', pro: true},
             {icon: '🔀', name: 'Erupt Flow', artifact: 'erupt-flow', desc: 'Universal workflow engine with visual process designer', link: '/en/modules/pro/erupt-flow', pro: true},
             {icon: '🧊', name: 'Erupt Cube BI', artifact: 'erupt-cube', desc: 'Semantic-layer BI: model with annotations, analyze by drag-and-drop', link: '/en/modules/pro/erupt-cube', pro: true},

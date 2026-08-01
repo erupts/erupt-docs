@@ -38,6 +38,7 @@ const groups = [
             {icon: '📈', name: 'Erupt Monitor', artifact: 'erupt-monitor', desc: 'CPU、JVM、连接池、在线用户实时监控', link: '/zh/modules/erupt-monitor'},
             {icon: '🪄', name: 'Erupt Magic Api', artifact: 'erupt-magic-api', desc: '在线 IDE，界面化编写 HTTP 接口', link: '/zh/modules/erupt-magic-api'},
             {icon: '🖨️', name: 'Erupt Print', artifact: 'erupt-print', desc: 'HTML 模板打印，单据报告一键输出', link: '/zh/modules/erupt-print'},
+            {icon: '📊', name: 'Erupt Chart', artifact: 'erupt-chart', desc: '纯 SQL 定义报表图表，多维数据分析', link: '/zh/modules/erupt-chart/'},
             {icon: '☁️', name: 'Erupt Cloud', artifact: 'erupt-cloud', desc: '分布式配置中心，数据库表替代 yml 配置', link: '/zh/modules/erupt-cloud'},
             {icon: '🛰️', name: 'Erupt Cloud Server', artifact: 'erupt-cloud-server', desc: '节点管理中心，服务注册与请求调度', link: '/zh/modules/cloud-server'},
             {icon: '📦', name: 'Erupt Cloud Node', artifact: 'erupt-cloud-node', desc: '分布式微节点，向 Server 注册并接受调度', link: '/zh/modules/cloud-node'},
@@ -47,7 +48,6 @@ const groups = [
         title: '商业模块',
         badge: 'PRO',
         items: [
-            {icon: '📊', name: 'Erupt Report', artifact: 'erupt-report', desc: '纯 SQL 定义报表图表，零前后端代码', link: '/zh/modules/pro/erupt-report', pro: true},
             {icon: '🏢', name: 'Erupt SaaS 多租户', artifact: 'erupt-tenant', desc: '功能多租户复用，数据完全隔离', link: '/zh/modules/pro/erupt-tenant', pro: true},
             {icon: '🔀', name: 'Erupt Flow', artifact: 'erupt-flow', desc: '通用流程引擎，钉钉风格可视化流程设计', link: '/zh/modules/pro/erupt-flow', pro: true},
             {icon: '🧊', name: 'Erupt Cube BI', artifact: 'erupt-cube', desc: '语义建模 BI 平台，注解建模 + 拖拽分析', link: '/zh/modules/pro/erupt-cube', pro: true},
