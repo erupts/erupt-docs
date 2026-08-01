@@ -30,15 +30,7 @@ Live demo: [https://demo.erupt.xyz](https://demo.erupt.xyz) &nbsp; Username: `bi
 
 ## Getting Started
 
-### 1. Build from source and install to your local repository
-
-Pull the source code, check out the tag for the desired version, then run the following maven command in the project root to install it to your local or private repository
-
-```bash
-mvn -D skipTests=true install
-```
-
-### 2. Add the dependency
+### Add the dependency
 
 ```xml
 <dependency>

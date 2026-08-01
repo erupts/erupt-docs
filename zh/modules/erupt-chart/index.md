@@ -30,15 +30,7 @@ Erupt Chart 由商业版 **erupt-report**（原 erupt-bi）开源而来，预计
 
 ## 使用方法
 
-### 1. 编译源代码，发布到本地仓库
-
-拉取源代码，切换 tag 到对应版本，在项目根目录下执行如下 maven 打包命令，发布到本地中央仓库或私服即可
-
-```bash
-mvn -D skipTests=true install
-```
-
-### 2. 导入依赖
+### 导入依赖
 
 ```xml
 <dependency>
