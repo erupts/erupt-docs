@@ -11,6 +11,9 @@ export default withMermaid(defineConfig({
     ignoreDeadLinks: true,
 
     markdown: {
+        languageAlias: {
+            velocity: 'sql',
+        },
         config(md) {
             md.use(InlineLinkPreviewElementTransform)
         },
@@ -415,7 +418,20 @@ export default withMermaid(defineConfig({
                             items: [
                                 {text: 'Erupt SaaS Multi-tenant', link: '/en/modules/pro/erupt-tenant'},
                                 {text: 'Erupt Flow', link: '/en/modules/pro/erupt-flow'},
-                                {text: 'Erupt Cube BI', link: '/en/modules/pro/erupt-cube'},
+                                {
+                                    text: 'Erupt Cube BI',
+                                    collapsed: true,
+                                    items: [
+                                        {text: 'Introduction', link: '/en/modules/pro/erupt-cube'},
+                                        {text: 'Quick Start', link: '/en/modules/pro/erupt-cube/quick-start'},
+                                        {text: 'Data Sources', link: '/en/modules/pro/erupt-cube/datasource'},
+                                        {text: 'Semantic Modeling', link: '/en/modules/pro/erupt-cube/semantic-model'},
+                                        {text: 'Cube ML Syntax', link: '/en/modules/pro/erupt-cube/cube-ml'},
+                                        {text: 'Visual Modeling', link: '/en/modules/pro/erupt-cube/visual-modeling'},
+                                        {text: 'Visual Analysis', link: '/en/modules/pro/erupt-cube/visual-analysis'},
+                                        {text: 'SQL Port', link: '/en/modules/pro/erupt-cube/sql'},
+                                    ],
+                                },
                             ],
                         },
                         {
@@ -821,7 +837,20 @@ export default withMermaid(defineConfig({
                             items: [
                                 {text: 'Erupt SaaS 多租户', link: '/zh/modules/pro/erupt-tenant'},
                                 {text: 'Erupt Flow 流程引擎', link: '/zh/modules/pro/erupt-flow'},
-                                {text: 'Erupt Cube BI 平台', link: '/zh/modules/pro/erupt-cube'},
+                                {
+                                    text: 'Erupt Cube BI 平台',
+                                    collapsed: true,
+                                    items: [
+                                        {text: '产品介绍', link: '/zh/modules/pro/erupt-cube'},
+                                        {text: '快速开始', link: '/zh/modules/pro/erupt-cube/quick-start'},
+                                        {text: '数据源', link: '/zh/modules/pro/erupt-cube/datasource'},
+                                        {text: '语义建模', link: '/zh/modules/pro/erupt-cube/semantic-model'},
+                                        {text: 'Cube 语法（ML）', link: '/zh/modules/pro/erupt-cube/cube-ml'},
+                                        {text: '可视化建模', link: '/zh/modules/pro/erupt-cube/visual-modeling'},
+                                        {text: '可视化分析', link: '/zh/modules/pro/erupt-cube/visual-analysis'},
+                                        {text: 'SQL 查询端口', link: '/zh/modules/pro/erupt-cube/sql'},
+                                    ],
+                                },
                             ],
                         },
                         {

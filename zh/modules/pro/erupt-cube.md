@@ -16,6 +16,10 @@
 
 演示：[https://demo.erupt.xyz](https://demo.erupt.xyz) &nbsp; 账号：`cube` 密码：`cube`
 
+:::info 使用文档
+[快速开始](/zh/modules/pro/erupt-cube/quick-start) · [数据源](/zh/modules/pro/erupt-cube/datasource) · [语义建模](/zh/modules/pro/erupt-cube/semantic-model) · [Cube 语法（ML）](/zh/modules/pro/erupt-cube/cube-ml) · [可视化建模](/zh/modules/pro/erupt-cube/visual-modeling) · [可视化分析](/zh/modules/pro/erupt-cube/visual-analysis) · [SQL 查询端口](/zh/modules/pro/erupt-cube/sql)
+:::
+
 售前咨询请添加作者微信：
 
 <img src="/contact/me.jpg" width="240">

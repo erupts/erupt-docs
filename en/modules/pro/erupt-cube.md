@@ -16,6 +16,10 @@ Officially produced and maintained by the open-source Erupt framework team ([Git
 
 Demo: [https://demo.erupt.xyz](https://demo.erupt.xyz) &nbsp; Username: `cube` Password: `cube`
 
+:::info Documentation
+[Quick Start](/en/modules/pro/erupt-cube/quick-start) · [Data Sources](/en/modules/pro/erupt-cube/datasource) · [Semantic Modeling](/en/modules/pro/erupt-cube/semantic-model) · [Cube ML Syntax](/en/modules/pro/erupt-cube/cube-ml) · [Visual Modeling](/en/modules/pro/erupt-cube/visual-modeling) · [Visual Analysis](/en/modules/pro/erupt-cube/visual-analysis) · [SQL Port](/en/modules/pro/erupt-cube/sql)
+:::
+
 For pre-sales inquiries, add the author on WeChat:
 
 <img src="/contact/me.jpg" width="240">
