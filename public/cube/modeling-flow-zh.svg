@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="280" viewBox="0 0 900 280" role="img" aria-label="两种建模方式">
+  <defs>
+    <marker id="arw" markerWidth="10" markerHeight="10" refX="7" refY="4" orient="auto">
+      <path d="M0 0 L8 4 L0 8 Z" fill="#2B2827"/>
+    </marker>
+  </defs>
+
+  <!-- card -->
+  <rect x="10" y="10" width="884" height="264" fill="#2B2827"/>
+  <rect x="3.5" y="3.5" width="884" height="264" fill="#FFFAEF" stroke="#2B2827" stroke-width="3"/>
+
+  <!-- title -->
+  <rect x="36" y="30" width="14" height="14" fill="#FFD440" stroke="#2B2827" stroke-width="2"/>
+  <text x="62" y="43" font-family="'Space Grotesk', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="17" font-weight="800" fill="#2B2827">两种建模方式互补 · 开发与分析师各取所长</text>
+  <rect x="836" y="28" width="9" height="9" fill="#3BC4E8" stroke="#2B2827" stroke-width="2"/>
+  <rect x="852" y="40" width="7" height="7" fill="#FE7DA8" stroke="#2B2827" stroke-width="2"/>
+
+  <g font-family="'Space Grotesk', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+    <!-- annotation modeling -->
+    <rect x="74" y="102" width="300" height="66" fill="#2B2827"/>
+    <rect x="70" y="98" width="300" height="66" fill="#3BC4E8" stroke="#2B2827" stroke-width="2.5"/>
+    <text x="220" y="126" text-anchor="middle" font-size="15" font-weight="800" fill="#2B2827">Java 注解建模（主）</text>
+    <text x="220" y="150" text-anchor="middle" font-size="12" font-weight="700" fill="#2B2827">开发工程师 · git 版本化 · Code Review</text>
+
+    <!-- visual modeling -->
+    <rect x="534" y="102" width="300" height="66" fill="#2B2827"/>
+    <rect x="530" y="98" width="300" height="66" fill="#FE7DA8" stroke="#2B2827" stroke-width="2.5"/>
+    <text x="680" y="126" text-anchor="middle" font-size="15" font-weight="800" fill="#2B2827">可视化界面建模（辅）</text>
+    <text x="680" y="150" text-anchor="middle" font-size="12" font-weight="700" fill="#2B2827">数据分析师 · 拖拽配置 · 快速试错</text>
+
+    <!-- shared semantic layer -->
+    <rect x="334" y="204" width="240" height="44" fill="#2B2827"/>
+    <rect x="330" y="200" width="240" height="44" fill="#FFD440" stroke="#2B2827" stroke-width="2.5"/>
+    <text x="450" y="227" text-anchor="middle" font-size="14" font-weight="800" fill="#2B2827">同一套语义层</text>
+
+    <!-- backflow label -->
+    <text x="450" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#6B6560">稳定后沉淀为注解 · 随代码管理</text>
+  </g>
+
+  <!-- arrows into semantic layer -->
+  <line x1="240" y1="167" x2="382" y2="198" stroke="#2B2827" stroke-width="2.5" marker-end="url(#arw)"/>
+  <line x1="660" y1="167" x2="518" y2="198" stroke="#2B2827" stroke-width="2.5" marker-end="url(#arw)"/>
+
+  <!-- dashed backflow: visual -> annotation -->
+  <path d="M660 96 C 600 66, 300 66, 234 94" fill="none" stroke="#2B2827" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arw)"/>
+
+  <!-- caption -->
+  <text x="450" y="262" text-anchor="middle" font-family="'Space Grotesk', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="12" fill="#6B6560">推荐工作流：注解定义核心模型 → 可视化自助探索 → 稳定后回流为注解</text>
+</svg>

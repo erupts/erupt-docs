@@ -30,6 +30,10 @@ Demo: [https://demo.erupt.xyz](https://demo.erupt.xyz) &nbsp; Username: `cube` P
 
 ## What Problems Does the Semantic Model Solve?
 
+Once data sources are connected, `@EruptCube` defines dimensions and measures in one place — every consumer shares the same semantics:
+
+<img src="/cube/semantic-layer-en.svg" width="900" alt="Semantic layer architecture">
+
 | Problem | Without Semantic Model | With Semantic Model |
 | --- | --- | --- |
 | Metric consistency | Everyone writes different SQL | Defined once; changes propagate everywhere |
@@ -49,6 +53,8 @@ erupt-cube supports two semantic model definition methods simultaneously, coveri
 Both approaches can coexist in the same project: define core complex models with annotations and manage them in git; business-side ad-hoc analysis uses visual modeling for quick validation, and stable models are later committed to annotations by developers.
 
 > Recommended workflow: **Define core models with annotations → Use the visual interface for business self-service exploration → Stable models from exploration are converted back to annotations**.
+
+<img src="/cube/modeling-flow-en.svg" width="900" alt="Two complementary modeling approaches">
 
 ## Annotation Modeling Reference (API)
 

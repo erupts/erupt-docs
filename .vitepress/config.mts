@@ -394,9 +394,15 @@ export default withMermaid(defineConfig({
                                 {text: 'Erupt Monitor', link: '/en/modules/erupt-monitor'},
                                 {text: 'Erupt Magic Api', link: '/en/modules/erupt-magic-api'},
                                 {text: 'Erupt Print', link: '/en/modules/erupt-print'},
-                                {text: 'Erupt Cloud', link: '/en/modules/erupt-cloud'},
-                                {text: 'Erupt Cloud Server', link: '/en/modules/cloud-server'},
-                                {text: 'Erupt Cloud Node', link: '/en/modules/cloud-node'},
+                                {
+                                    text: 'Erupt Cloud',
+                                    collapsed: true,
+                                    items: [
+                                        {text: 'Introduction', link: '/en/modules/erupt-cloud'},
+                                        {text: 'Server Deployment', link: '/en/modules/cloud-server'},
+                                        {text: 'Node Deployment', link: '/en/modules/cloud-node'},
+                                    ],
+                                },
                                 {
                                     text: 'Erupt Chart <span class="VPBadge tip">new</span>',
                                     collapsed: true,
@@ -835,9 +841,15 @@ export default withMermaid(defineConfig({
                                 {text: 'Erupt Monitor 服务监控', link: '/zh/modules/erupt-monitor'},
                                 {text: 'Erupt Magic Api 在线IDE', link: '/zh/modules/erupt-magic-api'},
                                 {text: 'Erupt Print 打印模块', link: '/zh/modules/erupt-print'},
-                                {text: 'Erupt Cloud 分布式配置中心', link: '/zh/modules/erupt-cloud'},
-                                {text: 'Erupt Cloud Server 部署', link: '/zh/modules/cloud-server'},
-                                {text: 'Erupt Cloud Node 部署', link: '/zh/modules/cloud-node'},
+                                {
+                                    text: 'Erupt Cloud 分布式配置中心',
+                                    collapsed: true,
+                                    items: [
+                                        {text: '产品介绍', link: '/zh/modules/erupt-cloud'},
+                                        {text: 'Server 部署', link: '/zh/modules/cloud-server'},
+                                        {text: 'Node 部署', link: '/zh/modules/cloud-node'},
+                                    ],
+                                },
                                 {
                                     text: 'Erupt Chart 报表图表 <span class="VPBadge tip">new</span>',
                                     collapsed: true,
