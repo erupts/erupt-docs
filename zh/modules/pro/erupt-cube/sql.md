@@ -124,6 +124,8 @@ select tablename from pg_tables;
 - 会话语句（`SET` / `SHOW` / `BEGIN` ...）按 PostgreSQL 语义应答
 - `LIMIT` / `OFFSET`、`ORDER BY`、`DISTINCT`、列投影与类型转换（如 `col::bigint`）均可用
 
+![DataGrip 直连 SQL 端口浏览 Cube](/cube/datagrip.png)
+
 ## 只读语义
 
 端口是**只读**的：`INSERT` / `UPDATE` / `DELETE` / `DDL` 一律以 SQLSTATE `25006`（`read_only_sql_transaction`）拒绝，行为与 PostgreSQL 只读从库一致，`transaction_read_only` 报告为 `on`。写入被拒绝后连接仍可继续查询。

@@ -124,6 +124,8 @@ The port ships a `pg_catalog` emulation (`pg_class`, `pg_attribute`, `pg_type`, 
 - Session statements (`SET` / `SHOW` / `BEGIN` ...) are answered with PostgreSQL semantics
 - `LIMIT` / `OFFSET`, `ORDER BY`, `DISTINCT`, column projection and casts (e.g. `col::bigint`) all work
 
+![DataGrip browsing cubes over the SQL port](/cube/datagrip.png)
+
 ## Read-Only Semantics
 
 The port is **read-only**: `INSERT` / `UPDATE` / `DELETE` / DDL are rejected with SQLSTATE `25006` (`read_only_sql_transaction`), matching a PostgreSQL standby, and `transaction_read_only` reports `on`. The connection remains usable for queries after a rejected write.
