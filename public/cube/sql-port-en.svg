@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="340" viewBox="0 0 900 340" role="img" aria-label="SQL port architecture">
+  <defs>
+    <marker id="arw" markerWidth="10" markerHeight="10" refX="7" refY="4" orient="auto">
+      <path d="M0 0 L8 4 L0 8 Z" fill="#2B2827"/>
+    </marker>
+  </defs>
+
+  <!-- card -->
+  <rect x="10" y="10" width="884" height="324" fill="#2B2827"/>
+  <rect x="3.5" y="3.5" width="884" height="324" fill="#FFFAEF" stroke="#2B2827" stroke-width="3"/>
+
+  <!-- title -->
+  <rect x="36" y="30" width="14" height="14" fill="#FFD440" stroke="#2B2827" stroke-width="2"/>
+  <text x="62" y="43" font-family="'Space Grotesk', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="17" font-weight="800" fill="#2B2827">PostgreSQL wire protocol · Query Cubes, not raw tables</text>
+  <rect x="836" y="28" width="9" height="9" fill="#3BC4E8" stroke="#2B2827" stroke-width="2"/>
+  <rect x="852" y="40" width="7" height="7" fill="#FE7DA8" stroke="#2B2827" stroke-width="2"/>
+
+  <g font-family="'Space Grotesk', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+    <!-- clients -->
+    <g font-size="12" font-weight="700" fill="#2B2827">
+      <rect x="47" y="91" width="180" height="34" fill="#2B2827"/>
+      <rect x="44" y="88" width="180" height="34" fill="#FFFFFF" stroke="#2B2827" stroke-width="2"/>
+      <text x="134" y="110" text-anchor="middle">psql / DataGrip</text>
+
+      <rect x="47" y="133" width="180" height="34" fill="#2B2827"/>
+      <rect x="44" y="130" width="180" height="34" fill="#FFFFFF" stroke="#2B2827" stroke-width="2"/>
+      <text x="134" y="152" text-anchor="middle">DBeaver</text>
+
+      <rect x="47" y="175" width="180" height="34" fill="#2B2827"/>
+      <rect x="44" y="172" width="180" height="34" fill="#FFFFFF" stroke="#2B2827" stroke-width="2"/>
+      <text x="134" y="194" text-anchor="middle">Superset · Grafana</text>
+
+      <rect x="47" y="217" width="180" height="34" fill="#2B2827"/>
+      <rect x="44" y="214" width="180" height="34" fill="#FFFFFF" stroke="#2B2827" stroke-width="2"/>
+      <text x="134" y="236" text-anchor="middle">AI Agent (JDBC)</text>
+    </g>
+
+    <!-- port -->
+    <rect x="288" y="122" width="170" height="98" fill="#2B2827"/>
+    <rect x="284" y="118" width="170" height="98" fill="#FFD440" stroke="#2B2827" stroke-width="2.5"/>
+    <text x="369" y="160" text-anchor="middle" font-size="14" font-weight="800" fill="#2B2827">erupt-cube-sql</text>
+    <text x="369" y="184" text-anchor="middle" font-size="11.5" font-weight="700" fill="#2B2827">PostgreSQL protocol · 5433</text>
+
+    <!-- calcite -->
+    <rect x="498" y="122" width="160" height="98" fill="#2B2827"/>
+    <rect x="494" y="118" width="160" height="98" fill="#3BC4E8" stroke="#2B2827" stroke-width="2.5"/>
+    <text x="574" y="160" text-anchor="middle" font-size="14" font-weight="800" fill="#2B2827">Apache Calcite</text>
+    <text x="574" y="184" text-anchor="middle" font-size="11.5" font-weight="700" fill="#2B2827">Parse · Optimize · Push down</text>
+
+    <!-- semantic model -->
+    <rect x="698" y="122" width="160" height="98" fill="#2B2827"/>
+    <rect x="694" y="118" width="160" height="98" fill="#FE7DA8" stroke="#2B2827" stroke-width="2.5"/>
+    <text x="774" y="160" text-anchor="middle" font-size="14" font-weight="800" fill="#2B2827">Semantic Model</text>
+    <text x="774" y="184" text-anchor="middle" font-size="11.5" font-weight="700" fill="#2B2827">Dimensions · Measures · ACL</text>
+
+    <!-- datasource -->
+    <rect x="698" y="254" width="160" height="36" fill="#2B2827"/>
+    <rect x="694" y="250" width="160" height="36" fill="#FFFFFF" stroke="#2B2827" stroke-width="2"/>
+    <text x="774" y="273" text-anchor="middle" font-size="11.5" font-weight="700" fill="#2B2827">Data sources OLAP / OLTP</text>
+  </g>
+
+  <!-- arrows -->
+  <line x1="228" y1="105" x2="276" y2="142" stroke="#2B2827" stroke-width="2.5" marker-end="url(#arw)"/>
+  <line x1="228" y1="147" x2="276" y2="159" stroke="#2B2827" stroke-width="2.5" marker-end="url(#arw)"/>
+  <line x1="228" y1="189" x2="276" y2="176" stroke="#2B2827" stroke-width="2.5" marker-end="url(#arw)"/>
+  <line x1="228" y1="231" x2="276" y2="193" stroke="#2B2827" stroke-width="2.5" marker-end="url(#arw)"/>
+  <line x1="456" y1="167" x2="486" y2="167" stroke="#2B2827" stroke-width="2.5" marker-end="url(#arw)"/>
+  <line x1="656" y1="167" x2="686" y2="167" stroke="#2B2827" stroke-width="2.5" marker-end="url(#arw)"/>
+  <line x1="774" y1="218" x2="774" y2="243" stroke="#2B2827" stroke-width="2.5" marker-end="url(#arw)"/>
+
+  <!-- caption -->
+  <text x="450" y="316" text-anchor="middle" font-family="'Space Grotesk', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" fill="#6B6560">Every Cube is a SELECT-able table · Metric aggregation, row-level ACL and multi-source routing still apply · Read-only port</text>
+</svg>

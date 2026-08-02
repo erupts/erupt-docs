@@ -2,13 +2,7 @@
 
 The `erupt-cube-sql` module exposes the semantic layer over the **PostgreSQL wire protocol**: every cube becomes a table you can `SELECT` from directly, so any PostgreSQL-compatible client — `psql`, DataGrip, DBeaver, Superset, Metabase, Grafana, or an AI agent speaking JDBC — can query the semantic layer while metric definitions stay centralized in the model.
 
-```mermaid
-flowchart LR
-    A[psql / DataGrip / BI tools / AI agents] -- PostgreSQL protocol --> B[erupt-cube-sql<br/>port 5433]
-    B --> C[Apache Calcite<br/>parse · optimize · pushdown]
-    C --> D[Semantic model<br/>dimensions / measures / permissions]
-    D --> E[(Data sources<br/>OLAP / OLTP)]
-```
+<img src="/cube/sql-port-en.svg" width="900" alt="SQL port architecture">
 
 :::tip Why a SQL port
 Drag-and-drop analysis serves business users, but data engineers, external BI tools, and AI agents prefer to speak SQL. The SQL port lets them reuse the same semantic layer: **they query cubes, not raw tables** — metric aggregation logic, row-level permissions, and multi-datasource routing all still apply.

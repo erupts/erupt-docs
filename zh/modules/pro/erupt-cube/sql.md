@@ -2,13 +2,7 @@
 
 `erupt-cube-sql` 模块将语义模型以 **PostgreSQL 协议**对外暴露：每个 Cube 都是一张可直接 `SELECT` 的表，任何支持 PostgreSQL 的客户端 —— `psql`、DataGrip、DBeaver、Superset、Metabase、Grafana，乃至通过 JDBC 接入的 AI Agent —— 都可以直连语义层查询数据，指标口径依然由语义模型统一收口。
 
-```mermaid
-flowchart LR
-    A[psql / DataGrip / BI 工具 / AI Agent] -- PostgreSQL 协议 --> B[erupt-cube-sql<br/>端口 5433]
-    B --> C[Apache Calcite<br/>解析 · 优化 · 下推]
-    C --> D[语义模型<br/>维度 / 指标 / 权限]
-    D --> E[(数据源<br/>OLAP / OLTP)]
-```
+<img src="/cube/sql-port-zh.svg" width="900" alt="SQL 查询端口架构">
 
 :::tip 为什么需要 SQL 端口
 拖拽分析覆盖了业务人员，但数据工程师、外部 BI 工具和 AI Agent 更习惯用 SQL 对话。SQL 端口让它们复用同一套语义层：**查的是 Cube，而不是底表** —— 指标聚合逻辑、行级权限、多数据源路由全部继续生效。

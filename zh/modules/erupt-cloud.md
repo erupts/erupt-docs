@@ -70,27 +70,11 @@
 
 <img src="/cloud/architecture-zh.svg" width="900" alt="Erupt Cloud 集群架构">
 
+> 集群内任意服务都可接入 erupt-node 实现该服务内部的配置管理，可做到多维配置、实时变更、协作管理、权限检查等。
+
 ### 调用时序图
 
 <img src="/cloud/sequence.jpeg">
-
-### 集群架构图
-
-:::danger
-集群内任意服务都可接入 erupt-node 实现该服务内部的配置管理，可做到多维配置、实时变更、协作管理、权限检查等。
-:::
-
-<img src="/cloud/cluster.jpeg">
-
-### 高可用架构图
-
-下图每个 node 都可以理解为一个服务，它接入了 erupt-node 来管理本服务内的配置信息。
-
-<img src="/cloud/ha.jpeg">
-
-:::info
-用于管理 node 节点，负责服务注册中心，请求调度与负载分发。
-:::
 
 ## 快速开始
 

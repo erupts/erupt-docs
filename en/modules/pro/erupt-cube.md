@@ -1,4 +1,4 @@
-# Erupt Cube BI Platform
+# Erupt Cube Metrics Platform
 
 Inspired by Google Looker's semantic layer concept, built as a professional-grade big data analytics solution for the Java ecosystem. Data engineers focus on model construction; data analysts complete visualizations self-service based on the semantic layer — no multi-party collaboration required. Define semantic models with annotations, build visualizations with drag-and-drop, ready to use out of the box.
 

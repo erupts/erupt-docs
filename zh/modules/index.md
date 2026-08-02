@@ -50,7 +50,7 @@ const groups = [
         items: [
             {icon: '🏢', name: 'Erupt SaaS 多租户', artifact: 'erupt-tenant', desc: '功能多租户复用，数据完全隔离', link: '/zh/modules/pro/erupt-tenant/', pro: true},
             {icon: '🔀', name: 'Erupt Flow', artifact: 'erupt-flow', desc: '通用流程引擎，钉钉风格可视化流程设计', link: '/zh/modules/pro/erupt-flow/', pro: true},
-            {icon: '🧊', name: 'Erupt Cube BI', artifact: 'erupt-cube', desc: '语义建模 BI 平台，注解建模 + 拖拽分析', link: '/zh/modules/pro/erupt-cube', pro: true},
+            {icon: '🧊', name: 'Erupt Cube 指标平台', artifact: 'erupt-cube', desc: '语义建模 BI 平台，注解建模 + 拖拽分析', link: '/zh/modules/pro/erupt-cube', pro: true},
         ],
     },
     {

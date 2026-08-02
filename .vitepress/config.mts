@@ -447,7 +447,7 @@ export default withMermaid(defineConfig({
                                     ],
                                 },
                                 {
-                                    text: 'Erupt Cube BI',
+                                    text: 'Erupt Cube Metrics Platform',
                                     collapsed: true,
                                     items: [
                                         {text: 'Introduction', link: '/en/modules/pro/erupt-cube'},
@@ -894,7 +894,7 @@ export default withMermaid(defineConfig({
                                     ],
                                 },
                                 {
-                                    text: 'Erupt Cube BI 平台',
+                                    text: 'Erupt Cube 指标平台',
                                     collapsed: true,
                                     items: [
                                         {text: '产品介绍', link: '/zh/modules/pro/erupt-cube'},
