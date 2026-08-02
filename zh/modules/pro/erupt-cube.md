@@ -8,9 +8,11 @@
 **包含**：完整源码 · 全版本升级 · 技术支持 · erupt 相关问题优先支持 · 合理需求免费实现 · 能力持续迭代
 **授权**：无 License 限制 · 无项目数量限制 · 无商用限制
 **限制**：禁止二次开源与分发
-
-👉 **[查看定价与购买流程 →](https://www.erupt.xyz/?utm_source=docs&utm_medium=tipblock&utm_campaign=pro#!/pro)**
 :::
+
+<a href="https://www.erupt.xyz/?utm_source=docs&utm_medium=banner&utm_campaign=pro#!/pro" target="_blank">
+  <img src="/pro/cta-zh.svg" width="900" alt="查看 Erupt Pro 定价与购买流程">
+</a>
 
 由开源 Erupt 框架团队官方出品与维护（[GitHub 3k+ ★](https://github.com/erupts/erupt) · [Gitee 5k+ ★](https://gitee.com/erupt/erupt)），避免 Kylin / Looker 等方案的厂商锁定与运维成本。
 
@@ -19,10 +21,6 @@
 :::info 使用文档
 [快速开始](/zh/modules/pro/erupt-cube/quick-start) · [数据源](/zh/modules/pro/erupt-cube/datasource) · [语义建模](/zh/modules/pro/erupt-cube/semantic-model) · [Cube 语法（ML）](/zh/modules/pro/erupt-cube/cube-ml) · [可视化建模](/zh/modules/pro/erupt-cube/visual-modeling) · [可视化分析](/zh/modules/pro/erupt-cube/visual-analysis) · [SQL 查询端口](/zh/modules/pro/erupt-cube/sql)
 :::
-
-售前咨询请添加作者微信：
-
-<img src="/contact/me.jpg" width="240">
 
 ---
 
@@ -226,4 +224,4 @@ Looker 将语义层理念做到极致，称之为 **LookML**，核心思想是�
 
 ---
 
-如有未列出问题，欢迎扫上方二维码加微信咨询。
+如有未列出问题，请前往 [定价与购买页面](https://www.erupt.xyz/#!/pro) 联系作者咨询。

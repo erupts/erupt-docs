@@ -6,17 +6,19 @@ Use Erupt annotation-based low-code development to implement multi-tenancy capab
 **Includes**: Full source code · All future version upgrades · Technical support · Priority Erupt-related support · Reasonable feature requests implemented for free · Continuous capability iteration
 **License**: No License restrictions · Multi-project reuse allowed · No commercial restrictions
 **Limitation**: Redistribution and secondary open-sourcing are prohibited
-
-👉 **[View Pricing and Purchase →](https://www.erupt.xyz/?utm_source=docs&utm_medium=tipblock&utm_campaign=pro#!/pro)**
 :::
+
+<a href="https://www.erupt.xyz/?utm_source=docs&utm_medium=banner&utm_campaign=pro#!/pro" target="_blank">
+  <img src="/pro/cta-en.svg" width="900" alt="View Erupt Pro pricing and purchase process">
+</a>
 
 Officially produced and maintained by the open-source Erupt framework team ([GitHub 3k+ ★](https://github.com/erupts/erupt) · [Gitee 5k+ ★](https://gitee.com/erupt/erupt)). Source code delivered for deep customization with your business.
 
 Demo: [https://demo.erupt.xyz/#/passport/tenant](https://demo.erupt.xyz/#/passport/tenant)
 
-For pre-sales inquiries, add the author on WeChat:
-
-<img src="/contact/me.jpg" width="240">
+:::info Documentation
+[Quick Start](/en/modules/pro/erupt-tenant/quick-start) · [Multi-tenant Development](/en/modules/pro/erupt-tenant/development) · [Domain & Tenant Customization](/en/modules/pro/erupt-tenant/domain) · [Database Design](/en/modules/pro/erupt-tenant/database)
+:::
 
 ---
 
@@ -112,4 +114,4 @@ The [online demo](https://demo.erupt.xyz/#/passport/tenant) has all features ava
 
 ---
 
-For questions not listed above, scan the QR code above to contact the author on WeChat.
+For questions not listed above, visit the [pricing & purchase page](https://www.erupt.xyz/#!/pro) to contact the author.

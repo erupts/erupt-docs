@@ -51,7 +51,7 @@ Let's put the whole picture up front — each of the 10 rows below is an identit
 | 6 | **DataProxy business hooks** | [`beforeAdd / afterAdd / ...` 10+ hooks](/en/advanced/data-proxy) |
 | 7 | **Lambda queries** | [`EruptLambdaQuery<T>`](/en/advanced/erupt-dao-lambda) type-safe DSL |
 | 8 | **AI Agent** | [`erupt-ai-claw`](/en/modules/erupt-ai-claw) — import and go, zero-code LLM CRUD |
-| 9 | **Approval workflow** | [`@EruptFlow`](/en/modules/pro/erupt-flow) — entity is the workflow carrier |
+| 9 | **Approval workflow** | [`@EruptFlow`](/en/modules/pro/erupt-flow/) — entity is the workflow carrier |
 | 10 | **Cross-service aggregation** | [`erupt-cloud-node-jpa`](/en/modules/cloud-node) — heartbeat reports to a central admin |
 
 Let's break these into three groups: **4 you get by writing annotations, 3 you extend with a little code, and 3 that are the modern killer capabilities** — plus one fallback layer that never lets you down.
@@ -246,7 +246,7 @@ The underlying [`erupt-ai`](/en/modules/erupt-ai) module ships with 17 LLM provi
 
 The engineering nature of this layer: **AI is not a separate service, not a chat box, not an overlay. It is the `@Erupt` metadata graph fed directly to the LLM**. Metadata = UI = LLM Tool — three from the same source, so the LLM taking over admin needs no extra code.
 
-## 6. Killer Feature 2: [`@EruptFlow`](/en/modules/pro/erupt-flow) — Entity as Approval Workflow Carrier
+## 6. Killer Feature 2: [`@EruptFlow`](/en/modules/pro/erupt-flow/) — Entity as Approval Workflow Carrier
 
 Nearly every backend system has approval flows — leave requests, order changes, contract approvals, customer tier adjustments.
 

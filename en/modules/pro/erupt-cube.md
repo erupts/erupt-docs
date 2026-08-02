@@ -8,9 +8,11 @@ Inspired by Google Looker's semantic layer concept, built as a professional-grad
 **Includes**: Full source code · All future version upgrades · Technical support · Priority Erupt-related support · Reasonable feature requests implemented for free · Continuous capability iteration
 **License**: No License restrictions · No project count limits · No commercial restrictions
 **Limitation**: Redistribution and secondary open-sourcing are prohibited
-
-👉 **[View Pricing and Purchase →](https://www.erupt.xyz/?utm_source=docs&utm_medium=tipblock&utm_campaign=pro#!/pro)**
 :::
+
+<a href="https://www.erupt.xyz/?utm_source=docs&utm_medium=banner&utm_campaign=pro#!/pro" target="_blank">
+  <img src="/pro/cta-en.svg" width="900" alt="View Erupt Pro pricing and purchase process">
+</a>
 
 Officially produced and maintained by the open-source Erupt framework team ([GitHub 3k+ ★](https://github.com/erupts/erupt) · [Gitee 5k+ ★](https://gitee.com/erupt/erupt)). Avoids vendor lock-in and operational costs of solutions like Kylin / Looker.
 
@@ -19,10 +21,6 @@ Demo: [https://demo.erupt.xyz](https://demo.erupt.xyz) &nbsp; Username: `cube` P
 :::info Documentation
 [Quick Start](/en/modules/pro/erupt-cube/quick-start) · [Data Sources](/en/modules/pro/erupt-cube/datasource) · [Semantic Modeling](/en/modules/pro/erupt-cube/semantic-model) · [Cube ML Syntax](/en/modules/pro/erupt-cube/cube-ml) · [Visual Modeling](/en/modules/pro/erupt-cube/visual-modeling) · [Visual Analysis](/en/modules/pro/erupt-cube/visual-analysis) · [SQL Port](/en/modules/pro/erupt-cube/sql)
 :::
-
-For pre-sales inquiries, add the author on WeChat:
-
-<img src="/contact/me.jpg" width="240">
 
 ---
 
@@ -224,4 +222,4 @@ The [online demo](https://demo.erupt.xyz) has all features available (username `
 
 ---
 
-For questions not listed above, scan the QR code above to contact the author on WeChat.
+For questions not listed above, visit the [pricing & purchase page](https://www.erupt.xyz/#!/pro) to contact the author.

@@ -416,8 +416,30 @@ export default withMermaid(defineConfig({
                         {
                             text: 'Commercial Modules',
                             items: [
-                                {text: 'Erupt SaaS Multi-tenant', link: '/en/modules/pro/erupt-tenant'},
-                                {text: 'Erupt Flow', link: '/en/modules/pro/erupt-flow'},
+                                {text: 'Pricing & Purchase ↗', link: 'https://www.erupt.xyz/#!/pro'},
+                                {
+                                    text: 'Erupt SaaS Multi-tenant',
+                                    collapsed: true,
+                                    items: [
+                                        {text: 'Introduction', link: '/en/modules/pro/erupt-tenant/'},
+                                        {text: 'Quick Start', link: '/en/modules/pro/erupt-tenant/quick-start'},
+                                        {text: 'Multi-tenant Development', link: '/en/modules/pro/erupt-tenant/development'},
+                                        {text: 'Domain & Customization', link: '/en/modules/pro/erupt-tenant/domain'},
+                                        {text: 'Database Design', link: '/en/modules/pro/erupt-tenant/database'},
+                                    ],
+                                },
+                                {
+                                    text: 'Erupt Flow',
+                                    collapsed: true,
+                                    items: [
+                                        {text: 'Introduction', link: '/en/modules/pro/erupt-flow/'},
+                                        {text: 'Quick Start', link: '/en/modules/pro/erupt-flow/quick-start'},
+                                        {text: 'Workflow Development', link: '/en/modules/pro/erupt-flow/development'},
+                                        {text: 'Custom Extensions', link: '/en/modules/pro/erupt-flow/custom-node'},
+                                        {text: 'Flow Printing', link: '/en/modules/pro/erupt-flow/print'},
+                                        {text: 'Database Design', link: '/en/modules/pro/erupt-flow/database'},
+                                    ],
+                                },
                                 {
                                     text: 'Erupt Cube BI',
                                     collapsed: true,
@@ -835,8 +857,30 @@ export default withMermaid(defineConfig({
                         {
                             text: '商业模块',
                             items: [
-                                {text: 'Erupt SaaS 多租户', link: '/zh/modules/pro/erupt-tenant'},
-                                {text: 'Erupt Flow 流程引擎', link: '/zh/modules/pro/erupt-flow'},
+                                {text: '定价与购买 ↗', link: 'https://www.erupt.xyz/#!/pro'},
+                                {
+                                    text: 'Erupt SaaS 多租户',
+                                    collapsed: true,
+                                    items: [
+                                        {text: '产品介绍', link: '/zh/modules/pro/erupt-tenant/'},
+                                        {text: '快速开始', link: '/zh/modules/pro/erupt-tenant/quick-start'},
+                                        {text: '多租户开发', link: '/zh/modules/pro/erupt-tenant/development'},
+                                        {text: '域名与租户定制', link: '/zh/modules/pro/erupt-tenant/domain'},
+                                        {text: '数据库设计', link: '/zh/modules/pro/erupt-tenant/database'},
+                                    ],
+                                },
+                                {
+                                    text: 'Erupt Flow 流程引擎',
+                                    collapsed: true,
+                                    items: [
+                                        {text: '产品介绍', link: '/zh/modules/pro/erupt-flow/'},
+                                        {text: '快速开始', link: '/zh/modules/pro/erupt-flow/quick-start'},
+                                        {text: '流程开发', link: '/zh/modules/pro/erupt-flow/development'},
+                                        {text: '自定义扩展', link: '/zh/modules/pro/erupt-flow/custom-node'},
+                                        {text: '流程打印', link: '/zh/modules/pro/erupt-flow/print'},
+                                        {text: '数据库设计', link: '/zh/modules/pro/erupt-flow/database'},
+                                    ],
+                                },
                                 {
                                     text: 'Erupt Cube BI 平台',
                                     collapsed: true,

@@ -8,17 +8,19 @@ A general-purpose workflow engine solution with full support for process configu
 **Includes**: Full source code · All future version upgrades · Technical support · Priority Erupt-related support · Reasonable feature requests implemented for free · Continuous capability iteration
 **License**: No License restrictions · Multi-project reuse allowed · No commercial restrictions
 **Limitation**: Redistribution and secondary open-sourcing are prohibited
-
-👉 **[View Pricing and Purchase →](https://www.erupt.xyz/?utm_source=docs&utm_medium=tipblock&utm_campaign=pro#!/pro)**
 :::
+
+<a href="https://www.erupt.xyz/?utm_source=docs&utm_medium=banner&utm_campaign=pro#!/pro" target="_blank">
+  <img src="/pro/cta-en.svg" width="900" alt="View Erupt Pro pricing and purchase process">
+</a>
 
 Officially produced and maintained by the open-source Erupt framework team ([GitHub 3k+ ★](https://github.com/erupts/erupt) · [Gitee 5k+ ★](https://gitee.com/erupt/erupt)). Private deployment; data stays on-premises; compliance-friendly.
 
 Demo: [https://demo.erupt.xyz](https://demo.erupt.xyz) &nbsp; Username: `flow` Password: `flow`
 
-For pre-sales inquiries, add the author on WeChat:
-
-<img src="/contact/me.jpg" width="240">
+:::info Documentation
+[Quick Start](/en/modules/pro/erupt-flow/quick-start) · [Workflow Development](/en/modules/pro/erupt-flow/development) · [Custom Extensions](/en/modules/pro/erupt-flow/custom-node) · [Flow Printing](/en/modules/pro/erupt-flow/print) · [Database Design](/en/modules/pro/erupt-flow/database)
+:::
 
 ---
 
@@ -38,7 +40,7 @@ Initiating a process:
 
 <img src="/flow/start.png" width="900">
 
-Custom printing:
+Custom printing (see [Flow Printing](/en/modules/pro/erupt-flow/print)):
 
 <img src="/flow/print.png" width="900">
 
@@ -79,7 +81,7 @@ Once erupt-designer is integrated, the workflow configuration step includes a vi
 Open-source Erupt provides basic CRUD and form capabilities. erupt-flow is a commercial module that adds a workflow engine, visual workflow designer, approval center UI, gateway and countersign, and other complete workflow capabilities — this is not included in the open-source version and will not be open-sourced in the future.
 
 **Q2 · How is it delivered?**
-After payment, provide your GitHub username. The author will add you as a collaborator to the private repository `erupts/erupt-flow`. You can clone the source code directly, compile locally, reference as needed, and will receive an integration document.
+After payment, provide your GitHub username. The author will add you as a collaborator to the private repository `erupt-io/erupt-flow`. You can clone the source code directly, compile locally, and reference as needed. See [Quick Start](/en/modules/pro/erupt-flow/quick-start) for integration steps.
 
 **Q3 · Do I need to pay again for future version upgrades?**
 No. One-time purchase = you have access to the current and all future versions. The private repository's master branch is continuously updated; just `git pull`.
@@ -94,4 +96,4 @@ The [online demo](https://demo.erupt.xyz) has all features available (username `
 
 ---
 
-For questions not listed above, scan the QR code above to contact the author on WeChat.
+For questions not listed above, visit the [pricing & purchase page](https://www.erupt.xyz/#!/pro) to contact the author.

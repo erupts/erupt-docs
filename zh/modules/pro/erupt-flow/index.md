@@ -8,17 +8,19 @@
 **包含**：完整源码 · 全版本升级 · 技术支持 · erupt 相关问题优先支持 · 合理需求免费实现 · 能力持续迭代
 **授权**：无 License 限制 · 可多项目复用 · 无商用限制
 **限制**：禁止二次开源与分发
-
-👉 **[查看定价与购买流程 →](https://www.erupt.xyz/?utm_source=docs&utm_medium=tipblock&utm_campaign=pro#!/pro)**
 :::
+
+<a href="https://www.erupt.xyz/?utm_source=docs&utm_medium=banner&utm_campaign=pro#!/pro" target="_blank">
+  <img src="/pro/cta-zh.svg" width="900" alt="查看 Erupt Pro 定价与购买流程">
+</a>
 
 由开源 Erupt 框架团队官方出品与维护（[GitHub 3k+ ★](https://github.com/erupts/erupt) · [Gitee 5k+ ★](https://gitee.com/erupt/erupt)），私有化部署，数据不出域，合规友好。
 
 演示：[https://demo.erupt.xyz](https://demo.erupt.xyz) &nbsp; 账号：`flow` 密码：`flow`
 
-售前咨询请添加作者微信：
-
-<img src="/contact/me.jpg" width="240">
+:::info 使用文档
+[快速开始](/zh/modules/pro/erupt-flow/quick-start) · [流程开发](/zh/modules/pro/erupt-flow/development) · [自定义扩展](/zh/modules/pro/erupt-flow/custom-node) · [流程打印](/zh/modules/pro/erupt-flow/print) · [数据库设计](/zh/modules/pro/erupt-flow/database)
+:::
 
 ---
 
@@ -38,7 +40,7 @@
 
 <img src="/flow/start.png" width="900">
 
-自定义打印：
+自定义打印（详见 [流程打印](/zh/modules/pro/erupt-flow/print)）：
 
 <img src="/flow/print.png" width="900">
 
@@ -79,7 +81,7 @@ erupt-flow 支持两种方式定义流程表单：
 开源 erupt 提供基础 CRUD 与表单能力。erupt-flow 是商业模块，新增工作流引擎、可视化流程设计器、审批中心 UI、网关与会签等完整工作流能力 —— 这部分开源版不包含、且未来也不会开源。
 
 **Q2 · 怎么交付？**
-付款后，提供你的 GitHub 用户名，作者会把你加入私有仓库 `erupts/erupt-flow` 的 collaborator，可直接 clone 源码、本地编译、按需引用，并发一份接入文档。
+付款后，提供你的 GitHub 用户名，作者会把你加入私有仓库 `erupt-io/erupt-flow` 的 collaborator，可直接 clone 源码、本地编译、按需引用。接入方式见 [快速开始](/zh/modules/pro/erupt-flow/quick-start)。
 
 **Q3 · 后续版本升级要再付费吗？**
 不需要。一次买断 = 你拥有当前及所有未来版本的访问权。私有仓库的 master 持续更新，git pull 即可。
@@ -94,4 +96,4 @@ erupt-flow 支持两种方式定义流程表单：
 
 ---
 
-如有未列出问题，欢迎扫上方二维码加微信咨询。
+如有未列出问题，请前往 [定价与购买页面](https://www.erupt.xyz/#!/pro) 联系作者咨询。
