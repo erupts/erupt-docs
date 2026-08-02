@@ -70,11 +70,17 @@
 
 <img src="/cloud/architecture-zh.svg" width="900" alt="Erupt Cloud 集群架构">
 
-> 集群内任意服务都可接入 erupt-node 实现该服务内部的配置管理，可做到多维配置、实时变更、协作管理、权限检查等。
-
 ### 调用时序图
 
 <img src="/cloud/sequence.jpeg">
+
+### 集群架构图
+
+:::danger
+集群内任意服务都可接入 erupt-node 实现该服务内部的配置管理，可做到多维配置、实时变更、协作管理、权限检查等。
+:::
+
+<img src="/cloud/cluster.jpeg">
 
 ## 快速开始
 

@@ -70,11 +70,17 @@ Compared to traditional solutions like Apollo, Erupt-Cloud offers much higher cu
 
 <img src="/cloud/architecture-en.svg" width="900" alt="Erupt Cloud cluster architecture">
 
-> Any service in the cluster can integrate erupt-node to implement internal configuration management for that service, enabling multi-dimensional configuration, real-time updates, collaborative management, and permission checks.
-
 ### Call Sequence Diagram
 
 <img src="/cloud/sequence.jpeg">
+
+### Cluster Architecture Diagram
+
+:::danger
+Any service in the cluster can integrate erupt-node to implement internal configuration management for that service, enabling multi-dimensional configuration, real-time updates, collaborative management, and permission checks.
+:::
+
+<img src="/cloud/cluster.jpeg">
 
 ## Quick Start
 
