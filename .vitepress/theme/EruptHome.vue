@@ -109,16 +109,16 @@ const t = computed(() => dict[props.lang] || dict.zh)
                             <span>{{ t.winCode }}</span>
                         </figcaption>
                         <pre class="rf-code"><span class="a">@Erupt</span>(name = <span class="s">"{{ t.codeTitle }}"</span>)
-<span class="k">public class</span> SysUser {
+<span class="k">public class</span> <span class="t">SysUser</span> {
 
     <span class="a">@EruptField</span>(
         views = <span class="a">@View</span>(title = <span class="s">"{{ t.fUser }}"</span>),
         edit  = <span class="a">@Edit</span>(title = <span class="s">"{{ t.fUser }}"</span>)
     )
-    <span class="k">private</span> String username;
+    <span class="k">private</span> <span class="t">String</span> username;
 
     <span class="a">@EruptField</span>(edit = <span class="a">@Edit</span>(title = <span class="s">"{{ t.fStatus }}"</span>))
-    <span class="k">private</span> Boolean status;
+    <span class="k">private</span> <span class="t">Boolean</span> status;
 }</pre>
                     </figure>
 
@@ -413,18 +413,19 @@ const t = computed(() => dict[props.lang] || dict.zh)
 .rf-code {
     margin: 0;
     padding: 14px 16px;
-    background: #1A170F;
+    background: #0F1A14;
     font-family: var(--mono);
     font-size: 11.5px;
     line-height: 1.6;
-    color: #F0E8D6;
+    color: #D8DCD0;
     overflow: hidden;
     white-space: pre;
 }
 
-.rf-code .a { color: #F585B4; font-weight: 700; }
+.rf-code .a { color: #FF8FA3; font-weight: 700; }
 .rf-code .k { color: #4FC8EC; font-weight: 700; }
-.rf-code .s { color: #93D655; }
+.rf-code .s { color: #98D9A0; font-weight: 700; }
+.rf-code .t { color: #FFD23F; font-weight: 700; }
 
 .rf-arrow-chip {
     position: absolute;
