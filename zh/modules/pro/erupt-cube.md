@@ -1,4 +1,4 @@
-# Erupt Cube BI 平台
+# Erupt Cube 指标平台
 
 借鉴 Google Looker 的语义层理念，为 Java 生态打造专业级大数据分析方案。数据工程师专注模型构建，数据分析师基于语义层自助完成可视化，无需多方协作，注解定义语义模型 + 拖拽完成可视化，开箱即用。
 
@@ -8,9 +8,11 @@
 **包含**：完整源码 · 全版本升级 · 技术支持 · erupt 相关问题优先支持 · 合理需求免费实现 · 能力持续迭代
 **授权**：无 License 限制 · 无项目数量限制 · 无商用限制
 **限制**：禁止二次开源与分发
-
-👉 **[查看定价与购买流程 →](https://www.erupt.xyz/?utm_source=docs&utm_medium=tipblock&utm_campaign=pro#!/pro)**
 :::
+
+<a href="https://www.erupt.xyz/?utm_source=docs&utm_medium=banner&utm_campaign=pro#!/pro" target="_blank">
+  <img src="/pro/cta-zh.svg" width="900" alt="查看 Erupt Pro 定价与购买流程">
+</a>
 
 由开源 Erupt 框架团队官方出品与维护（[GitHub 3k+ ★](https://github.com/erupts/erupt) · [Gitee 5k+ ★](https://gitee.com/erupt/erupt)），避免 Kylin / Looker 等方案的厂商锁定与运维成本。
 
@@ -20,10 +22,6 @@
 [快速开始](/zh/modules/pro/erupt-cube/quick-start) · [数据源](/zh/modules/pro/erupt-cube/datasource) · [语义建模](/zh/modules/pro/erupt-cube/semantic-model) · [Cube 语法（ML）](/zh/modules/pro/erupt-cube/cube-ml) · [可视化建模](/zh/modules/pro/erupt-cube/visual-modeling) · [可视化分析](/zh/modules/pro/erupt-cube/visual-analysis) · [SQL 查询端口](/zh/modules/pro/erupt-cube/sql)
 :::
 
-售前咨询请添加作者微信：
-
-<img src="/contact/me.jpg" width="240">
-
 ---
 
 <img src="/cube/overview.png" width="900">
@@ -31,6 +29,10 @@
 <img src="/cube/semantic.png" width="900">
 
 ## 语义模型解决什么问题
+
+数据源接入后由 `@EruptCube` 统一定义维度与指标，所有消费端共享同一套语义：
+
+<img src="/cube/semantic-layer-zh.svg" width="900" alt="语义层架构">
 
 | 问题 | 没有语义模型 | 有语义模型 |
 | --- | --- | --- |
@@ -51,6 +53,8 @@ erupt-cube 同时支持两种语义模型定义方式，覆盖团队内不同角
 两种方式可在同一项目内共存：复杂核心模型用注解定义并 git 管理，业务侧临时分析用可视化建模快速验证，提需求时再由开发同学把可视化模型沉淀为注解。
 
 > 推荐工作流：**注解定义核心模型 → 可视化界面用于业务自助探索 → 探索后稳定下来的模型回流为注解**。
+
+<img src="/cube/modeling-flow-zh.svg" width="900" alt="两种建模方式互补">
 
 ## 注解建模速查（API 参考）
 
@@ -226,4 +230,4 @@ Looker 将语义层理念做到极致，称之为 **LookML**，核心思想是�
 
 ---
 
-如有未列出问题，欢迎扫上方二维码加微信咨询。
+如有未列出问题，请前往 [定价与购买页面](https://www.erupt.xyz/#!/pro) 联系作者咨询。

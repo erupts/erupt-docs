@@ -1,4 +1,4 @@
-# Erupt Cube BI Platform
+# Erupt Cube Metrics Platform
 
 Inspired by Google Looker's semantic layer concept, built as a professional-grade big data analytics solution for the Java ecosystem. Data engineers focus on model construction; data analysts complete visualizations self-service based on the semantic layer — no multi-party collaboration required. Define semantic models with annotations, build visualizations with drag-and-drop, ready to use out of the box.
 
@@ -8,9 +8,11 @@ Inspired by Google Looker's semantic layer concept, built as a professional-grad
 **Includes**: Full source code · All future version upgrades · Technical support · Priority Erupt-related support · Reasonable feature requests implemented for free · Continuous capability iteration
 **License**: No License restrictions · No project count limits · No commercial restrictions
 **Limitation**: Redistribution and secondary open-sourcing are prohibited
-
-👉 **[View Pricing and Purchase →](https://www.erupt.xyz/?utm_source=docs&utm_medium=tipblock&utm_campaign=pro#!/pro)**
 :::
+
+<a href="https://www.erupt.xyz/?utm_source=docs&utm_medium=banner&utm_campaign=pro#!/pro" target="_blank">
+  <img src="/pro/cta-en.svg" width="900" alt="View Erupt Pro pricing and purchase process">
+</a>
 
 Officially produced and maintained by the open-source Erupt framework team ([GitHub 3k+ ★](https://github.com/erupts/erupt) · [Gitee 5k+ ★](https://gitee.com/erupt/erupt)). Avoids vendor lock-in and operational costs of solutions like Kylin / Looker.
 
@@ -20,10 +22,6 @@ Demo: [https://demo.erupt.xyz](https://demo.erupt.xyz) &nbsp; Username: `cube` P
 [Quick Start](/en/modules/pro/erupt-cube/quick-start) · [Data Sources](/en/modules/pro/erupt-cube/datasource) · [Semantic Modeling](/en/modules/pro/erupt-cube/semantic-model) · [Cube ML Syntax](/en/modules/pro/erupt-cube/cube-ml) · [Visual Modeling](/en/modules/pro/erupt-cube/visual-modeling) · [Visual Analysis](/en/modules/pro/erupt-cube/visual-analysis) · [SQL Port](/en/modules/pro/erupt-cube/sql)
 :::
 
-For pre-sales inquiries, add the author on WeChat:
-
-<img src="/contact/me.jpg" width="240">
-
 ---
 
 <img src="/cube/overview.png" width="900">
@@ -31,6 +29,10 @@ For pre-sales inquiries, add the author on WeChat:
 <img src="/cube/semantic.png" width="900">
 
 ## What Problems Does the Semantic Model Solve?
+
+Once data sources are connected, `@EruptCube` defines dimensions and measures in one place — every consumer shares the same semantics:
+
+<img src="/cube/semantic-layer-en.svg" width="900" alt="Semantic layer architecture">
 
 | Problem | Without Semantic Model | With Semantic Model |
 | --- | --- | --- |
@@ -51,6 +53,8 @@ erupt-cube supports two semantic model definition methods simultaneously, coveri
 Both approaches can coexist in the same project: define core complex models with annotations and manage them in git; business-side ad-hoc analysis uses visual modeling for quick validation, and stable models are later committed to annotations by developers.
 
 > Recommended workflow: **Define core models with annotations → Use the visual interface for business self-service exploration → Stable models from exploration are converted back to annotations**.
+
+<img src="/cube/modeling-flow-en.svg" width="900" alt="Two complementary modeling approaches">
 
 ## Annotation Modeling Reference (API)
 
@@ -224,4 +228,4 @@ The [online demo](https://demo.erupt.xyz) has all features available (username `
 
 ---
 
-For questions not listed above, scan the QR code above to contact the author on WeChat.
+For questions not listed above, visit the [pricing & purchase page](https://www.erupt.xyz/#!/pro) to contact the author.

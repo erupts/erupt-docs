@@ -51,7 +51,7 @@ MyBatis-Plus 解决"少写 SQL"这一件事，已经做到天花板。但**写�
 | 6 | **DataProxy 业务钩子** | [`beforeAdd / afterAdd / ...` 10+ 钩子](/zh/advanced/data-proxy) |
 | 7 | **Lambda 查询** | [`EruptLambdaQuery<T>`](/zh/advanced/erupt-dao-lambda) 类型安全 DSL |
 | 8 | **AI Agent** | [`erupt-ai-claw`](/zh/modules/erupt-ai-claw) 引入即用，LLM 零代码 CRUD |
-| 9 | **审批流** | [`@EruptFlow`](/zh/modules/pro/erupt-flow) 实体即流程载体 |
+| 9 | **审批流** | [`@EruptFlow`](/zh/modules/pro/erupt-flow/) 实体即流程载体 |
 | 10 | **跨服务聚合** | [`erupt-cloud-node-jpa`](/zh/modules/cloud-node) 心跳上报中央 admin |
 
 下面分三组讲清楚——**写注解就有的 4 件、写少量代码扩展的 3 件、AI 时代杀手 3 件**，最后再补一个永远不会出错的兜底层。
@@ -246,7 +246,7 @@ LLM 直接 CRUD 数据库听起来很危险，所以 Erupt 给了三道闸——
 
 这一层的工程性质是——**AI 不是另一个独立服务、不是聊天框、不是浮层。它是 `@Erupt` 元数据图直接喂给 LLM**。元数据 = UI = LLM Tool，三者同源，所以 LLM 接管 admin 不需要额外代码。
 
-## 六、杀手锏二：[`@EruptFlow`](/zh/modules/pro/erupt-flow) —— 实体即审批流载体
+## 六、杀手锏二：[`@EruptFlow`](/zh/modules/pro/erupt-flow/) —— 实体即审批流载体
 
 绝大多数后台系统都有审批流——请假、订单变更、合同审批、客户调级。
 

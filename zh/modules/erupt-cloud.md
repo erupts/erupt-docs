@@ -8,6 +8,8 @@
 对比 Apollo 等传统方案，Erupt-Cloud 在配置形态、权限粒度、业务扩展等方面提供极高定制空间，让微服务配置真正"看得见、管得住、改得动"，显著提升分布式系统的可控性与运维效率。
 :::
 
+<img src="/cloud/node-flow-zh.svg" width="900" alt="三步接入 erupt-cloud">
+
 ## ⭐️ 应用场景
 
 > 无需关注上层 erupt 架构，天然实现数据库隔离、资源隔离。
@@ -66,6 +68,8 @@
 **资源隔离**：数据库连接池隔离，代码逻辑隔离
 :::
 
+<img src="/cloud/architecture-zh.svg" width="900" alt="Erupt Cloud 集群架构">
+
 ### 调用时序图
 
 <img src="/cloud/sequence.jpeg">
@@ -77,16 +81,6 @@
 :::
 
 <img src="/cloud/cluster.jpeg">
-
-### 高可用架构图
-
-下图每个 node 都可以理解为一个服务，它接入了 erupt-node 来管理本服务内的配置信息。
-
-<img src="/cloud/ha.jpeg">
-
-:::info
-用于管理 node 节点，负责服务注册中心，请求调度与负载分发。
-:::
 
 ## 快速开始
 

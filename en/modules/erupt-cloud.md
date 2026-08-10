@@ -8,6 +8,8 @@ Zero frontend code — pure annotation-based configuration management for differ
 Compared to traditional solutions like Apollo, Erupt-Cloud offers much higher customization in terms of configuration shape, permission granularity, and business extension, making microservice configurations truly "visible, controllable, and editable", and significantly improving the controllability and operational efficiency of distributed systems.
 :::
 
+<img src="/cloud/node-flow-en.svg" width="900" alt="Three-step erupt-cloud integration">
+
 ## Application Scenarios
 
 > No need to worry about the upper-level Erupt architecture — database and resource isolation are achieved naturally.
@@ -66,6 +68,8 @@ Compared to traditional solutions like Apollo, Erupt-Cloud offers much higher cu
 **Resource Isolation**: Database connection pool isolation, code logic isolation
 :::
 
+<img src="/cloud/architecture-en.svg" width="900" alt="Erupt Cloud cluster architecture">
+
 ### Call Sequence Diagram
 
 <img src="/cloud/sequence.jpeg">
@@ -77,16 +81,6 @@ Any service in the cluster can integrate erupt-node to implement internal config
 :::
 
 <img src="/cloud/cluster.jpeg">
-
-### High-Availability Architecture Diagram
-
-Each node in the diagram below can be understood as a service that has integrated erupt-node to manage its own internal configuration.
-
-<img src="/cloud/ha.jpeg">
-
-:::info
-Used to manage node instances, responsible for service registry, request scheduling, and load distribution.
-:::
 
 ## Quick Start
 
