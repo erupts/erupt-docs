@@ -177,4 +177,10 @@ onUnmounted(() => clearInterval(timer))
   background: #4FC8EC;
 }
 
+@media (max-width: 768px) {
+  .floating-promo {
+    display: none;
+  }
+}
+
 </style>
