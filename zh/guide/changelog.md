@@ -1,5 +1,62 @@
 # 更新日志
 
+## 2.1.0（2026-08-23） <Badge type="tip" text="Spring Boot 3.5.16" />
+
+> 🦞 新模块开源 ×15 &emsp; 🔌 数据连接层 13+ 数据源 &emsp; 🤖 AI 能力全面升级
+
+🦞 开源 [Erupt Report 报表图表](/zh/modules/erupt-report/)模块（原商业版 erupt-bi），纯 SQL 定义报表与图表，零前端代码完成多维数据分析
+
+🦞 开源 erupt-data 数据连接层：数据在哪，后台就在哪——统一数据源接口，同一套注解模型即可对任意数据完成增删改查、分页与检索，本次新增 11 个数据源模块：
+
+| 模块 | 说明 |
+|---|---|
+| [erupt-data-jdbc](/zh/modules/erupt-jdbc) | 纯 JDBC 单表数据源，无需 JPA 实体映射，支持 ClickHouse、Doris、TDengine、达梦等仅有 JDBC 驱动的数据库 |
+| [erupt-data-http](/zh/modules/erupt-http) | REST 接口即数据源，将任意 HTTP 服务映射为可管理的后台表格 |
+| [erupt-data-es](/zh/modules/erupt-es) | Elasticsearch 数据源，索引数据的管理与全文检索 |
+| [erupt-data-redis](/zh/modules/erupt-redis) | Redis 键值数据的可视化管理 |
+| [erupt-data-memory](/zh/modules/erupt-memory) | 内存数据源，无需数据库即可管理数据 |
+| [erupt-data-file](/zh/modules/erupt-file) | 文件即数据表，支持 CSV、JSONL、TSV、INI 等格式 |
+| [erupt-data-k8s](/zh/modules/erupt-k8s) | Kubernetes 集群资源的可视化管理 |
+| [erupt-data-ldap](/zh/modules/erupt-ldap) | LDAP 目录服务数据源 |
+| [erupt-data-feishu](/zh/modules/erupt-feishu) | 飞书多维表格数据源 |
+| [erupt-data-notion](/zh/modules/erupt-notion) | Notion 数据源 |
+| [erupt-data-s3](/zh/modules/erupt-s3) | S3 对象存储数据源 |
+
+🦞 开源 [erupt-ai-canvas](/zh/modules/erupt-ai-canvas) 模块：一句话生成一个页面，SSE 流式生成、版本回退、元素拾取修改、多设备预览、一键发布到菜单，数据实时来自 Erupt 后端
+
+🦞 开源 erupt-ai-rag 模块：[知识库与向量检索（RAG）](/zh/modules/erupt-ai-rag)，可插拔嵌入模型与向量存储（pgvector、Redis 等），支持 Agentic RAG
+
+🦞 开源 erupt-ai-staff 模块：[AI 数字员工](/zh/modules/erupt-ai-staff)，绑定系统账户上岗、继承 UPMS 权限、Cron 排班执行任务，工作报告自动推送到钉钉、企业微信、飞书或 Slack
+
+🌟 [erupt-cube](/zh/modules/pro/erupt-cube/sql) 新增 SQL Port：PostgreSQL 兼容协议端口（基于 Calcite 查询下推），任意 BI 工具可像连接 PostgreSQL 一样直连语义层
+
+🌟 [erupt-ai-claw](/zh/modules/erupt-ai-claw) 增强：沙箱化文件与 Shell 工具、Agent Skills 技能库与技能沉淀、Erupt 模型增删改查工具箱、JVM 与 Spring 运行时诊断工具
+
+🌟 [erupt-cloud](/zh/modules/erupt-cloud) 增强：节点生命周期管理、资源上报、路由容灾与优雅停机，并支持挂载 erupt-flow、erupt-ai-claw、erupt-monitor 等模块
+
+🌟 [erupt-flow](/zh/modules/pro/erupt-flow/development#flex-节点) 新增 Flex 自动化节点：HTTP 请求、脚本、数据、变量（JS 表达式解析）、通知、等待回调，流程无需人工介入即可执行自动化动作
+
+🌟 新增 erupt-docker all-in-one 镜像，一条命令拉起完整 Erupt 运行环境
+
+🌟 AI 聊天支持中途停止生成，已生成内容保留并标记中断状态
+
+🧩 [erupt-monitor](/zh/modules/erupt-monitor) 新增 Erupt 类注册表页面，运行时模型一览，并支持一键发布到菜单
+
+🧩 [@Power](/zh/annotation/power) 新增 `ai` 开关，按实体控制 AI 能力的可用范围
+
+🧩 管理后台视觉升级：新增 Brutalist 主题一键切换，登录页与品牌 Logo 全新设计
+
+🧩 表格列跟随 [@Vis](/zh/annotation/vis) 字段可见性动态过滤
+
+🐞 修复 `pwd-transfer-encrypt = false` 时修改密码接口报错的问题
+
+🐞 修复操作日志脱敏失败导致日志记录异常的问题
+
+:::warning 破坏性变更
+- `erupt-jpa` 更名为 `erupt-data-jpa`，`erupt-mongodb` 更名为 `erupt-data-mongodb`（统一归入 erupt-data 数据连接层），请同步修改 Maven 依赖的 artifactId
+- `erupt-tpl-ui` 中的 AMIS 集成模块已移除，如有使用请迁移至其他模板引擎集成方式
+:::
+
 ## 2.0.4（2026-07-19） <Badge type="tip" text="Spring Boot 3.5.16" />
 
 🌟 新增 [`BUTTON` 编辑类型](/zh/field-types/button)，表单内按钮点击后携带全部表单数据调用后端处理器，支持回填表单值与动态调整字段配置
@@ -220,7 +277,7 @@
 
 🌟 erupt-ai 支持通过 ReAct 模式智能调度已注册的 AI 工具，并展示推理过程
 
-🌟 新增 skill 文件，方便 AI 与 erupt 更好的交互：[SKILLS](https://github.com/erupts/erupt/tree/master/.claude/skills/erupt)
+🌟 新增 skill 文件，方便 AI 与 erupt 更好的交互：[SKILLS](https://github.com/plinian/erupt-skill)
 
 🌟 开源 [erupt-vote](/zh/modules/third-party/erupt-vote) 投票插件，感谢 [@PPLINGHUFEI](https://gitee.com/PPLINGHUFEI) 的贡献
 

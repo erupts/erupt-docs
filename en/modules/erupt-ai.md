@@ -17,6 +17,9 @@ Deep integration with today's popular large language models for low-code AI appl
 | **Tools** | Register tools via `@AiToolbox` + `@Tool` and call them during conversations; EruptAiToolbox provides base model list, Schema, current user, HQL query, module list, and more |
 | **MCP** | Supports mounting external MCP Servers for flexible tool capability extension |
 | **MCP Server** | Built-in MCP Server with Bearer authentication; supports direct connection from Cursor / Claude and other clients |
+| **Knowledge Base (RAG)** | Visual knowledge base management: document upload, automatic chunking, vector embedding, semantic retrieval — invoked autonomously by the AI during conversations (Agentic RAG) |
+| **Vector Store** | Pluggable vector store layer supporting Qdrant / Milvus / PGVector / Redis / Memory backends |
+| **AI Staff** | Digital employees bound to system accounts and duty personas; run scheduled tasks and push work reports to DingTalk / WeCom / Feishu / Slack |
 | **Security** | Built-in strict interface permission control; AI chat capabilities can be dynamically granted through user permissions |
 
 ## Quick Start
@@ -298,6 +301,18 @@ Memory capabilities work out of the box with no additional configuration. The AI
 | `contextPrompt` | Supplemental context appended to the conversation (e.g., a summary of the currently visible data) |
 
 Both fields are passed by the frontend or integration layer when calling the chat API. Combined with `@Erupt(prompt = "...")` and `@Edit(prompt = "...")`, they allow the AI to understand the business semantics of each entity and field.
+
+## Knowledge Base & Vector Retrieval (RAG) <Badge type="tip" text="v2.1.0+" />
+
+Turn business documents into AI-searchable knowledge; the AI decides autonomously when to query which knowledge base during conversations (Agentic RAG).
+
+See the standalone documentation: [📖 Erupt AI RAG](/en/modules/erupt-ai-rag)
+
+## AI Digital Staff <Badge type="tip" text="v2.1.0+" />
+
+AI staff have a system account, duty persona, and work schedule: they run tasks on cron schedules and push work reports to DingTalk, WeCom, Feishu, or Slack.
+
+See the standalone documentation: [👩‍💻 Erupt AI Staff](/en/modules/erupt-ai-staff)
 
 ## Driving Erupt Claw
 

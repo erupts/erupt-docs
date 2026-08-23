@@ -1,5 +1,62 @@
 # Changelog
 
+## 2.1.0 (2026-08-23) <Badge type="tip" text="Spring Boot 3.5.16" />
+
+> 🦞 15 modules open-sourced &emsp; 🔌 13+ data connectors &emsp; 🤖 Major AI upgrades
+
+🦞 Open-sourced the [Erupt Report](/en/modules/erupt-report/) module (formerly the commercial erupt-bi) — define reports and charts in pure SQL, multi-dimensional analytics with zero frontend code.
+
+🦞 Open-sourced the erupt-data connector layer: where data lives, admin follows — one unified data-source interface, letting the same annotated model perform CRUD, pagination, and search over any data. 11 new data-source modules:
+
+| Module | Description |
+|---|---|
+| [erupt-data-jdbc](/en/modules/erupt-jdbc) | Plain JDBC single-table data source, no JPA mapping needed — supports ClickHouse, Doris, TDengine, DM, and other JDBC-driver-only databases |
+| [erupt-data-http](/en/modules/erupt-http) | REST APIs as data sources — map any HTTP service to a manageable admin table |
+| [erupt-data-es](/en/modules/erupt-es) | Elasticsearch data source for managing and full-text searching index data |
+| [erupt-data-redis](/en/modules/erupt-redis) | Visual management of Redis key-value data |
+| [erupt-data-memory](/en/modules/erupt-memory) | In-memory data source — manage data without a database |
+| [erupt-data-file](/en/modules/erupt-file) | Files as tables, supporting CSV, JSONL, TSV, INI, and more |
+| [erupt-data-k8s](/en/modules/erupt-k8s) | Visual management of Kubernetes cluster resources |
+| [erupt-data-ldap](/en/modules/erupt-ldap) | LDAP directory service data source |
+| [erupt-data-feishu](/en/modules/erupt-feishu) | Feishu Bitable data source |
+| [erupt-data-notion](/en/modules/erupt-notion) | Notion data source |
+| [erupt-data-s3](/en/modules/erupt-s3) | S3 object storage data source |
+
+🦞 Open-sourced the [erupt-ai-canvas](/en/modules/erupt-ai-canvas) module: generate a complete page from one sentence — SSE streaming generation, version rollback, element picking, multi-device preview, one-click publish to menu, with live data from the Erupt backend.
+
+🦞 Open-sourced the erupt-ai-rag module: [knowledge bases with vector retrieval (RAG)](/en/modules/erupt-ai-rag), pluggable embedding models and vector stores (pgvector, Redis, etc.), with Agentic RAG support.
+
+🦞 Open-sourced the erupt-ai-staff module: [AI digital employees](/en/modules/erupt-ai-staff) bound to real system accounts, inheriting UPMS permissions, running Cron-scheduled tasks, and pushing work reports to DingTalk, WeCom, Feishu, or Slack.
+
+🌟 [erupt-cube](/en/modules/pro/erupt-cube/sql) gains a SQL Port: a PostgreSQL-compatible wire-protocol port (Calcite query pushdown) — any BI tool can connect to the semantic layer as if it were PostgreSQL.
+
+🌟 [erupt-ai-claw](/en/modules/erupt-ai-claw) enhancements: sandboxed file and shell tools, an Agent Skills library with skill sedimentation, an Erupt model CRUD toolbox, and JVM/Spring runtime diagnostics tools.
+
+🌟 [erupt-cloud](/en/modules/erupt-cloud) enhancements: node lifecycle management, resource reporting, routing failover and graceful shutdown, plus support for mounting erupt-flow, erupt-ai-claw, and erupt-monitor.
+
+🌟 [erupt-flow](/en/modules/pro/erupt-flow/development#flex-nodes) gains Flex automation nodes: HTTP request, script, data, variable (JS expression resolution), notify, and wait-callback — flows can now perform automated actions without human steps.
+
+🌟 New erupt-docker all-in-one image — spin up a complete Erupt environment with a single command.
+
+🌟 AI chat can now be stopped mid-generation; partial output is kept and marked as interrupted.
+
+🧩 [erupt-monitor](/en/modules/erupt-monitor) adds an Erupt class registry page listing runtime models, with one-click publish to menu.
+
+🧩 [@Power](/en/annotation/power) adds an `ai` switch to control AI availability per entity.
+
+🧩 Admin UI refresh: new Brutalist theme with one-click toggle, redesigned login screens and brand logo.
+
+🧩 Table columns now filter dynamically based on [@Vis](/en/annotation/vis) field visibility.
+
+🐞 Fixed the change-password API failing when `pwd-transfer-encrypt = false`.
+
+🐞 Fixed operation-log recording errors caused by masking failures.
+
+:::warning Breaking Changes
+- `erupt-jpa` has been renamed to `erupt-data-jpa`, and `erupt-mongodb` to `erupt-data-mongodb` (both now part of the erupt-data connector layer) — update the artifactId in your Maven dependencies.
+- The AMIS integration module in `erupt-tpl-ui` has been removed; migrate to another template engine integration if you were using it.
+:::
+
 ## 2.0.4 (2026-07-19) <Badge type="tip" text="Spring Boot 3.5.16" />
 
 🌟 New [`BUTTON` edit type](/en/field-types/button) — an in-form button that calls a backend handler with all current form values, supporting form population and dynamic field configuration.
@@ -223,7 +280,7 @@ Erupt fully embraces the AI Harness initiative, delivering 🚀-grade capabiliti
 
 🌟 erupt-ai can intelligently orchestrate registered AI tools via the ReAct pattern, while exposing the reasoning trace.
 
-🌟 Added skill files to improve the interaction between AI and Erupt: [SKILLS](https://github.com/erupts/erupt/tree/master/.claude/skills/erupt).
+🌟 Added skill files to improve the interaction between AI and Erupt: [SKILLS](https://github.com/plinian/erupt-skill).
 
 🌟 Open-sourced the [erupt-vote](/en/modules/third-party/erupt-vote) plugin — thanks to [@PPLINGHUFEI](https://gitee.com/PPLINGHUFEI) for the contribution.
 

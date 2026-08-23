@@ -7,7 +7,7 @@ erupt-jpa extends standard Spring Data JPA to provide more powerful database que
 ```xml
 <dependency>
   <groupId>xyz.erupt</groupId>
-  <artifactId>erupt-jpa</artifactId>
+  <artifactId>erupt-data-jpa</artifactId>
   <version>${erupt.version}</version>
 </dependency>
 ```

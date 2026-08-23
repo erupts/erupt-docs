@@ -7,7 +7,7 @@ erupt-mongodb 模块为 Erupt 框架提供 MongoDB 数据源支持，可以像�
 ```xml
 <dependency>
   <groupId>xyz.erupt</groupId>
-  <artifactId>erupt-mongodb</artifactId>
+  <artifactId>erupt-data-mongodb</artifactId>
   <version>${erupt.version}</version>
 </dependency>
 ```
