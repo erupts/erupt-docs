@@ -6,6 +6,12 @@
 
 🦞 Open-sourced the [Erupt Report](/en/modules/erupt-report/) module (formerly the commercial erupt-bi) — define reports and charts in pure SQL, multi-dimensional analytics with zero frontend code.
 
+🦞 Open-sourced the [erupt-ai-canvas](/en/modules/erupt-ai-canvas) module: generate a complete page from one sentence — SSE streaming generation, version rollback, element picking, multi-device preview, one-click publish to menu, with live data from the Erupt backend.
+
+🦞 Open-sourced the erupt-ai-rag module: [knowledge bases with vector retrieval (RAG)](/en/modules/erupt-ai-rag), pluggable embedding models and vector stores (pgvector, Redis, etc.), with Agentic RAG support.
+
+🦞 Open-sourced the erupt-ai-staff module: [AI digital employees](/en/modules/erupt-ai-staff) bound to real system accounts, inheriting UPMS permissions, running Cron-scheduled tasks, and pushing work reports to DingTalk, WeCom, Feishu, or Slack.
+
 🦞 Open-sourced the erupt-data connector layer: where data lives, admin follows — one unified data-source interface, letting the same annotated model perform CRUD, pagination, and search over any data. 11 new data-source modules:
 
 | Module | Description |
@@ -21,12 +27,6 @@
 | [erupt-data-feishu](/en/modules/erupt-feishu) | Feishu Bitable data source |
 | [erupt-data-notion](/en/modules/erupt-notion) | Notion data source |
 | [erupt-data-s3](/en/modules/erupt-s3) | S3 object storage data source |
-
-🦞 Open-sourced the [erupt-ai-canvas](/en/modules/erupt-ai-canvas) module: generate a complete page from one sentence — SSE streaming generation, version rollback, element picking, multi-device preview, one-click publish to menu, with live data from the Erupt backend.
-
-🦞 Open-sourced the erupt-ai-rag module: [knowledge bases with vector retrieval (RAG)](/en/modules/erupt-ai-rag), pluggable embedding models and vector stores (pgvector, Redis, etc.), with Agentic RAG support.
-
-🦞 Open-sourced the erupt-ai-staff module: [AI digital employees](/en/modules/erupt-ai-staff) bound to real system accounts, inheriting UPMS permissions, running Cron-scheduled tasks, and pushing work reports to DingTalk, WeCom, Feishu, or Slack.
 
 🌟 [erupt-cube](/en/modules/pro/erupt-cube/sql) gains a SQL Port: a PostgreSQL-compatible wire-protocol port (Calcite query pushdown) — any BI tool can connect to the semantic layer as if it were PostgreSQL.
 

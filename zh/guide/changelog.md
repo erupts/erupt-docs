@@ -6,6 +6,12 @@
 
 🦞 开源 [Erupt Report 报表图表](/zh/modules/erupt-report/)模块（原商业版 erupt-bi），纯 SQL 定义报表与图表，零前端代码完成多维数据分析
 
+🦞 开源 [erupt-ai-canvas](/zh/modules/erupt-ai-canvas) 模块：一句话生成一个页面，SSE 流式生成、版本回退、元素拾取修改、多设备预览、一键发布到菜单，数据实时来自 Erupt 后端
+
+🦞 开源 erupt-ai-rag 模块：[知识库与向量检索（RAG）](/zh/modules/erupt-ai-rag)，可插拔嵌入模型与向量存储（pgvector、Redis 等），支持 Agentic RAG
+
+🦞 开源 erupt-ai-staff 模块：[AI 数字员工](/zh/modules/erupt-ai-staff)，绑定系统账户上岗、继承 UPMS 权限、Cron 排班执行任务，工作报告自动推送到钉钉、企业微信、飞书或 Slack
+
 🦞 开源 erupt-data 数据连接层：数据在哪，后台就在哪——统一数据源接口，同一套注解模型即可对任意数据完成增删改查、分页与检索，本次新增 11 个数据源模块：
 
 | 模块 | 说明 |
@@ -21,12 +27,6 @@
 | [erupt-data-feishu](/zh/modules/erupt-feishu) | 飞书多维表格数据源 |
 | [erupt-data-notion](/zh/modules/erupt-notion) | Notion 数据源 |
 | [erupt-data-s3](/zh/modules/erupt-s3) | S3 对象存储数据源 |
-
-🦞 开源 [erupt-ai-canvas](/zh/modules/erupt-ai-canvas) 模块：一句话生成一个页面，SSE 流式生成、版本回退、元素拾取修改、多设备预览、一键发布到菜单，数据实时来自 Erupt 后端
-
-🦞 开源 erupt-ai-rag 模块：[知识库与向量检索（RAG）](/zh/modules/erupt-ai-rag)，可插拔嵌入模型与向量存储（pgvector、Redis 等），支持 Agentic RAG
-
-🦞 开源 erupt-ai-staff 模块：[AI 数字员工](/zh/modules/erupt-ai-staff)，绑定系统账户上岗、继承 UPMS 权限、Cron 排班执行任务，工作报告自动推送到钉钉、企业微信、飞书或 Slack
 
 🌟 [erupt-cube](/zh/modules/pro/erupt-cube/sql) 新增 SQL Port：PostgreSQL 兼容协议端口（基于 Calcite 查询下推），任意 BI 工具可像连接 PostgreSQL 一样直连语义层
 
