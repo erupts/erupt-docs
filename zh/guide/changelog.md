@@ -115,7 +115,7 @@
 
 🌟 [erupt-monitor](/zh/modules/erupt-monitor) **完全重写**：全新诊断监控体系，覆盖 JVM、HikariCP 连接池、HTTP 统计、Redis 健康指标
 
-🌟 [erupt-ai](/zh/modules/erupt-ai#agentprompt-与-contextprompt)：LLM 请求支持 `agentPrompt` 与 `contextPrompt`，可按调用场景注入上下文感知提示词
+🌟 [erupt-ai](/zh/modules/erupt-ai#llmrequest-请求级扩展)：LLM 请求支持 `agentPrompt` 与 `contextPrompt`，可按调用场景注入上下文感知提示词
 
 🌟 [@Vis](/zh/annotation/vis) 新增日历视图（`CALENDAR`）与看板视图（`BOARD`）类型，数据可视化展示方式更多样
 

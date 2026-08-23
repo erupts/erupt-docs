@@ -19,7 +19,7 @@ The AI **decides on its own** when to query which knowledge base during conversa
 </dependency>
 ```
 
-2. After startup, the **Embedding Model** and **Knowledge Base** menus are added.
+2. After startup, the **Knowledge Base** menu group is added (the Embedding Model menu is provided by erupt-ai, under the **AI Manager** menu group).
 
 ## Embedding Models
 

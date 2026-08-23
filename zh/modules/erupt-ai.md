@@ -11,7 +11,7 @@
 
 | **能力** | **说明** |
 |---|---|
-| **LLM** | 支持：ChatGPT、Claude、Gemini、Ollama、Qwen、Doubao、GLM、DeepSeek、Moonshot、MinMax、Mistral、Grok、Fireworks、Together、OpenRouter 等 |
+| **LLM** | 支持：ChatGPT、Claude、Gemini、Ollama、Qwen、Doubao、GLM、DeepSeek、Moonshot、MiniMax、Mistral、Grok、Mimo、Fireworks、Together、OpenRouter、Requesty 等 |
 | **Chat** | 会话管理（AiChat）、消息历史（AiChatMessage）、SSE 流式输出、可配置上下文轮次（maxContext） |
 | **Agent** | 自定义可视化控制 Prompt、可动态控制 Agent 提示词 |
 | **Tools** | 通过 `@AiToolbox` + `@Tool` 注册工具并在对话中调用；EruptAiToolbox 提供基础模型列表、Schema、当前用户、HQL 查询、模块列表等能力 |
@@ -44,14 +44,16 @@ erupt:
       你是 Erupt AI，你更擅长中文和英文的对话。你会为用户提供安全，有帮助，准确的回答。
       同时，你会拒绝一切涉及恐怖主义，种族歧视，黄色暴力等问题的回答。
       Erupt AI 为专有名词，不可翻译成其他语言。
-    # SSE 超时时间
-    sse-timeout: 300000
+    # SSE 超时时间（毫秒，默认 15 分钟）
+    sse-timeout: 900000
     # 打字配置
     message-chunk-size: 20
     message-delay: 30
+    # 单轮对话中连续工具调用的最大次数，超出后 ReAct 循环终止，防止工具调用失控
+    max-sequential-tools-invocations: 30
 ```
 
-3. 启动后会增加如下菜单：
+3. 启动后会自动注册 **AI Manager** 菜单组，包含：LLM（大模型）、Embedding Model（嵌入模型）、MCP、A2A Agent、Agent（智能体）、AI Role（AI 角色）、AI Chat（对话）：
 
 <img src="/ai/menu.png" width="1770">
 
@@ -209,7 +211,12 @@ AI 能力不再一刀切。通过为每个角色独立配置**系统提示词**�
 erupt:
   ai:
     mcp:
+      # 是否启用内置 MCP Server（默认 false）
       server-enabled: true
+      # MCP Server 名称，默认 erupt-mcp
+      name: erupt-mcp
+      # MCP Server 描述（可选）
+      description:
 ```
 
 2. 在 Claude Code / Cursor / VS Code 中增加 MCP 配置：
@@ -291,16 +298,19 @@ AI 具备持久化记忆能力，跨会话保留用户偏好与对话上下文�
 
 Memory 能力开箱即用，无需额外配置。AI 会在合适时机自动将关键信息写入记忆，并在后续对话中按需检索。
 
-## agentPrompt 与 contextPrompt <Badge type="tip" text="v2.0.0+" />
+## LlmRequest 请求级扩展 <Badge type="tip" text="v2.0.0+" />
 
-`LlmRequest` 新增两个可选字段，用于在单次 LLM 调用时注入额外提示词，适合动态场景下的上下文感知。
+`LlmRequest` 支持在单次 LLM 调用时注入额外提示词与行为开关，适合动态场景下的上下文感知。
 
 | 字段 | 说明 |
 |------|------|
 | `agentPrompt` | 本次调用的 Agent 角色提示词，相当于临时覆盖 Agent 的 system prompt |
 | `contextPrompt` | 本次调用的上下文补充说明，追加在对话上下文末尾（如当前页面数据摘要） |
+| `thinking` | 是否开启模型思考模式（默认 `false`） <Badge type="tip" text="v2.1.0+" /> |
+| `responseFormat` | 响应格式：`text`（默认）或 `json_object` <Badge type="tip" text="v2.1.0+" /> |
+| `tools` | 请求级工具对象列表（携带 langchain4j `@Tool` 方法），仅在本次调用中驱动 ReAct 循环，与暴露全局工具箱的 `autoCallTool` 相互独立 <Badge type="tip" text="v2.1.0+" /> |
 
-这两个字段由前端或集成方在调用聊天 API 时传入，可实现页面级、字段级的 AI 感知。与 `@Erupt(prompt = "...")` 和 `@Edit(prompt = "...")` 配合使用，可让 AI 理解每个实体和字段的业务语义。
+这些字段由前端或集成方在调用聊天 API 时传入，可实现页面级、字段级的 AI 感知。与 `@Erupt(prompt = "...")` 和 `@Edit(prompt = "...")` 配合使用，可让 AI 理解每个实体和字段的业务语义。
 
 ## 知识库与向量检索（RAG） <Badge type="tip" text="v2.1.0+" />
 

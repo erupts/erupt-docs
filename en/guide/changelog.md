@@ -115,7 +115,7 @@
 
 🌟 [erupt-monitor](/en/modules/erupt-monitor) **completely rewritten**: new diagnostics system covering JVM, HikariCP pool, HTTP stats, and Redis health metrics.
 
-🌟 [erupt-ai](/en/modules/erupt-ai#agentprompt-and-contextprompt): LLM requests now support `agentPrompt` and `contextPrompt` for context-aware prompt injection per invocation.
+🌟 [erupt-ai](/en/modules/erupt-ai#llmrequest-request-level-extensions): LLM requests now support `agentPrompt` and `contextPrompt` for context-aware prompt injection per invocation.
 
 🌟 [@Vis](/en/annotation/vis) adds **Calendar** (`CALENDAR`) and **Board** (`BOARD`) view types for richer data visualization.
 

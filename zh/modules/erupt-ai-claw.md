@@ -29,8 +29,14 @@ erupt:
     claw:
       # 是否启用 Claw
       enabled: true
-      # 是否允许执行 Shell 命令（默认 true，生产环境建议设为 false）
-      enable-exec-shell: true  # v1.14.3+
+      # 是否允许执行 Shell 命令（默认 false，需显式开启）
+      enable-exec-shell: false
+      # 沙箱之外允许 Shell 命令运行的目录白名单（绝对路径）
+      shell-allowed-paths: []
+      # 是否启用 Skill 自动整理（每日后台将长期未用的 Skill 归档至 .archive，不会删除）
+      skill-curator-enabled: true
+      # Skill 超过多少天未使用视为闲置
+      skill-stale-days: 30
 ```
 
 :::warning
@@ -118,14 +124,9 @@ skill 市场推荐：[https://skills.sh](https://skills.sh/)
 
 erupt-ai-claw 支持通过 Memory 工具实现跨会话的长期记忆持久化。
 
-对话过程中，AI 会自动判断并将重要信息（技术决策、用户偏好、项目上下文等）写入记忆文件，下次会话开始时自动加载相关记忆，无需重复说明背景。
+对话过程中，AI 会自动判断并将重要信息（技术决策、用户偏好、项目上下文等）保存为记忆条目，下次会话开始时自动检索相关记忆，无需重复说明背景。
 
-记忆文件默认存储于：
-
-```shell
-# 也可手动在此目录下创建 .md 文件，AI 将在下次会话时自动识别并读取。
-~/.erupt/memory/
-```
+记忆持久化在数据库中（`AiMemory` 表），按用户隔离——每个用户只能读写自己的记忆。
 
 <img src="/ai-claw/memory-1.png" width="783">
 
@@ -172,7 +173,27 @@ Claw 的能力边界由角色决定。管理员天然持有全量工具，其余
 | Tool | 说明 |
 |---|---|
 | `getCurrentDateTime` | 获取当前日期与时间 |
-| `execShell` | 执行 Shell 命令（⚠️ 高危，建议仅授权管理员） |
+| `execShell` | 执行 Shell 命令（⚠️ 高危，建议仅授权管理员，且需 `enable-exec-shell: true` 显式开启） |
+
+`execShell` 内置多层防护（按顺序生效）：
+
+1. **硬性禁令**：`rm -rf /`、fork 炸弹、`mkfs`、关机重启、写裸设备等灾难性命令一律拦截，不可配置放开；
+2. **目录沙箱**：命令默认锚定在当前用户的沙箱目录 `~/.erupt/{account}` 内运行，其他目录须通过 `erupt.ai.claw.shell-allowed-paths` 显式加白；
+3. **敏感环境变量剥离**：名称含 KEY / TOKEN / SECRET / PASSWORD 等的环境变量不会传给子进程；
+4. **输出截断**：单条命令输出上限 64KB，超时上限 600 秒（默认 30 秒）。
+
+### 文件管理
+
+文件读写均限定在当前用户的沙箱目录（`~/.erupt/{account}`）内：
+
+| Tool | 说明 |
+|---|---|
+| `listFiles` | 列出沙箱内的文件与目录（名称、类型、大小） |
+| `readFile` | 读取沙箱内的文本文件内容 |
+| `writeFile` | 在沙箱内写入文本文件（自动创建父目录，存在则覆盖） |
+| `appendFile` | 向沙箱内文件追加文本（不存在则创建） |
+| `deleteFile` | 删除沙箱内的文件或空目录 |
+| `moveFile` | 在沙箱内移动或重命名文件 |
 
 ### Spring Boot
 
@@ -212,22 +233,16 @@ Claw 的能力边界由角色决定。管理员天然持有全量工具，其余
 | `eruptUserInfo` | 获取当前登录用户信息 |
 | `eruptUserPermissions` | 获取当前用户的权限信息 |
 
-### Cube 分析
-
-| Tool | 说明 |
-|---|---|
-| `cubeList` | 列出所有 Cube 数据集 |
-| `cubeMetadata` | 获取指定 Cube 数据集的元数据 |
-| `cubeQuery` | 执行 Cube 数据集查询 |
-
 ### Skill 管理
 
 | Tool | 说明 |
 |---|---|
 | `listSkills` | 列出所有可用 Skill |
-| `getSkillDetail` | 获取指定 Skill 的详情 |
-| `readSkillFile` | 读取 Skill 文件内容 |
-| `saveSkill` | 创建或更新 Skill |
+| `getSkillDetail` | 获取指定 Skill 的详情（含 scripts/、references/ 文件清单） |
+| `readSkillFile` | 读取 Skill 目录下指定文件内容（渐进式加载） |
+| `saveSkill` | 创建或更新 Skill（遵循 Agent Skills 开放标准） |
+| `patchSkill` | 对 SKILL.md 做精确查找替换式修补——发现指令有误可即时修正，比整篇重写更安全 |
+| `writeSkillFile` | 向 Skill 目录写入文件（如 scripts/run.sh、references/api_docs.md） |
 | `deleteSkill` | 删除指定 Skill |
 
 ### 记忆管理
