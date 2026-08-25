@@ -48,7 +48,7 @@ erupt:
 > 原因：JPA 通过包扫描路径判断哪些实体类属于哪个数据源，路径重叠会导致同一个实体被多个数据源同时管理，启动时建表冲突或数据写入错误的数据源。
 > 推荐的目录结构：
 > ```
-> com.example.model          ← 主数据源实体（@EntityScan 指向此路径）
+> com.example.model.main     ← 主数据源实体（@EntityScan 指向此路径）
 > com.example.model.mysql    ← MySQL 附加数据源实体（scanPackages 指向此路径）
 > com.example.model.oracle   ← Oracle 附加数据源实体（scanPackages 指向此路径）
 > ```

@@ -49,7 +49,7 @@ erupt:
 >
 > Recommended directory structure:
 > ```
-> com.example.model          ← Primary data source entities (@EntityScan points here)
+> com.example.model.main     ← Primary data source entities (@EntityScan points here)
 > com.example.model.mysql    ← MySQL secondary data source entities (scanPackages points here)
 > com.example.model.oracle   ← Oracle secondary data source entities (scanPackages points here)
 > ```
