@@ -11,12 +11,15 @@ Deep integration with today's popular large language models for low-code AI appl
 
 | **Capability** | **Description** |
 |---|---|
-| **LLM** | Supports: ChatGPT, Claude, Gemini, Ollama, Qwen, Doubao, GLM, DeepSeek, Moonshot, MinMax, Mistral, Grok, Fireworks, Together, OpenRouter, and more |
+| **LLM** | Supports: ChatGPT, Claude, Gemini, Ollama, Qwen, Doubao, GLM, DeepSeek, Moonshot, MiniMax, Mistral, Grok, Mimo, Fireworks, Together, OpenRouter, Requesty, and more |
 | **Chat** | Session management (AiChat), message history (AiChatMessage), SSE streaming output, configurable context rounds (maxContext) |
 | **Agent** | Customizable visual control of prompts; dynamically controllable agent prompt words |
 | **Tools** | Register tools via `@AiToolbox` + `@Tool` and call them during conversations; EruptAiToolbox provides base model list, Schema, current user, HQL query, module list, and more |
 | **MCP** | Supports mounting external MCP Servers for flexible tool capability extension |
 | **MCP Server** | Built-in MCP Server with Bearer authentication; supports direct connection from Cursor / Claude and other clients |
+| **Knowledge Base (RAG)** | Visual knowledge base management: document upload, automatic chunking, vector embedding, semantic retrieval — invoked autonomously by the AI during conversations (Agentic RAG) |
+| **Vector Store** | Pluggable vector store layer supporting Qdrant / Milvus / PGVector / Redis / Memory backends |
+| **AI Staff** | Digital employees bound to system accounts and duty personas; run scheduled tasks and push work reports to DingTalk / WeCom / Feishu / Slack |
 | **Security** | Built-in strict interface permission control; AI chat capabilities can be dynamically granted through user permissions |
 
 ## Quick Start
@@ -41,14 +44,16 @@ erupt:
       You are Erupt AI, skilled at conversations in both Chinese and English. You provide safe, helpful, and accurate answers.
       You will refuse to answer any questions involving terrorism, racial discrimination, pornography, violence, etc.
       Erupt AI is a proper noun and should not be translated into other languages.
-    # SSE timeout in milliseconds
-    sse-timeout: 300000
+    # SSE timeout in milliseconds (default: 15 minutes)
+    sse-timeout: 900000
     # Typing configuration
     message-chunk-size: 20
     message-delay: 30
+    # Max sequential tool invocations per chat turn; the ReAct loop aborts beyond this, guarding against runaway tool-call loops
+    max-sequential-tools-invocations: 30
 ```
 
-3. After startup, the following menus are added:
+3. After startup, the **AI Manager** menu group is registered automatically, containing: LLM, Embedding Model, MCP, A2A Agent, Agent, AI Role, and AI Chat:
 
 <img src="/ai/menu.png" width="1770">
 
@@ -206,7 +211,12 @@ Expose the system's AI Tools externally for use by other tools, such as Cursor a
 erupt:
   ai:
     mcp:
+      # Whether to enable the built-in MCP Server (default: false)
       server-enabled: true
+      # MCP Server name, default erupt-mcp
+      name: erupt-mcp
+      # MCP Server description (optional)
+      description:
 ```
 
 2. Add the MCP configuration in Claude Code / Cursor / VS Code:
@@ -288,16 +298,31 @@ The AI has persistent memory capabilities, retaining user preferences and conver
 
 Memory capabilities work out of the box with no additional configuration. The AI automatically writes key information to memory at appropriate times and retrieves it on demand in subsequent conversations.
 
-## agentPrompt and contextPrompt <Badge type="tip" text="v2.0.0+" />
+## LlmRequest Request-Level Extensions <Badge type="tip" text="v2.0.0+" />
 
-`LlmRequest` gains two optional fields for injecting additional prompts into a single LLM call — useful for dynamic, context-aware scenarios.
+`LlmRequest` supports injecting additional prompts and behavior switches into a single LLM call — useful for dynamic, context-aware scenarios.
 
 | Field | Description |
 |-------|-------------|
 | `agentPrompt` | The agent-role prompt for this call — temporarily overrides the agent's system prompt |
 | `contextPrompt` | Supplemental context appended to the conversation (e.g., a summary of the currently visible data) |
+| `thinking` | Whether to enable the model's thinking mode (default `false`) <Badge type="tip" text="v2.1.0+" /> |
+| `responseFormat` | Response format: `text` (default) or `json_object` <Badge type="tip" text="v2.1.0+" /> |
+| `tools` | Request-scoped tool objects (langchain4j `@Tool` methods) driving a ReAct loop for this call only — independent from `autoCallTool`, which exposes the global toolbox instead <Badge type="tip" text="v2.1.0+" /> |
 
-Both fields are passed by the frontend or integration layer when calling the chat API. Combined with `@Erupt(prompt = "...")` and `@Edit(prompt = "...")`, they allow the AI to understand the business semantics of each entity and field.
+These fields are passed by the frontend or integration layer when calling the chat API. Combined with `@Erupt(prompt = "...")` and `@Edit(prompt = "...")`, they allow the AI to understand the business semantics of each entity and field.
+
+## Knowledge Base & Vector Retrieval (RAG) <Badge type="tip" text="v2.1.0+" />
+
+Turn business documents into AI-searchable knowledge; the AI decides autonomously when to query which knowledge base during conversations (Agentic RAG).
+
+See the standalone documentation: [📖 Erupt AI RAG](/en/modules/erupt-ai-rag)
+
+## AI Digital Staff <Badge type="tip" text="v2.1.0+" />
+
+AI staff have a system account, duty persona, and work schedule: they run tasks on cron schedules and push work reports to DingTalk, WeCom, Feishu, or Slack.
+
+See the standalone documentation: [👩‍💻 Erupt AI Staff](/en/modules/erupt-ai-staff)
 
 ## Driving Erupt Claw
 

@@ -66,6 +66,34 @@ public class CityFetchHandler implements ChoiceFetchHandler<MyModel> {
 - 通过 `@ChoiceType(dependField = "province")` 声明监听的联动字段
 :::
 
+## 字典选项
+
+`erupt-upms` 内置了两个基于**字典管理**的 `ChoiceFetchHandler` 实现，无需自行编写 Handler 即可将字典项作为下拉选项，通过 `fetchHandlerParams` 传入字典编码：
+
+| Handler | 选项存储值（value） | 选项显示文本（label） |
+|---|---|---|
+| `DictChoiceFetchHandler` | 字典项 **id** | 字典项名称 |
+| `DictCodeChoiceFetchHandler` | 字典项 **编码 code** | 字典项名称 |
+
+```java
+@EruptField(
+    views = @View(title = "学历"),
+    edit = @Edit(title = "学历", type = EditType.CHOICE,
+                 choiceType = @ChoiceType(
+                     fetchHandler = DictCodeChoiceFetchHandler.class,
+                     fetchHandlerParams = "education" // 字典编码
+                 ))
+)
+private String education;
+```
+
+:::tip
+- `fetchHandlerParams[0]`：字典编码（必填），对应字典管理中的 `code`
+- `fetchHandlerParams[1]`：可选，缓存时长（毫秒），默认 `3000`，如 `fetchHandlerParams = {"education", "60000"}`
+- 选项按字典项的 `sort` 字段排序，结果走 LRU 缓存
+- 建议优先使用 `DictCodeChoiceFetchHandler`，以编码存储的值不受字典项 id 变化影响
+:::
+
 ## 配置项
 
 ```java
@@ -111,37 +139,3 @@ new VLModel("3", "待审核", "等待管理员审核")        // 带描述
 new VLModel("4", "已拒绝", "审核不通过", "#f00", false) // 完整构造
 ```
 
-## RowChoiceFetchHandler — 行内下拉联动
-
-`RowChoiceFetchHandler<T>` 用于**表格行内编辑**场景，每一行的下拉选项可根据该行数据动态生成，泛型 `T` 为行数据对象。
-
-```java
-// 字段声明
-@EruptField(
-    views = @View(title = "状态"),
-    edit = @Edit(title = "状态", type = EditType.CHOICE,
-                 choiceType = @ChoiceType(fetchHandler = StatusRowFetchHandler.class))
-)
-private String status;
-```
-
-```java
-@Component
-public class StatusRowFetchHandler implements RowChoiceFetchHandler<MyModel> {
-
-    @Override
-    public List<VLModel> fetch(MyModel row, String[] params) {
-        // row 为当前行的完整数据对象，可据此动态决定可选项
-        if ("DRAFT".equals(row.getStatus())) {
-            return List.of(new VLModel("SUBMIT", "提交审核"), new VLModel("CANCEL", "取消"));
-        }
-        return List.of(new VLModel("REVOKE", "撤回"), new VLModel("CLOSE", "关闭"));
-    }
-
-}
-```
-
-:::tip
-- `RowChoiceFetchHandler` 在行内编辑时触发，每行独立调用一次
-- 与 `ChoiceFetchHandler.fetchFilter` 的区别：前者基于**行数据**，后者基于**表单字段变化**
-:::

@@ -7,7 +7,7 @@ The erupt-mongodb module adds MongoDB data source support to the Erupt framework
 ```xml
 <dependency>
   <groupId>xyz.erupt</groupId>
-  <artifactId>erupt-mongodb</artifactId>
+  <artifactId>erupt-data-mongodb</artifactId>
   <version>${erupt.version}</version>
 </dependency>
 ```

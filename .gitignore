@@ -39,5 +39,6 @@ build/
 /node_modules/**
 /.vitepress/cache
 /.vitepress/dist
+/.vitepress/.temp
 yarn.lock
 .claude/settings.local.json

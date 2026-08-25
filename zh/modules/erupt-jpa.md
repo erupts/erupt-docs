@@ -7,7 +7,7 @@ erupt-jpa 在标准 Spring Data JPA 的基础上，为 Erupt 框架提供更强�
 ```xml
 <dependency>
   <groupId>xyz.erupt</groupId>
-  <artifactId>erupt-jpa</artifactId>
+  <artifactId>erupt-data-jpa</artifactId>
   <version>${erupt.version}</version>
 </dependency>
 ```

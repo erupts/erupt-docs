@@ -29,8 +29,14 @@ erupt:
     claw:
       # Whether to enable Claw
       enabled: true
-      # Whether to allow executing shell commands (default true; recommended false in production)
-      enable-exec-shell: true  # v1.14.3+
+      # Whether to allow executing shell commands (default false; must be enabled explicitly)
+      enable-exec-shell: false
+      # Allowlist of directories outside the sandbox where shell commands may run (absolute paths)
+      shell-allowed-paths: []
+      # Daily background archiving of stale skills (moved to .archive, never deleted)
+      skill-curator-enabled: true
+      # A skill unused for this many days is considered stale
+      skill-stale-days: 30
 ```
 
 :::warning
@@ -118,14 +124,9 @@ This can be achieved indirectly via the MCP feature. Add the following configura
 
 erupt-ai-claw supports cross-session long-term memory persistence via the Memory tool.
 
-During a conversation, the AI automatically judges and writes important information (technical decisions, user preferences, project context, etc.) to memory files. At the start of the next session, relevant memories are automatically loaded — no need to re-explain the background.
+During a conversation, the AI automatically judges and saves important information (technical decisions, user preferences, project context, etc.) as memory entries. At the start of the next session, relevant memories are automatically retrieved — no need to re-explain the background.
 
-Memory files are stored by default at:
-
-```shell
-# You can also manually create .md files in this directory; the AI will automatically recognize and read them in the next session.
-~/.erupt/memory/
-```
+Memories are persisted in the database (`AiMemory` table), isolated per user — each user can only read and write their own memories.
 
 <img src="/ai-claw/memory-1.png" width="783">
 
@@ -172,7 +173,27 @@ The following lists all built-in `@Tool` entries in Erupt AI Claw. They can be s
 | Tool | Description |
 |---|---|
 | `getCurrentDateTime` | Get the current date and time |
-| `execShell` | Execute a shell command (high-risk; recommend granting to admins only) |
+| `execShell` | Execute a shell command (high-risk; recommend granting to admins only, and requires `enable-exec-shell: true`) |
+
+`execShell` has multiple built-in guardrails, in evaluation order:
+
+1. **Hardline deny list**: catastrophic commands like `rm -rf /`, fork bombs, `mkfs`, shutdown/reboot, and raw device writes are always blocked and cannot be configured away;
+2. **Directory sandbox**: commands are anchored to the current user's sandbox `~/.erupt/{account}`; other directories must be allowlisted via `erupt.ai.claw.shell-allowed-paths`;
+3. **Sensitive env stripping**: environment variables whose names contain KEY / TOKEN / SECRET / PASSWORD etc. are not inherited by the child process;
+4. **Output truncation**: output is capped at 64KB per command, with a 600-second max timeout (default 30 seconds).
+
+### File Management
+
+All file operations are confined to the current user's sandbox directory (`~/.erupt/{account}`):
+
+| Tool | Description |
+|---|---|
+| `listFiles` | List files and directories inside the sandbox (name, type, size) |
+| `readFile` | Read the content of a text file inside the sandbox |
+| `writeFile` | Write a text file inside the sandbox (creates parent directories, overwrites if present) |
+| `appendFile` | Append text to a file inside the sandbox (creates it if absent) |
+| `deleteFile` | Delete a file or empty directory inside the sandbox |
+| `moveFile` | Move or rename a file within the sandbox |
 
 ### Spring Boot
 
@@ -212,22 +233,16 @@ The following lists all built-in `@Tool` entries in Erupt AI Claw. They can be s
 | `eruptUserInfo` | Get the current logged-in user's information |
 | `eruptUserPermissions` | Get the current user's permission information |
 
-### Cube Analytics
-
-| Tool | Description |
-|---|---|
-| `cubeList` | List all Cube datasets |
-| `cubeMetadata` | Get the metadata of a specified Cube dataset |
-| `cubeQuery` | Execute a Cube dataset query |
-
 ### Skill Management
 
 | Tool | Description |
 |---|---|
 | `listSkills` | List all available Skills |
-| `getSkillDetail` | Get details of a specified Skill |
-| `readSkillFile` | Read the content of a Skill file |
-| `saveSkill` | Create or update a Skill |
+| `getSkillDetail` | Get details of a specified Skill (including the file list under scripts/ and references/) |
+| `readSkillFile` | Read a specific file inside a Skill directory (progressive disclosure) |
+| `saveSkill` | Create or update a Skill (follows the Agent Skills open standard) |
+| `patchSkill` | Patch SKILL.md with an exact find-and-replace — fix a wrong instruction the moment it's discovered, safer than rewriting the whole file |
+| `writeSkillFile` | Write a file inside a Skill directory (e.g. scripts/run.sh, references/api_docs.md) |
 | `deleteSkill` | Delete a specified Skill |
 
 ### Memory Management

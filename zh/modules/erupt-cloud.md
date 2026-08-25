@@ -72,7 +72,7 @@
 
 ### 调用时序图
 
-<img src="/cloud/sequence.jpeg">
+<img src="/cloud/sequence-zh.svg" width="900" alt="Erupt Cloud 调用时序图">
 
 ### 集群架构图
 
@@ -80,7 +80,7 @@
 集群内任意服务都可接入 erupt-node 实现该服务内部的配置管理，可做到多维配置、实时变更、协作管理、权限检查等。
 :::
 
-<img src="/cloud/cluster.jpeg">
+<img src="/cloud/cluster-zh.svg" width="900" alt="Erupt Cloud 集群架构图">
 
 ## 快速开始
 

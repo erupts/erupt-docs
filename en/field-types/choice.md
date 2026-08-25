@@ -66,6 +66,34 @@ public class CityFetchHandler implements ChoiceFetchHandler<MyModel> {
 - Declare the watched field with `@ChoiceType(dependField = "province")`.
 :::
 
+## Dictionary Options
+
+`erupt-upms` ships two built-in `ChoiceFetchHandler` implementations backed by **Dictionary Management** — no custom handler needed to use dictionary items as dropdown options. Pass the dictionary code via `fetchHandlerParams`:
+
+| Handler | Stored value | Display label |
+|---|---|---|
+| `DictChoiceFetchHandler` | Dictionary item **id** | Dictionary item name |
+| `DictCodeChoiceFetchHandler` | Dictionary item **code** | Dictionary item name |
+
+```java
+@EruptField(
+    views = @View(title = "Education"),
+    edit = @Edit(title = "Education", type = EditType.CHOICE,
+                 choiceType = @ChoiceType(
+                     fetchHandler = DictCodeChoiceFetchHandler.class,
+                     fetchHandlerParams = "education" // dictionary code
+                 ))
+)
+private String education;
+```
+
+:::tip
+- `fetchHandlerParams[0]`: the dictionary code (required), matching `code` in Dictionary Management.
+- `fetchHandlerParams[1]`: optional cache duration in milliseconds, default `3000`, e.g. `fetchHandlerParams = {"education", "60000"}`.
+- Options are ordered by the dictionary item's `sort` field and cached via LRU.
+- Prefer `DictCodeChoiceFetchHandler` — code-based stored values are unaffected by dictionary item id changes.
+:::
+
 ## Configuration
 
 ```java
@@ -111,37 +139,3 @@ new VLModel("3", "Pending", "Awaiting admin review")     // with description
 new VLModel("4", "Rejected", "Review failed", "#f00", false) // full constructor
 ```
 
-## RowChoiceFetchHandler — Row-Level Linked Dropdown
-
-`RowChoiceFetchHandler<T>` is for **inline table editing** — each row's dropdown options can be generated dynamically based on that row's data. The generic `T` is the row data object.
-
-```java
-// Field declaration
-@EruptField(
-    views = @View(title = "Status"),
-    edit = @Edit(title = "Status", type = EditType.CHOICE,
-                 choiceType = @ChoiceType(fetchHandler = StatusRowFetchHandler.class))
-)
-private String status;
-```
-
-```java
-@Component
-public class StatusRowFetchHandler implements RowChoiceFetchHandler<MyModel> {
-
-    @Override
-    public List<VLModel> fetch(MyModel row, String[] params) {
-        // row is the full data object for the current row
-        if ("DRAFT".equals(row.getStatus())) {
-            return List.of(new VLModel("SUBMIT", "Submit for Review"), new VLModel("CANCEL", "Cancel"));
-        }
-        return List.of(new VLModel("REVOKE", "Revoke"), new VLModel("CLOSE", "Close"));
-    }
-
-}
-```
-
-:::tip
-- `RowChoiceFetchHandler` is triggered during inline row editing, called independently for each row.
-- Difference from `ChoiceFetchHandler.fetchFilter`: the former is driven by **row data**, the latter by **form field changes**.
-:::
