@@ -17,6 +17,7 @@
 | `ifRender` | 动态控制是否渲染（`ExprBool`），详见 [ifRender 动态渲染](/zh/annotation/if-render) |
 | `dynamic` | 根据其他字段值动态控制当前组件状态，详见 [@Dynamic](/zh/annotation/dynamic) |
 | `onchange` | 值变更联动（1.13.2+），详见 [OnChange](/zh/annotation/on-change) |
+| `onchangeParams` | 传递给 `onchange` 处理器的参数（`String[]`），可在 OnChange 接口中读取 |
 | `orderBy` | 排序规则，HQL order by 语法；仅当字段为关联对象时可用 |
 | `filter` | 过滤条件，HQL where 语法；仅当字段为关联对象时可用 |
 | `prompt` | AI 智能体提示词，供 erupt-ai 工具调用时注入字段级上下文，2.0.0 新增 |
