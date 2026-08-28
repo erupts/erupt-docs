@@ -15,8 +15,18 @@ erupt-app.loginPagePath: /xxx.html
 
 ## 2. 调用登录接口获取 token
 
+登录接口为 `POST`，参数通过 JSON 请求体（`LoginBody`）传递：
+
 ```http
-GET {{host}}/erupt-api/login?account={{用户名}}&pwd={{密码}}&verifyCode={{验证码}}
+POST {{host}}/erupt-api/login
+Content-Type: application/json
+
+{
+  "account": "{{用户名}}",
+  "pwd": "{{密码}}",
+  "verifyCode": "{{验证码}}",
+  "verifyCodeMark": "{{验证码标识}}"
+}
 ```
 
 响应结果：
@@ -24,17 +34,22 @@ GET {{host}}/erupt-api/login?account={{用户名}}&pwd={{密码}}&verifyCode={{�
 ```json
 {
   "pass": true,
+  "resetPwd": false,
+  "useVerifyCode": false,
   "reason": null,
   "token": "jRP2ChJz8surtU2g",
-  "useVerifyCode": false
+  "expire": "2026-01-01T12:00:00"
 }
 ```
+
+- `resetPwd`：是否需要强制修改密码（用户从未重置过密码时为 `true`）
+- `expire`：token 过期时间
 
 ::: tip 注意事项
 - 不希望启用验证码：在 `application.yml` 中调整 `erupt-app.verifyCodeCount` 配置
 - 不希望密码加密传输：在 `application.yml` 中调整 `erupt-app.pwdTransferEncrypt` 配置
 - 需要传递额外参数：通过自定义 `@EruptLogin` 解析，详见[自定义登录逻辑](/zh/advanced/auth)
-- 密码加密规则：`md5(md5(pwd) + account)`
+- 密码传输编码：前端三次 Base64 编码 `btoa(btoa(btoa(pwd)))`，后端自动解码，业务侧拿到的是明文
 :::
 
 ## 3. 跳转授权页面

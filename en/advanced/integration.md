@@ -17,11 +17,14 @@ erupt:
   redisSession: true
 
 spring:
-  redis:
-    database: 0
-    timeout: 10000
-    host: 127.0.0.1
+  data:
+    redis:
+      database: 0
+      timeout: 10000
+      host: 127.0.0.1
 ```
+
+> Spring Boot 3 removed the `spring.redis.*` prefix — you must use `spring.data.redis.*`.
 
 4. Retrieve Erupt user data by token:
 

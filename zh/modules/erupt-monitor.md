@@ -2,7 +2,7 @@
 
 erupt-monitor 提供服务器与应用的实时监控能力，包括 CPU、内存、磁盘、JVM 状态与 GC 诊断、HikariCP 连接池、HTTP 请求统计、Redis 缓存以及在线用户管理。
 
-> **2.0.0 完全重写**：新增诊断监控体系，覆盖 JVM GC、API 连接池实时状态与 HTTP 请求统计。如从旧版升级，需手动删除 `.erupt` 目录和旧"系统监控"菜单后重启，详见[升级指南](/zh/guide/upgrade#erupt-monitor-菜单重建)。
+> **2.0.0 完全重写**：新增诊断监控体系，覆盖 JVM GC、API 连接池实时状态与 HTTP 请求统计。如从旧版升级，需手动删除 `.erupt` 目录和旧"系统监控"菜单后重启，详见[升级指南](/zh/guide/upgrade#第二步-手动删除受影响的旧菜单)。
 
 ## 引入方式
 
@@ -44,11 +44,17 @@ erupt-monitor 提供服务器与应用的实时监控能力，包括 CPU、内�
 
 ```yaml
 spring:
-  redis:
-    database: 0
-    timeout: 10000
-    host: 127.0.0.1
-    port: 6379
+  data:
+    redis:
+      database: 0
+      timeout: 10000
+      host: 127.0.0.1
+      port: 6379
+      password:
 ```
+
+:::warning
+Spring Boot 3 起 Redis 配置前缀为 `spring.data.redis.*`，旧的 `spring.redis.*` 已失效。
+:::
 
 <img src="/monitor/redis.png" width="900">

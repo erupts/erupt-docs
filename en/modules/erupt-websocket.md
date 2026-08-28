@@ -36,19 +36,37 @@ For long-running operations (such as Excel imports or batch processing), progres
 From version 1.12.17+, you can send WebSocket messages to the current operating user from within a `DataProxy`:
 
 ```java
+import xyz.erupt.webscoket.service.EruptWebSocketService;
+
 @Service
 public class MyDataProxy implements DataProxy<MyEntity> {
 
     @Resource
-    private EruptWebSocket eruptWebSocket;
+    private EruptWebSocketService eruptWebSocketService;
 
     @Override
     public void afterAdd(MyEntity entity) {
-        // Push a message to the current operating user
-        eruptWebSocket.sendToCurrentUser("Operation successful, data has been processed");
+        // Push a message toast to the current user
+        eruptWebSocketService.sendJsMessage("Operation successful, data has been processed");
+        // Or push a notification (title + content)
+        eruptWebSocketService.sendJsNotify("Done", "Data has been processed");
     }
 }
 ```
+
+Commonly used `EruptWebSocketService` methods:
+
+| Method | Description |
+| --- | --- |
+| `sendJsMessage(String message)` | Push a message toast to the current user |
+| `sendJsNotify(String title, String message)` | Push a notification to the current user |
+| `send(SocketCommand command, T data)` | Send a custom command and payload to the current user's session |
+| `send(EruptWsSessionModel session, SocketCommand command, T data)` | Send a custom command and payload to a specific session |
+| `getCurrentSession()` / `getAllSession()` | Get the current user's session / all online sessions |
+
+:::warning Package name
+The class lives in the `xyz.erupt.webscoket.service` package (a historical spelling — not `websocket`), so be careful when writing the import.
+:::
 
 :::tip Frontend Capability Extension
 After pushing a message via WebSocket, you can pair it with the [Message & Dialog Components](/en/advanced/frontend-notify) on the frontend to create richer interactions, such as pop-up notifications, progress bars, and confirmation dialogs.

@@ -33,13 +33,20 @@
 
 ```yaml
 spring:
-  redis:
-    database: 0
-    timeout: 10000
-    host: 127.0.0.1
+  data:
+    redis:
+      database: 0
+      timeout: 10000
+      host: 127.0.0.1
+      port: 6379
+      password:
 erupt:
   redis-session: true
 ```
+
+:::warning
+Spring Boot 3 起 Redis 配置前缀为 `spring.data.redis.*`，旧的 `spring.redis.*` 已失效。
+:::
 
 ### 4. 启动项目
 

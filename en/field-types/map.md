@@ -9,11 +9,20 @@ A map point-selection component. Users can click on a map to pick coordinates, w
 ```java
 @EruptField(
     views = @View(title = "Location", type = ViewType.MAP),
-    edit = @Edit(title = "Location", type = EditType.MAP,
-                 mapType = @MapType)
+    edit = @Edit(title = "Location", type = EditType.MAP)
 )
 private String location;
 ```
+
+## Configuration
+
+`EditType.MAP` has **no dedicated `@Edit` sub-annotation**. Declaring `type = EditType.MAP` is all that is required; there are no configuration options.
+
+Constraints (from the `MAP` declaration in `EditType`):
+
+- The field type must be `String`
+- Excel import/export is not supported (`excelOperator = false`)
+- For list display, pair it with `@View(type = ViewType.MAP)`
 
 > Before use, configure your Amap API Key in the front-end `app.js`:
 >

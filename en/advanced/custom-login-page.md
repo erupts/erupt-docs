@@ -15,8 +15,18 @@ erupt-app.loginPagePath: /xxx.html
 
 ## 2. Call the Login Endpoint to Get a Token
 
+The login endpoint is a `POST`; parameters are sent as a JSON request body (`LoginBody`):
+
 ```http
-GET {{host}}/erupt-api/login?account={{username}}&pwd={{password}}&verifyCode={{captcha}}
+POST {{host}}/erupt-api/login
+Content-Type: application/json
+
+{
+  "account": "{{username}}",
+  "pwd": "{{password}}",
+  "verifyCode": "{{captcha}}",
+  "verifyCodeMark": "{{captcha mark}}"
+}
 ```
 
 Response:
@@ -24,17 +34,22 @@ Response:
 ```json
 {
   "pass": true,
+  "resetPwd": false,
+  "useVerifyCode": false,
   "reason": null,
   "token": "jRP2ChJz8surtU2g",
-  "useVerifyCode": false
+  "expire": "2026-01-01T12:00:00"
 }
 ```
+
+- `resetPwd`: whether the user must change their password first (`true` when the user has never reset it)
+- `expire`: the token expiry time
 
 ::: tip Notes
 - To disable the captcha: adjust `erupt-app.verifyCodeCount` in `application.yml`
 - To disable password encryption in transit: adjust `erupt-app.pwdTransferEncrypt` in `application.yml`
 - To pass extra parameters: parse them via a custom `@EruptLogin` implementation — see [Custom Login Logic](/en/advanced/auth)
-- Password encryption formula: `md5(md5(pwd) + account)`
+- Password transport encoding: the front end applies Base64 three times (`btoa(btoa(btoa(pwd)))`); the backend decodes it automatically, so your code receives plain text
 :::
 
 ## 3. Redirect to the Authorization Page

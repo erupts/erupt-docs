@@ -183,10 +183,11 @@ public class EruptTestDataProxy implements DataProxy<EruptTest>{
     public void afterFetch(Collection<Map<String, Object>> list) {
         // Get the Erupt class currently being operated on (e.g. EruptTest.class)
         Class<?> clazz = DataProxyContext.currentClass();
-        // Get the params value passed in @Erupt dataProxy (string array)
+        // Get the values passed via @Erupt dataProxyParams (string array)
         String[] params = DataProxyContext.params();
-        // Get the current HTTP request object
-        HttpServletRequest request = DataProxyContext.get(HttpServletRequest.class);
+        // Get the full context data object (holds eruptModel and params)
+        DataProxyContext.Data data = DataProxyContext.get();
+        EruptModel eruptModel = data.getEruptModel();
     }
     
 }
@@ -197,5 +198,7 @@ Key `DataProxyContext` methods:
 | Method | Return type | Description |
 | --- | --- | --- |
 | `currentClass()` | `Class<?>` | The current Erupt entity class |
-| `params()` | `String[]` | The `params` in `@Erupt(dataProxy = {X.class, params = {"a","b"}})` |
-| `get(Class<T>)` | `T` | Retrieve a Bean from the Spring context |
+| `params()` | `String[]` | The `dataProxyParams` in `@Erupt(dataProxy = X.class, dataProxyParams = {"a","b"})` |
+| `get()` | `DataProxyContext.Data` | The current context data object, exposing the `eruptModel` and `params` properties |
+
+> `get()` takes no arguments and cannot be used to look up Spring beans. Inject the bean you need directly, or use `EruptSpringUtil.getBean(Xxx.class)`; to access the `HttpServletRequest`, just `@Resource`-inject it into the DataProxy.

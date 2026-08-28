@@ -5,13 +5,13 @@ Creating an admin page with Erupt is extremely simple — a single Java class is
 ```java
 package xyz.erupt.example.model;
 
-import org.hibernate.annotations.GenericGenerator;
+import jakarta.persistence.*;
 import xyz.erupt.annotation.Erupt;
 import xyz.erupt.annotation.EruptField;
 import xyz.erupt.annotation.sub_field.Edit;
 import xyz.erupt.annotation.sub_field.View;
 
-import javax.persistence.*;
+import java.util.Date;
 
 // @Erupt goes on the class, @EruptField goes on each field. The rest are standard JPA annotations.
 @Erupt(name = "Simple Example")
@@ -21,8 +21,7 @@ public class Simple {
 
     // Primary key
     @Id
-    @GeneratedValue(generator = "generator")
-    @GenericGenerator(name = "generator", strategy = "native")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     @EruptField
     private Long id; // No need to redeclare id if you extend BaseModel
@@ -56,6 +55,11 @@ public class Simple {
     private Date date;
 }
 ```
+
+:::tip
+Erupt 2.x runs on Spring Boot 3.5.16, so JPA annotations live in the `jakarta.persistence` package (no longer `javax.persistence`).
+If your entity extends `xyz.erupt.jpa.model.BaseModel`, the `id` primary key is already declared by the parent class and does not need to be repeated.
+:::
 
 **After starting the project, simply bind the class to a menu.** Steps:
 

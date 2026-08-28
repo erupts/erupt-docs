@@ -41,30 +41,50 @@ public interface IEruptDataService {
     /** 删除数据 */
     void deleteData(EruptModel eruptModel, Object object);
 
+    /** 批量新增，默认实现为逐条调用 addData，可按需重写为真正的批量写入 */
+    default void batchAddData(EruptModel eruptModel, List<?> objects) {
+        for (Object o : objects) this.addData(eruptModel, o);
+    }
+
+    /** 批量删除，默认实现为逐条调用 deleteData，可按需重写 */
+    default void batchDelete(EruptModel eruptModel, List<?> objects) {
+        for (Object o : objects) this.deleteData(eruptModel, o);
+    }
+
 }
 ```
 
 **参数说明：**
 
 - `EruptModel`：当前 Erupt 类的元数据，包含类信息、字段列表、注解配置等，通过 `eruptModel.getClazz()` 可获取原始 Class 对象
-- `Page`：分页参数，`page.getPageIndex()` 为当前页码（从 1 开始），`page.getPageSize()` 为每页条数，查询完成后需调用 `page.setList(data)` 和 `page.setTotalErupt(total)` 回填结果
-- `EruptQuery`：查询条件封装，`eruptQuery.getConditions()` 获取前端传递的筛选条件列表，`eruptQuery.getOrderBy()` 获取排序字段
-- `PowerObject`：能力控制对象，通过 `new PowerObject(false, false, false, false)` 可依次关闭查看/新增/编辑/删除能力
+- `Page`：分页参数，`page.getPageIndex()` 为当前页码（从 1 开始），`page.getPageSize()` 为每页条数，查询完成后需调用 `page.setList(data)` 和 `page.setTotal(total)` 回填结果（`setTotal` 接收 `Long`，并会自动计算 `totalPage`）
+- `EruptQuery`：查询条件封装，`eruptQuery.getConditions()` 获取前端传递的筛选条件列表，`eruptQuery.getConditionStrings()` 获取条件表达式字符串，`eruptQuery.getSort()` 获取排序信息（与 `page.getSort()` 同源）
+- `PowerObject`：能力控制对象，只有 `PowerObject()` 与 `PowerObject(Power)` 两个构造器，共 10 个能力位（`add`、`edit`、`delete`、`query`、`viewDetails`、`export`、`importable`、`print`、`copy`、`ai`），默认全部为 `true`，需要关闭时用 setter 逐个设置
+
+::: warning 务必处理 conditionStrings
+`getConditionStrings()` 承载了 `@Filter`、`@Link` 下钻、`@LinkTree` 树形联动以及 `DataProxy.beforeFetch()` 追加的条件。自定义实现如果只处理 `getConditions()` 而忽略 `getConditionStrings()`，下钻与 `@Filter` 将全部失效。
+:::
 
 ### 2. 注册自定义数据源
 
 ```java
-// 推荐在 Spring 组件的 @PostConstruct 中注册，确保 Spring 容器初始化完成后执行
-@Component
-public class DataSourceRegister {
-    @PostConstruct
-    public void init() {
-        DataProcessorManager.register("数据源名称", EruptDataServiceImpl.class);
+// 推荐在实现类的 static {} 块中注册，与官方 13 个数据源保持一致
+@Service
+public class EruptDataServiceImpl implements IEruptDataService {
+
+    public static final String DATA_PROCESSOR = "数据源名称";
+
+    static {
+        DataProcessorManager.register(DATA_PROCESSOR, EruptDataServiceImpl.class);
     }
+
+    // ...
 }
 ```
 
-> 也可以在 `static {}` 块或 `ApplicationRunner` 中注册，但 `@PostConstruct` 更符合 Spring 生命周期规范。
+::: tip 为什么用 static {} 而不是 @PostConstruct
+`DataProcessorManager` 内部是一个普通 `HashMap`，解析 Erupt 模型时就可能读取注册表，时机早于 Spring Bean 的 `@PostConstruct` 回调。用 `@PostConstruct` 或 `ApplicationRunner` 注册虽然也能工作，但存在「读取时尚未注册」的时机风险，不推荐。
+:::
 
 ### 3. 在 Erupt 类上添加 @EruptDataProcessor 注解
 
@@ -76,6 +96,8 @@ public class Test {
 }
 ```
 
+> 不写 `@EruptDataProcessor` 时，Erupt 默认使用名为 `"JPA"` 的处理器（`EruptConst.DEFAULT_DATA_PROCESSOR`），即 `erupt-data-jpa` 提供的实现。
+
 ## 完整示例：对接 HTTP API
 
 以下示例展示如何将外部 REST 接口的数据展示在 Erupt 表格中：
@@ -84,13 +106,21 @@ public class Test {
 @Service
 public class HttpApiDataService implements IEruptDataService {
 
+    static {
+        DataProcessorManager.register("http-api", HttpApiDataService.class);
+    }
+
     @Resource
     private RestTemplate restTemplate;
 
     @Override
     public PowerObject power() {
         // 只读数据源，禁用新增、编辑、删除
-        return new PowerObject(true, false, false, false);
+        PowerObject power = new PowerObject();
+        power.setAdd(false);
+        power.setEdit(false);
+        power.setDelete(false);
+        return power;
     }
 
     @Override
@@ -109,7 +139,7 @@ public class HttpApiDataService implements IEruptDataService {
         
         // 回填分页结果
         page.setList((List) result.get("data"));
-        page.setTotalErupt(((Number) result.get("total")).longValue());
+        page.setTotal(((Number) result.get("total")).longValue());
         return page;
     }
 

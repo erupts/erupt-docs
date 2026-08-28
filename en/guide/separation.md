@@ -26,16 +26,22 @@ Edit `application.yml` to manage sessions with Redis:
 ```yaml
 erupt:
   # Disable CSRF protection — required because cross-origin requests interfere with Excel import/export
-  csrfInspect: false
+  csrf-inspect: false
   # Manage sessions via Redis
-  redisSession: true
+  redis-session: true
 
 spring:
-  redis:
-    database: 0
-    timeout: 10000
-    host: 127.0.0.1
+  data:
+    redis:
+      database: 0
+      timeout: 10000
+      host: 127.0.0.1
+      port: 6379
 ```
+
+:::tip
+Spring Boot 3 removed the `spring.redis.*` prefix — Redis connection settings must be declared under `spring.data.redis.*`.
+:::
 
 ### 4. Remove erupt-web Dependency
 

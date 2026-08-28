@@ -28,9 +28,19 @@ public class EruptDemoApplication {
 public interface LoginProxy {
 
     // Login validation. Throw an exception to indicate a failed login.
-    // pwd is encrypted using: md5(md5(pwd) + account)
+    // pwd is plain text: the front end sends it Base64-encoded three times, and the framework
+    // already called SecretUtil.decodeSecret(pwd, 3) before invoking this method
     // To disable encryption, set erupt-app.pwdTransferEncrypt to false in the config file.
-    EruptUser login(String account, String pwd);
+    // Note: this is a default method — it already delegates to EruptUserService.login,
+    // so login works even if you do not override it.
+    default EruptUser login(String account, String pwd) {
+        LoginModel loginModel = EruptSpringUtil.getBean(EruptUserService.class).login(account, pwd);
+        if (loginModel.isPass()) {
+            return loginModel.getEruptUser();
+        } else {
+            throw new RuntimeException(loginModel.getReason());
+        }
+    }
 
     // Called on successful login
     default void loginSuccess(EruptUser eruptUser, String token) { }
@@ -41,8 +51,13 @@ public interface LoginProxy {
     // Called before changing password
     default void beforeChangePwd(EruptUser eruptUser, String newPwd) { }
 
+    // Called after the password has been changed
+    default void afterChangePwd(EruptUser eruptUser, String originPwd, String newPwd) { }
+
 }
 ```
+
+> Every method on the interface is a `default` method — implementations only need to override the ones they care about.
 
 ### EruptUser Field Reference
 
@@ -79,9 +94,10 @@ public class TestLoginProxy implements LoginProxy {
         // return eruptUserService.login(account, pwd);
 
         // Option 2: Custom validation, then return the corresponding database user object.
-        // pwd is already encrypted: md5(md5(pwd) + account)
-        // The query uses JPQL; field names are Java property names.
-        EruptUser user = eruptDao.queryEntity(EruptUser.class, "account = '" + account + "'");
+        // pwd is plain text (already decoded by the framework); verify it with UpmsSecurityHelper.checkPwd
+        EruptUser user = eruptDao.lambdaQuery(EruptUser.class)
+                .eq(EruptUser::getAccount, account)
+                .one();
         if (user == null) {
             throw new RuntimeException("Account does not exist");
         }
@@ -109,9 +125,22 @@ public class TestLoginProxy implements LoginProxy {
 
 ### Login Endpoint
 
+The login endpoint is a `POST`; parameters are sent as a JSON request body (`LoginBody`):
+
 ```http
-GET /erupt-api/login?account={{username}}&pwd={{password}}&verifyCode={{captcha}}
+POST /erupt-api/login
+Content-Type: application/json
+
+{
+  "account": "{{username}}",
+  "pwd": "{{password}}",
+  "verifyCode": "{{captcha}}",
+  "verifyCodeMark": "{{captcha mark}}"
+}
 ```
+
+- `verifyCode` / `verifyCodeMark` are only required when a captcha is in play; `verifyCodeMark` is the identifier returned when the captcha was issued.
+- By default `pwd` must be Base64-encoded three times before transmission (`btoa(btoa(btoa(pwd)))`); set `erupt-app.pwdTransferEncrypt` to `false` to disable this.
 
 ## Single Sign-On (OAuth 2.0)
 
@@ -185,21 +214,64 @@ spring:
             user-name-attribute: name
 ```
 
-4. Create the authorization page `auth.html` at `/resources/public/auth.html`.
+4. Exchange the OAuth2 authentication result for an Erupt Token
 
-After a successful OAuth2 authentication, Spring Security will redirect to this page. Its role is to convert the OAuth2 session into an Erupt Token and store it in `localStorage` for the frontend to use.
+`erupt-web` already ships a handoff page at `/auth.html` (source: `erupt-web/src/main/resources/public/auth.html`). Its logic is deliberately simple: read `token` from the URL query string, write it to the `_token` key in `localStorage`, then redirect back to the admin home page.
 
-```html
-<script>
-  fetch("/erupt-api/login-token").then(res => {
-    if (res.ok) {
-      res.text().then(data => {
-        localStorage.setItem("_token", JSON.stringify({"token": data, "account": null}))
-        location.href = "/"
-      })
-    } else {
-      document.body.innerText = "Authorization failed, please try again"
-    }
-  })
-</script>
+```js
+// Core logic of the built-in auth.html — you do not need to write this yourself
+localStorage.setItem("_token", JSON.stringify({ token: param["token"] }));
+window.location = "./";
 ```
+
+So the full third-party login flow is: **external authentication succeeds → the server issues an Erupt Token → the browser is redirected to `/auth.html?token=xxx`**.
+
+Issue the token server-side with `EruptTokenService`:
+
+```java
+@Controller
+public class OauthCallbackController {
+
+    @Resource
+    private EruptDao eruptDao;
+
+    @Resource
+    private EruptTokenService eruptTokenService;
+
+    @Resource
+    private EruptUserService eruptUserService;
+
+    @GetMapping("/oauth-callback")
+    public String callback(@AuthenticationPrincipal OAuth2User oAuth2User) {
+        // Map the OAuth2 identity onto a row in the erupt_user table
+        String account = oAuth2User.getAttribute("login");
+        EruptUser eruptUser = eruptDao.lambdaQuery(EruptUser.class)
+                .eq(EruptUser::getAccount, account)
+                .one();
+        if (null == eruptUser) throw new RuntimeException("account not found");
+        // Issue an Erupt Token (expiry comes from the erupt.upms configuration)
+        String token = Erupts.generateCode(16);
+        eruptTokenService.loginToken(eruptUser, token);
+        // Match the framework's own login flow: fire the loginSuccess hook and record the login log
+        LoginProxy loginProxy = EruptUserService.findEruptLogin();
+        if (null != loginProxy) loginProxy.loginSuccess(eruptUser, token);
+        eruptUserService.saveLoginLog(eruptUser, token);
+        return "redirect:/auth.html?token=" + token;
+    }
+
+}
+```
+
+Finally, **replace** the `.oauth2Login(Customizer.withDefaults())` line in the step 2 `SecurityFilterChain` with the line below, so a successful login lands on the callback endpoint above:
+
+```java
+.oauth2Login(o -> o.defaultSuccessUrl("/oauth-callback", true))
+```
+
+::: warning Replace, don't append
+Calling `.oauth2Login(...)` twice on the same `HttpSecurity` means the second call overrides the first. Edit the line from step 2 in place rather than adding both.
+:::
+
+::: warning Do not create your own auth.html
+`/auth.html` is served by `erupt-web`. Placing a file with the same name at `/resources/public/auth.html` in your own project will shadow the built-in page. If you genuinely need a customized version, use the built-in file as a reference and serve it from a different path.
+:::

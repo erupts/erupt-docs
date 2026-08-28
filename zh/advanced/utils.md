@@ -32,11 +32,16 @@ public class Test {
         // 获取当前访问菜单，拿到菜单自定义参数等信息
         EruptMenu eruptMenu = eruptContextService.getCurrentEruptMenu();
 
-        // 获取 erupt 上下文类对象（有 @Erupt 注解的类）
-        Class<?> clazz = eruptContextService.getContextEruptClass();
+        // 获取当前请求的 erupt 名称（MetaContext 为 InheritableThreadLocal）
+        String eruptName = MetaContext.getErupt().getName();
+
+        // 由 erupt 名称拿到上下文类对象（有 @Erupt 注解的类）
+        Class<?> clazz = EruptCoreService.getErupt(eruptName).getClazz();
     }
 }
 ```
+
+> 在 `DataProxy` 的回调内部，可直接用 `DataProxyContext.currentClass()` 获取当前 erupt 类，无需经过 `MetaContext`。
 
 ## 继承实体类达到某些能力
 

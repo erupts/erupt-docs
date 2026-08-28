@@ -17,11 +17,14 @@ erupt:
   redisSession: true
 
 spring:
-  redis:
-    database: 0
-    timeout: 10000
-    host: 127.0.0.1
+  data:
+    redis:
+      database: 0
+      timeout: 10000
+      host: 127.0.0.1
 ```
+
+> Spring Boot 3 已移除 `spring.redis.*` 前缀，必须使用 `spring.data.redis.*`。
 
 4. 根据 token 获取 erupt 用户数据：
 

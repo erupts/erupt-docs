@@ -144,9 +144,9 @@ Do not introduce dependencies not listed below — they may cause unexpected iss
 | --- | --- |
 | erupt-cloud-node | Micro-node base capabilities |
 | erupt-cloud-node-jpa | Database (JPA) capability |
-| erupt-mongodb | MongoDB database capability |
+| erupt-data-mongodb | MongoDB database capability |
 | erupt-excel | Excel import/export capability |
-| erupt-tookit | Utilities (e.g., SQL query capability for choice components) |
+| erupt-toolkit | Utilities (e.g., SQL query capability for choice components) |
 | erupt-tenant-core | Multi-tenant capability (not open-source) |
 
 ## Pulling Configuration from the Server Side (Replacing yml Config Center)

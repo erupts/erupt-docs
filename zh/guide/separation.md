@@ -26,16 +26,22 @@ window.eruptSiteConfig = {
 ```yaml
 erupt:
   # 关闭 csrf 防御，跨域会影响 excel 导入导出功能的使用
-  csrfInspect: false
+  csrf-inspect: false
   # 使用 redis 方式管理 session
-  redisSession: true
+  redis-session: true
 
 spring:
-  redis:
-    database: 0
-    timeout: 10000
-    host: 127.0.0.1
+  data:
+    redis:
+      database: 0
+      timeout: 10000
+      host: 127.0.0.1
+      port: 6379
 ```
+
+:::tip
+Spring Boot 3 已移除 `spring.redis.*` 前缀，Redis 连接配置必须写在 `spring.data.redis.*` 下。
+:::
 
 ### 4. 移除 erupt-web 依赖
 

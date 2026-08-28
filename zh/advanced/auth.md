@@ -28,9 +28,17 @@ public class EruptDemoApplication {
 public interface LoginProxy {
 
     // 登录校验，如要提示校验结果请抛异常
-    // pwd 是加密的，加密逻辑：md5(md5(pwd) + account)
-    // 如果不希望加密，请前往配置文件，将：erupt-app.pwdTransferEncrypt 设置为 false 即可
-    EruptUser login(String account, String pwd);
+    // pwd 是明文：前端三次 Base64 编码传输，框架在调用本方法前已 SecretUtil.decodeSecret(pwd, 3) 解回明文
+    // 如不希望传输时编码，请前往配置文件，将：erupt-app.pwdTransferEncrypt 设置为 false 即可
+    // 注意：这是一个 default 方法，默认已委托给 EruptUserService.login，不重写也能正常登录
+    default EruptUser login(String account, String pwd) {
+        LoginModel loginModel = EruptSpringUtil.getBean(EruptUserService.class).login(account, pwd);
+        if (loginModel.isPass()) {
+            return loginModel.getEruptUser();
+        } else {
+            throw new RuntimeException(loginModel.getReason());
+        }
+    }
 
     // 登录成功
     default void loginSuccess(EruptUser eruptUser, String token) { }
@@ -41,8 +49,13 @@ public interface LoginProxy {
     // 修改密码
     default void beforeChangePwd(EruptUser eruptUser, String newPwd) { }
 
+    // 密码修改完成
+    default void afterChangePwd(EruptUser eruptUser, String originPwd, String newPwd) { }
+
 }
 ```
+
+> 接口中的所有方法都是 `default` 方法，实现类只需按需重写其中一部分即可。
 
 ### EruptUser 字段说明
 
@@ -79,9 +92,10 @@ public class TestLoginProxy implements LoginProxy {
         // return eruptUserService.login(account, pwd);
 
         // 方式二：自定义校验后，返回对应的数据库用户对象
-        // pwd 已经过加密处理：md5(md5(pwd) + account)
-        // 查询条件使用 JPQL，字段名为 Java 属性名
-        EruptUser user = eruptDao.queryEntity(EruptUser.class, "account = '" + account + "'");
+        // pwd 是明文（框架已解码），存储侧校验请用 UpmsSecurityHelper.checkPwd
+        EruptUser user = eruptDao.lambdaQuery(EruptUser.class)
+                .eq(EruptUser::getAccount, account)
+                .one();
         if (user == null) {
             throw new RuntimeException("账号不存在");
         }
@@ -109,9 +123,22 @@ public class TestLoginProxy implements LoginProxy {
 
 ### 登录接口
 
+登录接口为 `POST`，参数通过 JSON 请求体（`LoginBody`）传递：
+
 ```http
-GET /erupt-api/login?account={{用户名}}&pwd={{密码}}&verifyCode={{验证码}}
+POST /erupt-api/login
+Content-Type: application/json
+
+{
+  "account": "{{用户名}}",
+  "pwd": "{{密码}}",
+  "verifyCode": "{{验证码}}",
+  "verifyCodeMark": "{{验证码标识}}"
+}
 ```
+
+- `verifyCode` / `verifyCodeMark` 仅在需要验证码时必填，`verifyCodeMark` 是获取验证码时返回的标识
+- 默认情况下 `pwd` 需三次 Base64 编码后传输（`btoa(btoa(btoa(pwd)))`），将 `erupt-app.pwdTransferEncrypt` 设为 `false` 可关闭
 
 ## 单点登录（OAuth 2.0）
 
@@ -185,21 +212,64 @@ spring:
             user-name-attribute: name
 ```
 
-4. 增加授权页 `auth.html`，文件位置：`/resources/public/auth.html`
+4. 将 OAuth2 认证结果换成 Erupt Token
 
-OAuth2 认证成功后，Spring Security 会重定向到此页面。该页面的作用是将 OAuth2 session 转换为 Erupt Token，并存入 `localStorage` 供前端使用。
+`erupt-web` 已内置授权中转页 `/auth.html`（源码位于 `erupt-web/src/main/resources/public/auth.html`）。它的逻辑非常简单：从 URL 查询参数中读取 `token`，写入 `localStorage` 的 `_token` 键，然后跳转回后台首页。
 
-```html
-<script>
-  fetch("/erupt-api/login-token").then(res => {
-    if (res.ok) {
-      res.text().then(data => {
-        localStorage.setItem("_token", JSON.stringify({"token": data, "account": null}))
-        location.href = "/"
-      })
-    } else {
-      document.body.innerText = "授权失败，请重试"
-    }
-  })
-</script>
+```js
+// 内置 auth.html 的核心逻辑（无需自己编写）
+localStorage.setItem("_token", JSON.stringify({ token: param["token"] }));
+window.location = "./";
 ```
+
+因此第三方登录的完整流程是：**外部认证成功 → 服务端签发 Erupt Token → 浏览器重定向到 `/auth.html?token=xxx`**。
+
+服务端签发 Token 使用 `EruptTokenService`：
+
+```java
+@Controller
+public class OauthCallbackController {
+
+    @Resource
+    private EruptDao eruptDao;
+
+    @Resource
+    private EruptTokenService eruptTokenService;
+
+    @Resource
+    private EruptUserService eruptUserService;
+
+    @GetMapping("/oauth-callback")
+    public String callback(@AuthenticationPrincipal OAuth2User oAuth2User) {
+        // 将 OAuth2 身份映射为 erupt_user 表中的用户
+        String account = oAuth2User.getAttribute("login");
+        EruptUser eruptUser = eruptDao.lambdaQuery(EruptUser.class)
+                .eq(EruptUser::getAccount, account)
+                .one();
+        if (null == eruptUser) throw new RuntimeException("account not found");
+        // 签发 Erupt Token（过期时间取 erupt.upms 配置）
+        String token = Erupts.generateCode(16);
+        eruptTokenService.loginToken(eruptUser, token);
+        // 与框架默认登录链路保持一致：触发 loginSuccess 钩子并记录登录日志
+        LoginProxy loginProxy = EruptUserService.findEruptLogin();
+        if (null != loginProxy) loginProxy.loginSuccess(eruptUser, token);
+        eruptUserService.saveLoginLog(eruptUser, token);
+        return "redirect:/auth.html?token=" + token;
+    }
+
+}
+```
+
+最后，把第 2 步 `SecurityFilterChain` 中的 `.oauth2Login(Customizer.withDefaults())` **替换**为下面这行，让登录成功后跳转到上面的回调接口：
+
+```java
+.oauth2Login(o -> o.defaultSuccessUrl("/oauth-callback", true))
+```
+
+::: warning 是替换不是追加
+同一个 `HttpSecurity` 上重复调用 `.oauth2Login(...)`，后一次会覆盖前一次的配置。请直接改掉第 2 步那一行，不要两行都写。
+:::
+
+::: warning 不要自建 auth.html
+`/auth.html` 由 `erupt-web` 提供。若在自己工程的 `/resources/public/auth.html` 放置同名文件，会覆盖框架自带页面。确有定制需求时，请参考上述内置文件的实现另起一个路径。
+:::

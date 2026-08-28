@@ -20,11 +20,14 @@ erupt:
   redis-session: true
 
 spring:
-  redis:
-    database: 0
-    timeout: 10000
-    host: 127.0.0.1
+  data:
+    redis:
+      database: 0
+      timeout: 10000
+      host: 127.0.0.1
 ```
+
+> Spring Boot 3 已移除 `spring.redis.*` 前缀，必须使用 `spring.data.redis.*`。
 
 ## 2. 获取 Token
 
@@ -32,19 +35,25 @@ spring:
 GET {{host}}/erupt-api/open-api/create-token?appid=xxx&secret=xxx
 ```
 
-**响应示例：**
+**响应示例：**（统一 `R` 包装体，业务字段位于 `data` 中）
 
 ```json
 {
-  "token": "xxxxxxx",
-  "expireTime": "20xx-01-01"
+  "success": true,
+  "status": "SUCCESS",
+  "promptWay": "NONE",
+  "message": null,
+  "data": {
+    "token": "xxxxxxx",
+    "expireTime": "20xx-01-01T00:00:00"
+  }
 }
 ```
 
 | 字段 | 说明 |
 | --- | --- |
-| `token` | 访问令牌，用于后续接口调用 |
-| `expireTime` | Token 过期时间 |
+| `data.token` | 访问令牌，用于后续接口调用 |
+| `data.expireTime` | Token 过期时间 |
 
 ## 3. 查询 Token 对应的 APPID 信息
 
@@ -54,19 +63,25 @@ GET {{host}}/erupt-api/open-api/create-token?appid=xxx&secret=xxx
 GET {{host}}/erupt-api/open-api/get-appid?token=xxx
 ```
 
-**响应示例：**
+**响应示例：**（统一 `R` 包装体，业务字段位于 `data` 中）
 
 ```json
 {
-  "appid": "xxx",
-  "name": "应用名称"
+  "success": true,
+  "status": "SUCCESS",
+  "promptWay": "NONE",
+  "message": null,
+  "data": {
+    "appid": "xxx",
+    "name": "应用名称"
+  }
 }
 ```
 
 | 字段 | 说明 |
 | --- | --- |
-| `appid` | 该 token 对应的 APPID |
-| `name` | Open API 应用名称 |
+| `data.appid` | 该 token 对应的 APPID |
+| `data.name` | Open API 应用名称 |
 
 ## 4. 调用 Erupt 接口
 

@@ -42,30 +42,51 @@ public interface IEruptDataService {
     /** Delete a record */
     void deleteData(EruptModel eruptModel, Object object);
 
+    /** Batch insert. The default implementation calls addData one by one — override it for a real bulk write. */
+    default void batchAddData(EruptModel eruptModel, List<?> objects) {
+        for (Object o : objects) this.addData(eruptModel, o);
+    }
+
+    /** Batch delete. The default implementation calls deleteData one by one — override as needed. */
+    default void batchDelete(EruptModel eruptModel, List<?> objects) {
+        for (Object o : objects) this.deleteData(eruptModel, o);
+    }
+
 }
 ```
 
 **Parameter reference:**
 
 - `EruptModel`: Metadata for the current Erupt class, including class info, field list, and annotation config. Use `eruptModel.getClazz()` to get the raw `Class` object.
-- `Page`: Pagination parameters. `page.getPageIndex()` is the current page number (1-based); `page.getPageSize()` is the page size. After querying, call `page.setList(data)` and `page.setTotalErupt(total)` to fill the results.
-- `EruptQuery`: Query condition wrapper. Use `eruptQuery.getConditions()` to get the filter conditions passed from the frontend; `eruptQuery.getOrderBy()` returns the sort field.
-- `PowerObject`: Capability control object. Use `new PowerObject(false, false, false, false)` to disable view/add/edit/delete in order.
+- `Page`: Pagination parameters. `page.getPageIndex()` is the current page number (1-based); `page.getPageSize()` is the page size. After querying, call `page.setList(data)` and `page.setTotal(total)` to fill the results (`setTotal` takes a `Long` and computes `totalPage` for you).
+- `EruptQuery`: Query condition wrapper. `eruptQuery.getConditions()` returns the filter conditions passed from the frontend, `eruptQuery.getConditionStrings()` returns condition expression strings, and `eruptQuery.getSort()` returns the sort info (the same list as `page.getSort()`).
+- `PowerObject`: Capability control object. It only has the `PowerObject()` and `PowerObject(Power)` constructors, and exposes 10 capability flags (`add`, `edit`, `delete`, `query`, `viewDetails`, `export`, `importable`, `print`, `copy`, `ai`), all `true` by default. Use the setters to turn individual flags off.
+
+::: warning Always handle conditionStrings
+`getConditionStrings()` carries the conditions contributed by `@Filter`, `@Link` drill-down, `@LinkTree` tree linkage, and `DataProxy.beforeFetch()`. If your implementation only handles `getConditions()` and ignores `getConditionStrings()`, drill-down and `@Filter` will silently stop working.
+:::
 
 ### 2. Register the Custom Data Source
 
 ```java
-// Recommended: register in @PostConstruct to ensure the Spring context is fully initialized
-@Component
-public class DataSourceRegister {
-    @PostConstruct
-    public void init() {
-        DataProcessorManager.register("datasource-name", EruptDataServiceImpl.class);
+// Recommended: register in a static {} block of the implementation class,
+// which is what all 13 official data sources do.
+@Service
+public class EruptDataServiceImpl implements IEruptDataService {
+
+    public static final String DATA_PROCESSOR = "datasource-name";
+
+    static {
+        DataProcessorManager.register(DATA_PROCESSOR, EruptDataServiceImpl.class);
     }
+
+    // ...
 }
 ```
 
-> You can also register in a `static {}` block or `ApplicationRunner`, but `@PostConstruct` better aligns with the Spring lifecycle.
+::: tip Why static {} instead of @PostConstruct
+`DataProcessorManager` is backed by a plain `HashMap`, and the registry may be read while Erupt models are being resolved — earlier than the `@PostConstruct` callback of a Spring bean. Registering in `@PostConstruct` or an `ApplicationRunner` can work, but risks the registry being read before your entry is present, so it is not recommended.
+:::
 
 ### 3. Add the @EruptDataProcessor Annotation to the Erupt Class
 
@@ -77,6 +98,8 @@ public class Test {
 }
 ```
 
+> Without `@EruptDataProcessor`, Erupt falls back to the processor named `"JPA"` (`EruptConst.DEFAULT_DATA_PROCESSOR`), i.e. the implementation shipped by `erupt-data-jpa`.
+
 ## Complete Example: Integrating an HTTP API
 
 The following example shows how to display data from an external REST API in an Erupt table:
@@ -85,13 +108,21 @@ The following example shows how to display data from an external REST API in an 
 @Service
 public class HttpApiDataService implements IEruptDataService {
 
+    static {
+        DataProcessorManager.register("http-api", HttpApiDataService.class);
+    }
+
     @Resource
     private RestTemplate restTemplate;
 
     @Override
     public PowerObject power() {
         // Read-only data source — disable add, edit, and delete
-        return new PowerObject(true, false, false, false);
+        PowerObject power = new PowerObject();
+        power.setAdd(false);
+        power.setEdit(false);
+        power.setDelete(false);
+        return power;
     }
 
     @Override
@@ -110,7 +141,7 @@ public class HttpApiDataService implements IEruptDataService {
         
         // Fill paginated results
         page.setList((List) result.get("data"));
-        page.setTotalErupt(((Number) result.get("total")).longValue());
+        page.setTotal(((Number) result.get("total")).longValue());
         return page;
     }
 

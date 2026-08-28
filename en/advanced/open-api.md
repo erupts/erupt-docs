@@ -20,11 +20,14 @@ erupt:
   redis-session: true
 
 spring:
-  redis:
-    database: 0
-    timeout: 10000
-    host: 127.0.0.1
+  data:
+    redis:
+      database: 0
+      timeout: 10000
+      host: 127.0.0.1
 ```
+
+> Spring Boot 3 removed the `spring.redis.*` prefix — you must use `spring.data.redis.*`.
 
 ## 2. Get a Token
 
@@ -32,19 +35,25 @@ spring:
 GET {{host}}/erupt-api/open-api/create-token?appid=xxx&secret=xxx
 ```
 
-**Response example:**
+**Response example** (wrapped in the standard `R` envelope — the payload lives under `data`):
 
 ```json
 {
-  "token": "xxxxxxx",
-  "expireTime": "20xx-01-01"
+  "success": true,
+  "status": "SUCCESS",
+  "promptWay": "NONE",
+  "message": null,
+  "data": {
+    "token": "xxxxxxx",
+    "expireTime": "20xx-01-01T00:00:00"
+  }
 }
 ```
 
 | Field | Description |
 | --- | --- |
-| `token` | Access token for subsequent API calls |
-| `expireTime` | Token expiration time |
+| `data.token` | Access token for subsequent API calls |
+| `data.expireTime` | Token expiration time |
 
 ## 3. Query APPID Info by Token
 
@@ -54,19 +63,25 @@ Look up the APPID and name associated with a given token. Useful when a backend 
 GET {{host}}/erupt-api/open-api/get-appid?token=xxx
 ```
 
-**Response example:**
+**Response example** (wrapped in the standard `R` envelope — the payload lives under `data`):
 
 ```json
 {
-  "appid": "xxx",
-  "name": "App Name"
+  "success": true,
+  "status": "SUCCESS",
+  "promptWay": "NONE",
+  "message": null,
+  "data": {
+    "appid": "xxx",
+    "name": "App Name"
+  }
 }
 ```
 
 | Field | Description |
 | --- | --- |
-| `appid` | The APPID associated with this token |
-| `name` | Open API application name |
+| `data.appid` | The APPID associated with this token |
+| `data.name` | Open API application name |
 
 ## 4. Call Erupt Endpoints
 

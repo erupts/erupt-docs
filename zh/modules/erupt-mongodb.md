@@ -25,10 +25,14 @@ spring:
 
 ## 使用方式
 
-将 JPA 实体的 `@Entity` + `@Table` 替换为 `@Document`，其余 Erupt 注解保持不变：
+将 JPA 实体的 `@Entity` + `@Table` 替换为 `@Document`，并**必须**追加 `@EruptDataProcessor(EruptMongodbImpl.MONGODB_PROCESS)` 声明数据源处理器，其余 Erupt 注解保持不变：
 
 ```java
+import xyz.erupt.core.annotation.EruptDataProcessor;
+import xyz.erupt.mongodb.impl.EruptMongodbImpl;
+
 @Erupt(name = "文章管理")
+@EruptDataProcessor(EruptMongodbImpl.MONGODB_PROCESS)
 @Document(collection = "articles")
 public class Article {
 
@@ -56,6 +60,10 @@ public class Article {
 }
 ```
 
+:::warning 必须声明数据源处理器
+`@EruptDataProcessor(EruptMongodbImpl.MONGODB_PROCESS)` 不可省略。缺失时 `DataProcessorManager` 会回退到默认的 JPA 处理器，导致运行时报错。该常量值为 `"mongodb"`，由 `EruptMongodbImpl` 在启动时注册。
+:::
+
 :::tip
 MongoDB 文档的 `_id` 字段类型通常为 `String` 或 `ObjectId`，对应 Java 类型使用 `String` 即可。
 :::
@@ -65,6 +73,6 @@ MongoDB 文档的 `_id` 字段类型通常为 `String` 或 `ObjectId`，对应 J
 | 特性 | erupt-jpa | erupt-mongodb |
 | --- | --- | --- |
 | 数据库类型 | 关系型数据库 | MongoDB |
-| 主键注解 | `@Id`（javax.persistence） | `@Id`（org.springframework.data） |
-| 实体注解 | `@Entity` + `@Table` | `@Document` |
+| 主键注解 | `@Id`（jakarta.persistence） | `@Id`（org.springframework.data） |
+| 实体注解 | `@Entity` + `@Table` | `@Document` + `@EruptDataProcessor(EruptMongodbImpl.MONGODB_PROCESS)` |
 | 事务支持 | 完整支持 | 有限支持 |

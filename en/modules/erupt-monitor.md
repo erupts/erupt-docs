@@ -2,7 +2,7 @@
 
 erupt-monitor provides real-time monitoring of server and application status, including CPU, memory, disk, JVM state & GC diagnostics, HikariCP connection pool, HTTP request statistics, Redis cache, and online user management.
 
-> **Completely rewritten in 2.0.0**: a new diagnostics monitoring system covering JVM GC, API connection pool real-time stats, and HTTP request statistics. Upgrading from an older version requires manually deleting the `.erupt` directory and old "System Monitor" menus before restarting — see the [Upgrade Guide](/en/guide/upgrade#erupt-monitor-menu-rebuild).
+> **Completely rewritten in 2.0.0**: a new diagnostics monitoring system covering JVM GC, API connection pool real-time stats, and HTTP request statistics. Upgrading from an older version requires manually deleting the `.erupt` directory and old "System Monitor" menus before restarting — see the [Upgrade Guide](/en/guide/upgrade#step-2-manually-delete-stale-menus).
 
 ## Adding the Dependency
 
@@ -44,11 +44,17 @@ First configure the Redis connection in `application.yml`:
 
 ```yaml
 spring:
-  redis:
-    database: 0
-    timeout: 10000
-    host: 127.0.0.1
-    port: 6379
+  data:
+    redis:
+      database: 0
+      timeout: 10000
+      host: 127.0.0.1
+      port: 6379
+      password:
 ```
+
+:::warning
+Since Spring Boot 3, the Redis configuration prefix is `spring.data.redis.*`. The legacy `spring.redis.*` prefix no longer works.
+:::
 
 <img src="/monitor/redis.png" width="900">

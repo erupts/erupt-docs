@@ -50,38 +50,65 @@
 
 ```java
 @Resource
-private NoticeService noticeService;
+private EruptNoticeService eruptNoticeService;
 
-// 发送给指定用户
-noticeService.sendNotice(
-    "scene_code",       // 场景编码
-    "消息标题",
-    "消息内容",
-    Arrays.asList("user1", "user2")  // 接收用户列表
-);
+@Resource
+private EruptInternalNotice eruptInternalNotice; // 内置站内信渠道
 
-// 全员广播
-noticeService.broadcast("scene_code", "通知标题", "通知内容");
+public void notifyUsers() {
+    NoticeMessage message = new NoticeMessage();
+    message.setTitle("消息标题");
+    message.setContent("消息内容");
+    message.setUrl("/some/page"); // 可选，点击通知后跳转的地址
+
+    // 指定渠道发送，第二个参数是通知场景的 code，第三个参数是接收人的用户 ID 列表
+    eruptNoticeService.send(eruptInternalNotice, "scene_code", Arrays.asList(1L, 2L), message);
+}
 ```
+
+也可以直接指定 `NoticeScene` 实体与多个渠道编码：
+
+```java
+// channels 为渠道 code 列表，默认取渠道类的 SimpleName
+eruptNoticeService.send(noticeScene, List.of("EruptInternalNotice"), Arrays.asList(1L, 2L), message);
+```
+
+:::warning 注意
+- 服务类名为 `EruptNoticeService`，没有 `broadcast` 方法；如需全员通知，请自行查询用户 ID 列表后传入。
+- 接收人参数是用户 ID（`List<Long>`），不是登录账号字符串。
+- `scene_code` 必须是「通知场景」中已存在的编码，否则会抛出 `Notice Scene not found` 异常。
+:::
 
 ## 消息渠道
 
 <img src="/notice/channel.png" width="900">
 
-实现 `NoticeChannel` 接口即可注册自定义消息渠道，将通知内容同步发送到 Slack、飞书、短信等平台：
+继承抽象类 `AbstractNoticeChannel` 即可注册自定义消息渠道，将通知内容同步发送到 Slack、飞书、短信等平台：
 
 ```java
-@Component
-public class SlackNoticeChannel implements NoticeChannel {
+import xyz.erupt.notice.channel.AbstractNoticeChannel;
+import xyz.erupt.notice.pojo.NoticeMessage;
+import xyz.erupt.upms.model.EruptUser;
 
+@Component
+public class SlackNoticeChannel extends AbstractNoticeChannel {
+
+    // 渠道展示名称
     @Override
-    public String channelName() {
+    public String name() {
         return "Slack";
     }
 
+    // 每次向一个接收人发送
     @Override
-    public void send(String title, String content, List<String> receivers) {
-        // 调用 Slack API 发送消息
+    public void send(EruptUser receiveUser, NoticeMessage noticeMessage) {
+        // 调用 Slack API 发送 noticeMessage.getTitle() / getContent()
     }
 }
 ```
+
+:::tip 渠道编码与排序
+- `code()` 默认返回类的 `SimpleName`（如 `SlackNoticeChannel`），即通知场景配置和 `send(...)` 入参中使用的渠道编码，如需自定义可重写。
+- 重写 `order()` 可调整渠道在列表中的排列顺序，数值越小越靠前。
+- 渠道实例在构造时自动注册到 `AbstractNoticeChannel.getHandlers()`，声明为 Spring Bean 即可生效。
+:::

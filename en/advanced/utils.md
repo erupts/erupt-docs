@@ -32,11 +32,16 @@ public class Test {
         // Get the current menu being accessed (with custom menu parameters, etc.)
         EruptMenu eruptMenu = eruptContextService.getCurrentEruptMenu();
 
-        // Get the Erupt context class (the class annotated with @Erupt)
-        Class<?> clazz = eruptContextService.getContextEruptClass();
+        // Get the erupt name of the current request (MetaContext is an InheritableThreadLocal)
+        String eruptName = MetaContext.getErupt().getName();
+
+        // Resolve the context class (the class annotated with @Erupt) from that name
+        Class<?> clazz = EruptCoreService.getErupt(eruptName).getClazz();
     }
 }
 ```
+
+> Inside a `DataProxy` callback you can call `DataProxyContext.currentClass()` directly to get the current erupt class, without going through `MetaContext`.
 
 ## Extending Base Entity Classes
 

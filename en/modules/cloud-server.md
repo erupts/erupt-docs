@@ -33,13 +33,20 @@ Refer to [Quick Start](/en/guide/quick-start)
 
 ```yaml
 spring:
-  redis:
-    database: 0
-    timeout: 10000
-    host: 127.0.0.1
+  data:
+    redis:
+      database: 0
+      timeout: 10000
+      host: 127.0.0.1
+      port: 6379
+      password:
 erupt:
   redis-session: true
 ```
+
+:::warning
+Since Spring Boot 3, the Redis configuration prefix is `spring.data.redis.*`. The legacy `spring.redis.*` prefix no longer works.
+:::
 
 ### 4. Start the Project
 

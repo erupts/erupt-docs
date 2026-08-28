@@ -8,7 +8,7 @@
 
 ```java
 @RestController
-@RequestMapping("/test")
+@RequestMapping(EruptRestPath.ERUPT_API + "/test") // 即 /erupt-api/test
 public class TestController {
 
     // 登录可访问
@@ -84,11 +84,14 @@ $.ajax({
 erupt:
   redisSession: true
 spring:
-  redis:
-    database: 0
-    timeout: 10000
-    host: 127.0.0.1
+  data:
+    redis:
+      database: 0
+      timeout: 10000
+      host: 127.0.0.1
 ```
+
+> Spring Boot 3 已移除 `spring.redis.*` 前缀，必须使用 `spring.data.redis.*`。
 
 > **注意：** 如果使用 postman 进行测试且未开启 redis-session，请在传递 token 的同时传递 cookie。
 

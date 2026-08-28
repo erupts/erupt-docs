@@ -8,7 +8,7 @@ Because `@EruptRouter` was difficult to use, version 1.12.x introduced a new, si
 
 ```java
 @RestController
-@RequestMapping("/test")
+@RequestMapping(EruptRestPath.ERUPT_API + "/test") // resolves to /erupt-api/test
 public class TestController {
 
     // Accessible when logged in
@@ -85,11 +85,14 @@ If your frontend and backend are deployed separately, enable `redisSession`:
 erupt:
   redisSession: true
 spring:
-  redis:
-    database: 0
-    timeout: 10000
-    host: 127.0.0.1
+  data:
+    redis:
+      database: 0
+      timeout: 10000
+      host: 127.0.0.1
 ```
+
+> Spring Boot 3 removed the `spring.redis.*` prefix — you must use `spring.data.redis.*`.
 
 > **Note:** If testing with Postman and Redis Session is not enabled, you must pass both the token and the cookie.
 

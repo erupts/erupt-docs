@@ -18,7 +18,7 @@ public class EruptJdbc {
 
     // Query using lambda (lambdaQuery supported since 1.12.11+)
     public void query() {
-        List<Student> students = eruptDao.lambdaQuery(EruptUser.class)
+        List<EruptUser> users = eruptDao.lambdaQuery(EruptUser.class)
             .in(EruptUser::getId, 1, 2, 3, 4)
             .ge(EruptUser::getCreateTime, "2023-01-01")
             .isNull(EruptUser::getWhiteIp)
@@ -33,7 +33,7 @@ public class EruptJdbc {
 
     // Find by ID
     public void findById(Long id) {
-        Student student = eruptDao.findById(Student.class, id);
+        Student student = eruptDao.find(Student.class, id);
     }
 
     // Add

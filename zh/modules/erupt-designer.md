@@ -24,7 +24,7 @@
 2. 点击行按钮 **Design**，进入可视化设计器。
 3. 在设计器中拖拽添加字段，配置字段类型、标题、必填、搜索等属性。
 4. 点击 **Preview** 实时预览表单效果。
-5. 点击 **Publish** 并配置菜单位置，一键发布到系统菜单。
+5. 回到列表页点击行按钮 **Add to Menu**，配置菜单位置，一键发布到系统菜单。
 6. 无需重启服务，菜单立即生效。
 
 ## 数据存储
@@ -40,16 +40,17 @@ erupt-designer 使用两张内置表：
 
 ```sql
 CREATE TABLE e_designer (
-    id           BIGINT       NOT NULL PRIMARY KEY,
-    class_name   VARCHAR(64)  NOT NULL UNIQUE,
-    name         VARCHAR(255),
-    remark       TEXT,
-    config       TEXT,
-    publish_time DATETIME,
-    update_time  DATETIME,
-    create_by    VARCHAR(255),
-    create_time  DATETIME,
-    update_by    VARCHAR(255)
+    id             BIGINT       NOT NULL PRIMARY KEY,
+    class_name     VARCHAR(64)  NOT NULL UNIQUE,
+    name           VARCHAR(255),
+    remark         VARCHAR(255),
+    sort           VARCHAR(255),
+    config         LONGTEXT,
+    publish_time   DATETIME,
+    create_time    DATETIME,
+    create_user_id BIGINT,
+    update_user_id BIGINT,
+    update_time    DATETIME
 );
 
 CREATE TABLE e_designer_data (

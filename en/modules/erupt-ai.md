@@ -11,15 +11,15 @@ Deep integration with today's popular large language models for low-code AI appl
 
 | **Capability** | **Description** |
 |---|---|
-| **LLM** | Supports: ChatGPT, Claude, Gemini, Ollama, Qwen, Doubao, GLM, DeepSeek, Moonshot, MiniMax, Mistral, Grok, Mimo, Fireworks, Together, OpenRouter, Requesty, and more |
+| **LLM** | 19 built-in adapters: ChatGPT, Claude, Gemini, Ollama, Qwen, Doubao, GLM, DeepSeek, Moonshot, MiniMax, Mistral, Grok, Mimo, Fireworks, Together, OpenRouter, OrcaRouter, Requesty, plus an Open AI Adapter for any OpenAI-compatible endpoint |
 | **Chat** | Session management (AiChat), message history (AiChatMessage), SSE streaming output, configurable context rounds (maxContext) |
 | **Agent** | Customizable visual control of prompts; dynamically controllable agent prompt words |
-| **Tools** | Register tools via `@AiToolbox` + `@Tool` and call them during conversations; EruptAiToolbox provides base model list, Schema, current user, HQL query, module list, and more |
+| **Tools** | Register tools via `@AiToolbox` + `@Tool` and call them during conversations; erupt-ai ships `EruptUserTools` (current user info, roles and menu permissions, server time), and erupt-ai-claw adds `EruptModelTools` (module list, model list, model schema, plus CRUD over model data driven by structured filter / sort / page parameters) |
 | **MCP** | Supports mounting external MCP Servers for flexible tool capability extension |
 | **MCP Server** | Built-in MCP Server with Bearer authentication; supports direct connection from Cursor / Claude and other clients |
 | **Knowledge Base (RAG)** | Visual knowledge base management: document upload, automatic chunking, vector embedding, semantic retrieval — invoked autonomously by the AI during conversations (Agentic RAG) |
 | **Vector Store** | Pluggable vector store layer supporting Qdrant / Milvus / PGVector / Redis / Memory backends |
-| **AI Staff** | Digital employees bound to system accounts and duty personas; run scheduled tasks and push work reports to DingTalk / WeCom / Feishu / Slack |
+| **AI Staff** | Digital employees bound to system accounts and duty personas; run scheduled tasks and push work reports to DingTalk / Feishu / Slack (extend the `StaffChannel` abstract class to add your own channel) |
 | **Security** | Built-in strict interface permission control; AI chat capabilities can be dynamically granted through user permissions |
 
 ## Quick Start
@@ -53,7 +53,7 @@ erupt:
     max-sequential-tools-invocations: 30
 ```
 
-3. After startup, the **AI Manager** menu group is registered automatically, containing: LLM, Embedding Model, MCP, A2A Agent, Agent, AI Role, and AI Chat:
+3. After startup, the **AI Manager** menu group is registered automatically, containing: LLM, Embedding Model, MCP, A2A, Expert, AI Role, and AI Chat:
 
 <img src="/ai/menu.png" width="1770">
 
@@ -127,7 +127,7 @@ Use `@AiToolbox` + `@Tool` to register any Spring Bean method as an AI tool. The
 ```java
 import dev.langchain4j.agent.tool.P;
 import dev.langchain4j.agent.tool.Tool;
-import xyz.erupt.ai.annotation.AiToolbox;
+import xyz.erupt.annotation.ai.AiToolbox;
 
 /**
  * 1. Add the class annotation @AiToolbox
@@ -228,7 +228,7 @@ erupt:
   "mcpServers": {
     "erupt": {
       "type": "sse",
-      "url": "http://localhost:9999/mcp",
+      "url": "http://localhost:9999/mcp/sse",
       "headers": {
         "Authorization": "Bearer {{your secret}}"
       }
@@ -236,6 +236,10 @@ erupt:
   }
 }
 ```
+
+:::warning Endpoints
+The SSE endpoint is `/mcp/sse`; the JSON-RPC message endpoint is `/mcp` (POST). If your client appends `/sse` automatically, `http://localhost:9999/mcp` also works.
+:::
 
 The Authorization value can be generated from the Open API menu — it corresponds to the "Secret Key" column. Keep it safe and do not expose it.
 
@@ -286,17 +290,21 @@ public class OrderAiPrompt implements SystemPromptProvider {
 
 ## Multi-Agent Collaboration (A2A) <Badge type="tip" text="v1.14.3+" />
 
-Compatible with the [Google A2A protocol](https://google.github.io/A2A/), allowing connection to any Agent service that implements the A2A standard. Go to menu **AI → A2A Agent**, enter the root address of the remote Agent, and the system automatically fetches the AgentCard from `{url}/.well-known/agent.json`. The **Skills** column in the list shows all capabilities declared by that Agent; if connection fails, the error reason is displayed. The Headers field can attach authentication headers in JSON format, e.g. `{"Authorization": "Bearer xxx"}`.
+Compatible with the [Google A2A protocol](https://google.github.io/A2A/), allowing connection to any Agent service that implements the A2A standard. Go to menu **AI Manager → A2A**, enter the root address of the remote Agent, and the system automatically fetches the AgentCard from `{url}/.well-known/agent.json`. The **Skills** column in the list shows all capabilities declared by that Agent; if connection fails, the error reason is displayed. The Headers field can attach authentication headers in JSON format, e.g. `{"Authorization": "Bearer xxx"}`.
 
 The AI has built-in A2A scheduling logic during conversations: tasks beyond its own capabilities are automatically discovered and delegated to the appropriate sub-agent; tasks it can handle will not trigger delegation. The system automatically refreshes connection status every 60 seconds with no manual restart needed.
 
 ## Cross-Session Memory <Badge type="tip" text="v1.14.3+" />
 
 :::info
-The AI has persistent memory capabilities, retaining user preferences and conversation context across sessions — creating a truly personalized AI assistant with memory. Different users' memories are isolated from each other; administrators can view and manage all users' memory entries in the backend.
+The AI has persistent memory capabilities, retaining user preferences and conversation context across sessions — creating a truly personalized AI assistant with memory. Different users' memories are isolated from each other and are persisted in the `e_ai_memory` table.
 :::
 
 Memory capabilities work out of the box with no additional configuration. The AI automatically writes key information to memory at appropriate times and retrieves it on demand in subsequent conversations.
+
+:::warning
+`AiMemory` is not declared as an `@Erupt` entity and registers no menu, so there is no admin UI for it. To inspect or clean up memory entries, query the `e_ai_memory` table directly.
+:::
 
 ## LlmRequest Request-Level Extensions <Badge type="tip" text="v2.0.0+" />
 
@@ -320,7 +328,7 @@ See the standalone documentation: [📖 Erupt AI RAG](/en/modules/erupt-ai-rag)
 
 ## AI Digital Staff <Badge type="tip" text="v2.1.0+" />
 
-AI staff have a system account, duty persona, and work schedule: they run tasks on cron schedules and push work reports to DingTalk, WeCom, Feishu, or Slack.
+AI staff have a system account, duty persona, and work schedule: they run tasks on cron schedules and push work reports to DingTalk, Feishu, or Slack. Extend the `StaffChannel` abstract class to add other push channels.
 
 See the standalone documentation: [👩‍💻 Erupt AI Staff](/en/modules/erupt-ai-staff)
 

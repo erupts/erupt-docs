@@ -11,15 +11,15 @@
 
 | **能力** | **说明** |
 |---|---|
-| **LLM** | 支持：ChatGPT、Claude、Gemini、Ollama、Qwen、Doubao、GLM、DeepSeek、Moonshot、MiniMax、Mistral、Grok、Mimo、Fireworks、Together、OpenRouter、Requesty 等 |
+| **LLM** | 内置 19 个适配器：ChatGPT、Claude、Gemini、Ollama、Qwen、Doubao、GLM、DeepSeek、Moonshot、MiniMax、Mistral、Grok、Mimo、Fireworks、Together、OpenRouter、OrcaRouter、Requesty，以及可对接任意 OpenAI 兼容接口的 Open AI Adapter |
 | **Chat** | 会话管理（AiChat）、消息历史（AiChatMessage）、SSE 流式输出、可配置上下文轮次（maxContext） |
 | **Agent** | 自定义可视化控制 Prompt、可动态控制 Agent 提示词 |
-| **Tools** | 通过 `@AiToolbox` + `@Tool` 注册工具并在对话中调用；EruptAiToolbox 提供基础模型列表、Schema、当前用户、HQL 查询、模块列表等能力 |
+| **Tools** | 通过 `@AiToolbox` + `@Tool` 注册工具并在对话中调用；erupt-ai 内置 `EruptUserTools`（当前用户信息、角色与菜单权限、服务器时间），erupt-ai-claw 另提供 `EruptModelTools`（模块列表、模型列表、模型 Schema，以及基于结构化 filter / sort / page 参数的数据增删改查）|
 | **MCP** | 支持挂载外部 MCP Server，灵活扩展工具能力 |
 | **MCP Server** | 内置 MCP Server，Bearer 鉴权，支持 Cursor / Claude 等客户端直连 |
 | **知识库（RAG）** | 可视化知识库管理：文档上传、自动分块、向量嵌入、语义检索，AI 对话中自主调用（Agentic RAG） |
 | **向量存储** | 可插拔向量存储层，支持 Qdrant / Milvus / PGVector / Redis / Memory 五种后端 |
-| **AI 员工** | 数字员工绑定系统账户与职责人设，定时执行任务并将工作报告推送至钉钉 / 企业微信 / 飞书 / Slack |
+| **AI 员工** | 数字员工绑定系统账户与职责人设，定时执行任务并将工作报告推送至钉钉 / 飞书 / Slack（可继承 `StaffChannel` 抽象类自行扩展渠道）|
 | **Security** | 内置严格的接口权限控制，AI 聊天能力可以通过用户权限动态授予 |
 
 ## 快速接入
@@ -53,7 +53,7 @@ erupt:
     max-sequential-tools-invocations: 30
 ```
 
-3. 启动后会自动注册 **AI Manager** 菜单组，包含：LLM（大模型）、Embedding Model（嵌入模型）、MCP、A2A Agent、Agent（智能体）、AI Role（AI 角色）、AI Chat（对话）：
+3. 启动后会自动注册 **AI Manager** 菜单组，包含：LLM（大模型）、Embedding Model（嵌入模型）、MCP、A2A、Expert（智能体）、AI Role（AI 角色）、AI Chat（对话）：
 
 <img src="/ai/menu.png" width="1770">
 
@@ -127,7 +127,7 @@ public class TestPromptHandler implements EruptPromptHandler {
 ```java
 import dev.langchain4j.agent.tool.P;
 import dev.langchain4j.agent.tool.Tool;
-import xyz.erupt.ai.annotation.AiToolbox;
+import xyz.erupt.annotation.ai.AiToolbox;
 
 /**
  * 1. 添加类注解 @AiToolbox
@@ -228,7 +228,7 @@ erupt:
   "mcpServers": {
     "erupt": {
       "type": "sse",
-      "url": "http://localhost:9999/mcp",
+      "url": "http://localhost:9999/mcp/sse",
       "headers": {
         "Authorization": "Bearer {{your secret}}"
       }
@@ -236,6 +236,10 @@ erupt:
   }
 }
 ```
+
+:::warning 端点说明
+SSE 端点为 `/mcp/sse`，JSON-RPC 消息端点为 `/mcp`（POST）。若客户端会自动补全 `/sse`，则填写 `http://localhost:9999/mcp` 也可以。
+:::
 
 Authorization 可进入 Open API 菜单生成，值对应"秘钥"列，请注意妥善保管切勿泄露。
 
@@ -286,17 +290,21 @@ public class OrderAiPrompt implements SystemPromptProvider {
 
 ## 多 Agent 协作（A2A） <Badge type="tip" text="v1.14.3+" />
 
-兼容 [Google A2A 协议](https://google.github.io/A2A/)，可接入任意实现了 A2A 标准的 Agent 服务。进入菜单 **AI → A2A Agent**，填写远端 Agent 的根地址，系统自动从 `{url}/.well-known/agent.json` 拉取 AgentCard，列表中的 **Skills** 列会展示该 Agent 声明的所有能力，连接失败时显示错误原因。Headers 字段可附加鉴权头，格式为 JSON，例如 `{"Authorization": "Bearer xxx"}`。
+兼容 [Google A2A 协议](https://google.github.io/A2A/)，可接入任意实现了 A2A 标准的 Agent 服务。进入菜单 **AI Manager → A2A**，填写远端 Agent 的根地址，系统自动从 `{url}/.well-known/agent.json` 拉取 AgentCard，列表中的 **Skills** 列会展示该 Agent 声明的所有能力，连接失败时显示错误原因。Headers 字段可附加鉴权头，格式为 JSON，例如 `{"Authorization": "Bearer xxx"}`。
 
 AI 在对话中内置 A2A 调度逻辑：任务超出自身能力范围时自动发现并委派给合适的子 Agent，可自行处理的任务不会触发委派。系统每 60 秒自动刷新一次连接状态，无需手动重启。
 
 ## 跨会话记忆（Memory） <Badge type="tip" text="v1.14.3+" />
 
 :::info
-AI 具备持久化记忆能力，跨会话保留用户偏好与对话上下文，打造真正有记忆的个性化 AI 助手。不同用户的记忆相互隔离，管理员可在后台查看和管理所有用户的记忆条目。
+AI 具备持久化记忆能力，跨会话保留用户偏好与对话上下文，打造真正有记忆的个性化 AI 助手。不同用户的记忆相互隔离，记忆条目持久化在 `e_ai_memory` 表中。
 :::
 
 Memory 能力开箱即用，无需额外配置。AI 会在合适时机自动将关键信息写入记忆，并在后续对话中按需检索。
+
+:::warning
+`AiMemory` 未声明为 `@Erupt` 实体，也未注册菜单，后台没有可视化管理入口；如需查看或清理，请直接操作 `e_ai_memory` 表。
+:::
 
 ## LlmRequest 请求级扩展 <Badge type="tip" text="v2.0.0+" />
 
@@ -320,7 +328,7 @@ Memory 能力开箱即用，无需额外配置。AI 会在合适时机自动将�
 
 ## AI 数字员工 <Badge type="tip" text="v2.1.0+" />
 
-AI 员工拥有系统账户、职责人设与工作排班，按 cron 定时执行任务，并把工作报告推送到钉钉、企业微信、飞书、Slack。
+AI 员工拥有系统账户、职责人设与工作排班，按 cron 定时执行任务，并把工作报告推送到钉钉、飞书、Slack；继承 `StaffChannel` 抽象类可自行扩展其他推送渠道。
 
 详见独立文档：[👩‍💻 Erupt AI Staff 数字员工](/zh/modules/erupt-ai-staff)
 

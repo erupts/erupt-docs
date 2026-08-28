@@ -5,13 +5,13 @@
 ```java
 package xyz.erupt.example.model;
 
-import org.hibernate.annotations.GenericGenerator;
+import jakarta.persistence.*;
 import xyz.erupt.annotation.Erupt;
 import xyz.erupt.annotation.EruptField;
 import xyz.erupt.annotation.sub_field.Edit;
 import xyz.erupt.annotation.sub_field.View;
 
-import javax.persistence.*;
+import java.util.Date;
 
 // @Erupt 注解修饰在类上，@EruptField 注解修饰在字段上，其他注解均为 JPA 注解
 @Erupt(name = "简单的例子")
@@ -21,8 +21,7 @@ public class Simple {
 
     // 主键
     @Id
-    @GeneratedValue(generator = "generator")
-    @GenericGenerator(name = "generator", strategy = "native")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     @EruptField
     private Long id; // 继承 BaseModel 时无需重复声明 id
@@ -56,6 +55,11 @@ public class Simple {
     private Date date;
 }
 ```
+
+:::tip
+Erupt 2.x 基于 Spring Boot 3.5.16，JPA 注解位于 `jakarta.persistence` 包下（不再是 `javax.persistence`）。
+若实体继承 `xyz.erupt.jpa.model.BaseModel`，主键 `id` 已由父类声明，无需重复定义。
+:::
 
 **启动项目后将类绑定到菜单即可**，步骤如下：
 

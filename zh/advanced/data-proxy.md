@@ -183,10 +183,11 @@ public class EruptTestDataProxy implements DataProxy<EruptTest>{
     public void afterFetch(Collection<Map<String, Object>> list) {
         // 获取当前操作的 Erupt 类信息（如 EruptTest.class）
         Class<?> clazz = DataProxyContext.currentClass();
-        // 获取 @Erupt dataProxy 中 params 参数传入的值（字符串数组）
+        // 获取 @Erupt dataProxyParams 传入的值（字符串数组）
         String[] params = DataProxyContext.params();
-        // 获取当前 HTTP 请求对象
-        HttpServletRequest request = DataProxyContext.get(HttpServletRequest.class);
+        // 获取完整上下文数据对象（内含 eruptModel 与 params）
+        DataProxyContext.Data data = DataProxyContext.get();
+        EruptModel eruptModel = data.getEruptModel();
     }
     
 }
@@ -197,5 +198,7 @@ public class EruptTestDataProxy implements DataProxy<EruptTest>{
 | 方法 | 返回值 | 说明 |
 | --- | --- | --- |
 | `currentClass()` | `Class<?>` | 当前 Erupt 实体类 |
-| `params()` | `String[]` | `@Erupt(dataProxy = {X.class, params = {"a","b"}})` 中的 params |
-| `get(Class<T>)` | `T` | 从 Spring 上下文获取 Bean |
+| `params()` | `String[]` | `@Erupt(dataProxy = X.class, dataProxyParams = {"a","b"})` 中的 `dataProxyParams` |
+| `get()` | `DataProxyContext.Data` | 当前上下文数据对象，包含 `eruptModel` 与 `params` 两个属性 |
+
+> `get()` 是无参方法，不能用来获取 Spring Bean。需要 Bean 时请直接注入，或使用 `EruptSpringUtil.getBean(Xxx.class)`；需要 `HttpServletRequest` 时直接在 DataProxy 中 `@Resource` 注入即可。

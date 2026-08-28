@@ -17,14 +17,14 @@ Visually design Erupt entity models at runtime through a drag-and-drop interface
 ## Workflow
 
 ```
-Create model entry → Open designer → Drag-drop fields → Preview → Publish → Menu live
+Create model entry → Open designer → Drag-drop fields → Preview → Add to Menu → Menu live
 ```
 
 1. Open the **Form Designer** menu and create a new model record — fill in the Class Name and display Name.
 2. Click the **Design** row button to open the visual designer.
 3. Drag and drop fields; configure type, title, required, search, and other properties for each field.
 4. Click **Preview** to see a live form preview.
-5. Click **Publish**, configure the target menu, and publish with one click.
+5. Back on the list page, click the **Add to Menu** row button, configure the target menu, and publish with one click.
 6. No restart needed — the menu is active immediately.
 
 ## Database Tables
@@ -40,16 +40,17 @@ If you manage schema manually (`spring.jpa.hibernate.ddl-auto=none`), run:
 
 ```sql
 CREATE TABLE e_designer (
-    id           BIGINT       NOT NULL PRIMARY KEY,
-    class_name   VARCHAR(64)  NOT NULL UNIQUE,
-    name         VARCHAR(255),
-    remark       TEXT,
-    config       TEXT,
-    publish_time DATETIME,
-    update_time  DATETIME,
-    create_by    VARCHAR(255),
-    create_time  DATETIME,
-    update_by    VARCHAR(255)
+    id             BIGINT       NOT NULL PRIMARY KEY,
+    class_name     VARCHAR(64)  NOT NULL UNIQUE,
+    name           VARCHAR(255),
+    remark         VARCHAR(255),
+    sort           VARCHAR(255),
+    config         LONGTEXT,
+    publish_time   DATETIME,
+    create_time    DATETIME,
+    create_user_id BIGINT,
+    update_user_id BIGINT,
+    update_time    DATETIME
 );
 
 CREATE TABLE e_designer_data (

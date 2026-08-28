@@ -144,9 +144,9 @@ spring:
 | --- | --- |
 | erupt-cloud-node | 微节点基础能力 |
 | erupt-cloud-node-jpa | 数据库（JPA）能力 |
-| erupt-mongodb | MongoDB 数据库能力 |
+| erupt-data-mongodb | MongoDB 数据库能力 |
 | erupt-excel | Excel 导入导出能力 |
-| erupt-tookit | 工具类（如 choice 组件的 SQL 查询能力） |
+| erupt-toolkit | 工具类（如 choice 组件的 SQL 查询能力） |
 | erupt-tenant-core | 多租户能力（未开源） |
 
 ## 从 Server 端拉取配置（替代 yml 配置中心）

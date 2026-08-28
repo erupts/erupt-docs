@@ -273,8 +273,19 @@ window.parent.postMessage({ type: 'close-and-query' }, '*');
 
 ### 弹出层宽高
 
-- **高度**：随自定义页面高度自适应
-- **宽度**：通过 `RowOperation → tplWidth` 配置，需指定单位，如 `500px`、`80%`（1.10.13+）
+宽高由 `@RowOperation` 内层的 `@Tpl` 配置（`RowOperation` 本身没有宽高属性）：
+
+- **宽度**：`@Tpl(width = "...")`，需指定单位，如 `500px`、`80%`；缺省时使用内置的 `modal-lg` 宽度
+- **高度**：`@Tpl(height = "...")`，需指定单位；缺省时随自定义页面高度自适应
+
+```java
+@RowOperation(
+    code = "tpl", title = "模板按钮", type = RowOperation.Type.TPL,
+    tpl = @Tpl(path = "/tpl/operator.ftl", width = "800px", height = "600px")
+)
+```
+
+若需以抽屉方式打开，可配置 `@Tpl(openWay = OpenWay.DRAWER, drawerPlacement = Placement.RIGHT)`。
 
 ## 按钮权限
 

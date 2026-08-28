@@ -25,10 +25,14 @@ spring:
 
 ## Usage
 
-Replace the JPA entity's `@Entity` + `@Table` with `@Document`. All other Erupt annotations remain unchanged:
+Replace the JPA entity's `@Entity` + `@Table` with `@Document`, and you **must** also add `@EruptDataProcessor(EruptMongodbImpl.MONGODB_PROCESS)` to declare the data processor. All other Erupt annotations remain unchanged:
 
 ```java
+import xyz.erupt.core.annotation.EruptDataProcessor;
+import xyz.erupt.mongodb.impl.EruptMongodbImpl;
+
 @Erupt(name = "Article Management")
+@EruptDataProcessor(EruptMongodbImpl.MONGODB_PROCESS)
 @Document(collection = "articles")
 public class Article {
 
@@ -56,6 +60,10 @@ public class Article {
 }
 ```
 
+:::warning The data processor is mandatory
+`@EruptDataProcessor(EruptMongodbImpl.MONGODB_PROCESS)` cannot be omitted. Without it, `DataProcessorManager` falls back to the default JPA processor and the model fails at runtime. The constant value is `"mongodb"`, registered by `EruptMongodbImpl` at startup.
+:::
+
 :::tip
 The `_id` field type in a MongoDB document is typically `String` or `ObjectId`. Use `String` as the corresponding Java type.
 :::
@@ -65,6 +73,6 @@ The `_id` field type in a MongoDB document is typically `String` or `ObjectId`. 
 | Feature | erupt-jpa | erupt-mongodb |
 | --- | --- | --- |
 | Database Type | Relational databases | MongoDB |
-| Primary Key Annotation | `@Id` (javax.persistence) | `@Id` (org.springframework.data) |
-| Entity Annotation | `@Entity` + `@Table` | `@Document` |
+| Primary Key Annotation | `@Id` (jakarta.persistence) | `@Id` (org.springframework.data) |
+| Entity Annotation | `@Entity` + `@Table` | `@Document` + `@EruptDataProcessor(EruptMongodbImpl.MONGODB_PROCESS)` |
 | Transaction Support | Full support | Limited support |

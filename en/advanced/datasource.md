@@ -6,6 +6,10 @@
 
 1. Add the additional data source connection settings to `application.yml` (the primary data source config must remain):
 
+::: tip About database-platform
+Erupt 2.x runs on Hibernate 6, which auto-detects the dialect from the JDBC connection — `database-platform` is usually unnecessary. If you do need to set it, use a class name that actually exists in Hibernate 6; see the [Dialect Reference](/en/guide/database#dialect-reference).
+:::
+
 ```yaml
 erupt:
   dbs:
@@ -18,7 +22,6 @@ erupt:
         password: 123456
       jpa:
         show-sql: true
-        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
         database: mysql
       scanPackages: com.abc.xxx
     # oracle
@@ -29,7 +32,6 @@ erupt:
         password: 123456
       jpa:
         show-sql: true
-        database-platform: org.hibernate.dialect.Oracle10gDialect
       scanPackages: com.def.xxx
     # sqlServer
     - datasource:
@@ -39,7 +41,6 @@ erupt:
         password: 123456
       jpa:
         show-sql: true
-        database-platform: org.hibernate.dialect.SQLServer2008Dialect
       scanPackages: com.hig.xxx
 ```
 
@@ -149,7 +150,6 @@ spring:
   jpa:
     show-sql: true
     generate-ddl: true
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     database: mysql
 ```
 
@@ -163,7 +163,6 @@ spring:
     password: 123456
   jpa:
     show-sql: true
-    database-platform: org.hibernate.dialect.Oracle10gDialect
     generate-ddl: true
     database: oracle
 ```
@@ -178,7 +177,6 @@ spring:
     password: 123456
   jpa:
     show-sql: true
-    database-platform: org.hibernate.dialect.SQLServer2008Dialect
     generate-ddl: true
     database: sql_server
 ```
@@ -193,7 +191,6 @@ spring:
     password: 123456
   jpa:
     show-sql: true
-    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     generate-ddl: true
     database: postgresql
 ```
@@ -210,7 +207,6 @@ spring:
     driverClassName: org.h2.Driver
   jpa:
     show-sql: true
-    database-platform: org.hibernate.dialect.H2Dialect
     generate-ddl: true
 ```
 

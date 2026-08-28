@@ -64,12 +64,27 @@ erupt-tpl 支持微前端架构，可将任意前端框架的页面嵌入到 Eru
 
 ## Erupt TPL UI 组件库
 
-erupt-tpl-ui 提供多套主流 UI 框架的集成方案，在自定义页面中直接使用与 Erupt 风格一致的组件。
+erupt-tpl-ui 提供多套主流 UI 框架的集成方案，在自定义页面中直接使用与 Erupt 风格一致的组件。没有聚合包，请按需引入对应坐标：
 
 ```xml
+<!-- Ant Design Vue -->
 <dependency>
   <groupId>xyz.erupt</groupId>
-  <artifactId>erupt-tpl-ui</artifactId>
+  <artifactId>erupt-tpl-ui.ant-design</artifactId>
+  <version>${erupt.version}</version>
+</dependency>
+
+<!-- Element UI -->
+<dependency>
+  <groupId>xyz.erupt</groupId>
+  <artifactId>erupt-tpl-ui.element-ui</artifactId>
+  <version>${erupt.version}</version>
+</dependency>
+
+<!-- Element Plus -->
+<dependency>
+  <groupId>xyz.erupt</groupId>
+  <artifactId>erupt-tpl-ui.element-plus</artifactId>
   <version>${erupt.version}</version>
 </dependency>
 ```
@@ -81,9 +96,3 @@ erupt-tpl-ui 提供多套主流 UI 框架的集成方案，在自定义页面中
 ### Element UI / Element Plus
 
 <img src="/tpl/element.png" width="900">
-
-### Amis 低代码
-
-百度 Amis 低代码框架集成，通过 JSON 配置即可生成复杂页面：
-
-<img src="/tpl/amis.png" width="900">

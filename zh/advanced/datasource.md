@@ -6,6 +6,10 @@
 
 1. 在 application.yml 中增加数据源的连接信息（原有主数据源的配置需要保留）：
 
+::: tip 关于 database-platform
+Erupt 2.x 基于 Hibernate 6，方言会根据 JDBC 连接自动探测，通常无需配置 `database-platform`。确需指定时，请使用 Hibernate 6 中真实存在的类名，参见[方言对照表](/zh/guide/database#方言对照表)。
+:::
+
 ```yaml
 erupt:
   dbs:
@@ -18,7 +22,6 @@ erupt:
         password: 123456
       jpa:
         show-sql: true
-        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
         database: mysql
       scanPackages: com.abc.xxx
     # oracle
@@ -29,7 +32,6 @@ erupt:
         password: 123456
       jpa:
         show-sql: true
-        database-platform: org.hibernate.dialect.Oracle10gDialect
       scanPackages: com.def.xxx
     # sqlServer
     - datasource:
@@ -39,7 +41,6 @@ erupt:
         password: 123456
       jpa:
         show-sql: true
-        database-platform: org.hibernate.dialect.SQLServer2008Dialect
       scanPackages: com.hig.xxx
 ```
 
@@ -148,7 +149,6 @@ spring:
   jpa:
     show-sql: true
     generate-ddl: true
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     database: mysql
 ```
 
@@ -162,7 +162,6 @@ spring:
     password: 123456
   jpa:
     show-sql: true
-    database-platform: org.hibernate.dialect.Oracle10gDialect
     generate-ddl: true
     database: oracle
 ```
@@ -177,7 +176,6 @@ spring:
     password: 123456
   jpa:
     show-sql: true
-    database-platform: org.hibernate.dialect.SQLServer2008Dialect
     generate-ddl: true
     database: sql_server
 ```
@@ -192,7 +190,6 @@ spring:
     password: 123456
   jpa:
     show-sql: true
-    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     generate-ddl: true
     database: postgresql
 ```
@@ -209,7 +206,6 @@ spring:
     driverClassName: org.h2.Driver
   jpa:
     show-sql: true
-    database-platform: org.hibernate.dialect.H2Dialect
     generate-ddl: true
 ```
 

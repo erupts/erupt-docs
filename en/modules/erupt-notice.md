@@ -50,38 +50,66 @@ Messages sent via the API or manually appear in the notification list, with supp
 
 ```java
 @Resource
-private NoticeService noticeService;
+private EruptNoticeService eruptNoticeService;
 
-// Send to specific users
-noticeService.sendNotice(
-    "scene_code",       // Scene code
-    "Message Title",
-    "Message Content",
-    Arrays.asList("user1", "user2")  // List of recipient users
-);
+@Resource
+private EruptInternalNotice eruptInternalNotice; // Built-in in-app channel
 
-// Broadcast to all users
-noticeService.broadcast("scene_code", "Notification Title", "Notification Content");
+public void notifyUsers() {
+    NoticeMessage message = new NoticeMessage();
+    message.setTitle("Message Title");
+    message.setContent("Message Content");
+    message.setUrl("/some/page"); // Optional, the page opened when the notification is clicked
+
+    // Send through a channel. The 2nd argument is the notice scene code,
+    // the 3rd one is the list of recipient user IDs.
+    eruptNoticeService.send(eruptInternalNotice, "scene_code", Arrays.asList(1L, 2L), message);
+}
 ```
+
+You can also pass a `NoticeScene` entity together with multiple channel codes:
+
+```java
+// channels is a list of channel codes, which default to the channel class SimpleName
+eruptNoticeService.send(noticeScene, List.of("EruptInternalNotice"), Arrays.asList(1L, 2L), message);
+```
+
+:::warning Note
+- The service class is `EruptNoticeService` and it has no `broadcast` method. To notify everyone, query the user IDs yourself and pass them in.
+- Recipients are user IDs (`List<Long>`), not login account strings.
+- `scene_code` must be an existing code in "Notification Scene", otherwise a `Notice Scene not found` exception is thrown.
+:::
 
 ## Notification Channels
 
 <img src="/notice/channel.png" width="900">
 
-Implement the `NoticeChannel` interface to register a custom notification channel and simultaneously deliver notification content to platforms like Slack, Feishu, SMS, etc.:
+Extend the abstract class `AbstractNoticeChannel` to register a custom notification channel and simultaneously deliver notification content to platforms like Slack, Feishu, SMS, etc.:
 
 ```java
-@Component
-public class SlackNoticeChannel implements NoticeChannel {
+import xyz.erupt.notice.channel.AbstractNoticeChannel;
+import xyz.erupt.notice.pojo.NoticeMessage;
+import xyz.erupt.upms.model.EruptUser;
 
+@Component
+public class SlackNoticeChannel extends AbstractNoticeChannel {
+
+    // Display name of the channel
     @Override
-    public String channelName() {
+    public String name() {
         return "Slack";
     }
 
+    // Called once per recipient
     @Override
-    public void send(String title, String content, List<String> receivers) {
-        // Call the Slack API to send messages
+    public void send(EruptUser receiveUser, NoticeMessage noticeMessage) {
+        // Call the Slack API with noticeMessage.getTitle() / getContent()
     }
 }
 ```
+
+:::tip Channel code and ordering
+- `code()` returns the class `SimpleName` by default (e.g. `SlackNoticeChannel`). That value is the channel code used in notice scene configuration and in `send(...)`. Override it if you need a custom code.
+- Override `order()` to control the position of the channel in the list — lower values come first.
+- Channel instances register themselves into `AbstractNoticeChannel.getHandlers()` in the constructor, so declaring the class as a Spring Bean is enough.
+:::

@@ -274,8 +274,19 @@ window.parent.postMessage({ type: 'close-and-query' }, '*');
 
 ### Dialog Width and Height
 
-- **Height**: Auto-adapts to the custom page height
-- **Width**: Configure via `RowOperation → tplWidth`, must include a unit, e.g. `500px`, `80%` (1.10.13+)
+Width and height are configured on the nested `@Tpl` (`@RowOperation` itself has no width/height attribute):
+
+- **Width**: `@Tpl(width = "...")`, unit required, e.g. `500px`, `80%`; falls back to the built-in `modal-lg` width when omitted
+- **Height**: `@Tpl(height = "...")`, unit required; auto-adapts to the custom page height when omitted
+
+```java
+@RowOperation(
+    code = "tpl", title = "Template Button", type = RowOperation.Type.TPL,
+    tpl = @Tpl(path = "/tpl/operator.ftl", width = "800px", height = "600px")
+)
+```
+
+To open it as a drawer instead, configure `@Tpl(openWay = OpenWay.DRAWER, drawerPlacement = Placement.RIGHT)`.
 
 ## Button Permissions
 

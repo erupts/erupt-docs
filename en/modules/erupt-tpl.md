@@ -64,12 +64,27 @@ erupt-tpl supports micro-frontend architectures, allowing pages from any fronten
 
 ## Erupt TPL UI Component Library
 
-erupt-tpl-ui provides integration solutions for multiple mainstream UI frameworks, so you can use components consistent with Erupt's style directly in your custom pages.
+erupt-tpl-ui provides integration solutions for multiple mainstream UI frameworks, so you can use components consistent with Erupt's style directly in your custom pages. There is no aggregate artifact — add the coordinate you need:
 
 ```xml
+<!-- Ant Design Vue -->
 <dependency>
   <groupId>xyz.erupt</groupId>
-  <artifactId>erupt-tpl-ui</artifactId>
+  <artifactId>erupt-tpl-ui.ant-design</artifactId>
+  <version>${erupt.version}</version>
+</dependency>
+
+<!-- Element UI -->
+<dependency>
+  <groupId>xyz.erupt</groupId>
+  <artifactId>erupt-tpl-ui.element-ui</artifactId>
+  <version>${erupt.version}</version>
+</dependency>
+
+<!-- Element Plus -->
+<dependency>
+  <groupId>xyz.erupt</groupId>
+  <artifactId>erupt-tpl-ui.element-plus</artifactId>
   <version>${erupt.version}</version>
 </dependency>
 ```
@@ -81,9 +96,3 @@ erupt-tpl-ui provides integration solutions for multiple mainstream UI framework
 ### Element UI / Element Plus
 
 <img src="/tpl/element.png" width="900">
-
-### Amis Low-Code
-
-Integration with Baidu's Amis low-code framework, enabling complex page generation via JSON configuration:
-
-<img src="/tpl/amis.png" width="900">
