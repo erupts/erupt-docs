@@ -36,7 +36,7 @@
 
 🐞 Fixed the TIME search filter being blank and unusable.
 
-🐞 Fixed Markdown fields not displaying asynchronously loaded content.
+🐞 Fixed Markdown fields not displaying asynchronously loaded content — thanks to [chenxiaolong8023](https://github.com/chenxiaolong8023) for the contribution.
 
 🐞 Fixed left-join queries in erupt-cube semantic models.
 

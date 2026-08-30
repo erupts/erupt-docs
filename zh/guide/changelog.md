@@ -36,7 +36,7 @@
 
 🐞 修复 TIME 时间搜索过滤器无法输入的问题
 
-🐞 修复 Markdown 字段异步加载数据后不显示内容的问题
+🐞 修复 Markdown 字段异步加载数据后不显示内容的问题，感谢 [chenxiaolong8023](https://github.com/chenxiaolong8023) 贡献的代码
 
 🐞 修复 erupt-cube 语义模型 left join 关联查询的问题
 
