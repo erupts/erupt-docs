@@ -32,6 +32,9 @@ public @interface Layout {
     // 表单大小
     FormSize formSize() default FormSize.DEFAULT;
 
+    // 分步表单向导模式（2.1.1+）
+    boolean formSteps() default false;
+
     // 表格左侧列固定数量
     int tableLeftFixed() default 0;
 
@@ -94,6 +97,12 @@ public @interface Layout {
 - **`BACKEND`**：后端分页（默认），每次翻页时向服务器请求数据
 - **`FRONT`**：前端分页，一次性加载所有数据到前端，由前端处理分页逻辑
 - **`NONE`**：不分页
+
+## formSteps 分步表单 <Badge type="tip" text="v2.1.1+" />
+
+设置 `formSteps = true` 后，表单将渲染为**分步向导（Step Wizard）**模式：以 `DIVIDE` 分割线字段为分步边界，逐步填写。
+
+详见独立文档：[分步表单 formSteps](/zh/annotation/form-steps)
 
 ## collapseActionButton <Badge type="tip" text="v2.0.0+" />
 

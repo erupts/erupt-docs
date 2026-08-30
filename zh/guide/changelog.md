@@ -1,5 +1,47 @@
 # 更新日志
 
+## 2.1.1（2026-08-30） <Badge type="tip" text="Spring Boot 3.5.16" />
+
+🌟 新增 [MULTI_FORM 多表单块](/zh/field-types/multi-form)编辑类型，一对多子表以内联表单块方式直接编辑，适合子表字段较多的录入场景
+
+🌟 [@Layout](/zh/annotation/layout) 新增 [formSteps 分步表单](/zh/annotation/form-steps)向导模式，以 DIVIDE 分割线为分步边界，长表单分步填写
+
+🌟 [erupt-cube](/zh/modules/pro/erupt-cube/visual-analysis#地图报表) 新增地图报表类型：基于 ECharts 的区域分布图，GeoJSON 地图注册表统一管理，点击区域可下钻联动过滤
+
+🧩 [@Search](/zh/annotation/search) 新增 `lockOperator` 锁定操作符配置，服务端强制查询操作符，防止构造请求绕过前端查询限制
+
+🧩 选择与引用字段搜索支持 [IN / NOT_IN 多选查询](/zh/annotation/search#多选搜索-in--not-in)，一次命中多个选项
+
+🧩 [DATE](/zh/field-types/date) 日期选择新增季度（QUARTER）模式与 `min` / `max` 可选日期区间
+
+🧩 [NUMBER](/zh/field-types/number) 数值输入增强：小数精度、步进值、前后缀单位、千分位分隔符
+
+🧩 [COLOR](/zh/field-types/color) 颜色选择新增配置项：透明度通道、预设色板、色值文本显示
+
+🧩 [erupt-job](/zh/modules/erupt-job#集群去重执行) 定时任务支持多实例集群去重，开启 `redis-session` 后同一任务全集群仅单节点执行
+
+🧩 安全增强：嵌套子模型（TAB、COMBINE、引用字段等）请求按其父级菜单权限进行鉴权校验
+
+🧩 FORM 类型菜单自动生成新增/修改按钮权限，无需手动配置
+
+🧩 侧边栏菜单新增工具栏：刷新、重置、全部展开、分栏模式
+
+🧩 树形视图支持复选框批量删除
+
+🧩 表格列宽按实际文本测量计算更精准，页头面包屑过长时省略显示，多标签栏在移动端自动隐藏
+
+🧩 新增 OrcaRouter 大模型服务商，感谢 [XiaoHuo888-hue](https://github.com/XiaoHuo888-hue) 贡献的代码
+
+🐞 修复 RAG 知识库远程附件无法摄取、嵌入模型配置变更后客户端未刷新的问题
+
+🐞 修复 TIME 时间搜索过滤器无法输入的问题
+
+🐞 修复 Markdown 字段异步加载数据后不显示内容的问题
+
+🐞 修复 erupt-cube 语义模型 left join 关联查询的问题
+
+🐞 修复固定多标签模式下标签栏遮挡页面内容的问题
+
 ## 2.1.0（2026-08-23） <Badge type="tip" text="Spring Boot 3.5.16" />
 
 > 🦞 新模块开源 ×15 &emsp; 🔌 数据连接层 13+ 数据源 &emsp; 🤖 AI 能力全面升级
@@ -40,7 +82,7 @@
 
 🌟 AI 聊天支持中途停止生成，已生成内容保留并标记中断状态
 
-🧩 [erupt-monitor](/zh/modules/erupt-monitor) 新增 Erupt 类注册表页面，运行时模型一览，并支持一键发布到菜单
+🧩 [erupt-monitor](/zh/modules/erupt-monitor#erupt-类注册表) 新增 Erupt 类注册表页面，运行时模型一览，并支持一键发布到菜单
 
 🧩 [@Power](/zh/annotation/power) 新增 `ai` 开关，按实体控制 AI 能力的可用范围
 

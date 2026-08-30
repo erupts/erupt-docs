@@ -25,6 +25,11 @@ public @interface Search {
     // AUTO resolves by edit type (e.g. INPUT defaults to LIKE, NUMBER defaults to EQ)
     QueryExpression operator() default QueryExpression.AUTO;
 
+    // Lock the operator (2.1.1+): hide the operator selector on the frontend and force
+    // the configured operator server-side, ignoring any client-supplied one — so crafted
+    // requests cannot bypass query restrictions
+    boolean lockOperator() default false;
+
 }
 ```
 
@@ -38,9 +43,23 @@ public @interface Search {
 private String name;
 ```
 
+**Locking the operator (2.1.1+):**
+
+```java
+@EruptField(
+    views = @View(title = "Status"),
+    edit = @Edit(title = "Status", search = @Search(operator = QueryExpression.EQ, lockOperator = true))
+)
+private String status;
+```
+
 :::tip
 The `vague` property was removed in 2.0.0. Advanced search (range queries, fuzzy matching, etc.) is now the default behaviour for each component — no extra configuration needed.
 :::
+
+## Multi-Select Search with IN / NOT_IN <Badge type="tip" text="v2.1.1+" />
+
+Choice fields (`CHOICE`) and reference fields (`REFERENCE_TABLE`, `REFERENCE_TREE`) support multi-select values in the search bar when the `IN` / `NOT_IN` operator is selected, matching multiple options in a single query.
 
 ## QueryExpression Operators
 

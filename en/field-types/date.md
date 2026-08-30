@@ -22,12 +22,17 @@ public @interface DateType {
 
     PickerMode pickerMode() default PickerMode.ALL; // Selectable time range
 
+    String min() default ""; // Earliest selectable date (inclusive), format yyyy-MM-dd; empty means unbounded (2.1.1+)
+
+    String max() default ""; // Latest selectable date (inclusive), format yyyy-MM-dd; empty means unbounded (2.1.1+)
+
     enum Type {
         DATE,       // Date
         TIME,       // Time
         DATE_TIME,  // Date and time
         MONTH,      // Month
         WEEK,       // Week
+        QUARTER,    // Quarter (2.1.1+)
         YEAR        // Year
     }
 
@@ -86,6 +91,16 @@ private String week;
 private String year;
 ```
 
+Quarter picker (2.1.1+):
+
+```java
+@EruptField(
+    edit = @Edit(title = "Quarter", type = EditType.DATE,
+                 dateType = @DateType(type = DateType.Type.QUARTER))
+)
+private String quarter;
+```
+
 Allow only future dates:
 
 ```java
@@ -94,4 +109,14 @@ Allow only future dates:
                  dateType = @DateType(pickerMode = DateType.PickerMode.FUTURE))
 )
 private LocalDateTime futureDate;
+```
+
+Limit the selectable date range (2.1.1+):
+
+```java
+@EruptField(
+    edit = @Edit(title = "Event Date", type = EditType.DATE,
+                 dateType = @DateType(min = "2026-01-01", max = "2026-12-31"))
+)
+private LocalDate activityDate;
 ```

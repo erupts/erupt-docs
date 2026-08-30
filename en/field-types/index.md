@@ -55,6 +55,7 @@ const groups = [
             {name: 'TAB_TREE', desc: 'Tree selector · many-to-many', link: '/en/field-types/tab-tree', img: '/field-types/tab-tree.svg'},
             {name: 'TAB_TABLE_REFER', desc: 'Table selector · many-to-many', link: '/en/field-types/tab-table-refer', img: '/field-types/tab-table-refer.svg'},
             {name: 'TAB_TABLE_ADD', desc: 'Nested child records · one-to-many', link: '/en/field-types/tab-table-add', img: '/field-types/tab-table-add.svg'},
+            {name: 'MULTI_FORM', desc: 'Inline form blocks · one-to-many', link: '/en/field-types/multi-form', img: '/field-types/multi-form.svg'},
             {name: 'COMBINE', desc: 'Nested form, JSON storage · one-to-one', link: '/en/field-types/combine', img: '/field-types/combine.svg'},
         ],
     },

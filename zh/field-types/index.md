@@ -55,6 +55,7 @@ const groups = [
             {name: 'TAB_TREE', desc: '树形选择 · 多对多', link: '/zh/field-types/tab-tree', img: '/field-types/tab-tree.svg'},
             {name: 'TAB_TABLE_REFER', desc: '表格选择 · 多对多', link: '/zh/field-types/tab-table-refer', img: '/field-types/tab-table-refer.svg'},
             {name: 'TAB_TABLE_ADD', desc: '嵌套新增子记录 · 一对多', link: '/zh/field-types/tab-table-add', img: '/field-types/tab-table-add.svg'},
+            {name: 'MULTI_FORM', desc: '内联表单块编辑 · 一对多', link: '/zh/field-types/multi-form', img: '/field-types/multi-form.svg'},
             {name: 'COMBINE', desc: '嵌套新增，支持 JSON 存储 · 一对一', link: '/zh/field-types/combine', img: '/field-types/combine.svg'},
         ],
     },

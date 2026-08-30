@@ -25,6 +25,10 @@ public @interface Search {
     // AUTO 表示按组件类型自动解析（如 INPUT 默认 LIKE、NUMBER 默认 EQ）
     QueryExpression operator() default QueryExpression.AUTO;
 
+    // 锁定操作符（2.1.1+）：前端隐藏操作符选择器，后端强制使用 operator 配置的操作符
+    // 忽略客户端传入的任何操作符，防止构造请求绕过查询限制
+    boolean lockOperator() default false;
+
 }
 ```
 
@@ -38,9 +42,23 @@ public @interface Search {
 private String name;
 ```
 
+**锁定操作符示例（2.1.1+）：**
+
+```java
+@EruptField(
+    views = @View(title = "状态"),
+    edit = @Edit(title = "状态", search = @Search(operator = QueryExpression.EQ, lockOperator = true))
+)
+private String status;
+```
+
 :::tip
 `vague` 属性已在 2.0.0 中移除，高级搜索（范围查询、模糊匹配等）现为各组件的默认行为，无需额外配置。
 :::
+
+## 多选搜索 IN / NOT_IN <Badge type="tip" text="v2.1.1+" />
+
+选择类字段（`CHOICE`）、引用类字段（`REFERENCE_TABLE`、`REFERENCE_TREE`）在搜索栏中选择 `IN` / `NOT_IN` 操作符后，支持多选取值，一次查询命中多个选项。
 
 ## QueryExpression 搜索操作符
 

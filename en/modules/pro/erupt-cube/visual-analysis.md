@@ -31,6 +31,16 @@ Ready out of the box, covering common business analysis scenarios — no extra p
 | 🟦 Heat map | Density, cross analysis |
 | ⬜ Table | Detail rows, multi-dimensional comparison |
 | 🔢 KPI card | Core metrics, period-over-period trends |
+| 🗺️ Map <Badge type="tip" text="v2.1.1+" /> | Regional distribution, geographic analysis |
+
+### Map Report <Badge type="tip" text="v2.1.1+" />
+
+A choropleth map backed by ECharts geo rendering:
+
+- **GeoJSON source**: select from the built-in map registry (code + name + uploaded GeoJSON file) or provide a GeoJSON URL manually
+- **Region matching**: match data by region name or administrative division code (adcode)
+- **Interaction options**: toggle zoom/roam and region labels
+- **Drill-down linkage**: clicking a map region triggers drill-down filtering, with all other charts responding in sync
 
 ## Filter Types
 

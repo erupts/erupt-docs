@@ -94,6 +94,17 @@ public class DemoJobHandler implements EruptJobHandler {
 }
 ```
 
+## Cluster Deduplication <Badge type="tip" text="v2.1.1+" />
+
+In a multi-instance deployment, scheduled jobs would by default run once on every instance. With `erupt.redis-session = true`, erupt-job automatically enables a Redis-backed cluster lock (ShedLock) so each job runs on exactly one node across the cluster, avoiding duplicate execution:
+
+```yaml
+erupt:
+  redis-session: true
+```
+
+Single-instance deployments require no configuration and incur no extra overhead.
+
 ## Configuration in Task Management
 
 | Field | Description |

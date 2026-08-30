@@ -22,12 +22,17 @@ public @interface DateType {
 
     PickerMode pickerMode() default PickerMode.ALL; // 可选时间范围
 
+    String min() default ""; // 最早可选日期（含），格式 yyyy-MM-dd，空表示不限（2.1.1+）
+
+    String max() default ""; // 最晚可选日期（含），格式 yyyy-MM-dd，空表示不限（2.1.1+）
+
     enum Type {
         DATE,       // 日期
         TIME,       // 时间
         DATE_TIME,  // 日期时间
         MONTH,      // 月
         WEEK,       // 周
+        QUARTER,    // 季度（2.1.1+）
         YEAR        // 年
     }
 
@@ -86,6 +91,16 @@ private String week;
 private String year;
 ```
 
+季度选择（2.1.1+）：
+
+```java
+@EruptField(
+    edit = @Edit(title = "季度", type = EditType.DATE,
+                 dateType = @DateType(type = DateType.Type.QUARTER))
+)
+private String quarter;
+```
+
 仅允许选择未来时间：
 
 ```java
@@ -94,4 +109,14 @@ private String year;
                  dateType = @DateType(pickerMode = DateType.PickerMode.FUTURE))
 )
 private LocalDateTime futureDate;
+```
+
+限定可选日期区间（2.1.1+）：
+
+```java
+@EruptField(
+    edit = @Edit(title = "活动日期", type = EditType.DATE,
+                 dateType = @DateType(min = "2026-01-01", max = "2026-12-31"))
+)
+private LocalDate activityDate;
 ```

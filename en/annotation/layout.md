@@ -32,6 +32,9 @@ public @interface Layout {
     // form size
     FormSize formSize() default FormSize.DEFAULT;
 
+    // step-by-step form wizard mode (2.1.1+)
+    boolean formSteps() default false;
+
     // number of columns to pin on the left side of the table
     int tableLeftFixed() default 0;
 
@@ -94,6 +97,12 @@ Defines the table pagination mode:
 - **`BACKEND`**: Server-side pagination (default) — each page turn requests data from the server.
 - **`FRONT`**: Client-side pagination — all data is loaded at once and paginated in the browser.
 - **`NONE`**: No pagination.
+
+## formSteps Step Wizard <Badge type="tip" text="v2.1.1+" />
+
+When `formSteps = true`, the form is rendered as a **step-by-step wizard**, with `DIVIDE` fields acting as step boundaries.
+
+See the dedicated page: [Step Form formSteps](/en/annotation/form-steps)
 
 ## collapseActionButton <Badge type="tip" text="v2.0.0+" />
 

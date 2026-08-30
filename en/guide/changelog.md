@@ -1,5 +1,47 @@
 # Changelog
 
+## 2.1.1 (2026-08-30) <Badge type="tip" text="Spring Boot 3.5.16" />
+
+🌟 Added the [MULTI_FORM](/en/field-types/multi-form) edit type — one-to-many child rows are edited directly as inline form blocks, ideal when child tables have many fields.
+
+🌟 [@Layout](/en/annotation/layout) added the [formSteps step-form](/en/annotation/form-steps) wizard mode: DIVIDE fields delimit the steps, splitting long forms into guided stages.
+
+🌟 [erupt-cube](/en/modules/pro/erupt-cube/visual-analysis#map-report) added a Map report type: ECharts-based choropleth maps with a GeoJSON map registry and region-click drill-down linkage.
+
+🧩 [@Search](/en/annotation/search) added `lockOperator` — the query operator is enforced server-side so crafted requests cannot bypass frontend query restrictions.
+
+🧩 Choice and reference field search now supports [IN / NOT_IN multi-select queries](/en/annotation/search#multi-select-search-with-in--not_in), matching multiple options at once.
+
+🧩 [DATE](/en/field-types/date) picker added a QUARTER mode plus `min` / `max` selectable date bounds.
+
+🧩 [NUMBER](/en/field-types/number) input enhanced with decimal precision, step size, prefix/suffix units, and thousands separator.
+
+🧩 [COLOR](/en/field-types/color) picker added configuration for alpha channel, preset swatches, and color value text.
+
+🧩 [erupt-job](/en/modules/erupt-job#cluster-deduplication) supports cluster deduplication: with `redis-session` enabled, each scheduled job runs on exactly one node across the cluster.
+
+🧩 Security hardening: nested sub-model requests (TAB, COMBINE, reference fields, etc.) are now authorized against their parent's menu permission.
+
+🧩 ADD/EDIT function permissions are auto-generated for FORM-type menus — no manual configuration needed.
+
+🧩 Sidebar menu gained a toolbar: refresh, reset, expand all, and split mode.
+
+🧩 Tree views support batch delete with checkboxes.
+
+🧩 Table column widths are computed from measured text for better accuracy; overly long header breadcrumbs are truncated with ellipsis; the multi-tab bar is hidden on mobile.
+
+🧩 Added the OrcaRouter LLM provider — thanks to [XiaoHuo888-hue](https://github.com/XiaoHuo888-hue) for the contribution.
+
+🐞 Fixed RAG knowledge-base ingestion failing for remote attachments and stale embedding clients after configuration changes.
+
+🐞 Fixed the TIME search filter being blank and unusable.
+
+🐞 Fixed Markdown fields not displaying asynchronously loaded content.
+
+🐞 Fixed left-join queries in erupt-cube semantic models.
+
+🐞 Fixed the fixed-mode multi-tab bar overlapping page content.
+
 ## 2.1.0 (2026-08-23) <Badge type="tip" text="Spring Boot 3.5.16" />
 
 > 🦞 15 modules open-sourced &emsp; 🔌 13+ data connectors &emsp; 🤖 Major AI upgrades
@@ -40,7 +82,7 @@
 
 🌟 AI chat can now be stopped mid-generation; partial output is kept and marked as interrupted.
 
-🧩 [erupt-monitor](/en/modules/erupt-monitor) adds an Erupt class registry page listing runtime models, with one-click publish to menu.
+🧩 [erupt-monitor](/en/modules/erupt-monitor#erupt-class-registry) adds an Erupt class registry page listing runtime models, with one-click publish to menu.
 
 🧩 [@Power](/en/annotation/power) adds an `ai` switch to control AI availability per entity.
 

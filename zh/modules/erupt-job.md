@@ -94,6 +94,17 @@ public class DemoJobHandler implements EruptJobHandler {
 }
 ```
 
+## 集群去重执行 <Badge type="tip" text="v2.1.1+" />
+
+多实例部署时，定时任务默认会在每个实例上各执行一次。开启 `erupt.redis-session = true` 后，erupt-job 自动启用基于 Redis 的集群锁（ShedLock），同一任务在整个集群中仅由一个节点执行，避免重复触发：
+
+```yaml
+erupt:
+  redis-session: true
+```
+
+单实例部署无需任何配置，不会引入额外开销。
+
 ## 在任务维护中配置
 
 | 配置项 | 说明 |
