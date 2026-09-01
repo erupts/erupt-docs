@@ -65,6 +65,7 @@ export default withMermaid(defineConfig({
                     {text: 'Modules', link: '/en/modules/', activeMatch: '/en/modules/'},
                     {text: 'Topics', link: '/en/topics/', activeMatch: '/en/topics/'},
                     {text: 'Changelog', link: '/en/guide/changelog'},
+                    {text: '⚡ No-Code', link: 'https://skill.erupt.xyz'},
                     {
                         text: 'Links',
                         items: [
@@ -535,6 +536,7 @@ export default withMermaid(defineConfig({
                     {text: '扩展模块', link: '/zh/modules/', activeMatch: '/zh/modules/'},
                     {text: '专题', link: '/zh/topics/', activeMatch: '/zh/topics/'},
                     {text: '更新日志', link: '/zh/guide/changelog'},
+                    {text: '⚡ 零代码', link: 'https://skill.erupt.xyz'},
                     {
                         text: '相关链接',
                         items: [
