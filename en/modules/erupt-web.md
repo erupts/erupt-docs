@@ -12,7 +12,7 @@ erupt-web is the frontend module of the Erupt framework, built with Angular. It 
 </dependency>
 ```
 
-For a frontend/backend separated deployment, you can omit this dependency and deploy the frontend independently. See [Frontend/Backend Separation](/en/guide/separation).
+For a frontend/backend separated deployment, you can omit this dependency and deploy the frontend independently. See [Frontend/Backend Separation](/en/advanced/separation).
 
 ## Frontend Source Code
 

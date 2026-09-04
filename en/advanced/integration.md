@@ -69,4 +69,4 @@ window.eruptSiteConfig = {
 };
 ```
 
-See: [Frontend-Backend Separation Deployment](/en/guide/separation)
+See: [Frontend-Backend Separation Deployment](/en/advanced/separation)

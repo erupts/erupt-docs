@@ -1,5 +1,6 @@
 <script setup>
 import { computed, onMounted, onUnmounted } from 'vue'
+import { useData } from 'vitepress'
 
 const props = defineProps({
     lang: { type: String, default: 'zh' },
@@ -21,6 +22,8 @@ const dict = {
         ctaDemoLink: 'https://demo.erupt.xyz',
         ctaGit: 'GitHub ↗',
         ctaGitLink: 'https://github.com/erupts/erupt',
+        changelog: '更新日志 →',
+        changelogLink: '/zh/guide/changelog',
         stats: [
             { num: '30+', label: '字段组件' },
             { num: '15+', label: 'AI 大模型' },
@@ -49,6 +52,8 @@ const dict = {
         ctaDemoLink: 'https://demo.erupt.xyz',
         ctaGit: 'GitHub ↗',
         ctaGitLink: 'https://github.com/erupts/erupt',
+        changelog: 'Changelog →',
+        changelogLink: '/en/guide/changelog',
         stats: [
             { num: '30+', label: 'Field Types' },
             { num: '15+', label: 'AI Models' },
@@ -70,6 +75,9 @@ const dict = {
 const techItems = ['JDK 17+', 'Spring Boot 3.x', 'MySQL', 'PostgreSQL', 'Oracle', 'SQL Server', 'H2', 'MongoDB', 'Apache-2.0']
 
 const t = computed(() => dict[props.lang] || dict.zh)
+// 最新版本号由 config.mts 从更新日志解析后放入 themeConfig
+const { theme } = useData()
+const latestVersion = computed(() => theme.value.latestVersion)
 </script>
 
 <template>
@@ -77,7 +85,12 @@ const t = computed(() => dict[props.lang] || dict.zh)
         <section class="rf-hero">
             <div class="rf-hero-inner">
                 <div class="rf-copy">
-                    <p class="rf-kicker rf-pop" style="--d:.05s">{{ t.kicker }}</p>
+                    <div class="rf-kicker-row rf-pop" style="--d:.05s">
+                        <p class="rf-kicker">{{ t.kicker }}</p>
+                        <a v-if="latestVersion" class="rf-version" :href="t.changelogLink">
+                            <b>v{{ latestVersion }}</b> · {{ t.changelog }}
+                        </a>
+                    </div>
                     <h1 class="rf-title rf-pop" style="--d:.12s">
                         {{ t.titleL1 }}<br>
                         {{ t.titleL2 }}<br>
@@ -248,6 +261,41 @@ const t = computed(() => dict[props.lang] || dict.zh)
     margin: 0 auto;
 }
 
+.rf-kicker-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin: 0 0 22px;
+}
+
+.rf-version {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-decoration: none;
+    color: var(--rf-txt);
+    background: var(--rf-paper);
+    border: 2px solid var(--rf-line);
+    padding: 4px 12px;
+    box-shadow: 3px 3px 0 var(--rf-line);
+    transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.rf-version b {
+    color: var(--rf-txt);
+    background: var(--rf-pink);
+    padding: 0 4px;
+    margin-right: 2px;
+}
+
+.rf-version:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--rf-line);
+}
+
 .rf-kicker {
     display: inline-block;
     font-family: var(--mono);
@@ -258,7 +306,7 @@ const t = computed(() => dict[props.lang] || dict.zh)
     background: var(--rf-cyan);
     border: 2px solid var(--black);
     padding: 4px 12px;
-    margin: 0 0 22px;
+    margin: 0;
     transform: rotate(-1deg);
     box-shadow: 3px 3px 0 var(--rf-line);
 }

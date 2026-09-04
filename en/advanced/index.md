@@ -23,6 +23,7 @@ const groups = [
             {icon: '📊', name: 'Excel Import & Export', desc: 'Customize export files and validate imported data via excel*', link: '/en/advanced/data-proxy-excel'},
             {icon: '🖨️', name: 'Print Processing', desc: 'Customize the printed HTML output via print', link: '/en/advanced/data-proxy-print'},
             {icon: '🧬', name: 'Inherited Proxy', desc: 'Reuse DataProxy capabilities through inheritance via @PreDataProxy', link: '/en/advanced/pre-data-proxy'},
+            {icon: '🎯', name: 'Global Interception', desc: 'PostDataProxy intercepts data operations globally, no per-class config', link: '/en/advanced/post-data-proxy'},
         ],
     },
     {
@@ -34,12 +35,11 @@ const groups = [
         ],
     },
     {
-        title: 'Data & Persistence',
+        title: 'Data Sources & Persistence',
         items: [
-            {icon: '🎯', name: 'Global Interception', desc: 'PostDataProxy intercepts data operations globally, no per-class config', link: '/en/advanced/post-data-proxy'},
-            {icon: '🗑️', name: 'Soft Delete', desc: 'Replace physical deletion with a deleted flag field', link: '/en/advanced/soft-delete'},
             {icon: '🗄️', name: 'Multiple Data Sources', desc: 'Configure and use multiple databases', link: '/en/advanced/datasource'},
             {icon: '🛢️', name: 'Custom Data Source', desc: 'Manage non-database data with Erupt', link: '/en/advanced/custom-datasource'},
+            {icon: '🗑️', name: 'Soft Delete', desc: 'Replace physical deletion with a deleted flag field', link: '/en/advanced/soft-delete'},
         ],
     },
     {
@@ -48,6 +48,14 @@ const groups = [
             {icon: '🔑', name: 'Login & Authentication', desc: 'Custom login logic, token validation, permission extension', link: '/en/advanced/auth'},
             {icon: '🚪', name: 'Custom Login Page', desc: 'Captcha login, WeChat QR login and other custom login flows', link: '/en/advanced/custom-login-page'},
             {icon: '🔓', name: 'Open API', desc: 'Token via appid + secret for external system calls', link: '/en/advanced/open-api'},
+        ],
+    },
+    {
+        title: 'API & Integration',
+        items: [
+            {icon: '🧭', name: 'API Development & Logs', desc: 'Custom REST endpoints and operation-log recording', link: '/en/advanced/rest-api'},
+            {icon: '🔗', name: 'Existing Project Integration', desc: 'Plug Erupt into an existing Spring Boot project', link: '/en/advanced/integration'},
+            {icon: '🖥️', name: 'Frontend/Backend Separation', desc: 'Build and deploy the frontend independently, backend serves API only', link: '/en/advanced/separation'},
         ],
     },
     {
@@ -61,11 +69,9 @@ const groups = [
     {
         title: 'Development & Extension',
         items: [
-            {icon: '🔗', name: 'Existing Project Integration', desc: 'Plug Erupt into an existing Spring Boot project', link: '/en/advanced/integration'},
-            {icon: '🧭', name: 'API Development & Logs', desc: 'Custom REST endpoints and operation-log recording', link: '/en/advanced/rest-api'},
             {icon: '📡', name: 'Event Listeners', desc: 'Listen to internal framework events for decoupled extension', link: '/en/advanced/event-listener'},
-            {icon: '🔧', name: 'Utility Classes', desc: "Erupt's built-in utility classes", link: '/en/advanced/utils'},
             {icon: '🔥', name: 'Hot Build', desc: 'Annotation changes apply on page refresh, no restart needed', link: '/en/advanced/hot-build'},
+            {icon: '🔧', name: 'Utility Classes', desc: "Erupt's built-in utility classes", link: '/en/advanced/utils'},
             {icon: '🧬', name: 'Extending Erupt Annotations', desc: 'Build on the Erupt annotation system', link: '/en/advanced/extend'},
             {icon: '🧩', name: 'Plugin Development', desc: 'Build custom plugins on top of the framework', link: '/en/advanced/plugin'},
         ],

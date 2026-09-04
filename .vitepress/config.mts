@@ -2,6 +2,13 @@ import {defineConfig} from 'vitepress'
 import {withMermaid} from 'vitepress-plugin-mermaid'
 import {InlineLinkPreviewElementTransform} from '@nolebase/vitepress-plugin-inline-link-preview/markdown-it'
 import {GitChangelog, GitChangelogMarkdownSection} from '@nolebase/vitepress-plugin-git-changelog/vite'
+import {readFileSync} from 'node:fs'
+import {fileURLToPath} from 'node:url'
+
+// 从中文更新日志的首个版本标题解析最新版本号，供侧边栏徽标与首页版本标签共用，发版后无需手改
+const latestVersion = readFileSync(fileURLToPath(new URL('../zh/guide/changelog.md', import.meta.url)), 'utf8')
+    .match(/^## (\d+\.\d+\.\d+)/m)?.[1] ?? ''
+const versionBadge = latestVersion ? ` <span class="VPBadge tip">v${latestVersion}</span>` : ''
 
 export default withMermaid(defineConfig({
     title: 'Erupt',
@@ -88,15 +95,17 @@ export default withMermaid(defineConfig({
                                 {text: '⚡ No-Code Builder', link: 'https://skill.erupt.xyz'},
                                 {text: 'Framework Introduction', link: '/en/guide/'},
                                 {text: 'Quick Start', link: '/en/guide/quick-start'},
+                                {text: 'Database Support', link: '/en/guide/database'},
                                 {text: 'First Example', link: '/en/guide/getting-started'},
                                 {text: 'Configuration', link: '/en/guide/configuration'},
                             ],
                         },
                         {
-                            text: 'Deployment',
+                            text: 'Releases',
                             items: [
-                                {text: 'Database Support', link: '/en/guide/database'},
-                                {text: 'Frontend/Backend Separation', link: '/en/guide/separation'},
+                                {text: 'Changelog' + versionBadge, link: '/en/guide/changelog'},
+                                {text: 'Upgrade Guide', link: '/en/guide/upgrade'},
+                                {text: 'Legacy Versions', link: '/en/guide/history'},
                             ],
                         },
                         {
@@ -105,9 +114,6 @@ export default withMermaid(defineConfig({
                                 {text: 'Architecture', link: '/en/guide/architecture'},
                                 {text: 'FAQ', link: '/en/guide/faq'},
                                 {text: 'Anonymous Telemetry', link: '/en/guide/telemetry'},
-                                {text: 'Upgrade Guide', link: '/en/guide/upgrade'},
-                                {text: 'Changelog', link: '/en/guide/changelog'},
-                                {text: 'Legacy Versions', link: '/en/guide/history'},
                             ],
                         },
                         {
@@ -257,6 +263,7 @@ export default withMermaid(defineConfig({
                                 {text: 'Excel Import & Export', link: '/en/advanced/data-proxy-excel'},
                                 {text: 'Print Processing', link: '/en/advanced/data-proxy-print'},
                                 {text: 'Inherited Proxy', link: '/en/advanced/pre-data-proxy'},
+                                {text: 'Global Interception', link: '/en/advanced/post-data-proxy'},
                             ],
                         },
                         {
@@ -268,12 +275,11 @@ export default withMermaid(defineConfig({
                             ],
                         },
                         {
-                            text: 'Data & Persistence',
+                            text: 'Data Sources & Persistence',
                             items: [
-                                {text: 'Global Interception', link: '/en/advanced/post-data-proxy'},
-                                {text: 'Soft Delete', link: '/en/advanced/soft-delete'},
                                 {text: 'Multiple Data Sources', link: '/en/advanced/datasource'},
                                 {text: 'Custom Data Source', link: '/en/advanced/custom-datasource'},
+                                {text: 'Soft Delete', link: '/en/advanced/soft-delete'},
                             ],
                         },
                         {
@@ -282,6 +288,14 @@ export default withMermaid(defineConfig({
                                 {text: 'Login & Authentication', link: '/en/advanced/auth'},
                                 {text: 'Custom Login Page', link: '/en/advanced/custom-login-page'},
                                 {text: 'Open API', link: '/en/advanced/open-api'},
+                            ],
+                        },
+                        {
+                            text: 'API & Integration',
+                            items: [
+                                {text: 'API Development & Logs', link: '/en/advanced/rest-api'},
+                                {text: 'Existing Project Integration', link: '/en/advanced/integration'},
+                                {text: 'Frontend/Backend Separation', link: '/en/advanced/separation'},
                             ],
                         },
                         {
@@ -295,11 +309,9 @@ export default withMermaid(defineConfig({
                         {
                             text: 'Development & Extension',
                             items: [
-                                {text: 'Existing Project Integration', link: '/en/advanced/integration'},
-                                {text: 'API Development & Logs', link: '/en/advanced/rest-api'},
                                 {text: 'Event Listeners', link: '/en/advanced/event-listener'},
-                                {text: 'Utility Classes', link: '/en/advanced/utils'},
                                 {text: 'Hot Build', link: '/en/advanced/hot-build'},
+                                {text: 'Utility Classes', link: '/en/advanced/utils'},
                                 {text: 'Extending Erupt Annotations', link: '/en/advanced/extend'},
                                 {text: 'Plugin Development', link: '/en/advanced/plugin'},
                             ],
@@ -562,26 +574,25 @@ export default withMermaid(defineConfig({
                                 {text: '⚡ 零代码构建', link: 'https://skill.erupt.xyz'},
                                 {text: '框架介绍', link: '/zh/guide/'},
                                 {text: '快速部署', link: '/zh/guide/quick-start'},
+                                {text: '数据源支持', link: '/zh/guide/database'},
                                 {text: '入门示例', link: '/zh/guide/getting-started'},
                                 {text: '参数配置', link: '/zh/guide/configuration'},
                             ],
                         },
                         {
-                            text: '部署',
+                            text: '版本发布',
                             items: [
-                                {text: '数据源支持', link: '/zh/guide/database'},
-                                {text: '前后端分离部署', link: '/zh/guide/separation'},
+                                {text: '更新日志' + versionBadge, link: '/zh/guide/changelog'},
+                                {text: '升级指南', link: '/zh/guide/upgrade'},
+                                {text: '历史版本', link: '/zh/guide/history'},
                             ],
                         },
                         {
                             text: '参考',
                             items: [
                                 {text: '架构设计', link: '/zh/guide/architecture'},
-                                {text: '常见问题 FAQ', link: '/zh/guide/faq'},
+                                {text: '常见问题', link: '/zh/guide/faq'},
                                 {text: '匿名遥测', link: '/zh/guide/telemetry'},
-                                {text: '升级指南', link: '/zh/guide/upgrade'},
-                                {text: '更新日志', link: '/zh/guide/changelog'},
-                                {text: '历史版本', link: '/zh/guide/history'},
                             ],
                         },
                         {
@@ -731,6 +742,7 @@ export default withMermaid(defineConfig({
                                 {text: 'Excel 导入导出', link: '/zh/advanced/data-proxy-excel'},
                                 {text: '打印内容处理', link: '/zh/advanced/data-proxy-print'},
                                 {text: '通用继承', link: '/zh/advanced/pre-data-proxy'},
+                                {text: '全局拦截', link: '/zh/advanced/post-data-proxy'},
                             ],
                         },
                         {
@@ -742,12 +754,11 @@ export default withMermaid(defineConfig({
                             ],
                         },
                         {
-                            text: '数据与持久化',
+                            text: '数据源与持久化',
                             items: [
-                                {text: '全局拦截', link: '/zh/advanced/post-data-proxy'},
-                                {text: '逻辑删除', link: '/zh/advanced/soft-delete'},
                                 {text: '多数据源', link: '/zh/advanced/datasource'},
                                 {text: '自定义数据源', link: '/zh/advanced/custom-datasource'},
+                                {text: '逻辑删除', link: '/zh/advanced/soft-delete'},
                             ],
                         },
                         {
@@ -756,6 +767,14 @@ export default withMermaid(defineConfig({
                                 {text: '登录与认证', link: '/zh/advanced/auth'},
                                 {text: '自定义登录页', link: '/zh/advanced/custom-login-page'},
                                 {text: '开放接口', link: '/zh/advanced/open-api'},
+                            ],
+                        },
+                        {
+                            text: '接口与集成',
+                            items: [
+                                {text: '接口开发与操作日志', link: '/zh/advanced/rest-api'},
+                                {text: '现有项目接入', link: '/zh/advanced/integration'},
+                                {text: '前后端分离部署', link: '/zh/advanced/separation'},
                             ],
                         },
                         {
@@ -769,11 +788,9 @@ export default withMermaid(defineConfig({
                         {
                             text: '开发与扩展',
                             items: [
-                                {text: '现有项目接入', link: '/zh/advanced/integration'},
-                                {text: '接口开发与操作日志', link: '/zh/advanced/rest-api'},
                                 {text: '事件监听器', link: '/zh/advanced/event-listener'},
-                                {text: '工具类', link: '/zh/advanced/utils'},
                                 {text: '热构建', link: '/zh/advanced/hot-build'},
+                                {text: '工具类', link: '/zh/advanced/utils'},
                                 {text: '扩展 Erupt 注解', link: '/zh/advanced/extend'},
                                 {text: '插件开发', link: '/zh/advanced/plugin'},
                             ],
@@ -1005,6 +1022,7 @@ export default withMermaid(defineConfig({
     themeConfig: {
         logo: {light: '/icon.svg', dark: '/icon.svg'},
         siteTitle: 'Erupt',
+        latestVersion,
         search: {
             provider: 'local'
         },

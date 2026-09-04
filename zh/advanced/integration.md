@@ -69,4 +69,4 @@ window.eruptSiteConfig = {
 };
 ```
 
-详见：[前后端分离部署](/zh/guide/separation)
+详见：[前后端分离部署](/zh/advanced/separation)

@@ -12,7 +12,7 @@ erupt-web 是 Erupt 框架的前端模块，基于 Angular 开发，提供完整
 </dependency>
 ```
 
-在前后端分离部署场景下，可不添加此依赖，将前端单独部署，详见[前后端分离部署](/zh/guide/separation)。
+在前后端分离部署场景下，可不添加此依赖，将前端单独部署，详见[前后端分离部署](/zh/advanced/separation)。
 
 ## 前端源码
 

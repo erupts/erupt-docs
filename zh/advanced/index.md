@@ -23,6 +23,7 @@ const groups = [
             {icon: '📊', name: 'Excel 导入导出', desc: 'excel* 自定义导出文件、校验导入数据', link: '/zh/advanced/data-proxy-excel'},
             {icon: '🖨️', name: '打印内容处理', desc: 'print 自定义打印输出的 HTML 内容', link: '/zh/advanced/data-proxy-print'},
             {icon: '🧬', name: '通用继承', desc: '@PreDataProxy 通过继承复用 DataProxy 能力', link: '/zh/advanced/pre-data-proxy'},
+            {icon: '🎯', name: '全局拦截', desc: 'PostDataProxy 全局统一拦截数据操作，无需逐类配置', link: '/zh/advanced/post-data-proxy'},
         ],
     },
     {
@@ -34,12 +35,11 @@ const groups = [
         ],
     },
     {
-        title: '数据与持久化',
+        title: '数据源与持久化',
         items: [
-            {icon: '🎯', name: '全局拦截', desc: 'PostDataProxy 全局统一拦截数据操作，无需逐类配置', link: '/zh/advanced/post-data-proxy'},
-            {icon: '🗑️', name: '逻辑删除', desc: '以删除标识字段代替物理删除', link: '/zh/advanced/soft-delete'},
             {icon: '🗄️', name: '多数据源', desc: '配置并使用多个数据库数据源', link: '/zh/advanced/datasource'},
             {icon: '🛢️', name: '自定义数据源', desc: '用 Erupt 管理数据库以外的数据', link: '/zh/advanced/custom-datasource'},
+            {icon: '🗑️', name: '逻辑删除', desc: '以删除标识字段代替物理删除', link: '/zh/advanced/soft-delete'},
         ],
     },
     {
@@ -48,6 +48,14 @@ const groups = [
             {icon: '🔑', name: '登录与认证', desc: '自定义登录逻辑、Token 校验、权限扩展', link: '/zh/advanced/auth'},
             {icon: '🚪', name: '自定义登录页', desc: '验证码登录、微信扫码等个性化登录场景', link: '/zh/advanced/custom-login-page'},
             {icon: '🔓', name: '开放接口', desc: 'appid + secret 获取 token，供外部系统调用', link: '/zh/advanced/open-api'},
+        ],
+    },
+    {
+        title: '接口与集成',
+        items: [
+            {icon: '🧭', name: '接口开发与操作日志', desc: '自定义 REST 接口与操作日志记录', link: '/zh/advanced/rest-api'},
+            {icon: '🔗', name: '现有项目接入', desc: '将 Erupt 集成进已有 Spring Boot 项目', link: '/zh/advanced/integration'},
+            {icon: '🖥️', name: '前后端分离部署', desc: '前端独立编译部署，后端只提供 API', link: '/zh/advanced/separation'},
         ],
     },
     {
@@ -61,11 +69,9 @@ const groups = [
     {
         title: '开发与扩展',
         items: [
-            {icon: '🔗', name: '现有项目接入', desc: '将 Erupt 集成进已有 Spring Boot 项目', link: '/zh/advanced/integration'},
-            {icon: '🧭', name: '接口开发与操作日志', desc: '自定义 REST 接口与操作日志记录', link: '/zh/advanced/rest-api'},
             {icon: '📡', name: '事件监听器', desc: '监听框架内部事件，实现解耦扩展', link: '/zh/advanced/event-listener'},
-            {icon: '🔧', name: '工具类', desc: 'Erupt 内置工具类使用说明', link: '/zh/advanced/utils'},
             {icon: '🔥', name: '热构建', desc: '修改注解无需重启，刷新页面即可生效', link: '/zh/advanced/hot-build'},
+            {icon: '🔧', name: '工具类', desc: 'Erupt 内置工具类使用说明', link: '/zh/advanced/utils'},
             {icon: '🧬', name: '扩展 Erupt 注解', desc: '基于 Erupt 注解体系进行二次扩展', link: '/zh/advanced/extend'},
             {icon: '🧩', name: '插件开发', desc: '开发自定义插件扩展框架能力', link: '/zh/advanced/plugin'},
         ],
