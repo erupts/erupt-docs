@@ -1,4 +1,4 @@
-# Anonymous Telemetry <Badge type="tip" text="v2.1.3+" />
+# Anonymous Telemetry <Badge type="tip" text="v2.1.2+" />
 
 After startup, Erupt reports an **anonymous instance profile**. It exists to answer questions like "which JDK / database / Spring Boot versions still need support" and "which modules deserve investment" with real numbers instead of guesses.
 

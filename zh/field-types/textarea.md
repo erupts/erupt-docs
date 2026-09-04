@@ -15,7 +15,7 @@
 private String textarea;
 ```
 
-## 配置项 <Badge type="tip" text="v2.1.3+" />
+## 配置项 <Badge type="tip" text="v2.1.2+" />
 
 通过 `@Edit` 的 `textareaType` 属性配置：
 

@@ -15,7 +15,7 @@ Multi-line text input, suitable for storing longer content.
 private String textarea;
 ```
 
-## Configuration <Badge type="tip" text="v2.1.3+" />
+## Configuration <Badge type="tip" text="v2.1.2+" />
 
 Configured through the `textareaType` attribute of `@Edit`:
 
