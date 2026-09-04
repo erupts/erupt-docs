@@ -103,6 +103,7 @@ export default withMermaid(defineConfig({
                             items: [
                                 {text: 'Architecture', link: '/en/guide/architecture'},
                                 {text: 'FAQ', link: '/en/guide/faq'},
+                                {text: 'Anonymous Telemetry', link: '/en/guide/telemetry'},
                                 {text: 'Upgrade Guide', link: '/en/guide/upgrade'},
                                 {text: 'Changelog', link: '/en/guide/changelog'},
                                 {text: 'Legacy Docs', link: '/en/guide/changelog#legacy-documentation'},
@@ -112,6 +113,7 @@ export default withMermaid(defineConfig({
                             text: 'Community',
                             items: [
                                 {text: 'Community', link: '/en/guide/community'},
+                                {text: 'Governance & License', link: '/en/guide/governance'},
                                 {text: 'Contributing', link: '/en/guide/contributing'},
                                 {text: 'Donate', link: '/en/guide/donate'},
                             ],
@@ -574,6 +576,7 @@ export default withMermaid(defineConfig({
                             items: [
                                 {text: '架构图', link: '/zh/guide/architecture'},
                                 {text: '常见问题 FAQ', link: '/zh/guide/faq'},
+                                {text: '匿名遥测', link: '/zh/guide/telemetry'},
                                 {text: '升级指南', link: '/zh/guide/upgrade'},
                                 {text: '更新日志', link: '/zh/guide/changelog'},
                                 {text: '历史版本', link: '/zh/guide/changelog#历史版本文档'},
@@ -583,6 +586,7 @@ export default withMermaid(defineConfig({
                             text: '社区',
                             items: [
                                 {text: '加入讨论', link: '/zh/guide/community'},
+                                {text: '治理与许可承诺', link: '/zh/guide/governance'},
                                 {text: '贡献指南', link: '/zh/guide/contributing'},
                                 {text: '捐赠', link: '/zh/guide/donate'},
                             ],

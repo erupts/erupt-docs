@@ -10,6 +10,10 @@ If you want to use Erupt to manage data that lives outside a relational database
 
 ## How to Use
 
+::: tip Most cases don't need IEruptDataService from scratch
+If your source can only hand you whole rows (files, REST endpoints, SaaS tables, directory servers, object storage, ...), prefer extending [`EruptBeanDataService`](#the-easier-route-extend-eruptbeandataservice): implement a single `data()` method and the base class handles condition evaluation, sorting, paging and drill-down for you.
+:::
+
 ### 1. Implement the IEruptDataService Interface
 
 ```java
@@ -99,6 +103,95 @@ public class Test {
 ```
 
 > Without `@EruptDataProcessor`, Erupt falls back to the processor named `"JPA"` (`EruptConst.DEFAULT_DATA_PROCESSOR`), i.e. the implementation shipped by `erupt-data-jpa`.
+
+## The Easier Route: Extend EruptBeanDataService
+
+Implementing `IEruptDataService` directly means re-writing condition evaluation, `conditionStrings` parsing, sorting and paging yourself — a lot of work, and easy to get subtly wrong.
+
+`xyz.erupt.core.service.EruptBeanDataService<T>` is the official skeleton for data sources that can enumerate all of their rows: **you only implement a single `data()` method** and the base class does the rest. 10 of the 13 data sources under erupt-data are built on it (http, file, es, s3, k8s, ldap, redis, feishu, notion, memory); only jpa, jdbc and mongodb implement `IEruptDataService` directly.
+
+```java
+public abstract class EruptBeanDataService<T> implements IEruptDataService {
+
+    /** The only method you must implement: fetch the data as a list of beans (or maps) */
+    protected abstract List<T> data(EruptModel eruptModel, EruptQuery eruptQuery);
+
+    /** Whether data() already filtered by the query's conditions at the source.
+     *  When true, the base class skips its in-memory re-evaluation. */
+    protected boolean conditionsPushedDown() {
+        return false;
+    }
+}
+```
+
+### What the Base Class Handles for You
+
+| Capability | Details |
+| --- | --- |
+| Condition evaluation | `EQ`, `NEQ`, `GT`, `GTE`, `LT`, `LTE`, `LIKE`, `NOT_LIKE`, `RANGE`, `IN`, `NOT_IN`, `NULL`, `NOT_NULL` are all evaluated in memory, with the same semantics as the JPA implementation |
+| conditionStrings parsing | Parses the `Entity.field = 'value'` equality fragments produced by `@Filter` and `@Link` drill-down; anything more complex is ignored (same behavior as the mongodb implementation) |
+| Type alignment | Frontend condition values arrive as strings; the base class coerces them to the declared field type before comparing, so numeric / date comparisons behave correctly |
+| Sorting | Falls back to `@Erupt(orderBy = ...)` when `page.getSort()` is empty |
+| Paging | Pages the filtered result set in memory and fills in `total` |
+| Bean ↔ Row | Reflects a bean into the row map the frontend expects; when `T` is a `Map` it is passed through as-is, and `findDataById` materializes a matched map row into a model instance via `toModel()` |
+| Writes | `addData` / `editData` / `deleteData` throw a read-only error by default — override them in subclasses that can actually write |
+
+### conditionsPushedDown()
+
+Defaults to `false`, meaning the base class re-filters in memory. If your `data()` already pushed the `EruptQuery` conditions down to the source (for example by translating them into an ES `_search` query), you **must** override it to return `true`. Otherwise the rows are filtered twice, and the two sides rarely agree (analysis, case sensitivity, time zones), so legitimately matching rows get dropped.
+
+`EruptEsDataService` is the only implementation in erupt-data that overrides it to `true`.
+
+### Minimal Example
+
+```java
+@Service
+public class WeatherDataService extends EruptBeanDataService<Weather> {
+
+    public static final String DATA_PROCESSOR = "WEATHER";
+
+    static {
+        DataProcessorManager.register(DATA_PROCESSOR, WeatherDataService.class);
+    }
+
+    @Resource
+    private WeatherClient weatherClient;
+
+    // The only method you need to implement: fetch the data as a list of beans.
+    // Filtering / sorting / paging / drill-down are all handled by the base class.
+    @Override
+    protected List<Weather> data(EruptModel eruptModel, EruptQuery eruptQuery) {
+        return weatherClient.listAll();
+    }
+}
+```
+
+And the corresponding model:
+
+```java
+@Getter
+@Setter
+@Erupt(name = "Weather", primaryKeyCol = "city",
+       power = @Power(add = false, edit = false, delete = false))
+@EruptDataProcessor(WeatherDataService.DATA_PROCESSOR)
+public class Weather {
+
+    @EruptField(views = @View(title = "City"), edit = @Edit(title = "City", search = @Search))
+    private String city;
+
+    @EruptField(views = @View(title = "Temperature"))
+    private Double temperature;
+
+    @EruptField(views = @View(title = "Observed At"))
+    private Date observedAt;
+}
+```
+
+That gives you a read-only table that is searchable, sortable, pageable and exportable. If the source also supports writes, override `addData` / `editData` / `deleteData` — see `EruptFileDataService` (read/write files) and `EruptMemoryRepository` (in-memory CRUD) for reference.
+
+:::warning Writes are read-only by default — but the buttons still show
+Unless overridden, `addData` / `editData` / `deleteData` throw a read-only error. Note that the base class does **not** override `power()`, so the add / edit / delete buttons still render in the UI and the user only sees the error after submitting. For a read-only source, declare `@Erupt(power = @Power(add = false, edit = false, delete = false))` on the model, or override `power()` in your own service class.
+:::
 
 ## Complete Example: Integrating an HTTP API
 

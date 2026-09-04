@@ -111,3 +111,28 @@ When `accessKey` / `secretKey` are left empty, the AWS default credential chain 
 - On huge buckets (>5000 objects under the prefix) results are truncated; narrow with `prefix` or raise `maxObjects` explicitly.
 - `metadata` is only populated on find (HEAD), not in the list view — showing it in a list column will render empty.
 :::
+
+:::warning Read-only means "errors on submit", not "buttons hidden"
+`addData` / `editData` throw outright, but the service does **not** override `power()` — no data source under erupt-data does. So the Add and Edit buttons still render in the admin list, and the user only sees the error after filling in the form and hitting submit.
+
+Turn those two permissions off explicitly on the model:
+
+```java
+@Erupt(
+    name = "S3 Objects",
+    primaryKeyCol = "key",
+    power = @Power(add = false, edit = false)
+)
+```
+
+Delete is supported; add `delete = false` as well if you want to block it too.
+:::
+
+:::warning Filtering and sorting happen entirely in memory
+S3's `ListObjectsV2` only supports `prefix` filtering, so every condition other than `prefix` — plus sorting and paging — is evaluated by the base engine over the **already-fetched** object list, i.e. at most `maxObjects` entries. That means:
+
+- filtering across a bucket larger than `maxObjects` gives incomplete results, with no warning;
+- every list refresh re-issues the paginated `ListObjectsV2` calls (nothing is cached), so large buckets feel noticeably slow.
+
+Narrow the scope with `prefix` down to a manageable size rather than raising `maxObjects`.
+:::

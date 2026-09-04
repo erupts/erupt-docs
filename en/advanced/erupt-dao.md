@@ -60,6 +60,84 @@ public class EruptJdbc {
 }
 ```
 
+## Method Reference
+
+### Query
+
+| Signature | Returns | Description |
+| --- | --- | --- |
+| `find(Class<T> clazz, Object id)` | `T` | Finds a single entity by primary key; returns `null` when not found |
+| `lambdaQuery(Class<T> eruptClass)` | `EruptLambdaQuery<T>` | Creates a chained query — see [Chained Queries](/en/advanced/erupt-dao-lambda) |
+| `lambdaQuery(EntityManager em, Class<T> eruptClass)` | `EruptLambdaQuery<T>` | Creates a chained query against a specific `EntityManager` (data source) |
+
+### Write
+
+| Signature | Returns | Description |
+| --- | --- | --- |
+| `persist(Object obj)` | `void` | Inserts an entity |
+| `persistAndFlush(Object obj)` | `void` | Inserts and then flushes immediately; the method carries its own `@Transactional` |
+| `merge(T t)` | `T` | Updates an entity and returns the managed instance |
+| `mergeAndFlush(T t)` | `T` | Updates and then flushes immediately (in a `finally` block); the method carries its own `@Transactional` |
+| `delete(Object obj)` | `void` | Deletes an entity; a detached instance is merged first, then removed |
+| `deleteAndFlush(Object obj)` | `void` | Deletes and then flushes immediately (in a `finally` block); the method carries its own `@Transactional` |
+| `flush()` | `void` | Synchronizes pending changes in the persistence context to the database (without committing) |
+| `persistIfNotExist(Class<T> eruptClass, T obj, String field, String val)` | `T` | Idempotent insert: looks up `field = val` first, returns the existing entity when found, otherwise persists and flushes `obj`. Throws `NonUniqueResultException` when the lookup matches more than one row |
+
+`persistIfNotExist` is typically used to back-fill data during module initialization (the framework itself uses it to back-fill menus):
+
+```java
+// Returns the existing record when a menu with code = "myMenuCode" exists, otherwise inserts newMenu
+EruptMenu menu = eruptDao.persistIfNotExist(
+    EruptMenu.class, newMenu, LambdaSee.field(EruptMenu::getCode), "myMenuCode");
+```
+
+### Persistence Context
+
+| Signature | Returns | Description |
+| --- | --- | --- |
+| `detach(Object obj)` | `void` | Detaches an entity from the persistence context. Later modifications to that object are no longer synchronized to the database |
+| `getEntityManager()` | `EntityManager` | Returns the default data source's `EntityManager` (Lombok `@Getter`) |
+| `getEntityManager(String name)` | `EntityManager` | Returns the `EntityManager` for a named data source. **You must call `close()` on it yourself** — see [Multi-Datasource Operations](/en/advanced/erupt-dao-datasource) |
+
+The typical use of `detach` is "read it, tweak it for the response, but do not let the tweak reach the database":
+
+```java
+@Transactional(readOnly = true)
+public Student maskStudent(Long id) {
+    Student student = eruptDao.find(Student.class, id);
+    // Detach before modifying, so dirty checking cannot flush the change back
+    eruptDao.detach(student);
+    student.setIdCard("****");
+    return student;
+}
+```
+
+### Native SQL
+
+| Signature | Returns | Description |
+| --- | --- | --- |
+| `getJdbcTemplate()` | `JdbcTemplate` | Spring's plain `JdbcTemplate`, using positional `?` placeholders (Lombok `@Getter`) |
+| `getNamedParameterJdbcTemplate()` | `NamedParameterJdbcTemplate` | The named-parameter variant, using `:name` placeholders (Lombok `@Getter`) |
+
+Native SQL **must** bind values through placeholders — never concatenate strings:
+
+```java
+// Positional placeholders
+List<Map<String, Object>> rows = eruptDao.getJdbcTemplate()
+    .queryForList("select * from t_student where grade = ? and status = ?", grade, status);
+
+// Named parameters: more readable once there are several conditions
+Map<String, Object> params = new HashMap<>();
+params.put("grade", grade);
+params.put("status", status);
+List<Map<String, Object>> rows2 = eruptDao.getNamedParameterJdbcTemplate()
+    .queryForList("select * from t_student where grade = :grade and status = :status", params);
+```
+
+::: warning Never concatenate SQL
+Writing `"... where name = '" + userInput + "'"` opens a SQL injection hole. Any query containing external input must go through placeholder binding.
+:::
+
 ## MyBatis
 
 Erupt classes natively support LambdaQuery, dynamic table creation, and join queries — capabilities that fully replace what MyBatis Plus provides. Do not introduce both.

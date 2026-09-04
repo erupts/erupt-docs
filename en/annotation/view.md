@@ -8,6 +8,7 @@ const viewTypes = [
             {type: 'SAFE_TEXT', glyph: '🛡️', ver: '1.12.11+', desc: 'Text containing scripts or tags is not rendered, preventing XSS'},
             {type: 'NUMBER', glyph: '42', desc: 'Numeric display'},
             {type: 'BOOLEAN', glyph: '✓', desc: 'Boolean value display'},
+            {type: 'COLOR', glyph: '■', desc: 'Renders a hex color value as a color swatch; inferred automatically when the edit type is COLOR'},
             {type: 'PASSWORD', glyph: '••••', ver: '2.0.4+', desc: 'Password mask; the actual value is replaced with a placeholder and never sent to the client'},
             {type: 'DATE', glyph: '📅', desc: 'Date formatted display'},
             {type: 'DATE_TIME', glyph: '🕐', desc: 'Date-time formatted display'},

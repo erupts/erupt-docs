@@ -36,6 +36,8 @@ The following field names resolve automatically without `@EruptK8sField`:
 
 `name`, `namespace`, `uid`, `resourceVersion`, `creationTimestamp`, `labels`, `annotations`, `kind`, `apiVersion`, `metadata`, `spec`, `status`
 
+> `metadata.generation` is read into the resource data but is **not** in the shortcut list above — a field simply named `generation` resolves to null. Declare it explicitly with `@EruptK8sField("metadata.generation")`.
+
 ## Example 1: Deployment Dashboard
 
 ```java
@@ -51,25 +53,25 @@ The following field names resolve automatically without `@EruptK8sField`:
 @EruptDataProcessor(EruptK8sDataService.DATA_PROCESSOR)
 public class K8sDeployment {
 
-    @EruptField(views = @View(title = "名称"))
+    @EruptField(views = @View(title = "Name"))
     private String name;
 
-    @EruptField(views = @View(title = "命名空间"))
+    @EruptField(views = @View(title = "Namespace"))
     private String namespace;
 
     @EruptK8sField("spec.replicas")
-    @EruptField(views = @View(title = "副本数"))
+    @EruptField(views = @View(title = "Replicas"))
     private Integer replicas;
 
     @EruptK8sField("status.readyReplicas")
-    @EruptField(views = @View(title = "就绪数"))
+    @EruptField(views = @View(title = "Ready"))
     private Integer readyReplicas;
 
     @EruptK8sField("spec.template.spec.containers[0].image")
-    @EruptField(views = @View(title = "镜像"))
+    @EruptField(views = @View(title = "Image"))
     private String image;
 
-    @EruptField(views = @View(title = "创建时间"))
+    @EruptField(views = @View(title = "Created At"))
     private String creationTimestamp;
 }
 ```
@@ -84,19 +86,19 @@ public class K8sDeployment {
 @EruptDataProcessor(EruptK8sDataService.DATA_PROCESSOR)
 public class K8sPod {
 
-    @EruptField(views = @View(title = "名称"))
+    @EruptField(views = @View(title = "Name"))
     private String name;
 
     @EruptK8sField("status.phase")
-    @EruptField(views = @View(title = "阶段"), edit = @Edit(search = @Search))
+    @EruptField(views = @View(title = "Phase"), edit = @Edit(search = @Search))
     private String phase;
 
     @EruptK8sField("spec.nodeName")
-    @EruptField(views = @View(title = "节点"))
+    @EruptField(views = @View(title = "Node"))
     private String node;
 
     @EruptK8sField("status.containerStatuses[0].restartCount")
-    @EruptField(views = @View(title = "重启次数"))
+    @EruptField(views = @View(title = "Restarts"))
     private Integer restarts;
 
     @EruptK8sField("status.podIP")
@@ -116,4 +118,21 @@ public class K8sPod {
 - The primary key value is the resource name; the model's primary key column should map to `metadata.name` (or simply be a field named `name`).
 - Leave `namespace` empty for cluster-scoped resources (Node, PersistentVolume, ClusterRole, etc.).
 - Results beyond `maxItems` are silently truncated — if you hit the cap regularly, raise the value or split the model by namespace.
+- `maxItems` truncates client-side only: fabric8's `list()` still pulls every resource of that type back to the JVM before the first N are kept. Lowering it saves memory, but not the cost of the API call.
+:::
+
+:::warning Read-only means "errors on submit", not "buttons hidden"
+`addData` / `editData` throw outright, but the service does **not** override `power()` — no data source under erupt-data does. So the Add and Edit buttons still render in the admin list, and the user only sees the error after filling in the form and hitting submit.
+
+Turn those two permissions off explicitly on the model:
+
+```java
+@Erupt(
+    name = "Deployments",
+    primaryKeyCol = "name",
+    power = @Power(add = false, edit = false)
+)
+```
+
+Add `delete = false` as well if you want to block deletes too.
 :::

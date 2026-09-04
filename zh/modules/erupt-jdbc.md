@@ -81,3 +81,14 @@ public class DailySales { ... }
 - **列名 = 字段名**，Java 字段名需与数据库列名完全一致。
 - JDBC 的 `Number` / `Timestamp` / `Date` 与 Java 类型（`Integer`、`LocalDateTime`、`LocalDate`、`BigDecimal` 等）之间的转换自动完成。
 :::
+
+## 能力边界与限制
+
+:::warning 上线前请逐条确认
+- **`queryColumn` 是无 `limit` 的 `select *`。** Excel 导出、下拉选项、OLAP 取数走的都是 `queryColumn`，它只拼接 `where` 与参数，**不加任何行数上限**。对着千万级表点一次导出，就是一次全表扫描 + 全量结果集加载进 JVM。请务必配合 `@Erupt(filter = ...)`、`DataProxy.beforeFetch()` 或数据库视图先收窄范围，或直接用 `@Erupt(power = @Power(export = false))` 关闭导出。
+- **模型必须有无参构造器。** 详情查询通过 `getDeclaredConstructor().newInstance()` 反射实例化模型，只写了带参构造器的类会在打开详情 / 编辑弹窗时抛异常。用 Lombok 时请确认没有只加 `@AllArgsConstructor` 而漏掉 `@NoArgsConstructor`。
+- **新增时 `null` 字段会被剔除。** `addData` 会在拼 `insert` 前移除所有值为 `null` 的字段，因此这些列取的是数据库的 `DEFAULT` 值。如果某列没有默认值且为 `NOT NULL`，插入会直接失败。
+- **修改时 `null` 字段会被写入。** 与新增相反，`editData` 会把模型上所有非主键字段（含 `null`）都放进 `set` 子句。这意味着表单上未展示 / 未填写的字段会被覆盖成 `NULL`——只暴露部分列的模型请特别当心。
+- **分页语法不通用。** 分页固定拼接 `limit {pageSize} offset {offset}`，MySQL、MariaDB、PostgreSQL、H2、SQLite、ClickHouse 均可用，但 **Oracle、SQL Server 不支持该语法**，列表查询会直接报 SQL 语法错误。这两类数据库请改用 JPA 数据源，或建一个兼容视图。
+- **`conditionStrings` 直接拼进 SQL。** `@Filter`、`@Link` 下钻等条件串是原样拼接的（值不做参数绑定）。这些内容来自服务端注解而非用户输入，但请勿把用户可控的字符串写进 `@Filter` 表达式。前端传来的搜索条件不受影响——条件字段会做白名单校验，条件值一律走命名参数绑定。
+:::

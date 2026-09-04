@@ -19,6 +19,86 @@ Renders an Erupt class as a full-page form without any table view. Designed for 
 | Menu Type | Form View |
 | Menu Value | Erupt class name (e.g. `SystemConfig`) |
 
+## Endpoints
+
+The form view has its own two endpoints (`EruptFormViewController`), completely separate from the table view's CRUD endpoints:
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/erupt-api/data/form-view/{erupt}` | Open the form; fires `formViewBehavior` |
+| POST | `/erupt-api/data/form-view/{erupt}` | Save the form; validates first, then fires `formSave` |
+
+`{erupt}` is the Erupt class name. Both endpoints require the `token` and `erupt` (Erupt class name) request headers — the frontend sets them automatically.
+
+## Permissions
+
+**A form view that returns 403 on open, or a Save button that does nothing, is almost always a permission configuration problem.** Authorization happens in two layers, and both must pass:
+
+### Layer 1: Menu permission
+
+The role must be granted **the Form View menu itself** (the menu whose value equals the Erupt class name). Otherwise the endpoint returns 403 immediately.
+
+### Layer 2: Function permission (ADD / EDIT)
+
+Both the GET and POST handlers in `EruptFormViewController` require `power.add || power.edit` to be `true`:
+
+```java
+Erupts.powerLegal(eruptModel, powerObject -> powerObject.isAdd() || powerObject.isEdit());
+```
+
+That `power` is the intersection of two sources:
+
+1. **Code side**: whatever `@Erupt(power = @Power(add = ..., edit = ...))` declares. If both `add` and `edit` are `false`, the form view can **never** be opened.
+2. **Role side**: `UpmsPowerHandler` checks whether the current user holds the `<EruptClassName>@ADD` / `<EruptClassName>@EDIT` function permissions, and flips `add` / `edit` to `false` when they are missing.
+
+> Exception: `@Erupt(authVerify = false)` skips the whole UPMS authorization chain, so role permissions no longer apply.
+
+### ADD / EDIT function permissions are generated automatically
+
+**Since 2026-08-27**, `FORM` menus generate function-permission button sub-menus automatically, just like `TABLE` / `TREE` menus. No manual creation is needed.
+
+`EruptFunPermissions.byMenuType()` defines which function permissions apply to each menu type:
+
+| Menu type | Auto-generated function permissions |
+|-----------|-------------------------------------|
+| `table` / `tree` | ADD, EDIT, DELETE, EXPORT, IMPORT, DETAIL (all 6) |
+| `form` | **ADD, EDIT** (a form view only has "first save" and "subsequent save" semantics) |
+| Other types | None |
+
+Generation happens in two places:
+
+- **At application startup**: `UpmsDataLoadService` walks the menus declared by each module's `initMenus()` and back-fills ADD / EDIT button sub-menus for FORM menus. Whether it runs is controlled by `erupt.init-method-enum` (`FILE` = first boot only, `EVERY` = every boot, `NONE` = never).
+- **When a menu is created manually**: after you add and save a FORM menu in Menu Management, `EruptMenuService.afterAdd` immediately creates its ADD / EDIT sub-menus.
+
+The generated sub-menus look like this:
+
+| Field | Value |
+|-------|-------|
+| Name | `ADD` / `EDIT` |
+| Menu type | `button` (function button) |
+| Menu value | `<EruptClassName>@ADD` / `<EruptClassName>@EDIT` |
+| Parent menu | The corresponding Form View menu |
+
+> Only the function permissions allowed by `@Erupt(power = @Power(...))` are generated. For example, with `@Power(add = false)` no `ADD` sub-menu is created.
+
+### What to tick on the role side
+
+Under **Role Management → Menu Permissions**, tick the following for the target role:
+
+1. ✅ The **Form View menu** itself
+2. ✅ Its **ADD** and/or **EDIT** button sub-menus (at least one, otherwise opening the view returns 403)
+
+Ticking both is usually what you want: `ADD` covers the first save and `EDIT` covers subsequent saves, and business flows normally need both.
+
+### The old manual approach is no longer required
+
+Before auto-generation existed, you had to manually create two `button` sub-menus under the Form View menu, with menu values `<EruptClassName>@ADD` and `<EruptClassName>@EDIT`. **The framework now creates them for you — do not create them by hand.**
+
+If you are upgrading an existing project:
+
+- Manually created sub-menus are preserved. Startup back-fill goes through `persistIfNotExist` (deduplicated by menu `code`), so module built-in menus are not inserted twice.
+- If an old hand-made sub-menu has a wrong menu value (casing or typo), the permission check silently fails. Verify it reads exactly `<EruptClassName>@ADD` / `<EruptClassName>@EDIT`.
+
 ## DataProxy Hooks
 
 | Method | Trigger | Purpose |

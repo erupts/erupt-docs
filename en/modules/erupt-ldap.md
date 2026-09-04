@@ -22,7 +22,7 @@ It uses the JDK's built-in JNDI provider, so there are no runtime dependencies b
 | `baseDn` | — | Search base DN, e.g. `ou=people,dc=example,dc=com` |
 | `rdn` | `"cn"` | RDN attribute used to build entry DNs, e.g. `uid`, `cn` |
 | `filter` | `"(objectClass=*)"` | Base LDAP filter |
-| `objectClasses` | `{}` | Object classes assigned to newly created entries; **empty disables write operations** |
+| `objectClasses` | `{}` | Object classes assigned to newly created entries. When empty, **only "add" fails** — edit and delete are unaffected |
 | `bindDn` | `""` | Bind DN for authentication; empty means anonymous bind |
 | `bindCredential` | `""` | Bind credential (password) |
 | `attributes` | `{}` | Attributes to fetch from the directory; empty returns all attributes |
@@ -36,7 +36,7 @@ Model field name = LDAP attribute name (case-insensitive). The primary key colum
 ```java
 @Getter
 @Setter
-@Erupt(name = "目录用户", primaryKeyCol = "uid")
+@Erupt(name = "Directory Users", primaryKeyCol = "uid")
 @EruptLdap(
     url = "ldap://ldap.example.com:389",
     baseDn = "ou=people,dc=example,dc=com",
@@ -53,18 +53,18 @@ public class DirectoryUser {
     private String uid;
 
     @EruptField(
-        views = @View(title = "姓名"),
-        edit = @Edit(title = "姓名", notNull = true, search = @Search(vague = true))
+        views = @View(title = "Common Name"),
+        edit = @Edit(title = "Common Name", notNull = true, search = @Search(vague = true))
     )
     private String cn;
 
-    @EruptField(edit = @Edit(title = "姓", notNull = true))
+    @EruptField(edit = @Edit(title = "Surname", notNull = true))
     private String sn;
 
-    @EruptField(edit = @Edit(title = "邮箱"))
+    @EruptField(edit = @Edit(title = "Email"))
     private String mail;
 
-    @EruptField(edit = @Edit(title = "电话"))
+    @EruptField(edit = @Edit(title = "Phone"))
     private String telephoneNumber;
 }
 ```
@@ -79,10 +79,45 @@ Full CRUD:
 - **Edit**: `modifyAttributes` (the RDN attribute is skipped)
 - **Delete**: `destroySubcontext(dn)`
 
-Leave `objectClasses` empty to make the model read-only.
-
 :::warning Note
 - Binary attributes (`jpegPhoto`, `userCertificate;binary`) are decoded to strings as UTF-8 — declare them as `String` or exclude them via `attributes`.
 - Multi-valued attributes (e.g. `memberOf`) return a list; declare the field as `List<String>`.
 - The primary key value is used verbatim as the RDN value; changing the primary key would require a `rename` operation, which this module does not support.
+:::
+
+## Limits and Boundaries
+
+:::warning Leaving `objectClasses` empty does **not** make the model read-only
+The error raised when `objectClasses` is empty comes from `beanAttributes()`, and that method is **only called by `addData`**. Concretely:
+
+| Operation | With `objectClasses` empty |
+| --- | --- |
+| Add | throws, blocked |
+| Edit | **still runs** — `modifyAttributes` writes to the directory as normal |
+| Delete | **still runs** — `destroySubcontext` removes the entry as normal |
+
+For genuine read-only behavior, declare the permissions explicitly on the model:
+
+```java
+@Erupt(
+    name = "Directory Users",
+    primaryKeyCol = "uid",
+    power = @Power(add = false, edit = false, delete = false)
+)
+```
+:::
+
+:::warning A null field on edit deletes the existing attribute from the directory
+`editData` walks every non-RDN field on the model and emits one `ModificationItem` each:
+
+- field has a value → `REPLACE_ATTRIBUTE`;
+- field is `null` (or an empty string / empty collection) → **`REMOVE_ATTRIBUTE`**, which drops that attribute from the directory entry entirely.
+
+So a model exposing only a subset of attributes will, after a single save, wipe the attributes it doesn't list. Make sure the model's fields cover everything you need to keep, or constrain the scope via `attributes`, and take a backup before running this against a production directory.
+:::
+
+:::warning Search conditions are only partially pushed down
+`EQ`, `LIKE`, `NULL` and `NOT_NULL` are folded into the LDAP filter (with RFC 4515 escaping) to narrow the result set; other expressions (`RANGE`, `IN`, comparisons) are not. Every condition is then re-evaluated in memory by the base engine, so filter results are accurate.
+
+Be aware, though, that the search is still bounded by `sizeLimit` (500 by default), and that bound applies to the **pushed-down filter**. Conditions that aren't pushed down cannot reduce what the server returns, so on a large directory a range or `IN` filter only ever sees the batch the server sent back. Prefer search fields that map to pushable equality / fuzzy / presence conditions, and tune `sizeLimit` accordingly.
 :::

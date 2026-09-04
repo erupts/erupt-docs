@@ -8,6 +8,7 @@ const viewTypes = [
             {type: 'SAFE_TEXT', glyph: '🛡️', ver: '1.12.11+', desc: '文本中含脚本/标签时不渲染，防 XSS'},
             {type: 'NUMBER', glyph: '42', desc: '数值展示'},
             {type: 'BOOLEAN', glyph: '✓', desc: '布尔值展示'},
+            {type: 'COLOR', glyph: '■', desc: '以色块展示十六进制颜色值；编辑类型为 COLOR 时自动推断'},
             {type: 'PASSWORD', glyph: '••••', ver: '2.0.4+', desc: '密码掩码展示，实际值以占位符替代，不会下发到客户端'},
             {type: 'DATE', glyph: '📅', desc: '日期格式化展示'},
             {type: 'DATE_TIME', glyph: '🕐', desc: '日期时间格式化展示'},

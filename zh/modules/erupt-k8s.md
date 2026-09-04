@@ -36,6 +36,8 @@ erupt-data-k8s 模块基于 fabric8 kubernetes-client 提供 Kubernetes 数据�
 
 `name`、`namespace`、`uid`、`resourceVersion`、`creationTimestamp`、`labels`、`annotations`、`kind`、`apiVersion`、`metadata`、`spec`、`status`
 
+> `metadata.generation` 已被读入资源数据，但**不在**上述快捷名单中，字段直接命名为 `generation` 取不到值，需显式声明 `@EruptK8sField("metadata.generation")`。
+
 ## 示例一：Deployment 看板
 
 ```java
@@ -116,4 +118,21 @@ public class K8sPod {
 - 主键值即资源名称，模型主键列应对应 `metadata.name`（或直接命名为 `name` 的字段）。
 - 集群级资源（Node、PersistentVolume、ClusterRole 等）`namespace` 留空。
 - 超过 `maxItems` 会静默截断，如经常触顶请调大该值或按命名空间拆分模型。
+- `maxItems` 只在客户端截断：fabric8 的 `list()` 仍会把该类型的全部资源拉回本地，之后才按上限保留前 N 条。调小它可以省内存，但省不掉这次 API 请求的开销。
+:::
+
+:::warning 只读是「提交时报错」，不是按钮消失
+`addData` / `editData` 直接抛出异常，但服务**没有覆写 `power()`**（整个 erupt-data 目录中没有任何数据源覆写它）。因此后台列表上的「新增」「修改」按钮照常渲染，用户填完表单点提交才会看到报错。
+
+请在模型上显式关闭这两项权限：
+
+```java
+@Erupt(
+    name = "Deployments",
+    primaryKeyCol = "name",
+    power = @Power(add = false, edit = false)
+)
+```
+
+需要连删除一起禁掉时再加上 `delete = false`。
 :::

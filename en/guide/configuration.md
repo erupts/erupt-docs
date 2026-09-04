@@ -1,24 +1,33 @@
 # Configuration
 
+Erupt is configured in two places: the **backend** in `application.yml`, and the **frontend** through static files under `resources/public/` (`app.js`, `app.css`, `home.html`). Every entry is optional — configure only what you need.
+
 ## Backend Configuration (`application.yml`)
 
-> All entries are optional — configure only what you need.
+### erupt-app — frontend application settings
+
+`erupt-app.*` controls **frontend presentation** (watermark, captcha policy, languages, login page). It is backed by `xyz.erupt.upms.prop.EruptAppProp` and ships with `erupt-upms`. The frontend pulls the whole set once at startup via `GET /erupt-api/erupt-app`.
 
 ```yaml
 erupt-app:
-  # Whether to enable watermark (v1.12.0+)
+  # Enable the page watermark (v1.12.0+)
   water-mark: true
-  # Whether the watermark should include the date (v1.14.3+)
+  # Include the date in the watermark (v1.14.3+)
   water-mark-date: false
-  # Custom watermark content (v1.14.3+)
+  # Custom watermark content; shows the current user when empty (v1.14.3+)
   water-mark-content: ""
-  # Show captcha after this many failed login attempts. 0 means captcha is always required.
+  # Show a captcha after this many failed logins; 0 means a captcha is always required
   verify-code-count: 2
-  # Encrypt the password during login. In special cases like LDAP login this can be turned off to keep the cleartext password.
+  # Encrypt the password in transit during login; turn off for scenarios such as LDAP that need the cleartext password
   pwd-transfer-encrypt: true
-  # Whether to expose the password-reset feature; when disabled the frontend hides all reset entries (v1.12.7+)
+  # Expose the password-reset feature; when disabled the frontend hides every entry point (v1.12.7+)
   reset-pwd: true
-  # Available languages. The system default language is controlled by erupt.default-locales.
+  # Prompt users who are still on the default password to change it after login
+  reset-pwd-prompt: false
+  # Path to a custom login page; HTTP URLs are supported (v1.10.6+)
+  login-page-path: /customer-login.html
+  # Languages selectable in the login page and the language switcher; the system default is controlled by erupt.default-locales
+  # An empty list falls back to ["en-US"]
   locales:
     - "zh-CN"   # Simplified Chinese
     - "zh-TW"   # Traditional Chinese
@@ -32,16 +41,43 @@ erupt-app:
     - "pt-PT"   # Português
     - "id-ID"   # Bahasa Indonesia
     - "ar-SA"   # العربية
-  # Path to a custom login page (v1.10.6+). Supports HTTP URLs.
-  login-page-path: /customer-login.html
+  # Custom key-values delivered to the frontend alongside /erupt-api/erupt-app; readable from app.js or TPL pages
+  properties:
+    show-help-entry: true
+    help-doc-url: https://docs.your-company.com
+```
+
+:::warning `verify-code-count: 0` does not disable the captcha
+`0` means **every login requires a captcha**. To relax the policy, raise the number.
+:::
+
+:::tip `reset-pwd` vs `reset-pwd-prompt`
+`reset-pwd` decides whether **the feature exists at all** (disabled removes every entry point). `reset-pwd-prompt` decides whether to **nag** — when enabled, users still on the initial password are reminded on every login. `reset-pwd-prompt: true` is recommended in production.
+:::
+
+`properties` can also be registered from code. This is exactly how `erupt-websocket`, `erupt-ai`, `erupt-notice` and `erupt-print` announce "I am installed" to the frontend, which then decides whether to render the matching entry points:
+
+```java
+@Resource
+private EruptAppProp eruptAppProp;
+
+@PostConstruct
+public void init() {
+    eruptAppProp.registerProp("my-module", true);
+}
+```
+
+The response also carries two read-only fields filled in by the server — `hash` (hashCode of the controller instance, used by the frontend to detect changes) and `version` (the current Erupt version). Setting them in yaml has no effect.
+
+See also: [Custom Login Page](/en/advanced/custom-login-page) · [Internationalization](/en/advanced/i18n)
+
+### erupt — framework core
+
+```yaml
 erupt:
-  # Whether to enable CSRF protection
+  # Enable CSRF protection
   csrf-inspect: true
-  # Manage sessions via Redis (default false). When enabled, add the standard Spring Boot Redis configuration.
-  redis-session: false
-  # Auto-refresh Redis session (v1.10.8+)
-  redis-session-refresh: false
-  # Path where uploaded attachments are stored. Defaults to /opt/erupt-attachment.
+  # Path where uploaded attachments are stored; defaults to /opt/erupt-attachment
   upload-path: D:/erupt/pictures
   # Keep the original file name when uploading
   keep-upload-file-name: false
@@ -55,10 +91,10 @@ erupt:
   log-track: true
   # Maximum number of buffered log lines (v1.12.14+)
   log-track-cache-size: 1000
-  # Whether to record operation logs (default true). Logs can be viewed under System Management → Operation Logs.
   security:
+    # Record operation logs; viewable under System Management → Operation Logs
     record-operate-log: true
-    # Max request body size (bytes) buffered for operation logging; larger or chunked bodies are passed through without buffering. Default 1MB (v2.0.2+)
+    # Max request body size (bytes) buffered for operation logging; larger or chunked bodies are not recorded. Default 1MB (v2.0.2+)
     record-operate-log-max-body-size: 1048576
   upms:
     # Login session length (minutes)
@@ -69,8 +105,19 @@ erupt:
     default-account: erupt
     # Default super-admin password used at system initialization (v1.12.18+)
     default-password: erupt
+```
 
-# Redis config — required when erupt.redis-session is true
+### erupt.redis-session — distributed sessions
+
+When enabled, sessions are stored in Redis. Add the standard Spring Boot Redis configuration alongside it:
+
+```yaml
+erupt:
+  # Store sessions in Redis, default false
+  redis-session: true
+  # Auto-refresh the Redis session (v1.10.8+)
+  redis-session-refresh: false
+
 spring:
   data:
     redis:
@@ -78,6 +125,42 @@ spring:
       timeout: 10000
       host: 127.0.0.1
 ```
+
+### erupt.telemetry — anonymous telemetry
+
+```yaml
+erupt:
+  telemetry:
+    # Report anonymous usage statistics, default true (v2.1.2+)
+    # Can also be disabled with ERUPT_TELEMETRY_DISABLED=1; CI environments are skipped automatically
+    enabled: true
+    # Reporting endpoint, may point at a self-hosted collector
+    endpoint: https://telemetry.erupt.xyz/v1/ping
+```
+
+For the full list of collected fields see [Anonymous Telemetry](/en/guide/telemetry).
+
+### erupt.ai — AI module
+
+```yaml
+erupt:
+  ai:
+    # Max sequential tool calls per conversation turn
+    max-sequential-tools-invocations: 30
+    claw:
+      # Without an explicit enabled: true, none of the claw @Tool methods are registered
+      enabled: false
+      # Allow the AI to execute shell commands. High risk, false by default
+      enable-exec-shell: false
+      # Absolute paths outside the sandbox (~/.erupt/{account}) where execShell may run
+      shell-allowed-paths: []
+      # Archive stale skills daily (moved to .archive, never deleted)
+      skill-curator-enabled: true
+      # Days without use before a skill is considered stale
+      skill-stale-days: 30
+```
+
+System prompt, SSE timeout and the remaining options are documented in [Erupt AI](/en/modules/erupt-ai) and [Erupt AI Claw](/en/modules/erupt-ai-claw).
 
 ## Frontend Configuration (`app.js`)
 

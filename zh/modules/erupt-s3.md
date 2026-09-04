@@ -111,3 +111,28 @@ public class S3ProductionUpload {
 - 超大 Bucket（前缀下超过 5000 个对象）结果会被截断；可通过 `prefix` 收窄范围或显式调大 `maxObjects`。
 - `metadata` 仅在详情（HEAD）中填充，列表视图中该列将显示为空。
 :::
+
+:::warning 只读是「提交时报错」，不是按钮消失
+`addData` / `editData` 直接抛出异常，但服务**没有覆写 `power()`**（整个 erupt-data 目录中没有任何数据源覆写它）。因此后台列表上的「新增」「修改」按钮照常渲染，用户填完表单点提交才会看到报错。
+
+请在模型上显式关闭这两项权限：
+
+```java
+@Erupt(
+    name = "S3 对象",
+    primaryKeyCol = "key",
+    power = @Power(add = false, edit = false)
+)
+```
+
+删除是支持的；如果连删除也要禁掉，再加上 `delete = false`。
+:::
+
+:::warning 筛选与排序全在内存中完成
+S3 的 `ListObjectsV2` 只支持 `prefix` 过滤，因此除 `prefix` 外的所有条件、排序、分页都由基础引擎在**已拉取的对象列表**上完成——也就是最多 `maxObjects` 条的那一批。这意味着：
+
+- 对超出 `maxObjects` 的对象做筛选，结果必然不完整，且没有任何提示；
+- 每次列表刷新都会重新发起 `ListObjectsV2` 分页请求（无缓存），大 Bucket 上响应会明显变慢。
+
+请优先用 `prefix` 把范围收到一个可控的量级，而不是靠调大 `maxObjects`。
+:::

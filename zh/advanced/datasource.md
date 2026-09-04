@@ -132,6 +132,69 @@ public class HelpTopic {
 }
 ```
 
+### jpa 与 scanPackages 说明
+
+- `erupt.dbs[*].jpa` 是一个完整的 Spring `JpaProperties`，因此 `show-sql`、`generate-ddl`、`database`、`database-platform`、`properties.*` 等键都可用。其中只有 `generateDdl`、`database`、`showSql`、`databasePlatform` 会传给 `HibernateJpaVendorAdapter`，其余通过 `properties` 原样传给 Hibernate。
+- `erupt.dbs[*].scanPackages` 的类型是 **`String[]`**，可以写单个包名，也可以写 YAML 列表或逗号分隔的多个包名。该项**必填**：缺失时启动会抛出 `xxx DataSource not found 'scanPackages' configuration`。
+
+### 连接池（HikariCP）配置
+
+`erupt.dbs[*]` 的附加数据源由 Erupt 自行创建 `HikariDataSource`，连接池参数写在 `erupt.dbs[*].datasource.hikari.*` 下（主数据源仍走 Spring Boot 标准的 `spring.datasource.hikari.*`）：
+
+```yaml
+erupt:
+  dbs:
+    - datasource:
+        name: mysql_test
+        url: jdbc:mysql://127.0.0.1:3306/mysql
+        username: root
+        password: 123456
+        hikari:
+          pool-name: erupt-mysql-test
+          max-pool-size: 20
+          min-idle: 5
+          connection-timeout: 10000
+          idle-timeout: 300000
+          max-lifetime: 900000
+          leak-detection-threshold: 60000
+          connection-test-query: select 1
+      scanPackages: com.abc.xxx
+```
+
+| 配置项 | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| `pool-name` | String | 由 HikariCP 生成 | 连接池名称，便于日志与 JMX 定位 |
+| `max-pool-size` | Integer | `10` | 最大连接数（HikariCP `maximumPoolSize`），填 `-1` 表示不覆盖 |
+| `min-idle` | Integer | 同 `max-pool-size` | 最小空闲连接数，填 `-1` 表示不覆盖 |
+| `connection-timeout` | Long（毫秒） | `30000`（30 秒） | 从池中获取连接的等待超时 |
+| `validation-timeout` | Long（毫秒） | `5000`（5 秒） | 连接有效性校验超时 |
+| `idle-timeout` | Long（毫秒） | `600000`（10 分钟） | 空闲连接回收时间 |
+| `max-lifetime` | Long（毫秒） | `1800000`（30 分钟） | 连接最长存活时间 |
+| `leak-detection-threshold` | Long（毫秒） | 不启用 | 连接泄漏检测阈值 |
+| `initialization-fail-timeout` | Long（毫秒） | `1` | 启动时首连失败的处理策略 |
+| `connection-init-sql` | String | 无 | 新连接建立后执行的初始化 SQL |
+| `connection-test-query` | String | 无 | 存活探测 SQL，仅老驱动（不支持 JDBC4 `isValid`）需要 |
+| `catalog` | String | 无 | 默认 catalog |
+| `schema` | String | 无 | 默认 schema |
+| `transaction-isolation-name` | String | 驱动默认 | 如 `TRANSACTION_READ_COMMITTED` |
+| `data-source-class-name` | String | 无 | 使用 `DataSource` 实现类而非 `DriverManager` |
+| `data-source-jndi-name` | String | 无 | 从 JNDI 获取数据源 |
+| `is-auto-commit` | Boolean | `true` | **仅当显式设为 `false` 时生效** |
+| `is-read-only` | Boolean | `false` | 只读连接池 |
+| `is-isolate-internal-queries` | Boolean | `false` | 内部查询使用独立事务 |
+| `is-register-mbeans` | Boolean | `false` | 注册 JMX MBean |
+| `is-allow-pool-suspension` | Boolean | `false` | 允许挂起连接池 |
+| `data-source-properties` | Properties | 无 | 透传给底层 `DataSource` 的属性 |
+| `health-check-properties` | Properties | 无 | 健康检查属性 |
+
+:::warning hikari 下的 url / username / password / driver-class-name 不生效
+`HikariCpConfig` 虽然声明了 `jdbcUrl`、`username`、`password`、`driverClassName` 四个字段，但 `toHikariConfig()` 并不读取它们。连接信息请写在上一层的 `erupt.dbs[*].datasource.{url,username,password,driverClassName}`，这四项会在连接池配置构建完成后覆盖上去。
+:::
+
+:::tip 默认值来自 HikariCP 本身
+上表中的默认值是 HikariCP 的内置默认值。Erupt 在构建配置时会跳过与默认值相等的项（不做任何设置），因此写与不写效果一致——只有改成不同的值才会真正生效。
+:::
+
 ## 数据源支持
 
 erupt 支持市面上所有主流数据库，甚至支持 MongoDB，也可自定义数据源。

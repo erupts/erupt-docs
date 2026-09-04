@@ -373,7 +373,7 @@ create table e_upms_user_org_division (
 
 🌟 所有弹出层都支持通过拖拽调整位置
 
-🌟 支持控制全局 UI 主题色，主色不再是蓝色可自由定义（[#app.js](/zh/guide/configuration#eqee9)）
+🌟 支持控制全局 UI 主题色，主色不再是蓝色可自由定义（[#app.js](/zh/guide/configuration#前端配置-app-js)）
 
 ## 1.13.2（2026-01-05） <Badge type="tip" text="Spring Boot 3.5.9" />
 🐞 修复 erupt-ai 在实现 EruptPromptHandler 后项目无法启动的问题
@@ -535,15 +535,15 @@ create table e_upms_user_org_division (
 
 🧩 主题切换区域支持拖动调整位置
 
-🌟 左侧菜单折叠后支持配置折叠后的图标（[app.js增加logoFoldPath配置](/zh/guide/configuration#eqee9)）
+🌟 左侧菜单折叠后支持配置折叠后的图标（[app.js增加logoFoldPath配置](/zh/guide/configuration#前端配置-app-js)）
 
 🌟 自定义按钮支持显示自定义内容而不是图标（[仅需配置icon=""即可](/zh/annotation/row-operation#UApIg)）
 
 🌟 表格操作区支持自定义宽度（[@layout注解增加tableOperatorWidth配置](/zh/annotation/layout)）
 
-🌟 页面上方的全局自定义按钮支持自定义内容显示（[r_tools 增加 render配置](/zh/guide/configuration#eqee9)）
+🌟 页面上方的全局自定义按钮支持自定义内容显示（[r_tools 增加 render配置](/zh/guide/configuration#前端配置-app-js)）
 
-🌟 页面上方用户工具栏，支持自定义按钮（[app.js增加userTools配置](/zh/guide/configuration#eqee9)）
+🌟 页面上方用户工具栏，支持自定义按钮（[app.js增加userTools配置](/zh/guide/configuration#前端配置-app-js)）
 
 ## 1.12.20 (2025-04-22) <Badge type="tip" text="Spring Boot 2.7.18" />
 🧩 时间快捷选择支持昨日
@@ -608,7 +608,7 @@ create table e_upms_user_org_division (
 
 🧩 抽屉形式的弹出层将不会渲染页头，同时使用更加友好的宽高适应度
 
-🌟 支持初始化时[默认账号密码配置](/zh/guide/configuration#h3nEy)
+🌟 支持初始化时[默认账号密码配置](/zh/guide/configuration#后端配置-application-yml)
 
 🌟 自研 session 实现，非 redisSession 场景将不依赖 cookie，
 
@@ -711,7 +711,7 @@ create table e_upms_user_org_division (
 > 感谢 [shareloke](https://gitee.com/shareloke) 贡献的代码
 >
 
-🧩 [copyrightTxt](/zh/guide/configuration#eqee9) 支持渲染标签
+🧩 [copyrightTxt](/zh/guide/configuration#前端配置-app-js) 支持渲染标签
 
 🧩 多附件上传场景支持选择后的查看与下载
 
@@ -918,7 +918,7 @@ md5(md5(pwd) + account) # 移除通过当前天作为加密依据
 
 🧩 解决部分场景异常无法反馈给前端的问题 [#219](https://github.com/erupts/erupt/pull/219)，感谢 [lamperwang](https://github.com/lamperwang) 贡献的代码
 
-🌟 支持自定义 [copyright](/zh/guide/configuration#eqee9) 版权信息内容
+🌟 支持自定义 [copyright](/zh/guide/configuration#前端配置-app-js) 版权信息内容
 
 ## 1.12.7 (2023-11-13) <Badge type="tip" text="Spring Boot 2.7.10" />
 🐞 修复如果存在上下文地址节点管理remove-node接口404的bug
@@ -983,9 +983,9 @@ md5(md5(pwd) + account) # 移除通过当前天作为加密依据
 
 🧩 优化TAB_TABLE_ADD组件使用方式，支持调用DataProxy生命周期接口
 
-🌟 增加默认语言配置 [erupt.default-locales](/zh/guide/configuration#h3nEy)
+🌟 增加默认语言配置 [erupt.default-locales](/zh/guide/configuration#后端配置-application-yml)
 
-🌟 登录、登出事件触发函数移动至[eruptEvent](/zh/guide/configuration#eqee9)中
+🌟 登录、登出事件触发函数移动至[eruptEvent](/zh/guide/configuration#前端配置-app-js)中
 
 🌟 choice组件select模式支持desc渲染
 
@@ -1321,7 +1321,7 @@ md5(md5(pwd) + account) # 移除通过当前天作为加密依据
 
 🧩 优化 BI 报表的整体间距，提升视觉效果
 
-🌟 增加[strictRoleMenuLegal](/zh/guide/configuration#h3nEy)配置，配置化非管理员角色菜单权限
+🌟 增加[strictRoleMenuLegal](/zh/guide/configuration#后端配置-application-yml)配置，配置化非管理员角色菜单权限
 
 🌟 支持[自定义登录页](/zh/advanced/custom-login-page)配置，可实现验证码登录与微扫码登录等个性化登录场景
 
@@ -1445,7 +1445,7 @@ SqlChoiceFetchHandler 更新包位置：xyz.erupt.toolkit.handler.SqlChoiceFetch
 + 🐞 修复新增用户密码不加密时数据库未入库的bug
 + 🌟 增加[自定义行](/zh/advanced/data-proxy#I2EwS)功能，可实现行合计等能力
 + 🌟 新增 /erupt-api/userinfo接口，可根据token自助获取当前用户基础信息
-+ 🌟 app.js增加[login](/zh/guide/configuration#eqee9)事件函数，增加[logout](/zh/guide/configuration#eqee9)事件函数
++ 🌟 app.js增加[login](/zh/guide/configuration#前端配置-app-js)事件函数，增加[logout](/zh/guide/configuration#前端配置-app-js)事件函数
 
 # 
 ## 1.9.1 (2021年11月22日) <Badge type="tip" text="Spring Boot 2.6.0" />

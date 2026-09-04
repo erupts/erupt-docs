@@ -80,13 +80,13 @@ public class WaitNode extends BaseModel {
     @EruptField(edit = @Edit(title = "延迟类型", notNull = true, type = EditType.CHOICE, choiceType = @ChoiceType(fetchHandler = WaitType.H.class)))
     private WaitType waitType;
 
-    @EruptField(edit = @Edit(title = "延迟时间", showBy = @ShowBy(
-            dependField = "waitType", expr = "value=='AFTER_MINUTES'||value=='AFTER_HOURS'||value=='AFTER_DAYS'"
+    @EruptField(edit = @Edit(title = "延迟时间", dynamic = @Dynamic(
+            dependField = "waitType", condition = "value=='AFTER_MINUTES'||value=='AFTER_HOURS'||value=='AFTER_DAYS'"
     )))
     private Integer interval;
 
-    @EruptField(edit = @Edit(title = "指定今日时间", showBy = @ShowBy(
-            dependField = "waitType", expr = "value=='CURRENT_DAY_TIME'"),
+    @EruptField(edit = @Edit(title = "指定今日时间", dynamic = @Dynamic(
+            dependField = "waitType", condition = "value=='CURRENT_DAY_TIME'"),
             type = EditType.DATE, dateType = @DateType(type = DateType.Type.TIME))
     )
     private String time;
@@ -94,11 +94,15 @@ public class WaitNode extends BaseModel {
     @EruptField(edit = @Edit(title = "指定日期",
             type = EditType.DATE,
             dateType = @DateType(type = DateType.Type.DATE_TIME, pickerMode = DateType.PickerMode.FUTURE),
-            showBy = @ShowBy(dependField = "waitType", expr = "value=='FIXED_TIME'")))
+            dynamic = @Dynamic(dependField = "waitType", condition = "value=='FIXED_TIME'")))
     private LocalDateTime datetime;
 
 }
 ```
+
+:::tip
+上例中的字段联动由 [@Dynamic 动态控制](/zh/annotation/dynamic) 提供：`condition` 为 JS 表达式，`value` 表示 `dependField` 字段的当前值。`@Dynamic` 默认 `match = Ctrl.SHOW`、`noMatch = Ctrl.HIDE`，即条件成立时显示、否则隐藏。
+:::
 
 ## 自定义流程行为
 

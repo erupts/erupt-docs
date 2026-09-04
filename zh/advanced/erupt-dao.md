@@ -61,6 +61,84 @@ public class EruptJdbc {
 }
 ```
 
+## 方法参考
+
+### 查询
+
+| 方法签名 | 返回值 | 说明 |
+| --- | --- | --- |
+| `find(Class<T> clazz, Object id)` | `T` | 按主键查询单个实体，未找到返回 `null` |
+| `lambdaQuery(Class<T> eruptClass)` | `EruptLambdaQuery<T>` | 创建链式查询，详见 [链式查询](/zh/advanced/erupt-dao-lambda) |
+| `lambdaQuery(EntityManager em, Class<T> eruptClass)` | `EruptLambdaQuery<T>` | 在指定 `EntityManager`（数据源）上创建链式查询 |
+
+### 写入
+
+| 方法签名 | 返回值 | 说明 |
+| --- | --- | --- |
+| `persist(Object obj)` | `void` | 新增实体 |
+| `persistAndFlush(Object obj)` | `void` | 新增后立即 `flush()`；方法自带 `@Transactional` |
+| `merge(T t)` | `T` | 更新实体，返回被托管的实例 |
+| `mergeAndFlush(T t)` | `T` | 更新后立即 `flush()`（在 `finally` 中执行）；方法自带 `@Transactional` |
+| `delete(Object obj)` | `void` | 删除实体；若实体处于游离态会先 `merge` 再 `remove` |
+| `deleteAndFlush(Object obj)` | `void` | 删除后立即 `flush()`（在 `finally` 中执行）；方法自带 `@Transactional` |
+| `flush()` | `void` | 将当前持久化上下文中的挂起变更同步到数据库（不提交事务） |
+| `persistIfNotExist(Class<T> eruptClass, T obj, String field, String val)` | `T` | 幂等新增：先按 `field = val` 查询，存在则直接返回已有实体，不存在才 `persist` 并 `flush`。查询命中多条时抛 `NonUniqueResultException` |
+
+`persistIfNotExist` 常用于模块初始化时补建数据（框架内部用它来补建菜单）：
+
+```java
+// 若 code = "myMenuCode" 的菜单已存在则返回已有记录，否则插入 newMenu
+EruptMenu menu = eruptDao.persistIfNotExist(
+    EruptMenu.class, newMenu, LambdaSee.field(EruptMenu::getCode), "myMenuCode");
+```
+
+### 持久化上下文
+
+| 方法签名 | 返回值 | 说明 |
+| --- | --- | --- |
+| `detach(Object obj)` | `void` | 将实体从持久化上下文中剥离，使其变为游离态。此后对该对象的修改不会被自动同步到数据库 |
+| `getEntityManager()` | `EntityManager` | 获取默认数据源的 `EntityManager`（Lombok `@Getter`） |
+| `getEntityManager(String name)` | `EntityManager` | 按数据源名称获取 `EntityManager`，**用完必须手动调用 `close()`**，详见 [多数据源操作](/zh/advanced/erupt-dao-datasource) |
+
+`detach` 的典型用法是「读出来改一改再返回给前端，但不希望改动落库」：
+
+```java
+@Transactional(readOnly = true)
+public Student maskStudent(Long id) {
+    Student student = eruptDao.find(Student.class, id);
+    // 剥离后再改，脏检查不会把修改刷回数据库
+    eruptDao.detach(student);
+    student.setIdCard("****");
+    return student;
+}
+```
+
+### 原生 SQL
+
+| 方法签名 | 返回值 | 说明 |
+| --- | --- | --- |
+| `getJdbcTemplate()` | `JdbcTemplate` | Spring 原生 `JdbcTemplate`，使用 `?` 位置占位符（Lombok `@Getter`） |
+| `getNamedParameterJdbcTemplate()` | `NamedParameterJdbcTemplate` | 具名参数版 `JdbcTemplate`，使用 `:name` 占位符（Lombok `@Getter`） |
+
+写原生 SQL 时**必须使用占位符绑定参数**，不要拼接字符串：
+
+```java
+// 位置占位符
+List<Map<String, Object>> rows = eruptDao.getJdbcTemplate()
+    .queryForList("select * from t_student where grade = ? and status = ?", grade, status);
+
+// 具名参数：条件较多时可读性更好
+Map<String, Object> params = new HashMap<>();
+params.put("grade", grade);
+params.put("status", status);
+List<Map<String, Object>> rows2 = eruptDao.getNamedParameterJdbcTemplate()
+    .queryForList("select * from t_student where grade = :grade and status = :status", params);
+```
+
+::: warning 不要拼接 SQL
+`"... where name = '" + userInput + "'"` 这种写法会造成 SQL 注入，任何包含外部输入的查询都必须走占位符绑定。
+:::
+
 ## MyBatis
 
 Erupt 类同时支持 LambdaQuery 查询 + 动态建表能力 + Join Query，mybatis plus 的能力可以通过 EruptLambdaQuery 完全代替，请勿重复引入。

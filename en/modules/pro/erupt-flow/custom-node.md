@@ -80,13 +80,13 @@ public class WaitNode extends BaseModel {
     @EruptField(edit = @Edit(title = "Wait Type", notNull = true, type = EditType.CHOICE, choiceType = @ChoiceType(fetchHandler = WaitType.H.class)))
     private WaitType waitType;
 
-    @EruptField(edit = @Edit(title = "Interval", showBy = @ShowBy(
-            dependField = "waitType", expr = "value=='AFTER_MINUTES'||value=='AFTER_HOURS'||value=='AFTER_DAYS'"
+    @EruptField(edit = @Edit(title = "Interval", dynamic = @Dynamic(
+            dependField = "waitType", condition = "value=='AFTER_MINUTES'||value=='AFTER_HOURS'||value=='AFTER_DAYS'"
     )))
     private Integer interval;
 
-    @EruptField(edit = @Edit(title = "Time of Day", showBy = @ShowBy(
-            dependField = "waitType", expr = "value=='CURRENT_DAY_TIME'"),
+    @EruptField(edit = @Edit(title = "Time of Day", dynamic = @Dynamic(
+            dependField = "waitType", condition = "value=='CURRENT_DAY_TIME'"),
             type = EditType.DATE, dateType = @DateType(type = DateType.Type.TIME))
     )
     private String time;
@@ -94,11 +94,15 @@ public class WaitNode extends BaseModel {
     @EruptField(edit = @Edit(title = "Fixed Date",
             type = EditType.DATE,
             dateType = @DateType(type = DateType.Type.DATE_TIME, pickerMode = DateType.PickerMode.FUTURE),
-            showBy = @ShowBy(dependField = "waitType", expr = "value=='FIXED_TIME'")))
+            dynamic = @Dynamic(dependField = "waitType", condition = "value=='FIXED_TIME'")))
     private LocalDateTime datetime;
 
 }
 ```
+
+:::tip
+The field linkage above comes from [@Dynamic](/en/annotation/dynamic): `condition` is a JS expression in which `value` holds the current value of `dependField`. `@Dynamic` defaults to `match = Ctrl.SHOW` and `noMatch = Ctrl.HIDE`, i.e. show when the condition matches and hide otherwise.
+:::
 
 ## Customize Flow Behavior
 
