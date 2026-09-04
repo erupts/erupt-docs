@@ -64,7 +64,7 @@ export default withMermaid(defineConfig({
                     {text: 'Advanced', link: '/en/advanced/', activeMatch: '/en/advanced/'},
                     {text: 'Modules', link: '/en/modules/', activeMatch: '/en/modules/'},
                     {text: 'Topics', link: '/en/topics/', activeMatch: '/en/topics/'},
-                    {text: 'Changelog', link: '/en/guide/changelog'},
+                    {text: 'Architecture', link: '/en/guide/architecture'},
                     {text: '⚡ No-Code', link: 'https://skill.erupt.xyz'},
                     {
                         text: 'Links',
@@ -85,6 +85,7 @@ export default withMermaid(defineConfig({
                             text: 'Getting Started',
                             items: [
                                 {text: '🚀 Project Init', link: 'https://start.erupt.xyz/'},
+                                {text: '⚡ No-Code Builder', link: 'https://skill.erupt.xyz'},
                                 {text: 'Framework Introduction', link: '/en/guide/'},
                                 {text: 'Quick Start', link: '/en/guide/quick-start'},
                                 {text: 'First Example', link: '/en/guide/getting-started'},
@@ -106,7 +107,7 @@ export default withMermaid(defineConfig({
                                 {text: 'Anonymous Telemetry', link: '/en/guide/telemetry'},
                                 {text: 'Upgrade Guide', link: '/en/guide/upgrade'},
                                 {text: 'Changelog', link: '/en/guide/changelog'},
-                                {text: 'Legacy Docs', link: '/en/guide/changelog#legacy-documentation'},
+                                {text: 'Legacy Versions', link: '/en/guide/history'},
                             ],
                         },
                         {
@@ -537,7 +538,7 @@ export default withMermaid(defineConfig({
                     {text: '进阶', link: '/zh/advanced/', activeMatch: '/zh/advanced/'},
                     {text: '扩展模块', link: '/zh/modules/', activeMatch: '/zh/modules/'},
                     {text: '专题', link: '/zh/topics/', activeMatch: '/zh/topics/'},
-                    {text: '更新日志', link: '/zh/guide/changelog'},
+                    {text: '架构设计', link: '/zh/guide/architecture'},
                     {text: '⚡ 零代码', link: 'https://skill.erupt.xyz'},
                     {
                         text: '相关链接',
@@ -558,6 +559,7 @@ export default withMermaid(defineConfig({
                             text: '开始使用',
                             items: [
                                 {text: '🚀 项目初始化', link: 'https://start.erupt.xyz/'},
+                                {text: '⚡ 零代码构建', link: 'https://skill.erupt.xyz'},
                                 {text: '框架介绍', link: '/zh/guide/'},
                                 {text: '快速部署', link: '/zh/guide/quick-start'},
                                 {text: '入门示例', link: '/zh/guide/getting-started'},
@@ -574,12 +576,12 @@ export default withMermaid(defineConfig({
                         {
                             text: '参考',
                             items: [
-                                {text: '架构图', link: '/zh/guide/architecture'},
+                                {text: '架构设计', link: '/zh/guide/architecture'},
                                 {text: '常见问题 FAQ', link: '/zh/guide/faq'},
                                 {text: '匿名遥测', link: '/zh/guide/telemetry'},
                                 {text: '升级指南', link: '/zh/guide/upgrade'},
                                 {text: '更新日志', link: '/zh/guide/changelog'},
-                                {text: '历史版本', link: '/zh/guide/changelog#历史版本文档'},
+                                {text: '历史版本', link: '/zh/guide/history'},
                             ],
                         },
                         {

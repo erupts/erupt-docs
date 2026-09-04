@@ -1,4 +1,4 @@
-<svg viewBox="0 0 1220 820" role="img" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="classic" data-quality-profile="showcase" style="" width="1220" height="820" xmlns="http://www.w3.org/2000/svg"><style>@font-face { font-family: 'JetBrains Mono'; font-weight: 400; src: local('JetBrains Mono'), local('JetBrainsMono-Regular'); }
+<svg viewBox="0 0 1300 1040" role="img" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="classic" data-quality-profile="showcase" style="" width="1300" height="1040" xmlns="http://www.w3.org/2000/svg"><style>@font-face { font-family: 'JetBrains Mono'; font-weight: 400; src: local('JetBrains Mono'), local('JetBrainsMono-Regular'); }
 @font-face { font-family: 'JetBrains Mono'; font-weight: 500; src: local('JetBrains Mono'), local('JetBrainsMono-Regular'); }
 @font-face { font-family: 'JetBrains Mono'; font-weight: 600; src: local('JetBrains Mono'), local('JetBrainsMono-Regular'); }
 @font-face { font-family: 'JetBrains Mono'; font-weight: 700; src: local('JetBrains Mono'), local('JetBrainsMono-Regular'); }
@@ -305,211 +305,377 @@ rect.c-bg-rect { fill: var(--bg); }
         <rect width="100%" height="100%" fill="url(#grid)"/>
 
         <!-- Boundaries (behind everything) -->
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="0" x="170" y="310" width="530" height="138" rx="12" class="c-region" stroke-width="1"/>
-        <text x="178" y="328" class="t-cloud" font-size="9" font-weight="600">Core Layer</text>
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="0" x="30" y="20" width="330" height="114" rx="12" class="c-region" stroke-width="1"/>
+        <text x="38" y="38" class="t-cloud" font-size="9" font-weight="600">Frontend</text>
 
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="1" x="170" y="510" width="270" height="230" rx="12" class="c-region" stroke-width="1"/>
-        <text x="178" y="528" class="t-cloud" font-size="9" font-weight="600">Data Layer</text>
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="security-group" data-composition-frame-id="1" x="30" y="150" width="330" height="114" rx="8" class="c-security-group" stroke-width="1"/>
+        <text x="38" y="168" class="t-security" font-size="9" font-weight="600">Security</text>
 
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="2" x="850" y="10" width="230" height="736" rx="12" class="c-region" stroke-width="1"/>
-        <text x="858" y="28" class="t-cloud" font-size="9" font-weight="600">Extensions (on demand)</text>
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="2" x="30" y="280" width="620" height="138" rx="12" class="c-region" stroke-width="1"/>
+        <text x="38" y="298" class="t-cloud" font-size="9" font-weight="600">Core Layer</text>
+
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="3" x="30" y="470" width="620" height="310" rx="12" class="c-region" stroke-width="1"/>
+        <text x="38" y="488" class="t-cloud" font-size="9" font-weight="600">Data Layer (erupt-data-*, pick one or combine)</text>
+
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="4" x="750" y="20" width="520" height="556" rx="12" class="c-region" stroke-width="1"/>
+        <text x="758" y="38" class="t-cloud" font-size="9" font-weight="600">Extensions (on demand)</text>
+
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="5" x="750" y="600" width="520" height="196" rx="12" class="c-region" stroke-width="1"/>
+        <text x="758" y="618" class="t-cloud" font-size="9" font-weight="600">AI Layer</text>
+
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="6" x="750" y="820" width="520" height="126" rx="12" class="c-region" stroke-width="1"/>
+        <text x="758" y="838" class="t-cloud" font-size="9" font-weight="600">Pro Modules</text>
 
         <!-- Connection paths (before components for correct z-order) -->
-        <path data-edge-from="web" data-edge-to="security" data-edge-label="request" data-edge-key="0" data-edge-id="web-security" data-composition-points="305,124;305,200" d="M 305 124 L 305 200" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
-        <path data-edge-from="security" data-edge-to="core" data-edge-label="authorized" data-edge-key="1" data-edge-id="security-core" data-composition-points="305,264;305,340" d="M 305 264 L 305 340" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
-        <path data-edge-from="core" data-edge-to="upms" data-edge-key="2" data-edge-id="core-upms" data-composition-points="410,384;480,384" d="M 410 384 L 480 384" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="core" data-edge-to="jpa" data-edge-label="ORM" data-edge-key="3" data-edge-id="core-jpa" data-composition-points="305,428;305,540" d="M 305 428 L 305 540" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
-        <path data-edge-from="core" data-edge-to="mongo" data-edge-key="4" data-edge-id="core-mongo" data-composition-points="200,384;176,384;176,690;200,690" d="M 200 384 L 184 384 Q 176 384 176 392 L 176 682 Q 176 690 184 690 L 200 690" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="core" data-edge-to="job" data-edge-key="5" data-edge-id="core-job" data-composition-points="410,356;434,356;434,68;880,68" d="M 410 356 L 426 356 Q 434 356 434 348 L 434 76 Q 434 68 442 68 L 880 68" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="core" data-edge-to="notice" data-edge-key="6" data-edge-id="core-notice" data-composition-points="410,365.3333333333333;434,365.3333333333333;434,173;880,173" d="M 410 365.3333333333333 L 426 365.3333333333333 Q 434 365.3333333333333 434 357.3333333333333 L 434 181 Q 434 173 442 173 L 880 173" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="core" data-edge-to="monitor" data-edge-label="on demand" data-edge-key="7" data-edge-id="core-monitor" data-composition-points="410,374.6666666666667;434,374.6666666666667;434,278;880,278" d="M 410 374.6666666666667 L 426 374.6666666666667 Q 434 374.6666666666667 434 366.6666666666667 L 434 286 Q 434 278 442 278 L 880 278" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="core" data-edge-to="tpl" data-edge-key="8" data-edge-id="core-tpl" data-composition-points="410,393.3333333333333;434,393.3333333333333;434,488;880,488" d="M 410 393.3333333333333 L 426 393.3333333333333 Q 434 393.3333333333333 434 401.3333333333333 L 434 480 Q 434 488 442 488 L 880 488" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="core" data-edge-to="cloud" data-edge-key="9" data-edge-id="core-cloud" data-composition-points="410,402.6666666666667;434,402.6666666666667;434,593;880,593" d="M 410 402.6666666666667 L 426 402.6666666666667 Q 434 402.6666666666667 434 410.6666666666667 L 434 585 Q 434 593 442 593 L 880 593" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="core" data-edge-to="ai" data-edge-key="10" data-edge-id="core-ai" data-composition-points="410,412;434,412;434,698;880,698" d="M 410 412 L 426 412 Q 434 412 434 420 L 434 690 Q 434 698 442 698 L 880 698" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="web" data-edge-to="security" data-edge-label="request" data-edge-key="0" data-edge-id="web-security" data-composition-points="195,114;195,180" d="M 195 114 L 195 180" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="security" data-edge-to="core" data-edge-label="authorized" data-edge-key="1" data-edge-id="security-core" data-composition-points="195,244;195,310" d="M 195 244 L 195 310" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
+        <path data-edge-from="core" data-edge-to="jpa" data-edge-label="data source abstraction" data-edge-key="2" data-edge-id="core-jpa" data-composition-points="195,398;195,500" d="M 195 398 L 195 500" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="upms" data-edge-to="report" data-edge-label="on demand" data-edge-key="3" data-edge-id="upms-report" data-composition-points="620,354;780,354" d="M 620 354 L 780 354" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
-        <g id="node-web" data-node-id="web" data-node-label="erupt-web" tabindex="0" role="button" aria-label="Focus erupt-web, Angular admin UI (jar), Architecture component" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="Angular admin UI (jar)" data-node-context="Architecture component">
-          <title>erupt-web · Angular admin UI (jar) · Architecture component</title>
-          <rect x="200" y="60" width="210" height="64" rx="6" class="c-mask"/>
-          <rect x="200" y="60" width="210" height="64" rx="6" class="c-frontend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(206 66) scale(0.6875)">
+        <g id="node-web" data-node-id="web" data-node-label="erupt-web" tabindex="0" role="button" aria-label="Focus erupt-web, Angular admin UI (jar), Frontend" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="Angular admin UI (jar)" data-node-context="Frontend">
+          <title>erupt-web · Angular admin UI (jar) · Frontend</title>
+          <rect x="60" y="50" width="270" height="64" rx="6" class="c-mask"/>
+          <rect x="60" y="50" width="270" height="64" rx="6" class="c-frontend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(66 56) scale(0.6875)">
             <rect x="2" y="3" width="12" height="10" rx="2"/>
             <path d="M2 6.5h12"/>
             <circle cx="4.1" cy="4.8" r=".7" class="sigil-fill"/>
             <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
           </g>
-          <text x="305" y="90" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-web</text>
-        <text x="305" y="106" class="t-muted" font-size="9" text-anchor="middle">Angular admin UI (jar)</text>
+          <text x="195" y="80" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-web</text>
+        <text x="195" y="96" class="t-muted" font-size="9" text-anchor="middle">Angular admin UI (jar)</text>
         </g>
 
-        <g id="node-security" data-node-id="security" data-node-label="erupt-security" tabindex="0" role="button" aria-label="Focus erupt-security, JWT / Session auth, Architecture component" aria-pressed="false" data-node-kind="security" data-node-sublabel="JWT / Session auth" data-node-context="Architecture component">
-          <title>erupt-security · JWT / Session auth · Architecture component</title>
-          <rect x="200" y="200" width="210" height="64" rx="6" class="c-mask"/>
-          <rect x="200" y="200" width="210" height="64" rx="6" class="c-security" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(206 206) scale(0.6875)">
+        <g id="node-security" data-node-id="security" data-node-label="erupt-security" tabindex="0" role="button" aria-label="Focus erupt-security, JWT / Session auth, Security" aria-pressed="false" data-node-kind="security" data-node-sublabel="JWT / Session auth" data-node-context="Security">
+          <title>erupt-security · JWT / Session auth · Security</title>
+          <rect x="60" y="180" width="270" height="64" rx="6" class="c-mask"/>
+          <rect x="60" y="180" width="270" height="64" rx="6" class="c-security" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(66 186) scale(0.6875)">
             <path d="M8 2.2 13 4v3.5c0 3.1-1.8 5.4-5 6.5-3.2-1.1-5-3.4-5-6.5V4Z"/>
             <path d="m5.8 8 1.5 1.5 3-3"/>
           </g>
-          <text x="305" y="230" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-security</text>
-        <text x="305" y="246" class="t-muted" font-size="9" text-anchor="middle">JWT / Session auth</text>
+          <text x="195" y="210" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-security</text>
+        <text x="195" y="226" class="t-muted" font-size="9" text-anchor="middle">JWT / Session auth</text>
         </g>
 
         <g id="node-core" data-node-id="core" data-node-label="erupt-core" tabindex="0" role="button" aria-label="Focus erupt-core, annotation parsing · CRUD engine · schema, Core Layer" aria-pressed="false" data-node-kind="backend" data-node-sublabel="annotation parsing · CRUD engine · schema" data-node-tag="core" data-node-context="Core Layer">
           <title>erupt-core · annotation parsing · CRUD engine · schema · Core Layer · core</title>
-          <rect x="200" y="340" width="210" height="88" rx="6" class="c-mask"/>
-          <rect x="200" y="340" width="210" height="88" rx="6" class="c-backend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(206 346) scale(0.6875)">
+          <rect x="60" y="310" width="270" height="88" rx="6" class="c-mask"/>
+          <rect x="60" y="310" width="270" height="88" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(66 316) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text x="305" y="382" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-core</text>
-        <text x="305" y="398" class="t-muted" font-size="8.2" text-anchor="middle">annotation parsing · CRUD engine · schema</text>
-        <text x="305" y="420" class="t-backend" font-size="7" text-anchor="middle">core</text>
+          <text x="195" y="352" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-core</text>
+        <text x="195" y="368" class="t-muted" font-size="9" text-anchor="middle">annotation parsing · CRUD engine · schema</text>
+        <text x="195" y="390" class="t-backend" font-size="7" text-anchor="middle">core</text>
         </g>
 
         <g id="node-upms" data-node-id="upms" data-node-label="erupt-upms" tabindex="0" role="button" aria-label="Focus erupt-upms, users · roles · menus · orgs, Core Layer" aria-pressed="false" data-node-kind="backend" data-node-sublabel="users · roles · menus · orgs" data-node-context="Core Layer">
           <title>erupt-upms · users · roles · menus · orgs · Core Layer</title>
-          <rect x="480" y="352" width="190" height="64" rx="6" class="c-mask"/>
-          <rect x="480" y="352" width="190" height="64" rx="6" class="c-backend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(486 358) scale(0.6875)">
+          <rect x="350" y="322" width="270" height="64" rx="6" class="c-mask"/>
+          <rect x="350" y="322" width="270" height="64" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(356 328) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text x="575" y="382" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-upms</text>
-        <text x="575" y="398" class="t-muted" font-size="9" text-anchor="middle">users · roles · menus · orgs</text>
+          <text x="485" y="352" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-upms</text>
+        <text x="485" y="368" class="t-muted" font-size="9" text-anchor="middle">users · roles · menus · orgs</text>
         </g>
 
-        <g id="node-jpa" data-node-id="jpa" data-node-label="erupt-jpa" tabindex="0" role="button" aria-label="Focus erupt-jpa, Spring Data JPA · multi-source, Data Layer" aria-pressed="false" data-node-kind="database" data-node-sublabel="Spring Data JPA · multi-source" data-node-context="Data Layer">
-          <title>erupt-jpa · Spring Data JPA · multi-source · Data Layer</title>
-          <rect x="200" y="540" width="210" height="60" rx="6" class="c-mask"/>
-          <rect x="200" y="540" width="210" height="60" rx="6" class="c-database" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(206 546) scale(0.6875)">
+        <g id="node-jpa" data-node-id="jpa" data-node-label="erupt-data-jpa" tabindex="0" role="button" aria-label="Focus erupt-data-jpa, Spring Data JPA · multi-source, Data Layer (erupt-data-*, pick one or combine)" aria-pressed="false" data-node-kind="database" data-node-sublabel="Spring Data JPA · multi-source" data-node-context="Data Layer (erupt-data-*, pick one or combine)">
+          <title>erupt-data-jpa · Spring Data JPA · multi-source · Data Layer (erupt-data-*, pick one or combine)</title>
+          <rect x="60" y="500" width="270" height="60" rx="6" class="c-mask"/>
+          <rect x="60" y="500" width="270" height="60" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(66 506) scale(0.6875)">
             <ellipse cx="8" cy="4" rx="5" ry="2"/>
             <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
-          <text x="305" y="568" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-jpa</text>
-        <text x="305" y="584" class="t-muted" font-size="9" text-anchor="middle">Spring Data JPA · multi-source</text>
+          <text x="195" y="528" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-data-jpa</text>
+        <text x="195" y="544" class="t-muted" font-size="9" text-anchor="middle">Spring Data JPA · multi-source</text>
         </g>
 
-        <g id="node-mongo" data-node-id="mongo" data-node-label="erupt-mongodb" tabindex="0" role="button" aria-label="Focus erupt-mongodb, MongoDB NoSQL, Data Layer" aria-pressed="false" data-node-kind="database" data-node-sublabel="MongoDB NoSQL" data-node-context="Data Layer">
-          <title>erupt-mongodb · MongoDB NoSQL · Data Layer</title>
-          <rect x="200" y="660" width="210" height="60" rx="6" class="c-mask"/>
-          <rect x="200" y="660" width="210" height="60" rx="6" class="c-database" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(206 666) scale(0.6875)">
+        <g id="node-mongo" data-node-id="mongo" data-node-label="erupt-data-mongodb" tabindex="0" role="button" aria-label="Focus erupt-data-mongodb, MongoDB NoSQL, Data Layer (erupt-data-*, pick one or combine)" aria-pressed="false" data-node-kind="database" data-node-sublabel="MongoDB NoSQL" data-node-context="Data Layer (erupt-data-*, pick one or combine)">
+          <title>erupt-data-mongodb · MongoDB NoSQL · Data Layer (erupt-data-*, pick one or combine)</title>
+          <rect x="350" y="500" width="270" height="60" rx="6" class="c-mask"/>
+          <rect x="350" y="500" width="270" height="60" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(356 506) scale(0.6875)">
             <ellipse cx="8" cy="4" rx="5" ry="2"/>
             <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
-          <text x="305" y="688" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-mongodb</text>
-        <text x="305" y="704" class="t-muted" font-size="9" text-anchor="middle">MongoDB NoSQL</text>
+          <text x="485" y="528" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-data-mongodb</text>
+        <text x="485" y="544" class="t-muted" font-size="9" text-anchor="middle">MongoDB NoSQL</text>
+        </g>
+
+        <g id="node-jdbc" data-node-id="jdbc" data-node-label="erupt-data-jdbc · http" tabindex="0" role="button" aria-label="Focus erupt-data-jdbc · http, single-table JDBC · REST as data source, Data Layer (erupt-data-*, pick one or combine)" aria-pressed="false" data-node-kind="database" data-node-sublabel="single-table JDBC · REST as data source" data-node-context="Data Layer (erupt-data-*, pick one or combine)">
+          <title>erupt-data-jdbc · http · single-table JDBC · REST as data source · Data Layer (erupt-data-*, pick one or combine)</title>
+          <rect x="60" y="600" width="270" height="60" rx="6" class="c-mask"/>
+          <rect x="60" y="600" width="270" height="60" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(66 606) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
+          </g>
+          <text x="195" y="628" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-data-jdbc · http</text>
+        <text x="195" y="644" class="t-muted" font-size="9" text-anchor="middle">single-table JDBC · REST as data source</text>
+        </g>
+
+        <g id="node-memfile" data-node-id="memfile" data-node-label="erupt-data-memory · file" tabindex="0" role="button" aria-label="Focus erupt-data-memory · file, in-memory · CSV / JSONL files, Data Layer (erupt-data-*, pick one or combine)" aria-pressed="false" data-node-kind="database" data-node-sublabel="in-memory · CSV / JSONL files" data-node-context="Data Layer (erupt-data-*, pick one or combine)">
+          <title>erupt-data-memory · file · in-memory · CSV / JSONL files · Data Layer (erupt-data-*, pick one or combine)</title>
+          <rect x="350" y="600" width="270" height="60" rx="6" class="c-mask"/>
+          <rect x="350" y="600" width="270" height="60" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(356 606) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
+          </g>
+          <text x="485" y="628" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-data-memory · file</text>
+        <text x="485" y="644" class="t-muted" font-size="9" text-anchor="middle">in-memory · CSV / JSONL files</text>
+        </g>
+
+        <g id="node-infra" data-node-id="infra" data-node-label="erupt-data-es · redis · k8s · ldap" tabindex="0" role="button" aria-label="Focus erupt-data-es · redis · k8s · ldap, search · cache · cluster · directory, Data Layer (erupt-data-*, pick one or combine)" aria-pressed="false" data-node-kind="database" data-node-sublabel="search · cache · cluster · directory" data-node-context="Data Layer (erupt-data-*, pick one or combine)">
+          <title>erupt-data-es · redis · k8s · ldap · search · cache · cluster · directory · Data Layer (erupt-data-*, pick one or combine)</title>
+          <rect x="60" y="700" width="270" height="60" rx="6" class="c-mask"/>
+          <rect x="60" y="700" width="270" height="60" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(66 706) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
+          </g>
+          <text x="195" y="728" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-data-es · redis · k8s · ldap</text>
+        <text x="195" y="744" class="t-muted" font-size="9" text-anchor="middle">search · cache · cluster · directory</text>
+        </g>
+
+        <g id="node-saas" data-node-id="saas" data-node-label="erupt-data-feishu · notion · s3" tabindex="0" role="button" aria-label="Focus erupt-data-feishu · notion · s3, Feishu Bitable · Notion · object storage, Data Layer (erupt-data-*, pick one or combine)" aria-pressed="false" data-node-kind="database" data-node-sublabel="Feishu Bitable · Notion · object storage" data-node-context="Data Layer (erupt-data-*, pick one or combine)">
+          <title>erupt-data-feishu · notion · s3 · Feishu Bitable · Notion · object storage · Data Layer (erupt-data-*, pick one or combine)</title>
+          <rect x="350" y="700" width="270" height="60" rx="6" class="c-mask"/>
+          <rect x="350" y="700" width="270" height="60" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(356 706) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
+          </g>
+          <text x="485" y="728" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-data-feishu · notion · s3</text>
+        <text x="485" y="744" class="t-muted" font-size="9" text-anchor="middle">Feishu Bitable · Notion · object storage</text>
         </g>
 
         <g id="node-job" data-node-id="job" data-node-label="erupt-job" tabindex="0" role="button" aria-label="Focus erupt-job, scheduled jobs, Extensions (on demand)" aria-pressed="false" data-node-kind="backend" data-node-sublabel="scheduled jobs" data-node-context="Extensions (on demand)">
           <title>erupt-job · scheduled jobs · Extensions (on demand)</title>
-          <rect x="880" y="40" width="170" height="56" rx="6" class="c-mask"/>
-          <rect x="880" y="40" width="170" height="56" rx="6" class="c-backend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(886 46) scale(0.6875)">
+          <rect x="780" y="50" width="220" height="56" rx="6" class="c-mask"/>
+          <rect x="780" y="50" width="220" height="56" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(786 56) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text x="965" y="66" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-job</text>
-        <text x="965" y="82" class="t-muted" font-size="9" text-anchor="middle">scheduled jobs</text>
+          <text x="890" y="76" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-job</text>
+        <text x="890" y="92" class="t-muted" font-size="9" text-anchor="middle">scheduled jobs</text>
         </g>
 
         <g id="node-notice" data-node-id="notice" data-node-label="erupt-notice" tabindex="0" role="button" aria-label="Focus erupt-notice, notifications, Extensions (on demand)" aria-pressed="false" data-node-kind="backend" data-node-sublabel="notifications" data-node-context="Extensions (on demand)">
           <title>erupt-notice · notifications · Extensions (on demand)</title>
-          <rect x="880" y="145" width="170" height="56" rx="6" class="c-mask"/>
-          <rect x="880" y="145" width="170" height="56" rx="6" class="c-backend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(886 151) scale(0.6875)">
+          <rect x="1020" y="50" width="220" height="56" rx="6" class="c-mask"/>
+          <rect x="1020" y="50" width="220" height="56" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1026 56) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text x="965" y="171" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-notice</text>
-        <text x="965" y="187" class="t-muted" font-size="9" text-anchor="middle">notifications</text>
+          <text x="1130" y="76" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-notice</text>
+        <text x="1130" y="92" class="t-muted" font-size="9" text-anchor="middle">notifications</text>
         </g>
 
         <g id="node-monitor" data-node-id="monitor" data-node-label="erupt-monitor" tabindex="0" role="button" aria-label="Focus erupt-monitor, service monitoring, Extensions (on demand)" aria-pressed="false" data-node-kind="backend" data-node-sublabel="service monitoring" data-node-context="Extensions (on demand)">
           <title>erupt-monitor · service monitoring · Extensions (on demand)</title>
-          <rect x="880" y="250" width="170" height="56" rx="6" class="c-mask"/>
-          <rect x="880" y="250" width="170" height="56" rx="6" class="c-backend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(886 256) scale(0.6875)">
+          <rect x="780" y="140" width="220" height="56" rx="6" class="c-mask"/>
+          <rect x="780" y="140" width="220" height="56" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(786 146) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text x="965" y="276" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-monitor</text>
-        <text x="965" y="292" class="t-muted" font-size="9" text-anchor="middle">service monitoring</text>
+          <text x="890" y="166" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-monitor</text>
+        <text x="890" y="182" class="t-muted" font-size="9" text-anchor="middle">service monitoring</text>
+        </g>
+
+        <g id="node-websocket" data-node-id="websocket" data-node-label="erupt-websocket" tabindex="0" role="button" aria-label="Focus erupt-websocket, realtime push, Extensions (on demand)" aria-pressed="false" data-node-kind="backend" data-node-sublabel="realtime push" data-node-context="Extensions (on demand)">
+          <title>erupt-websocket · realtime push · Extensions (on demand)</title>
+          <rect x="1020" y="140" width="220" height="56" rx="6" class="c-mask"/>
+          <rect x="1020" y="140" width="220" height="56" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1026 146) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text x="1130" y="166" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-websocket</text>
+        <text x="1130" y="182" class="t-muted" font-size="9" text-anchor="middle">realtime push</text>
         </g>
 
         <g id="node-tpl" data-node-id="tpl" data-node-label="erupt-tpl" tabindex="0" role="button" aria-label="Focus erupt-tpl, custom pages, Extensions (on demand)" aria-pressed="false" data-node-kind="backend" data-node-sublabel="custom pages" data-node-context="Extensions (on demand)">
           <title>erupt-tpl · custom pages · Extensions (on demand)</title>
-          <rect x="880" y="460" width="170" height="56" rx="6" class="c-mask"/>
-          <rect x="880" y="460" width="170" height="56" rx="6" class="c-backend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(886 466) scale(0.6875)">
+          <rect x="780" y="230" width="220" height="56" rx="6" class="c-mask"/>
+          <rect x="780" y="230" width="220" height="56" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(786 236) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text x="965" y="486" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-tpl</text>
-        <text x="965" y="502" class="t-muted" font-size="9" text-anchor="middle">custom pages</text>
+          <text x="890" y="256" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-tpl</text>
+        <text x="890" y="272" class="t-muted" font-size="9" text-anchor="middle">custom pages</text>
         </g>
 
-        <g id="node-cloud" data-node-id="cloud" data-node-label="erupt-cloud" tabindex="0" role="button" aria-label="Focus erupt-cloud, distributed, Extensions (on demand)" aria-pressed="false" data-node-kind="backend" data-node-sublabel="distributed" data-node-context="Extensions (on demand)">
-          <title>erupt-cloud · distributed · Extensions (on demand)</title>
-          <rect x="880" y="565" width="170" height="56" rx="6" class="c-mask"/>
-          <rect x="880" y="565" width="170" height="56" rx="6" class="c-backend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(886 571) scale(0.6875)">
+        <g id="node-magic" data-node-id="magic" data-node-label="erupt-magic-api" tabindex="0" role="button" aria-label="Focus erupt-magic-api, API scripting, Extensions (on demand)" aria-pressed="false" data-node-kind="backend" data-node-sublabel="API scripting" data-node-context="Extensions (on demand)">
+          <title>erupt-magic-api · API scripting · Extensions (on demand)</title>
+          <rect x="1020" y="230" width="220" height="56" rx="6" class="c-mask"/>
+          <rect x="1020" y="230" width="220" height="56" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1026 236) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text x="965" y="591" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-cloud</text>
-        <text x="965" y="607" class="t-muted" font-size="9" text-anchor="middle">distributed</text>
+          <text x="1130" y="256" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-magic-api</text>
+        <text x="1130" y="272" class="t-muted" font-size="9" text-anchor="middle">API scripting</text>
         </g>
 
-        <g id="node-ai" data-node-id="ai" data-node-label="erupt-ai" tabindex="0" role="button" aria-label="Focus erupt-ai, LLM integration, Extensions (on demand)" aria-pressed="false" data-node-kind="backend" data-node-sublabel="LLM integration" data-node-context="Extensions (on demand)">
-          <title>erupt-ai · LLM integration · Extensions (on demand)</title>
-          <rect x="880" y="670" width="170" height="56" rx="6" class="c-mask"/>
-          <rect x="880" y="670" width="170" height="56" rx="6" class="c-backend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(886 676) scale(0.6875)">
+        <g id="node-report" data-node-id="report" data-node-label="erupt-report" tabindex="0" role="button" aria-label="Focus erupt-report, SQL reports, Extensions (on demand)" aria-pressed="false" data-node-kind="backend" data-node-sublabel="SQL reports" data-node-context="Extensions (on demand)">
+          <title>erupt-report · SQL reports · Extensions (on demand)</title>
+          <rect x="780" y="320" width="220" height="56" rx="6" class="c-mask"/>
+          <rect x="780" y="320" width="220" height="56" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(786 326) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text x="965" y="696" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-ai</text>
-        <text x="965" y="712" class="t-muted" font-size="9" text-anchor="middle">LLM integration</text>
+          <text x="890" y="346" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-report</text>
+        <text x="890" y="362" class="t-muted" font-size="9" text-anchor="middle">SQL reports</text>
+        </g>
+
+        <g id="node-print" data-node-id="print" data-node-label="erupt-print" tabindex="0" role="button" aria-label="Focus erupt-print, template printing, Extensions (on demand)" aria-pressed="false" data-node-kind="backend" data-node-sublabel="template printing" data-node-context="Extensions (on demand)">
+          <title>erupt-print · template printing · Extensions (on demand)</title>
+          <rect x="1020" y="320" width="220" height="56" rx="6" class="c-mask"/>
+          <rect x="1020" y="320" width="220" height="56" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1026 326) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text x="1130" y="346" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-print</text>
+        <text x="1130" y="362" class="t-muted" font-size="9" text-anchor="middle">template printing</text>
+        </g>
+
+        <g id="node-generator" data-node-id="generator" data-node-label="erupt-generator" tabindex="0" role="button" aria-label="Focus erupt-generator, code generation, Extensions (on demand)" aria-pressed="false" data-node-kind="backend" data-node-sublabel="code generation" data-node-context="Extensions (on demand)">
+          <title>erupt-generator · code generation · Extensions (on demand)</title>
+          <rect x="780" y="410" width="220" height="56" rx="6" class="c-mask"/>
+          <rect x="780" y="410" width="220" height="56" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(786 416) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text x="890" y="436" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-generator</text>
+        <text x="890" y="452" class="t-muted" font-size="9" text-anchor="middle">code generation</text>
+        </g>
+
+        <g id="node-designer" data-node-id="designer" data-node-label="erupt-designer" tabindex="0" role="button" aria-label="Focus erupt-designer, model designer, Extensions (on demand)" aria-pressed="false" data-node-kind="backend" data-node-sublabel="model designer" data-node-context="Extensions (on demand)">
+          <title>erupt-designer · model designer · Extensions (on demand)</title>
+          <rect x="1020" y="410" width="220" height="56" rx="6" class="c-mask"/>
+          <rect x="1020" y="410" width="220" height="56" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1026 416) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text x="1130" y="436" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-designer</text>
+        <text x="1130" y="452" class="t-muted" font-size="9" text-anchor="middle">model designer</text>
+        </g>
+
+        <g id="node-terminal" data-node-id="terminal" data-node-label="erupt-terminal" tabindex="0" role="button" aria-label="Focus erupt-terminal, web terminal, Extensions (on demand)" aria-pressed="false" data-node-kind="backend" data-node-sublabel="web terminal" data-node-context="Extensions (on demand)">
+          <title>erupt-terminal · web terminal · Extensions (on demand)</title>
+          <rect x="780" y="500" width="220" height="56" rx="6" class="c-mask"/>
+          <rect x="780" y="500" width="220" height="56" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(786 506) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text x="890" y="526" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-terminal</text>
+        <text x="890" y="542" class="t-muted" font-size="9" text-anchor="middle">web terminal</text>
+        </g>
+
+        <g id="node-cloud" data-node-id="cloud" data-node-label="erupt-cloud" tabindex="0" role="button" aria-label="Focus erupt-cloud, distributed server / node, Extensions (on demand)" aria-pressed="false" data-node-kind="backend" data-node-sublabel="distributed server / node" data-node-context="Extensions (on demand)">
+          <title>erupt-cloud · distributed server / node · Extensions (on demand)</title>
+          <rect x="1020" y="500" width="220" height="56" rx="6" class="c-mask"/>
+          <rect x="1020" y="500" width="220" height="56" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1026 506) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text x="1130" y="526" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-cloud</text>
+        <text x="1130" y="542" class="t-muted" font-size="9" text-anchor="middle">distributed server / node</text>
+        </g>
+
+        <g id="node-ai" data-node-id="ai" data-node-label="erupt-ai" tabindex="0" role="button" aria-label="Focus erupt-ai, LLM access · agent harness, AI Layer" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="LLM access · agent harness" data-node-context="AI Layer">
+          <title>erupt-ai · LLM access · agent harness · AI Layer</title>
+          <rect x="780" y="630" width="220" height="56" rx="6" class="c-mask"/>
+          <rect x="780" y="630" width="220" height="56" rx="6" class="c-cloud" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(786 636) scale(0.6875)">
+            <path d="M4.3 12.5h7.3a2.4 2.4 0 0 0 .2-4.8 4 4 0 0 0-7.5-1.3A3.1 3.1 0 0 0 4.3 12.5Z"/>
+          </g>
+          <text x="890" y="656" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-ai</text>
+        <text x="890" y="672" class="t-muted" font-size="9" text-anchor="middle">LLM access · agent harness</text>
+        </g>
+
+        <g id="node-aiapps" data-node-id="aiapps" data-node-label="erupt-ai-claw · staff" tabindex="0" role="button" aria-label="Focus erupt-ai-claw · staff, conversational ops · AI staff, AI Layer" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="conversational ops · AI staff" data-node-context="AI Layer">
+          <title>erupt-ai-claw · staff · conversational ops · AI staff · AI Layer</title>
+          <rect x="1020" y="630" width="220" height="56" rx="6" class="c-mask"/>
+          <rect x="1020" y="630" width="220" height="56" rx="6" class="c-cloud" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(1026 636) scale(0.6875)">
+            <path d="M4.3 12.5h7.3a2.4 2.4 0 0 0 .2-4.8 4 4 0 0 0-7.5-1.3A3.1 3.1 0 0 0 4.3 12.5Z"/>
+          </g>
+          <text x="1130" y="656" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-ai-claw · staff</text>
+        <text x="1130" y="672" class="t-muted" font-size="9" text-anchor="middle">conversational ops · AI staff</text>
+        </g>
+
+        <g id="node-aidata" data-node-id="aidata" data-node-label="erupt-ai-rag · canvas" tabindex="0" role="button" aria-label="Focus erupt-ai-rag · canvas, knowledge RAG · page generation, AI Layer" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="knowledge RAG · page generation" data-node-context="AI Layer">
+          <title>erupt-ai-rag · canvas · knowledge RAG · page generation · AI Layer</title>
+          <rect x="780" y="720" width="220" height="56" rx="6" class="c-mask"/>
+          <rect x="780" y="720" width="220" height="56" rx="6" class="c-cloud" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(786 726) scale(0.6875)">
+            <path d="M4.3 12.5h7.3a2.4 2.4 0 0 0 .2-4.8 4 4 0 0 0-7.5-1.3A3.1 3.1 0 0 0 4.3 12.5Z"/>
+          </g>
+          <text x="890" y="746" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-ai-rag · canvas</text>
+        <text x="890" y="762" class="t-muted" font-size="9" text-anchor="middle">knowledge RAG · page generation</text>
+        </g>
+
+        <g id="node-pro" data-node-id="pro" data-node-label="erupt-flow · tenant · cube" tabindex="0" role="button" aria-label="Focus erupt-flow · tenant · cube, workflow engine · SaaS multi-tenant · metrics platform, Pro Modules" aria-pressed="false" data-node-kind="external" data-node-sublabel="workflow engine · SaaS multi-tenant · metrics platform" data-node-tag="PRO" data-node-context="Pro Modules">
+          <title>erupt-flow · tenant · cube · workflow engine · SaaS multi-tenant · metrics platform · Pro Modules · PRO</title>
+          <rect x="780" y="850" width="460" height="76" rx="6" class="c-mask"/>
+          <rect x="780" y="850" width="460" height="76" rx="6" class="c-external" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(786 856) scale(0.6875)">
+            <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
+            <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
+          </g>
+          <text x="1010" y="886" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-flow · tenant · cube</text>
+        <text x="1010" y="902" class="t-muted" font-size="9" text-anchor="middle">workflow engine · SaaS multi-tenant · metrics platform</text>
+        <text x="1010" y="918" class="t-external" font-size="7" text-anchor="middle">PRO</text>
         </g>
 
         <!-- Connection labels -->
         <g data-edge-from="web" data-edge-to="security" data-edge-label="request" data-edge-key="0" data-edge-id="web-security">
-          <rect x="283.2" y="128" width="43.6" height="14" rx="3" class="c-mask"/>
-          <text x="305" y="138" class="t-backend" font-size="8" text-anchor="middle">request</text>
+          <rect x="173.2" y="137" width="43.6" height="14" rx="3" class="c-mask"/>
+          <text x="195" y="147" class="t-backend" font-size="8" text-anchor="middle">request</text>
         </g>
         <g data-edge-from="security" data-edge-to="core" data-edge-label="authorized" data-edge-key="1" data-edge-id="security-core">
-          <rect x="276" y="268" width="58" height="14" rx="3" class="c-mask"/>
-          <text x="305" y="278" class="t-backend" font-size="8" text-anchor="middle">authorized</text>
+          <rect x="166" y="267" width="58" height="14" rx="3" class="c-mask"/>
+          <text x="195" y="277" class="t-security" font-size="8" text-anchor="middle">authorized</text>
         </g>
-
-        <g data-edge-from="core" data-edge-to="jpa" data-edge-label="ORM" data-edge-key="3" data-edge-id="core-jpa">
-          <rect x="290" y="432" width="30" height="14" rx="3" class="c-mask"/>
-          <text x="305" y="442" class="t-backend" font-size="8" text-anchor="middle">ORM</text>
+        <g data-edge-from="core" data-edge-to="jpa" data-edge-label="data source abstraction" data-edge-key="2" data-edge-id="core-jpa">
+          <rect x="134.8" y="439" width="120.39999999999999" height="14" rx="3" class="c-mask"/>
+          <text x="195" y="449" class="t-muted" font-size="8" text-anchor="middle">data source abstraction</text>
         </g>
-
-
-
-        <g data-edge-from="core" data-edge-to="monitor" data-edge-label="on demand" data-edge-key="7" data-edge-id="core-monitor">
-          <rect x="630.4" y="258" width="53.199999999999996" height="14" rx="3" class="c-mask"/>
-          <text x="657" y="268" class="t-messagebus" font-size="8" text-anchor="middle">on demand</text>
+        <g data-edge-from="upms" data-edge-to="report" data-edge-label="on demand" data-edge-key="3" data-edge-id="upms-report">
+          <rect x="673.4" y="334" width="53.199999999999996" height="14" rx="3" class="c-mask"/>
+          <text x="700" y="344" class="t-messagebus" font-size="8" text-anchor="middle">on demand</text>
         </g>
-
-
-
 
         <!-- Legend -->
         <g data-legend="">
-          <text x="40" y="784" class="t-primary" font-size="12" font-weight="650">Legend</text>
-          <g data-legend-semantic-kind="frontend" data-legend-x="40" data-legend-baseline="804" data-legend-width="83">
-            <rect x="40" y="795" width="16" height="10" rx="2.5" class="c-frontend" stroke-width="1"/>
-            <text x="62" y="804" class="t-muted" font-size="10" font-weight="500">Frontend</text>
+          <text x="40" y="1004" class="t-primary" font-size="12" font-weight="650">Legend</text>
+          <g data-legend-semantic-kind="frontend" data-legend-x="40" data-legend-baseline="1024" data-legend-width="83">
+            <rect x="40" y="1015" width="16" height="10" rx="2.5" class="c-frontend" stroke-width="1"/>
+            <text x="62" y="1024" class="t-muted" font-size="10" font-weight="500">Frontend</text>
           </g>
-          <g data-legend-semantic-kind="backend" data-legend-x="145" data-legend-baseline="804" data-legend-width="78">
-            <rect x="145" y="795" width="16" height="10" rx="2.5" class="c-backend" stroke-width="1"/>
-            <text x="167" y="804" class="t-muted" font-size="10" font-weight="500">Backend</text>
+          <g data-legend-semantic-kind="backend" data-legend-x="145" data-legend-baseline="1024" data-legend-width="128">
+            <rect x="145" y="1015" width="16" height="10" rx="2.5" class="c-backend" stroke-width="1"/>
+            <text x="167" y="1024" class="t-muted" font-size="10" font-weight="500">Core / Extensions</text>
           </g>
-          <g data-legend-semantic-kind="database" data-legend-x="245" data-legend-baseline="804" data-legend-width="83">
-            <rect x="245" y="795" width="16" height="10" rx="2.5" class="c-database" stroke-width="1"/>
-            <text x="267" y="804" class="t-muted" font-size="10" font-weight="500">Database</text>
+          <g data-legend-semantic-kind="database" data-legend-x="295" data-legend-baseline="1024" data-legend-width="93">
+            <rect x="295" y="1015" width="16" height="10" rx="2.5" class="c-database" stroke-width="1"/>
+            <text x="317" y="1024" class="t-muted" font-size="10" font-weight="500">Data Layer</text>
           </g>
-          <g data-legend-semantic-kind="security" data-legend-x="350" data-legend-baseline="804" data-legend-width="83">
-            <rect x="350" y="795" width="16" height="10" rx="2.5" class="c-security" stroke-width="1"/>
-            <text x="372" y="804" class="t-muted" font-size="10" font-weight="500">Security</text>
+          <g data-legend-semantic-kind="cloud" data-legend-x="410" data-legend-baseline="1024" data-legend-width="93">
+            <rect x="410" y="1015" width="16" height="10" rx="2.5" class="c-cloud" stroke-width="1"/>
+            <text x="432" y="1024" class="t-muted" font-size="10" font-weight="500">AI Modules</text>
+          </g>
+          <g data-legend-semantic-kind="security" data-legend-x="525" data-legend-baseline="1024" data-legend-width="83">
+            <rect x="525" y="1015" width="16" height="10" rx="2.5" class="c-security" stroke-width="1"/>
+            <text x="547" y="1024" class="t-muted" font-size="10" font-weight="500">Security</text>
+          </g>
+          <g data-legend-semantic-kind="external" data-legend-x="630" data-legend-baseline="1024" data-legend-width="98">
+            <rect x="630" y="1015" width="16" height="10" rx="2.5" class="c-external" stroke-width="1"/>
+            <text x="652" y="1024" class="t-muted" font-size="10" font-weight="500">Pro Modules</text>
           </g>
         </g>
       </svg>

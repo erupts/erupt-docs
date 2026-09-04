@@ -1,7 +1,9 @@
 import DefaultTheme from 'vitepress/theme'
 import './custom.css'
 
-import {h} from 'vue'
+import {h, onMounted, watch, nextTick} from 'vue'
+import {useRoute} from 'vitepress'
+import mediumZoom, {type Zoom} from 'medium-zoom'
 import Floating from './Floating.vue'
 
 import {
@@ -73,4 +75,16 @@ export default {
         app.use(NolebaseGitChangelogPlugin)
     },
 
+    setup() {
+        const route = useRoute()
+        let zoom: Zoom | null = null
+        // 单实例：路由切换时先解绑旧图片再绑定新页面的图片，避免重复创建实例
+        const initZoom = () => {
+            if (!zoom) zoom = mediumZoom({background: 'var(--vp-c-bg)', margin: 24})
+            zoom.detach()
+            zoom.attach('.main img')
+        }
+        onMounted(initZoom)
+        watch(() => route.path, () => nextTick(initZoom))
+    },
 }

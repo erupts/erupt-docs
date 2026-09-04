@@ -13,6 +13,20 @@
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
+/* 放大后的遮罩与图片要盖住 VitePress 的侧边栏（z-index 25）和顶栏（30） */
+.medium-zoom-overlay {
+    z-index: 100;
+}
+
+.medium-zoom-image--opened {
+    z-index: 101;
+}
+
+/* 放大时隐藏右下角推广浮窗（z-index 999），避免压住图片 */
+body.medium-zoom--opened .floating-promo {
+    display: none;
+}
+
 /* 专题文章顶部的公众号关注卡片 */
 .topic-mp-qr {
     display: flex;
