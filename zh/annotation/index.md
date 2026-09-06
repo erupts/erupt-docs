@@ -47,7 +47,7 @@ const trees = [
             {
                 attr: 'edit', anno: '@Edit', desc: '编辑表单配置', link: '/zh/annotation/edit',
                 children: [
-                    {attr: 'type', anno: 'EditType', plain: true, desc: '30+ 字段组件类型，详见字段类型总览', link: '/zh/field-types/'},
+                    {attr: 'type', anno: 'EditType', plain: true, desc: '30+ 组件类型，详见组件总览', link: '/zh/field-types/'},
                     {attr: 'search', anno: '@Search', desc: '搜索栏配置', link: '/zh/annotation/search'},
                     {attr: 'onchange', anno: 'OnChange', plain: true, desc: '字段联动，值变更时实时联动其他字段', link: '/zh/annotation/on-change'},
                     {attr: 'dynamic', anno: '@Dynamic', desc: '动态组件控制', link: '/zh/annotation/dynamic'},

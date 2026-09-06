@@ -24,4 +24,4 @@ Configures how a field behaves in the add/edit form, including the component typ
 
 ## Component Types (EditType)
 
-`type` supports 30+ component types. For detailed configuration options and examples for each type, see the [Field Types overview](/en/field-types/).
+`type` supports 30+ component types. For detailed configuration options and examples for each type, see the [Components overview](/en/field-types/).

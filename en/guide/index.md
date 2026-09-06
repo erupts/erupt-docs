@@ -17,7 +17,7 @@ const specs = [
     {l: 'Startup Time', v: '2s ~ 5s'},
     {l: 'Devices', v: 'PC · Tablet · Mobile'},
     {l: 'Database', v: 'MySQL · PostgreSQL · Oracle · SQL Server · H2 · NoSQL'},
-    {l: 'Modules', v: '10+'},
+    {l: 'Plugins', v: '10+'},
     {l: 'Components', v: '20+'},
     {l: 'Object Storage', v: '✔ Supported'},
     {l: 'Distributed', v: 'erupt-cloud'},

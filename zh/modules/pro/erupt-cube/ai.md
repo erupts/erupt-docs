@@ -98,5 +98,6 @@ Claude Desktop、Cursor 等任何 MCP 客户端接入后，即可直接调用 `c
 | 场景 | 说明 |
 | --- | --- |
 | 后台 ChatBI | 业务人员在管理后台用自然语言问数，即问即答、即答即图 |
+| AI 画布 | 通过 [AI 画布](/zh/modules/pro/erupt-cube/ai-canvas) 一句话把 Cube 生成为数据大屏、驾驶舱等任意展现形式的页面 |
 | 外部 AI Agent | 通过 MCP Server 将问数能力接入 Claude Desktop、Cursor 或自研 Agent |
 | SQL 型 Agent | 习惯写 SQL 的 Agent 也可通过 [SQL 查询端口](/zh/modules/pro/erupt-cube/sql) 以 JDBC/psql 直连语义层 |

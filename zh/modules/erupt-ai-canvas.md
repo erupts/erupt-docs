@@ -125,7 +125,7 @@ public interface CanvasModelProvider {
 | `getChoiceOptions` | 获取 CHOICE / MULTI_CHOICE 字段的选项列表 |
 
 :::info
-内置 `erupt` 数据源返回的是分页明细数据，**不具备聚合统计能力**，因此生成页面不会包含基于分页数据伪造的汇总、图表类统计组件；如需统计分析类页面，可通过自定义 `CanvasModelProvider` 对接具备聚合能力的数据源。
+内置 `erupt` 数据源返回的是分页明细数据，**不具备聚合统计能力**，因此生成页面不会包含基于分页数据伪造的汇总、图表类统计组件；如需统计分析类页面，可引入 [erupt-cube](/zh/modules/pro/erupt-cube/ai-canvas)：它将语义模型注册为 `cube` 类型数据源，页面通过 `Erupt.cube` 直接做聚合查询；也可自定义 `CanvasModelProvider` 对接其他具备聚合能力的数据源。
 :::
 
 ## 相关配置

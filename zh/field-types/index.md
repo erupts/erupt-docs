@@ -82,9 +82,9 @@ const filtered = computed(() => {
 })
 </script>
 
-# 字段类型总览
+# 组件总览
 
-Erupt 提供了 30+ 种字段组件，通过 `@Edit(type = EditType.XXX)` 指定，覆盖文本、数值、日期、媒体、关联关系等常见场景。
+Erupt 提供了 30+ 种组件，通过 `@Edit(type = EditType.XXX)` 指定，覆盖文本、数值、日期、媒体、关联关系等常见场景。
 
 <div class="ft-search">
     <svg class="ft-search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>

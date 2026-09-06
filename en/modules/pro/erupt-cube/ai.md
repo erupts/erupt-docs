@@ -98,5 +98,6 @@ Once connected, any MCP client — Claude Desktop, Cursor, or your own agent —
 | Scenario | Description |
 | --- | --- |
 | In-app ChatBI | Business users ask questions in natural language in the admin console — instant answers, instant charts |
+| AI Canvas | Turn a Cube into a data wall, executive cockpit or any other presentation with one sentence via [AI Canvas](/en/modules/pro/erupt-cube/ai-canvas) |
 | External AI agents | Expose AI Query to Claude Desktop, Cursor, or custom agents via the MCP server |
 | SQL-oriented agents | Agents that prefer SQL can also connect to the semantic layer over JDBC/psql via the [SQL Port](/en/modules/pro/erupt-cube/sql) |

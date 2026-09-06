@@ -25,7 +25,7 @@ const dict = {
         changelog: '更新日志 →',
         changelogLink: '/zh/guide/changelog',
         stats: [
-            { num: '30+', label: '字段组件' },
+            { num: '30+', label: '组件' },
             { num: '15+', label: 'AI 大模型' },
             { num: '2s', label: '极速启动' },
             { num: '0', label: '行前端代码' },
@@ -55,7 +55,7 @@ const dict = {
         changelog: 'Changelog →',
         changelogLink: '/en/guide/changelog',
         stats: [
-            { num: '30+', label: 'Field Types' },
+            { num: '30+', label: 'Components' },
             { num: '15+', label: 'AI Models' },
             { num: '2s', label: 'Boot Time' },
             { num: '0', label: 'Frontend Code' },

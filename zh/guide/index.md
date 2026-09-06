@@ -17,7 +17,7 @@ const specs = [
     {l: '启动速度', v: '2s ~ 5s'},
     {l: '终端适配', v: 'PC · 平板 · 手机'},
     {l: '数据源', v: 'MySQL · PostgreSQL · Oracle · SQL Server · H2 · NoSQL'},
-    {l: '扩展模块', v: '10+'},
+    {l: '插件', v: '10+'},
     {l: '组件支持', v: '20+'},
     {l: 'OSS 支持', v: '✔ 支持'},
     {l: '分布式', v: 'erupt-cloud'},

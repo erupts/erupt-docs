@@ -47,7 +47,7 @@ const trees = [
             {
                 attr: 'edit', anno: '@Edit', desc: 'Edit-form configuration', link: '/en/annotation/edit',
                 children: [
-                    {attr: 'type', anno: 'EditType', plain: true, desc: '30+ field components, see Field Types overview', link: '/en/field-types/'},
+                    {attr: 'type', anno: 'EditType', plain: true, desc: '30+ component types, see Components overview', link: '/en/field-types/'},
                     {attr: 'search', anno: '@Search', desc: 'Search bar configuration', link: '/en/annotation/search'},
                     {attr: 'onchange', anno: 'OnChange', plain: true, desc: 'Data-change linkage, update other fields in real time', link: '/en/annotation/on-change'},
                     {attr: 'dynamic', anno: '@Dynamic', desc: 'Dynamic component control', link: '/en/annotation/dynamic'},

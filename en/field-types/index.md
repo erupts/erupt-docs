@@ -82,7 +82,7 @@ const filtered = computed(() => {
 })
 </script>
 
-# Field Types Overview
+# Components Overview
 
 Erupt provides 30+ field components, specified via `@Edit(type = EditType.XXX)`, covering text, numbers, dates, media, relations and more.
 

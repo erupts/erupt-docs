@@ -94,7 +94,7 @@ const filtered = computed(() => {
 })
 </script>
 
-# 扩展模块总览
+# 插件总览
 
 Erupt 采用模块化设计，核心功能拆分为独立 Maven 模块，按需引入，版本号与核心保持一致。
 

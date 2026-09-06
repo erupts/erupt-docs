@@ -125,7 +125,7 @@ The built-in `erupt` data source gives generated pages a global `Erupt` SDK obje
 | `getChoiceOptions` | Fetches the option list of a CHOICE / MULTI_CHOICE field |
 
 :::info
-The built-in `erupt` data source returns paged detail rows and has **no aggregation capability**, so generated pages will not contain summary or chart widgets faked from paged data. For statistics/analytics pages, implement a custom `CanvasModelProvider` backed by a data source with aggregation support.
+The built-in `erupt` data source returns paged detail rows and has **no aggregation capability**, so generated pages will not contain summary or chart widgets faked from paged data. For statistics/analytics pages, add [erupt-cube](/en/modules/pro/erupt-cube/ai-canvas): it registers semantic models as a `cube` data source so pages can run aggregate queries through `Erupt.cube`; you can also implement a custom `CanvasModelProvider` backed by any other data source with aggregation support.
 :::
 
 ## Configuration

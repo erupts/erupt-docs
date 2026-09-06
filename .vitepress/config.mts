@@ -67,9 +67,9 @@ export default withMermaid(defineConfig({
                 nav: [
                     {text: 'Guide', link: '/en/guide/', activeMatch: '/en/guide/'},
                     {text: 'Annotations', link: '/en/annotation/', activeMatch: '/en/annotation/'},
-                    {text: 'Field Types', link: '/en/field-types/', activeMatch: '/en/field-types/'},
+                    {text: 'Components', link: '/en/field-types/', activeMatch: '/en/field-types/'},
                     {text: 'Advanced', link: '/en/advanced/', activeMatch: '/en/advanced/'},
-                    {text: 'Modules', link: '/en/modules/', activeMatch: '/en/modules/'},
+                    {text: 'Plugins', link: '/en/modules/', activeMatch: '/en/modules/'},
                     {text: 'Topics', link: '/en/topics/', activeMatch: '/en/topics/'},
                     {text: 'Architecture', link: '/en/guide/architecture'},
                     {text: '⚡ No-Code', link: 'https://skill.erupt.xyz'},
@@ -178,7 +178,7 @@ export default withMermaid(defineConfig({
 
                     '/en/field-types/': [
                         {
-                            text: 'Field Types',
+                            text: 'Components',
                             items: [
                                 {text: 'Overview', link: '/en/field-types/'},
                                 {text: 'AUTO', link: '/en/field-types/auto'},
@@ -377,9 +377,9 @@ export default withMermaid(defineConfig({
 
                     '/en/modules/': [
                         {
-                            text: 'Extension Modules',
+                            text: 'Plugins',
                             items: [
-                                {text: 'Module Overview', link: '/en/modules/'},
+                                {text: 'Plugin Overview', link: '/en/modules/'},
                             ],
                         },
                         {
@@ -496,6 +496,7 @@ export default withMermaid(defineConfig({
                                         {text: 'Visual Analysis', link: '/en/modules/pro/erupt-cube/visual-analysis'},
                                         {text: 'SQL Port', link: '/en/modules/pro/erupt-cube/sql'},
                                         {text: 'AI Query', link: '/en/modules/pro/erupt-cube/ai'},
+                                        {text: 'AI Canvas <span class="VPBadge tip">new</span>', link: '/en/modules/pro/erupt-cube/ai-canvas'},
                                         {text: 'Cloud Node Mode', link: '/en/modules/pro/erupt-cube/cloud'},
                                     ],
                                 },
@@ -546,9 +547,9 @@ export default withMermaid(defineConfig({
                 nav: [
                     {text: '快速上手', link: '/zh/guide/', activeMatch: '/zh/guide/'},
                     {text: '注解参考', link: '/zh/annotation/', activeMatch: '/zh/annotation/'},
-                    {text: '字段组件', link: '/zh/field-types/', activeMatch: '/zh/field-types/'},
+                    {text: '组件', link: '/zh/field-types/', activeMatch: '/zh/field-types/'},
                     {text: '进阶', link: '/zh/advanced/', activeMatch: '/zh/advanced/'},
-                    {text: '扩展模块', link: '/zh/modules/', activeMatch: '/zh/modules/'},
+                    {text: '插件', link: '/zh/modules/', activeMatch: '/zh/modules/'},
                     {text: '专题', link: '/zh/topics/', activeMatch: '/zh/topics/'},
                     {text: '架构设计', link: '/zh/guide/architecture'},
                     {text: '⚡ 零代码', link: 'https://skill.erupt.xyz'},
@@ -657,7 +658,7 @@ export default withMermaid(defineConfig({
 
                     '/zh/field-types/': [
                         {
-                            text: '字段组件',
+                            text: '组件',
                             items: [
                                 {text: '概览', link: '/zh/field-types/'},
                                 {text: 'AUTO 自动推测', link: '/zh/field-types/auto'},
@@ -856,9 +857,9 @@ export default withMermaid(defineConfig({
 
                     '/zh/modules/': [
                         {
-                            text: '扩展模块',
+                            text: '插件',
                             items: [
-                                {text: '模块总览', link: '/zh/modules/'},
+                                {text: '插件总览', link: '/zh/modules/'},
                             ],
                         },
                         {
@@ -975,6 +976,7 @@ export default withMermaid(defineConfig({
                                         {text: '可视化分析', link: '/zh/modules/pro/erupt-cube/visual-analysis'},
                                         {text: 'SQL 查询端口', link: '/zh/modules/pro/erupt-cube/sql'},
                                         {text: 'AI 问数', link: '/zh/modules/pro/erupt-cube/ai'},
+                                        {text: 'AI 画布 <span class="VPBadge tip">new</span>', link: '/zh/modules/pro/erupt-cube/ai-canvas'},
                                         {text: '云端节点模式', link: '/zh/modules/pro/erupt-cube/cloud'},
                                     ],
                                 },

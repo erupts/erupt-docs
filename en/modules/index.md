@@ -94,7 +94,7 @@ const filtered = computed(() => {
 })
 </script>
 
-# Modules Overview
+# Plugins Overview
 
 Erupt follows a modular design — core capabilities are split into independent Maven modules so you can pull in only what you need, all versioned in lockstep with the core.
 
