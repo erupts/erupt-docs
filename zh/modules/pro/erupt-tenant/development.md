@@ -95,7 +95,7 @@ public class TextService {
 ```
 
 :::info 实现原理
-租户登录成功后签发的 token 是一个免签 JWT，租户 ID 存放在 JWT 的 `audience` 中。`EruptTenantContext.getTenantId()` 从请求头 `token` 中解析出租户 ID；非租户会话（如超管端登录）返回 `null`。
+租户 ID 保存在服务端登录会话中，token 本身是不透明随机串（租户 token 以 `t_` 前缀区分）。安全拦截器在校验会话后把租户 ID 写入 `MetaContext` 的 `MetaUser`，`EruptTenantContext.getTenantId()` 从中读取，并同步写入 `MetaContext` 变量 `tenantId`，erupt-report、erupt-cube 中可直接使用 `${tenantId}` 参数；非租户会话（如超管端登录）返回 `null`。erupt-cloud-server 转发请求时会把 `MetaUser` 一并传给节点，因此 erupt-cloud-node 只需依赖 erupt-tenant-core，无需 upms 或会话存储即可完成租户隔离。
 :::
 
 同时 `TenantInterceptor` 拦截器会将 `tenantId` 注册为 `erupt-api` 请求的上下文变量，动态 SQL 等场景可直接引用。
