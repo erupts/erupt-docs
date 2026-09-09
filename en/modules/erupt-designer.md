@@ -4,6 +4,8 @@ Visually design Erupt entity models at runtime through a drag-and-drop interface
 
 > **Supported in 2.0.0+**
 
+![erupt-designer](/erupt-designer/designer.png)
+
 ## Dependency
 
 ```xml
@@ -26,40 +28,6 @@ Create model entry → Open designer → Drag-drop fields → Preview → Add to
 4. Click **Preview** to see a live form preview.
 5. Back on the list page, click the **Add to Menu** row button, configure the target menu, and publish with one click.
 6. No restart needed — the menu is active immediately.
-
-## Database Tables
-
-erupt-designer uses two built-in tables:
-
-| Table | Purpose |
-|-------|---------|
-| `e_designer` | Stores each model's design configuration as JSON |
-| `e_designer_data` | Stores business data rows for each designer model in schema-free JSON format |
-
-If you manage schema manually (`spring.jpa.hibernate.ddl-auto=none`), run:
-
-```sql
-CREATE TABLE e_designer (
-    id             BIGINT       NOT NULL PRIMARY KEY,
-    class_name     VARCHAR(64)  NOT NULL UNIQUE,
-    name           VARCHAR(255),
-    remark         VARCHAR(255),
-    sort           VARCHAR(255),
-    config         LONGTEXT,
-    publish_time   DATETIME,
-    create_time    DATETIME,
-    create_user_id BIGINT,
-    update_user_id BIGINT,
-    update_time    DATETIME
-);
-
-CREATE TABLE e_designer_data (
-    id    BIGINT      NOT NULL PRIMARY KEY,
-    model VARCHAR(64) NOT NULL,
-    data  TEXT
-);
-CREATE INDEX idx_designer_data_model ON e_designer_data (model);
-```
 
 ## Exporting Java Code
 

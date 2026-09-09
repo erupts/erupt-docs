@@ -4,6 +4,8 @@
 
 > **2.0.0 及以上版本支持**
 
+![erupt-designer](/erupt-designer/designer.png)
+
 ## 引入依赖
 
 ```xml
@@ -26,40 +28,6 @@
 4. 点击 **Preview** 实时预览表单效果。
 5. 回到列表页点击行按钮 **Add to Menu**，配置菜单位置，一键发布到系统菜单。
 6. 无需重启服务，菜单立即生效。
-
-## 数据存储
-
-erupt-designer 使用两张内置表：
-
-| 表名 | 用途 |
-|------|------|
-| `e_designer` | 存储模型的设计配置（JSON 格式） |
-| `e_designer_data` | 以 JSON 行的形式存储每个模型的业务数据，Schema-Free |
-
-数据库升级时需执行（如使用 `spring.jpa.hibernate.ddl-auto=none`）：
-
-```sql
-CREATE TABLE e_designer (
-    id             BIGINT       NOT NULL PRIMARY KEY,
-    class_name     VARCHAR(64)  NOT NULL UNIQUE,
-    name           VARCHAR(255),
-    remark         VARCHAR(255),
-    sort           VARCHAR(255),
-    config         LONGTEXT,
-    publish_time   DATETIME,
-    create_time    DATETIME,
-    create_user_id BIGINT,
-    update_user_id BIGINT,
-    update_time    DATETIME
-);
-
-CREATE TABLE e_designer_data (
-    id    BIGINT      NOT NULL PRIMARY KEY,
-    model VARCHAR(64) NOT NULL,
-    data  TEXT
-);
-CREATE INDEX idx_designer_data_model ON e_designer_data (model);
-```
 
 ## 导出 Java 代码
 
