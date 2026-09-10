@@ -260,17 +260,28 @@ Template file example (`resources/tpl/operator.ftl`):
 
 ### Closing the Dialog
 
-Call the following JS code from within the template page to close the dialog:
+The template page is embedded in an iframe and the admin UI does not listen for `message` events, so close it by operating on the parent page's DOM directly:
 
 ```javascript
-window.parent.postMessage({ type: 'close' }, '*');
+// Modal (MODAL): click the close button in the top-right corner
+window.parent.document.querySelector('.ant-modal-close').click();
+
+// Drawer (DRAWER): no close button is rendered, click the mask instead
+window.parent.document.querySelector('.ant-drawer-mask').click();
 ```
 
 ### Closing the Dialog and Refreshing Data
 
+Closing the dialog does not refresh the list automatically — trigger the list's query button (its `id` is `erupt-btn-query`) once more to reload the data:
+
 ```javascript
-window.parent.postMessage({ type: 'close-and-query' }, '*');
+window.parent.document.querySelector('.ant-modal-close').click();
+window.parent.document.querySelector('#erupt-btn-query').click();
 ```
+
+:::warning
+Both snippets rely on the same-origin policy — the template page must share the admin UI's origin (which is the case by default when the template is served by the erupt backend). The query button is only rendered when query permission is enabled, so check that the element exists before calling `click()`.
+:::
 
 ### Dialog Width and Height
 

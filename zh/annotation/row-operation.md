@@ -259,17 +259,28 @@ public class TestErupt extends BaseModel implements Tpl.TplHandler {
 
 ### 关闭弹出层
 
-在模板页面中调用以下 JS 代码即可关闭弹出层：
+模板页面以 iframe 嵌入，管理端并未监听 `message` 事件，需在模板中直接操作父页面 DOM 关闭：
 
 ```javascript
-window.parent.postMessage({ type: 'close' }, '*');
+// 弹窗（MODAL）：点击右上角关闭按钮
+window.parent.document.querySelector('.ant-modal-close').click();
+
+// 抽屉（DRAWER）：未渲染关闭按钮，点击遮罩关闭
+window.parent.document.querySelector('.ant-drawer-mask').click();
 ```
 
 ### 关闭弹出层并刷新数据
 
+关闭弹出层不会自动刷新列表，再触发一次列表的查询按钮（`id` 为 `erupt-btn-query`）即可重新加载数据：
+
 ```javascript
-window.parent.postMessage({ type: 'close-and-query' }, '*');
+window.parent.document.querySelector('.ant-modal-close').click();
+window.parent.document.querySelector('#erupt-btn-query').click();
 ```
+
+:::warning
+以上写法依赖同源，模板页面需与管理端同域（模板由 erupt 后端提供时默认满足）；查询按钮仅在开启查询权限时渲染，建议取到元素后再调用 `click()`。
+:::
 
 ### 弹出层宽高
 
