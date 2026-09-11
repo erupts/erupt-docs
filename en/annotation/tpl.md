@@ -67,6 +67,10 @@ Source of truth: `xyz.erupt.annotation.sub_erupt.Tpl`.
 
 `params`, `tplHandler` and `engine` are marked `@Transient` — they take part in server-side rendering only and are never sent to the frontend.
 
+:::warning What `embedType = MICRO_FRONTEND` requires
+In micro-frontend mode the template must render a **complete HTML document with a `<head>`** — a fragment leaves the popup blank. The micro-frontend sandbox is same-origin with the admin and is not a security boundary, so use it only for content you control; sub-apps with SSR streaming hydration are not supported. See [erupt-tpl micro-frontend integration](/en/modules/erupt-tpl#micro-frontend-integration).
+:::
+
 ### Engine
 
 | Value | Description |

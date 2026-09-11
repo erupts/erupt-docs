@@ -67,6 +67,10 @@ public class TplDemo extends BaseModel {
 
 其中 `params` / `tplHandler` / `engine` 被标记为 `@Transient`，只在服务端参与渲染，不会下发到前端。
 
+:::warning `embedType = MICRO_FRONTEND` 的前提
+选择微前端方式时，模板渲染出来的必须是**带 `<head>` 的完整 HTML 文档**，片段会导致弹出层空白。微前端沙箱与后台同源，不是安全边界，只用于自己可控的内容；带 SSR 流式注水的子应用不受支持。详见 [erupt-tpl 微前端集成](/zh/modules/erupt-tpl#微前端集成)。
+:::
+
 ### Engine 引擎枚举
 
 | 枚举值 | 说明 |
