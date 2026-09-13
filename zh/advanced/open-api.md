@@ -4,7 +4,7 @@ Erupt 支持外部系统通过 **appid + secret** 的方式获取 token，用于
 
 :::info
 APPID 与 Secret 在 **UPMS → Open API** 菜单中管理，对应实体类为 `EruptOpenApi`。
-查看 [Open API 管理入口 →](/zh/modules/erupt-upms#open-api)
+查看 [Open API 管理入口 →](/zh/modules/erupt-upms/open-api)
 :::
 
 :::warning

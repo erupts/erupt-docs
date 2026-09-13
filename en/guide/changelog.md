@@ -42,7 +42,7 @@ Table structures change too — see [Database Changes](#database-changes) at the
 
 🧩 The micro-frontend container switched to the iframe sandbox, so Vite / ESM sub-apps load correctly and several micro-frontend menus can be open at once.
 
-🧩 New [micro-frontend link menu type](/en/modules/erupt-upms#menu-management): opens an external URL in the micro-frontend container when the target refuses framing.
+🧩 New [micro-frontend link menu type](/en/modules/erupt-upms/menu): opens an external URL in the micro-frontend container when the target refuses framing.
 
 🧩 Gantt charts and the Markdown editor load their libraries on demand, only when a page actually shows one.
 

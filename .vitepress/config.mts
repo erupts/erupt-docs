@@ -427,7 +427,22 @@ export default withMermaid(defineConfig({
                         {
                             text: 'Core Modules',
                             items: [
-                                {text: 'Erupt Upms', link: '/en/modules/erupt-upms'},
+                                {
+                                    text: 'Erupt Upms',
+                                    collapsed: true,
+                                    items: [
+                                        {text: 'Overview & Permission Model', link: '/en/modules/erupt-upms/'},
+                                        {text: 'Menu Management', link: '/en/modules/erupt-upms/menu'},
+                                        {text: 'Role Management', link: '/en/modules/erupt-upms/role'},
+                                        {text: 'Organizations & Posts', link: '/en/modules/erupt-upms/org-post'},
+                                        {text: 'User Management', link: '/en/modules/erupt-upms/user'},
+                                        {text: 'Data Dictionary', link: '/en/modules/erupt-upms/dict'},
+                                        {text: 'Open API', link: '/en/modules/erupt-upms/open-api'},
+                                        {text: 'Online Users', link: '/en/modules/erupt-upms/online'},
+                                        {text: 'Login & Operation Logs', link: '/en/modules/erupt-upms/log'},
+                                        {text: 'System Log', link: '/en/modules/erupt-upms/system-log'},
+                                    ],
+                                },
                                 {text: 'Erupt Tpl', link: '/en/modules/erupt-tpl'},
                                 {text: 'Erupt Web', link: '/en/modules/erupt-web'},
                                 {text: 'Erupt Designer', link: '/en/modules/erupt-designer'},
@@ -940,7 +955,22 @@ export default withMermaid(defineConfig({
                         {
                             text: '核心模块',
                             items: [
-                                {text: 'Erupt Upms 权限管理', link: '/zh/modules/erupt-upms'},
+                                {
+                                    text: 'Erupt Upms 权限管理',
+                                    collapsed: true,
+                                    items: [
+                                        {text: '概览与权限模型', link: '/zh/modules/erupt-upms/'},
+                                        {text: '菜单管理', link: '/zh/modules/erupt-upms/menu'},
+                                        {text: '角色管理', link: '/zh/modules/erupt-upms/role'},
+                                        {text: '组织与岗位', link: '/zh/modules/erupt-upms/org-post'},
+                                        {text: '用户管理', link: '/zh/modules/erupt-upms/user'},
+                                        {text: '字典管理', link: '/zh/modules/erupt-upms/dict'},
+                                        {text: 'Open API', link: '/zh/modules/erupt-upms/open-api'},
+                                        {text: '在线用户', link: '/zh/modules/erupt-upms/online'},
+                                        {text: '登录日志与操作日志', link: '/zh/modules/erupt-upms/log'},
+                                        {text: '系统日志', link: '/zh/modules/erupt-upms/system-log'},
+                                    ],
+                                },
                                 {text: 'Erupt Tpl 自定义页面', link: '/zh/modules/erupt-tpl'},
                                 {text: 'Erupt Web 前端源码', link: '/zh/modules/erupt-web'},
                                 {text: 'Erupt Designer 表单设计器', link: '/zh/modules/erupt-designer'},

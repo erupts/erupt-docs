@@ -377,8 +377,10 @@ const href = (l) => (l ? (l.startsWith('http') ? l : '/' + props.lang + l) : und
     <section class="ea" :class="{ 'ea-embed': embed }" id="arch">
         <div class="ea-inner">
             <header class="ea-head">
-                <p class="ea-kicker">{{ t.kicker }}</p>
-                <h2 class="ea-title">{{ t.title }} <mark class="ea-hl">{{ t.titleHl }}</mark></h2>
+                <div class="ea-head-main">
+                    <p class="ea-kicker">{{ t.kicker }}</p>
+                    <h2 class="ea-title">{{ t.title }} <mark class="ea-hl">{{ t.titleHl }}</mark></h2>
+                </div>
                 <p class="ea-desc">{{ t.desc }}</p>
             </header>
 
@@ -474,11 +476,11 @@ const href = (l) => (l ? (l.startsWith('http') ? l : '/' + props.lang + l) : und
     background: var(--ea-bg);
     color: var(--ea-txt);
     border-top: 2px solid var(--ea-line);
-    padding: 64px 32px 72px;
+    padding: 56px 32px 72px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
 }
 
-:global(.dark) .ea {
+.dark .ea {
     --ea-bg: #17140D;
     --ea-paper: #201C12;
     --ea-line: #F0E8D6;
@@ -501,55 +503,71 @@ const href = (l) => (l ? (l.startsWith('http') ? l : '/' + props.lang + l) : und
     container-type: inline-size;
 }
 
-/* ---- head ---- */
+/* ---- head ----
+   有意与 hero 标题区拉开层级：一行式段落标题（左标题 / 右说明），
+   不用旋转标签与大块高亮，避免看起来像 hero 复制了一份 */
 .ea-head {
-    margin-bottom: 36px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 400px);
+    gap: 16px 48px;
+    align-items: end;
+    padding-bottom: 18px;
+    border-bottom: 2px dashed var(--ea-line);
+    margin-bottom: 28px;
 }
 
 .ea-embed .ea-head {
     display: none;
 }
 
+.ea-head-main {
+    min-width: 0;
+}
+
 .ea-kicker {
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-family: var(--ea-mono);
-    font-size: 11.5px;
-    font-weight: 700;
-    letter-spacing: .12em;
-    color: var(--ea-black);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .14em;
+    color: var(--ea-txt2);
+    margin: 0 0 10px;
+}
+
+.ea-kicker::before {
+    content: "";
+    width: 10px;
+    height: 10px;
     background: var(--ea-green);
-    border: 2px solid var(--ea-black);
-    padding: 4px 12px;
-    margin: 0 0 18px;
-    transform: rotate(-1deg);
-    box-shadow: 3px 3px 0 var(--ea-line);
+    border: 2px solid var(--ea-line);
+    flex: 0 0 auto;
 }
 
 .ea-title {
-    font-size: clamp(28px, 3.4vw, 44px);
+    font-size: clamp(22px, 2.2vw, 30px);
     font-weight: 900;
-    line-height: 1.2;
+    line-height: 1.3;
     letter-spacing: -.01em;
-    margin: 0 0 14px;
+    margin: 0;
     color: var(--ea-txt);
     border: 0;
     padding: 0;
 }
 
+/* 标题重点：马克笔下划线，而非 hero 的整块高亮 */
 .ea-hl {
-    display: inline-block;
-    background: var(--ea-pink);
-    color: var(--ea-black);
-    padding: 0 10px 2px;
-    transform: rotate(-1deg);
-    box-shadow: 4px 4px 0 var(--ea-line);
+    color: inherit;
+    background: transparent;
+    box-shadow: inset 0 -.38em 0 var(--ea-pink);
+    padding: 0 2px;
 }
 
 .ea-desc {
-    font-size: 15px;
-    line-height: 1.8;
+    font-size: 13.5px;
+    line-height: 1.7;
     color: var(--ea-txt2);
-    max-width: 720px;
     margin: 0;
 }
 
@@ -676,7 +694,7 @@ const href = (l) => (l ? (l.startsWith('http') ? l : '/' + props.lang + l) : und
 .ea-c-mint .ea-label { background: var(--ea-mint); }
 .ea-c-coral .ea-label { background: var(--ea-coral); }
 .ea-c-slate .ea-label { background: var(--ea-slate); }
-:global(.dark) .ea .ea-c-slate .ea-label { color: var(--ea-txt); }
+.dark .ea .ea-c-slate .ea-label { color: var(--ea-txt); }
 .ea-c-ink .ea-label { background: var(--ea-ink); color: var(--ea-txt); }
 
 .ea-num {
@@ -690,7 +708,7 @@ const href = (l) => (l ? (l.startsWith('http') ? l : '/' + props.lang + l) : und
     padding: 1px 7px;
 }
 
-:global(.dark) .ea .ea-num {
+.dark .ea .ea-num {
     color: #17140D;
     background: #F0E8D6;
 }
@@ -949,6 +967,7 @@ a.ea-chip:hover {
 }
 
 @container (max-width: 760px) {
+    .ea-head { grid-template-columns: 1fr; align-items: start; }
     .ea-traits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .ea-trait { border-bottom: 2px solid var(--ea-line); }
     .ea-trait:nth-child(4n) { border-right: 2px solid var(--ea-line); }

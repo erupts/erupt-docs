@@ -42,7 +42,7 @@
 
 🧩 微前端容器改用 iframe 沙箱，Vite / ESM 构建的子应用可正常加载，多个微前端菜单可同时打开
 
-🧩 菜单新增[微前端链接类型](/zh/modules/erupt-upms#菜单管理)：目标站点拒绝被 iframe 嵌入时，改在微前端容器中打开
+🧩 菜单新增[微前端链接类型](/zh/modules/erupt-upms/menu)：目标站点拒绝被 iframe 嵌入时，改在微前端容器中打开
 
 🧩 甘特图与 Markdown 编辑器按需加载，页面真正用到时才拉取依赖
 

@@ -26,12 +26,6 @@ const dict = {
         ctaArch: '全景架构 ↓',
         changelog: '更新日志 →',
         changelogLink: '/zh/guide/changelog',
-        stats: [
-            { num: '30+', label: '组件' },
-            { num: '15+', label: 'AI 大模型' },
-            { num: '2s', label: '极速启动' },
-            { num: '0', label: '行前端代码' },
-        ],
         winCode: 'SysUser.java',
         winUi: '用户管理 · 自动生成',
         arrowChip: '自动生成 ≈2s',
@@ -57,12 +51,6 @@ const dict = {
         ctaArch: 'Architecture ↓',
         changelog: 'Changelog →',
         changelogLink: '/en/guide/changelog',
-        stats: [
-            { num: '30+', label: 'Components' },
-            { num: '15+', label: 'AI Models' },
-            { num: '2s', label: 'Boot Time' },
-            { num: '0', label: 'Frontend Code' },
-        ],
         winCode: 'SysUser.java',
         winUi: 'User Mgmt · Auto-generated',
         arrowChip: 'AUTO-GEN ≈2s',
@@ -105,12 +93,6 @@ const latestVersion = computed(() => theme.value.latestVersion)
                         <a class="rf-btn" :href="t.ctaDemoLink" target="_blank" rel="noreferrer">{{ t.ctaDemo }}</a>
                         <a class="rf-btn" :href="t.ctaGitLink" target="_blank" rel="noreferrer">{{ t.ctaGit }}</a>
                         <a class="rf-btn rf-btn-arch" href="#arch">{{ t.ctaArch }}</a>
-                    </div>
-                    <div class="rf-stats rf-pop" style="--d:.38s">
-                        <div v-for="s in t.stats" :key="s.label" class="rf-stat">
-                            <b>{{ s.num }}</b>
-                            <span>{{ s.label }}</span>
-                        </div>
                     </div>
                 </div>
 
@@ -241,22 +223,18 @@ const latestVersion = computed(() => theme.value.latestVersion)
     position: relative;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    min-height: 100dvh;
     background: var(--rf-bg);
     color: var(--rf-txt);
     overflow: hidden;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
 }
 
-/* ============ HERO (single screen) ============ */
+/* ============ HERO ============ */
+/* 高度由内容决定（不再撑满整屏），让下方架构区块能在首屏露出一部分 */
 .rf-hero {
-    flex: 1;
-    min-height: 100vh;
-    min-height: 100dvh;
     display: flex;
     align-items: center;
-    padding: calc(var(--vp-nav-height) + 20px) 32px 32px;
+    padding: calc(var(--vp-nav-height) + 36px) 32px 36px;
 }
 
 .rf-hero-inner {
@@ -350,7 +328,6 @@ const latestVersion = computed(() => theme.value.latestVersion)
     display: flex;
     gap: 12px;
     flex-wrap: wrap;
-    margin-bottom: 28px;
 }
 
 .rf-btn {
@@ -386,35 +363,6 @@ const latestVersion = computed(() => theme.value.latestVersion)
     color: var(--black);
 }
 
-/* ---- stats ---- */
-.rf-stats {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.rf-stat {
-    background: var(--rf-paper);
-    border: 2px solid var(--rf-line);
-    padding: 8px 16px;
-    box-shadow: 3px 3px 0 var(--rf-line);
-}
-
-.rf-stat b {
-    display: block;
-    font-family: var(--mono);
-    font-size: 20px;
-    font-weight: 800;
-    line-height: 1.2;
-    color: var(--rf-txt);
-}
-
-.rf-stat span {
-    font-size: 11px;
-    letter-spacing: .04em;
-    color: var(--rf-txt2);
-}
-
 /* ---- hero board ---- */
 .rf-board {
     position: relative;
@@ -437,7 +385,7 @@ const latestVersion = computed(() => theme.value.latestVersion)
 
 .rf-win-ui {
     width: 74%;
-    margin: -28px 0 0 auto;
+    margin: -44px 0 0 auto;
     z-index: 3;
     transform: rotate(1.2deg);
 }
@@ -473,11 +421,11 @@ const latestVersion = computed(() => theme.value.latestVersion)
 
 .rf-code {
     margin: 0;
-    padding: 14px 16px;
+    padding: 12px 14px;
     background: #0F1A14;
     font-family: var(--mono);
-    font-size: 11.5px;
-    line-height: 1.6;
+    font-size: 11px;
+    line-height: 1.5;
     color: #D8DCD0;
     overflow: hidden;
     white-space: pre;
@@ -559,7 +507,7 @@ const latestVersion = computed(() => theme.value.latestVersion)
     grid-template-columns: 22px 1.2fr .9fr 1fr;
     align-items: center;
     gap: 8px;
-    padding: 7px 2px;
+    padding: 5px 2px;
     border-top: 1px solid var(--rf-txt2);
 }
 
@@ -650,7 +598,6 @@ const latestVersion = computed(() => theme.value.latestVersion)
 
 /* ============ RESPONSIVE ============ */
 @media (max-width: 960px) {
-    .rf { min-height: auto; }
     .rf-hero { padding: calc(var(--vp-nav-height) + 32px) 24px 48px; }
     .rf-hero-inner { grid-template-columns: 1fr; gap: 48px; }
     .rf-board { margin: 0 auto; max-width: 560px; width: 100%; }

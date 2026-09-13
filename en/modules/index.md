@@ -22,7 +22,7 @@ const groups = [
     {
         title: 'Core Modules',
         items: [
-            {icon: '🔐', name: 'Erupt Upms', artifact: 'erupt-upms', desc: 'Full permission management: users, roles, menus, orgs', link: '/en/modules/erupt-upms'},
+            {icon: '🔐', name: 'Erupt Upms', artifact: 'erupt-upms', desc: 'Full permission management: users, roles, menus, orgs', link: '/en/modules/erupt-upms/'},
             {icon: '📄', name: 'Erupt Tpl', artifact: 'erupt-tpl', desc: 'Custom HTML template pages with multiple UI kits', link: '/en/modules/erupt-tpl'},
             {icon: '🖥️', name: 'Erupt Web', artifact: 'erupt-web', desc: 'Angular frontend source, shipped as a Jar', link: '/en/modules/erupt-web'},
             {icon: '🎨', name: 'Erupt Designer', artifact: 'erupt-designer', desc: 'Drag-and-drop entity designer at runtime, exports annotation code', link: '/en/modules/erupt-designer'},

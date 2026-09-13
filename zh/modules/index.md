@@ -22,7 +22,7 @@ const groups = [
     {
         title: '核心模块',
         items: [
-            {icon: '🔐', name: 'Erupt Upms', artifact: 'erupt-upms', desc: '用户、角色、菜单、组织的完整权限管理', link: '/zh/modules/erupt-upms'},
+            {icon: '🔐', name: 'Erupt Upms', artifact: 'erupt-upms', desc: '用户、角色、菜单、组织的完整权限管理', link: '/zh/modules/erupt-upms/'},
             {icon: '📄', name: 'Erupt Tpl', artifact: 'erupt-tpl', desc: '自定义 HTML 模板页面，多套 UI 库集成', link: '/zh/modules/erupt-tpl'},
             {icon: '🖥️', name: 'Erupt Web', artifact: 'erupt-web', desc: 'Angular 前端源码，Jar 形式分发', link: '/zh/modules/erupt-web'},
             {icon: '🎨', name: 'Erupt Designer', artifact: 'erupt-designer', desc: '运行时拖拽设计实体模型，可导出注解代码', link: '/zh/modules/erupt-designer'},
