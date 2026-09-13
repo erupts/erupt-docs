@@ -12,7 +12,7 @@ This page collects the changelogs and documentation links for the Erupt 1.x rele
 
 🌟 New [erupt-terminal](/en/modules/erupt-terminal) module — operate the server terminal directly from the admin UI, no SSH client required.
 
-🌟 erupt-ai supports [A2A (Agent-to-Agent) collaboration](/en/modules/erupt-ai#multi-agent-collaboration-a2a) — multiple AI agents can communicate and divide work among themselves.
+🌟 erupt-ai supports [A2A (Agent-to-Agent) collaboration](/en/modules/erupt-ai/a2a) — multiple AI agents can communicate and divide work among themselves.
 
 🌟 erupt-ai introduces cross-session Memory — the AI retains user preferences and context across conversations.
 
@@ -20,7 +20,7 @@ This page collects the changelogs and documentation links for the Erupt 1.x rele
 
 🌟 erupt-ai supports Thinking Mode, exposing the enhanced reasoning trace inside the chat.
 
-🌟 erupt-ai-claw adds an `enableExecShell` option to flexibly toggle [shell execution](/en/modules/erupt-ai-claw#usage).
+🌟 erupt-ai-claw adds an `enableExecShell` option to flexibly toggle [shell execution](/en/modules/erupt-ai-claw/#usage).
 
 🌟 [DataProxy](/en/advanced/data-proxy#extracontent-custom-content-injection) adds an `extraContent` method to inject custom HTML at the top of any table or view.
 
@@ -78,7 +78,7 @@ Erupt fully embraces the AI Harness initiative, delivering 🚀-grade capabiliti
 
 🧩 Refactored time-format handling — all interactions now use ISO 8601 (`yyyy-MM-dd'T'HH:mm:ss.SSS`) and returned timestamps are formatted according to the browser locale, which is friendlier to internationalized scenarios.
 
-🚀 Open-sourced [erupt-ai-claw](/en/modules/erupt-ai-claw): operate any Erupt data through natural language, with Skill / File / Shell invocation.
+🚀 Open-sourced [erupt-ai-claw](/en/modules/erupt-ai-claw/): operate any Erupt data through natural language, with Skill / File / Shell invocation.
 
 🌟 Spring Boot upgraded to 3.5.13.
 
@@ -110,7 +110,7 @@ Delete `.erupt/erupt-ai.loaded` in your project root and restart the service so 
 
 + **Time format**: unified to ISO 8601 (`yyyy-MM-dd'T'HH:mm:ss.SSS`). Frontends that talk directly to the Erupt API must format the value manually — `new Date(date).toLocaleString()` is recommended.
 + **Config rename**: `erupt.ai.mcp.enabled` is renamed to `erupt.ai.mcp.server-enabled`. Update your configuration files accordingly.
-+ **AI Tool declarations**: function-method annotations move from class-level to method-level. Adjust your code — see [Erupt AI · LLM deep integration](/en/modules/erupt-ai#jA3q1).
++ **AI Tool declarations**: function-method annotations move from class-level to method-level. Adjust your code — see [Erupt AI · LLM deep integration](/en/modules/erupt-ai/tools).
 + User management gains a "managed organizations" feature, adding the `e_upms_user_org_division` table.
 
 ```plsql

@@ -9,7 +9,7 @@ The AI **decides on its own** when to query which knowledge base during conversa
 
 ## Getting Started
 
-1. Add the dependency (requires [erupt-ai](/en/modules/erupt-ai)):
+1. Add the dependency (requires [erupt-ai](/en/modules/erupt-ai/)):
 
 ```xml
 <dependency>

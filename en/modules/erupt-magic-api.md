@@ -53,13 +53,27 @@ For more configuration options, see: [Editor Configuration | magic-api](https://
 
 ## Magic-API Frontend IDE Permission Control
 
+### IDE Operation Permissions
+
+On initialization the module creates an **Online IDE** menu (type "custom page", value `magic-api.ftl`, code `magic-api`, icon `fa fa-bolt`) plus a set of **button-type** child menus that decide what a non-admin may do inside the IDE:
+
+<img src="/magic-api/permission.png" width="900">
+
+| Child menu | Menu value | What it controls |
+| --- | --- | --- |
+| Function | `ERUPT_MAGIC_FUNCTION` | Saving / deleting functions |
+| Data Source | `ERUPT_MAGIC_DATASOURCE` | Saving / deleting data sources |
+| SAVE / VIEW / DELETE | `ERUPT_MAGIC_SAVE`, … | Saving, viewing and deleting interfaces |
+| DOWNLOAD / UPLOAD / PUSH | `ERUPT_MAGIC_DOWNLOAD`, … | Export, import and push to another environment |
+| LOCK / UNLOCK / RELOAD | `ERUPT_MAGIC_LOCK`, … | Locking, unlocking and reloading |
+
+Grant the buttons a role needs in Role Management; **super admins are not restricted by them**.
+
 ### Interface Permission Verification
 
 Using erupt-magic-api, you can integrate Erupt's permission verification to ensure secure interface calls.
 
 **Usage**: Select an interface → click Interface Options → click the Add button on the right. The following configuration appears; multiple permission checks can be stacked.
-
-<img src="/magic-api/permission.png" width="900">
 
 | Permission Type | Description |
 | --- | --- |

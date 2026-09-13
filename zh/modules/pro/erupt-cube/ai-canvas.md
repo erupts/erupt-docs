@@ -59,7 +59,7 @@ Erupt Cube 与 [Erupt AI Canvas](/zh/modules/erupt-ai-canvas) 深度结合：语
 </dependency>
 ```
 
-请确保已在 erupt-ai 的 **LLM 菜单** 中配置好默认大模型，详见 [Erupt AI 快速接入](/zh/modules/erupt-ai#快速接入)。
+请确保已在 erupt-ai 的 **LLM 菜单** 中配置好默认大模型，详见 [Erupt AI 快速接入](/zh/modules/erupt-ai/#快速接入)。
 
 ### 2. 选择 Cube
 

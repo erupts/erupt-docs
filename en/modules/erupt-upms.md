@@ -37,6 +37,7 @@ Used to manage the system menu list and interface permissions. Menu types and th
 | Table | Erupt class name (case-insensitive) | Displays a table view |
 | Tree | Erupt class name (case-insensitive) | Displays a tree view |
 | Link | A URL | Opens inside the menu container |
+| Micro-frontend Link | A URL | Opens in the micro-frontend container (2.2.0+) — what you need when the target refuses framing via `X-Frame-Options` / `frame-ancestors` but does allow cross-origin reads |
 | New Tab | A URL | Opens in a new browser tab |
 | Page Route | Route path | Router hash value |
 | Button | Permission string | Controls button visibility |
@@ -55,6 +56,8 @@ Maintains organizational information using a tree structure, supporting multi-le
 
 Used to assign menu permissions with fine-grained access control. A user can hold multiple roles; permissions are merged as a union.
 
+The **strict role-menu policy** ([`erupt.upms.strict-role-menu-legal`](/en/guide/configuration)) is on by default: when a non-admin assigns menus here, the candidate tree holds only menus that user already has (the union of its enabled roles), so a role can never receive a permission the operator lacks; super admins are unrestricted. Note that menus a role holds beyond the operator's reach are not rendered in the tree and are removed when that user saves the role — keep such roles with a super admin.
+
 ## User Management
 
 The left panel shows the organization tree; the right panel shows the user list. User configuration options:
@@ -63,7 +66,7 @@ The left panel shows the organization tree; the right panel shows the user list.
 | --- | --- |
 | Home URL | The page path to redirect to after login |
 | Account Status | Active allows login; Locked disables login |
-| MD5 Encryption | Password is stored using MD5 hashing |
+| Encrypt | When enabled the password is stored as a salted SHA-512 hash, irreversibly |
 | Assigned Roles | The user can access menus configured for their roles |
 | IP Whitelist | Validates the source IP on login; leave empty to skip validation |
 

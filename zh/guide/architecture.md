@@ -1,4 +1,20 @@
+---
+aside: false
+---
+
 # 架构设计
+
+<script setup>
+import EruptArch from '../../.vitepress/theme/EruptArch.vue'
+</script>
+
+## 全景架构
+
+从任意数据源到任意界面，每一层都可插拔，点击任意能力可跳转到对应文档：
+
+<EruptArch lang="zh" embed />
+
+---
 
 ## Erupt 类能力
 

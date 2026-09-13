@@ -18,7 +18,7 @@ Pointing an LLM at raw tables means stuffing every schema into the context windo
 </dependency>
 ```
 
-AI Query builds on the LLM access provided by [erupt-ai](/en/modules/erupt-ai) (17+ providers: OpenAI, Claude, Gemini, DeepSeek, Qwen, local Ollama models, and more). Make sure `erupt-ai` is on the classpath and an LLM is configured in the admin console.
+AI Query builds on the LLM access provided by [erupt-ai](/en/modules/erupt-ai/) (17+ providers: OpenAI, Claude, Gemini, DeepSeek, Qwen, local Ollama models, and more). Make sure `erupt-ai` is on the classpath and an LLM is configured in the admin console.
 
 ### 2. Just ask
 

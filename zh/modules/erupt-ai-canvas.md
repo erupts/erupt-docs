@@ -6,7 +6,7 @@
 
 ## 模块简介
 
-AI Canvas 是构建在 [erupt-ai](/zh/modules/erupt-ai) 之上的 AI 页面生成模块：在设计器中选择数据模型、描述页面需求，大模型即输出一个完整的 HTML 页面（Vue 3 + Element Plus 实时渲染），页面通过内置 SDK 直连 Erupt REST API 读取**真实数据**，生成结果存入数据库，可一键发布为后台菜单。
+AI Canvas 是构建在 [erupt-ai](/zh/modules/erupt-ai/) 之上的 AI 页面生成模块：在设计器中选择数据模型、描述页面需求，大模型即输出一个完整的 HTML 页面（Vue 3 + Element Plus 实时渲染），页面通过内置 SDK 直连 Erupt REST API 读取**真实数据**，生成结果存入数据库，可一键发布为后台菜单。
 
 <img src="/ai-canvas/ai-canvas.png" width="900" alt="一句话生成实时数据仪表盘">
 
@@ -35,7 +35,7 @@ AI Canvas 是构建在 [erupt-ai](/zh/modules/erupt-ai) 之上的 AI 页面生�
 模块依赖 `erupt-ai`（大模型配置）与 `erupt-upms`（菜单与权限），并自带 Vue 3 / Element Plus / axios 前端资源，均随依赖自动引入，无需额外配置。
 
 :::warning
-使用前需在 erupt-ai 的 **LLM 菜单** 中配置至少一个可用的大模型，并设置默认模型，详见 [Erupt AI 快速接入](/zh/modules/erupt-ai#快速接入)。
+使用前需在 erupt-ai 的 **LLM 菜单** 中配置至少一个可用的大模型，并设置默认模型，详见 [Erupt AI 快速接入](/zh/modules/erupt-ai/#快速接入)。
 :::
 
 ## 快速开始
@@ -139,4 +139,4 @@ erupt:
     sse-timeout: 900000
 ```
 
-大模型的接入与默认模型设置均在 erupt-ai 的 LLM 菜单中完成，详见 [Erupt AI 大模型深度集成](/zh/modules/erupt-ai)。
+大模型的接入与默认模型设置均在 erupt-ai 的 LLM 菜单中完成，详见 [Erupt AI 大模型深度集成](/zh/modules/erupt-ai/)。

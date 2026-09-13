@@ -99,7 +99,10 @@ erupt:
   upms:
     # 登录 session 时长（分钟）
     expire-time-by-login: 60
-    # 严格的角色菜单策略
+    # 严格的角色菜单策略，默认 true。控制的是【角色管理 → 菜单权限】的候选菜单树：
+    # 开启后非超管用户只能分配自己已拥有的菜单（取其全部启用状态角色的菜单并集），无法给角色授予自己没有的权限；
+    # 超管不受限制；关闭后任何能进入角色管理的用户都可分配全部菜单，等同放开提权能力。
+    # 注意：角色上原有的、超出操作人可见范围的菜单不会显示在树中，该用户保存角色后会被移除，此类角色请由超管维护
     strict-role-menu-legal: true
     # 系统初始化时默认超管用户名，v1.12.18+
     default-account: erupt
@@ -131,7 +134,7 @@ spring:
 ```yaml
 erupt:
   telemetry:
-    # 是否上报匿名使用统计，默认 true，v2.1.2+
+    # 是否上报匿名使用统计，默认 true，v2.2.0+
     # 也可用环境变量 ERUPT_TELEMETRY_DISABLED=1 关闭，CI 环境自动跳过
     enabled: true
     # 上报地址，可指向自建 collector
@@ -147,6 +150,9 @@ erupt:
   ai:
     # 单轮对话最大连续工具调用次数
     max-sequential-tools-invocations: 30
+    # 单次 LLM HTTP 请求的读超时，默认 15 分钟，v2.2.0+
+    # langchain4j 默认 60s，对 AI Canvas 这类长文本非流式生成远远不够
+    request-timeout: 15m
     claw:
       # 不显式配置 enabled: true 时，claw 的全部 @Tool 都不会注册
       enabled: false
@@ -160,7 +166,34 @@ erupt:
       skill-stale-days: 30
 ```
 
-系统提示词、SSE 超时等完整配置见 [Erupt AI](/zh/modules/erupt-ai) 与 [Erupt AI Claw](/zh/modules/erupt-ai-claw)。
+系统提示词、SSE 超时等完整配置见 [Erupt AI](/zh/modules/erupt-ai/) 与 [Erupt AI Claw](/zh/modules/erupt-ai-claw/)。
+
+### erupt.designer 表单设计器 <Badge type="tip" text="v2.2.0+" />
+
+```yaml
+erupt:
+  designer:
+    # 设计器数据的 SQLite 文件路径，相对 JVM 工作目录解析
+    db-path: data/designer.db
+    # 连接池大小
+    max-pool-size: 4
+```
+
+该文件独立于主数据库，需纳入备份，详见 [Erupt Designer](/zh/modules/erupt-designer#数据存储)。
+
+### erupt.remote 远程访问 <Badge type="tip" text="v2.2.0+" />
+
+```yaml
+erupt:
+  remote:
+    # 凭据加密密钥，多节点部署必须共用同一个值
+    secret-key: ${ERUPT_REMOTE_SECRET_KEY}
+    max-sessions: 20
+    idle-timeout-minutes: 30
+    connect-timeout-seconds: 5
+```
+
+详见 [Erupt Remote](/zh/modules/erupt-remote)。
 
 ## 前端配置（app.js）
 
@@ -180,6 +213,8 @@ window.eruptSiteConfig = {
     desc: "通用数据管理框架",
     // 是否展示版权信息
     copyright: true,
+    // 是否默认开启多标签页路由复用，v2.2.0+（用户在设置抽屉中的选择优先）
+    tabReuse: false,
     // 自定义版权内容，1.12.8及以上版本支持
     copyrightTxt: function() {
       return "版权信息xxxx"
@@ -196,10 +231,21 @@ window.eruptSiteConfig = {
     logoText: "erupt",
     // 注册页地址
     registerPage: "",
-    // 主题配置
+    // 外观默认值。每一项都只在用户没有在「页面配置」抽屉里做过选择时生效，
+    // 用户选过后以浏览器中记住的选择为准
     theme: {
-        // 主题色
-        primaryColor: "#00B515"
+        // 主题色，2.2.0 起默认值为 rgb(22, 119, 255)
+        primaryColor: "rgb(22, 119, 255)",
+        // 顶栏颜色："primary" 跟随主题色，或任意 CSS 颜色
+        headerColor: "primary",
+        // 明暗模式：false | true | "auto"（跟随系统）
+        dark: false,
+        // 紧凑模式
+        compact: false,
+        // 主题风格："default" | "brutalist" | "liquid-glass"
+        skin: "default",
+        // 菜单模式："normal" 侧栏 | "split" 一级分类放到顶栏 | "dual" 双栏侧栏 | "top" 全部菜单放到顶栏，无侧栏
+        menuMode: "normal"
     },
     // 触碰用户头像后的菜单，1.12.21及以上版本支持
     userTools: [{

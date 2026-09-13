@@ -1,5 +1,149 @@
 # Changelog
 
+## 2.2.0 (2026-09-15) <Badge type="tip" text="Spring Boot 3.5.16" />
+
+:::warning Breaking changes
+Read the [V 2.2.0 Upgrade Guide](/en/guide/upgrade#v-2-2-0-upgrade-guide) before upgrading.
+
+**erupt-designer data moves to an embedded SQLite file**: business data no longer lives in the main database's `e_designer_data` table and is **not migrated automatically**; the file needs its own backup and a persistent volume.
+
+Table structures change too — see [Database Changes](#database-changes) at the end of this release.
+:::
+
+🦞 Open-sourced [erupt-atlas](/en/modules/erupt-atlas): the relations already implied by your annotations, drawn as a graph — lineage tracing, dependency layers, a module coupling matrix, impact analysis, and a structural audit for cycles, shared tables and orphan models.
+
+🦞 Open-sourced [erupt-remote](/en/modules/erupt-remote): remote hosts in the browser — VNC desktops and SSH shells over one WebSocket, credentials stored AES-GCM encrypted, and the VNC authentication answered server-side so the password never reaches the front end.
+
+🌟 Tables gain [bitable-style editing](/en/annotation/power#celledit-in-table-cell-editing): double-click a cell to change one field in place, without opening the row form. The server validates the whole row, so `DataProxy`, the operate log and the edit event behave exactly as a form submission — gated by `@Power(cellEdit)` on the model and `@Edit(cellEdit)` on the field.
+
+🌟 [AI writing assistant](/en/modules/erupt-ai/writing-assistant) on text fields: generate, polish, continue, shorten or expand a value with the rest of the form as the brief. Streams over SSE and persists nothing; `@Edit(prompt)` is that field's authoring guidance.
+
+🌟 [erupt-ai goes multimodal](/en/modules/erupt-ai/chat#multimodal-conversation): attach images with the paper-clip button or a clipboard paste and send them alongside the text. Images are persisted with the message and carried along when the history context is rebuilt, regenerated or edit-resent.
+
+🌟 New [Liquid Glass skin](/en/modules/erupt-web#themes-and-skins): the sidebar becomes a translucent pane of glass — backdrop blur, specular top edge — floating on an ambient color field, switchable against the default and Brutalist skins from the settings drawer.
+
+🌟 New [dark theme](/en/modules/erupt-web#themes-and-skins): light / dark / auto, where auto follows the OS live, and charts, code editors and Markdown previews follow along; compact mode combines freely with it.
+
+🌟 [TPL fields](/en/field-types/tpl#talking-to-the-form) now talk to the form both ways: a template reads every sibling field's value and writes back formData and editExpr, so a custom editor is no longer cut off from the form it lives in.
+
+🧩 [Theme color and header color](/en/modules/erupt-web#themes-and-skins) are now set with a color picker and remembered; the default theme color is `rgb(22, 119, 255)`.
+
+🧩 [Menu layout](/en/modules/erupt-web#themes-and-skins) offers single-column, split and dual-column modes — dual being a first-level icon rail plus the selected category's children — and menu names can show under the icons when the sidebar is collapsed.
+
+🧩 A [dark sidebar](/en/modules/erupt-web#themes-and-skins) can be turned on on its own while the rest of the UI stays light.
+
+🧩 The [login page](/en/modules/erupt-web#themes-and-skins) gained a skin dropdown and a theme color picker, so the first screen can be dressed before signing in.
+
+🧩 Multi-tab improvements: pages opened from a row operation or a link (remote host, AI canvas, cube dashboard, form designer) name their tab after their data and close it on back.
+
+🧩 The menu tree expands one level by default, so a large menu no longer fills the screen at once.
+
+🧩 Upgraded to Font Awesome 7, taking available icons from 675 to 1992; legacy FA4 class names keep working.
+
+🧩 The micro-frontend container switched to the iframe sandbox, so Vite / ESM sub-apps load correctly and several micro-frontend menus can be open at once.
+
+🧩 New [micro-frontend link menu type](/en/modules/erupt-upms#menu-management): opens an external URL in the micro-frontend container when the target refuses framing.
+
+🧩 Gantt charts and the Markdown editor load their libraries on demand, only when a page actually shows one.
+
+🧩 [TEXTAREA](/en/field-types/textarea#configuration) gained configuration: max length, visible row bounds, and `@` / `#` mentions (static candidates plus a `TagsFetchHandler`, served on demand).
+
+🧩 [AUTO_COMPLETE](/en/field-types/auto-complete#static-candidates) supports static `values`; `handler` is no longer required.
+
+🧩 The [NUMBER](/en/field-types/number) input ignores the mouse wheel, so scrolling a page can no longer nudge a value.
+
+🧩 Tree view labels now go through [@EruptI18n](/en/advanced/i18n) translation, so tree pages such as Menu Management follow the console language instead of showing their authored text.
+
+🧩 [erupt-designer](/en/modules/erupt-designer#data-storage) stores its data in an embedded SQLite file: one real table per published design, with filtering, sorting and paging pushed down as SQL regardless of the host database.
+
+🧩 [erupt-ai-canvas](/en/modules/erupt-ai-canvas) enhancements: a canvas binds several data models, each with its own add / edit / delete permission; generation runs asynchronously, plus page validation and publish versions.
+
+🧩 A [model picker](/en/modules/erupt-ai/chat#model-picker) in the chat input toolbar switches models mid-conversation; shown only when more than one enabled model exists, and hidden when the model is pinned through `?llm=`.
+
+🧩 The AI now replies in the language the console is set to, instead of drifting to Chinese whatever language the question was asked in.
+
+🧩 Added [`erupt.ai.request-timeout`](/en/guide/configuration#erupt-ai-—-ai-module), raising the LLM read timeout to 15 minutes by default (langchain4j defaults to 60s, which cuts off long non-streaming generations).
+
+🧩 [erupt-print](/en/modules/erupt-print) templates are authored with CKEditor, matching the storage format the frontend print-template editor expects (Velocity tokens plus widget markup).
+
+🧩 Added [anonymous telemetry](/en/guide/telemetry) — version and module stats only, and it can be turned off at any time.
+
+🧩 User and role lists are no longer scoped to their creator — visibility is decided by menu and role permissions. **Review those two menu grants after upgrading**; see the [upgrade guide](/en/guide/upgrade#v-2-2-0-upgrade-guide).
+
+🧩 WebSocket pushes go through a per-connection async queue, so business threads never block on slow clients.
+
+🧩 ip2region loads its xdb file on demand instead of shipping the database in the jar.
+
+🐞 Fixed 64-bit id precision loss in the browser: erupt-api responses returning bare Map / Collection bypassed Gson's safe-number serialization.
+
+🐞 Fixed scheduled jobs crashing with `redis-session` enabled — the LockProvider is now resolved from the Spring container. Thanks to [chenxiaolong8023](https://github.com/chenxiaolong8023) for the contribution.
+
+🐞 Fixed sub-table row corruption caused by unstable temporary primary keys.
+
+🐞 Fixed the drag-sort grip appearing on placeholder and measuring rows.
+
+🐞 Fixed the designer copying a field along with its original field id.
+
+
+### Database Changes
+
+:::info
+Schema changes are applied automatically by JPA / Hibernate at startup. Run these manually only if automatic DDL is disabled (`spring.jpa.hibernate.ddl-auto=none` or `validate`).
+:::
+
+This release adds the table `e_ai_canvas_model`, drops two columns from `e_ai_canvas` after migrating them, adds one column to `e_ai_chat_message`, and leaves `e_designer_data` unused. Adding [erupt-remote](/en/modules/erupt-remote) also creates `e_remote_host`, which Hibernate builds on its own.
+
+::: details Show the SQL (MySQL syntax; translate for other databases)
+
+**New table `e_ai_canvas_model` (erupt-ai-canvas)**
+
+```sql
+CREATE TABLE e_ai_canvas_model
+(
+    id           BIGINT NOT NULL AUTO_INCREMENT,
+    canvas_id    BIGINT,
+    data_type    VARCHAR(255),
+    model        VARCHAR(255),
+    purpose      VARCHAR(255),
+    allow_add    BIT(1),
+    allow_edit   BIT(1),
+    allow_delete BIT(1),
+    PRIMARY KEY (id)
+);
+ALTER TABLE e_ai_canvas_model ADD CONSTRAINT fk_ai_canvas_model_canvas FOREIGN KEY (canvas_id) REFERENCES e_ai_canvas (id);
+```
+
+**Changed columns on `e_ai_canvas` (erupt-ai-canvas)**
+
+Model bindings moved into `e_ai_canvas_model`. **Migrate the data first, then drop the old columns**:
+
+```sql
+INSERT INTO e_ai_canvas_model (canvas_id, data_type, model, allow_add, allow_edit, allow_delete)
+SELECT id, data_type, target_model, 0, 0, 0 FROM e_ai_canvas WHERE target_model IS NOT NULL;
+
+ALTER TABLE e_ai_canvas DROP COLUMN data_type;
+ALTER TABLE e_ai_canvas DROP COLUMN target_model;
+```
+
+**New column on `e_ai_chat_message` (erupt-ai)**
+
+```sql
+ALTER TABLE e_ai_chat_message ADD COLUMN images LONGTEXT COMMENT 'JSON array of image attachment paths sent with a user message';
+```
+
+**`e_designer_data` is no longer used (erupt-designer)**
+
+Designer business data moves to an embedded SQLite file (`data/designer.db` by default). The table is neither read nor written any more, and **Hibernate will not drop it for you**. Nothing is migrated automatically, so drop it by hand only once you are sure nothing in it is still needed (or it has been exported):
+
+```sql
+-- Irreversible: confirm the data is migrated or no longer needed first
+DROP TABLE e_designer_data;
+```
+
+The design config table `e_designer` is still in use — do not drop it.
+
+:::
+
 ## 2.1.1 (2026-08-30) <Badge type="tip" text="Spring Boot 3.5.16" />
 
 🌟 Added the [MULTI_FORM](/en/field-types/multi-form) edit type — one-to-many child rows are edited directly as inline form blocks, ideal when child tables have many fields.
@@ -72,7 +216,7 @@
 
 🌟 [erupt-cube](/en/modules/pro/erupt-cube/sql) gains a SQL Port: a PostgreSQL-compatible wire-protocol port (Calcite query pushdown) — any BI tool can connect to the semantic layer as if it were PostgreSQL.
 
-🌟 [erupt-ai-claw](/en/modules/erupt-ai-claw) enhancements: sandboxed file and shell tools, an Agent Skills library with skill sedimentation, an Erupt model CRUD toolbox, and JVM/Spring runtime diagnostics tools.
+🌟 [erupt-ai-claw](/en/modules/erupt-ai-claw/) enhancements: sandboxed file and shell tools, an Agent Skills library with skill sedimentation, an Erupt model CRUD toolbox, and JVM/Spring runtime diagnostics tools.
 
 🌟 [erupt-cloud](/en/modules/erupt-cloud) enhancements: node lifecycle management, resource reporting, routing failover and graceful shutdown, plus support for mounting erupt-flow, erupt-ai-claw, and erupt-monitor.
 
@@ -115,7 +259,7 @@
 
 🧩 Built-in forms for AI models, MCP servers, agents, and scheduled jobs gain test/validation buttons for one-click connection and configuration checks.
 
-🧩 [erupt-ai](/en/modules/erupt-ai) supports an embedded chat mode; the LLM `apiKey` is now masked with the password view.
+🧩 [erupt-ai](/en/modules/erupt-ai/) supports an embedded chat mode; the LLM `apiKey` is now masked with the password view.
 
 🧩 More lenient date parsing, accepting a wider range of date/time input formats.
 
@@ -157,7 +301,7 @@
 
 🌟 [erupt-monitor](/en/modules/erupt-monitor) **completely rewritten**: new diagnostics system covering JVM, HikariCP pool, HTTP stats, and Redis health metrics.
 
-🌟 [erupt-ai](/en/modules/erupt-ai#llmrequest-request-level-extensions): LLM requests now support `agentPrompt` and `contextPrompt` for context-aware prompt injection per invocation.
+🌟 [erupt-ai](/en/modules/erupt-ai/prompt#llmrequest-request-level-extensions): LLM requests now support `agentPrompt` and `contextPrompt` for context-aware prompt injection per invocation.
 
 🌟 [@Vis](/en/annotation/vis) adds **Calendar** (`CALENDAR`) and **Board** (`BOARD`) view types for richer data visualization.
 

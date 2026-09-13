@@ -99,7 +99,12 @@ erupt:
   upms:
     # Login session length (minutes)
     expire-time-by-login: 60
-    # Strict role-menu legality check
+    # Strict role-menu policy, true by default. It governs the candidate tree of Role Management -> Menu Permission:
+    # when on, a non-admin can only grant menus it already holds (the union of its enabled roles' menus),
+    # so a role can never receive a permission the operator lacks. Super admins are unrestricted; turning it off
+    # lets anyone who can open Role Management hand out every menu, i.e. gives away privilege escalation.
+    # Note: menus a role holds beyond the operator's reach are not rendered in the tree and are removed when that
+    # user saves the role — keep such roles with a super admin
     strict-role-menu-legal: true
     # Default super-admin username used at system initialization (v1.12.18+)
     default-account: erupt
@@ -131,7 +136,7 @@ spring:
 ```yaml
 erupt:
   telemetry:
-    # Report anonymous usage statistics, default true (v2.1.2+)
+    # Report anonymous usage statistics, default true (v2.2.0+)
     # Can also be disabled with ERUPT_TELEMETRY_DISABLED=1; CI environments are skipped automatically
     enabled: true
     # Reporting endpoint, may point at a self-hosted collector
@@ -147,6 +152,9 @@ erupt:
   ai:
     # Max sequential tool calls per conversation turn
     max-sequential-tools-invocations: 30
+    # Read timeout for a single HTTP request to the LLM provider, 15 minutes by default (v2.2.0+).
+    # langchain4j defaults to 60s, far too short for long non-streaming generations such as AI Canvas pages
+    request-timeout: 15m
     claw:
       # Without an explicit enabled: true, none of the claw @Tool methods are registered
       enabled: false
@@ -160,7 +168,34 @@ erupt:
       skill-stale-days: 30
 ```
 
-System prompt, SSE timeout and the remaining options are documented in [Erupt AI](/en/modules/erupt-ai) and [Erupt AI Claw](/en/modules/erupt-ai-claw).
+System prompt, SSE timeout and the remaining options are documented in [Erupt AI](/en/modules/erupt-ai/) and [Erupt AI Claw](/en/modules/erupt-ai-claw/).
+
+### erupt.designer — Form Designer <Badge type="tip" text="v2.2.0+" />
+
+```yaml
+erupt:
+  designer:
+    # SQLite file holding designer data; relative paths resolve against the JVM working directory
+    db-path: data/designer.db
+    # Connection pool size
+    max-pool-size: 4
+```
+
+The file is separate from the main database and must be backed up — see [Erupt Designer](/en/modules/erupt-designer#data-storage).
+
+### erupt.remote — Remote Access <Badge type="tip" text="v2.2.0+" />
+
+```yaml
+erupt:
+  remote:
+    # Credential encryption key; every node of a cluster must share one value
+    secret-key: ${ERUPT_REMOTE_SECRET_KEY}
+    max-sessions: 20
+    idle-timeout-minutes: 30
+    connect-timeout-seconds: 5
+```
+
+See [Erupt Remote](/en/modules/erupt-remote).
 
 ## Frontend Configuration (`app.js`)
 
@@ -180,6 +215,8 @@ window.eruptSiteConfig = {
     desc: "Universal data management framework",
     // Whether to display copyright info
     copyright: true,
+    // Enable multi-tab route reuse by default (v2.2.0+); the user's choice in the settings drawer wins
+    tabReuse: false,
     // Custom copyright content (v1.12.8+)
     copyrightTxt: function() {
       return "Copyright xxxx"
@@ -196,10 +233,21 @@ window.eruptSiteConfig = {
     logoText: "erupt",
     // Registration page URL
     registerPage: "",
-    // Theme configuration
+    // Appearance defaults. Each one applies only until the user picks something in the
+    // "Page config" drawer; that choice is remembered in the browser and wins from then on
     theme: {
-        // Primary color
-        primaryColor: "#00B515"
+        // Primary color; the default is rgb(22, 119, 255) as of 2.2.0
+        primaryColor: "rgb(22, 119, 255)",
+        // Header bar color: "primary" (follow the primary color) or any CSS color
+        headerColor: "primary",
+        // Color scheme: false | true | "auto" (follow the OS)
+        dark: false,
+        // Compact mode
+        compact: false,
+        // Skin: "default" | "brutalist" | "liquid-glass"
+        skin: "default",
+        // Menu mode: "normal" sidebar | "split" categories in the header | "dual" two-column sidebar | "top" whole menu in the header, no sidebar
+        menuMode: "normal"
     },
     // Custom items shown in the user-avatar menu (v1.12.21+)
     userTools: [{

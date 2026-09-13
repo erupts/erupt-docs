@@ -50,7 +50,7 @@ Let's put the whole picture up front — each of the 10 rows below is an identit
 | 5 | **i18n** (12 languages) | [`I18nTranslate.$translate(key)`](/en/advanced/i18n) + CSV dictionary |
 | 6 | **DataProxy business hooks** | [`beforeAdd / afterAdd / ...` 10+ hooks](/en/advanced/data-proxy) |
 | 7 | **Lambda queries** | [`EruptLambdaQuery<T>`](/en/advanced/erupt-dao-lambda) type-safe DSL |
-| 8 | **AI Agent** | [`erupt-ai-claw`](/en/modules/erupt-ai-claw) — import and go, zero-code LLM CRUD |
+| 8 | **AI Agent** | [`erupt-ai-claw`](/en/modules/erupt-ai-claw/) — import and go, zero-code LLM CRUD |
 | 9 | **Approval workflow** | [`@EruptFlow`](/en/modules/pro/erupt-flow/) — entity is the workflow carrier |
 | 10 | **Cross-service aggregation** | [`erupt-cloud-node-jpa`](/en/modules/cloud-node) — heartbeat reports to a central admin |
 
@@ -172,7 +172,7 @@ Full method list: `eq / ne / gt / lt / ge / le / between / notBetween / in / not
 
 Source: `erupt-data/erupt-jpa/.../EruptLambdaQuery.java`
 
-## 5. Killer Feature 1: [`erupt-ai-claw`](/en/modules/erupt-ai-claw) — Zero-Code LLM CRUD Across All Entities
+## 5. Killer Feature 1: [`erupt-ai-claw`](/en/modules/erupt-ai-claw/) — Zero-Code LLM CRUD Across All Entities
 
 This is the most counterintuitive thing Erupt does on top of JPA —
 
@@ -242,7 +242,7 @@ An LLM CRUDing the database directly sounds dangerous, so Erupt provides three g
 2. **Write operations go through `@Power` RBAC**: `insertEruptData / updateEruptData / deleteEruptData` internally go through `EruptModifyService` — the same permission gates as when an ops user manually clicks "Create." If you set `@Power(delete = false)` on an entity, the LLM can't delete it either
 3. **Role-level tool permissions**: `LLMRoleService.getAllowedToolsByUid(...)` filters callable tools by role — regular employees can only call read tools, admins can call write tools
 
-The underlying [`erupt-ai`](/en/modules/erupt-ai) module ships with 17 LLM providers — ChatGPT / Claude / DeepSeek / Gemini / Grok / Qwen / Moonshot / Ollama / OpenAI-compatible... switch with one click in admin. **Run the demo with DeepSeek today, run production with Ollama tomorrow — no business code changes**.
+The underlying [`erupt-ai`](/en/modules/erupt-ai/) module ships with 17 LLM providers — ChatGPT / Claude / DeepSeek / Gemini / Grok / Qwen / Moonshot / Ollama / OpenAI-compatible... switch with one click in admin. **Run the demo with DeepSeek today, run production with Ollama tomorrow — no business code changes**.
 
 The engineering nature of this layer: **AI is not a separate service, not a chat box, not an overlay. It is the `@Erupt` metadata graph fed directly to the LLM**. Metadata = UI = LLM Tool — three from the same source, so the LLM taking over admin needs no extra code.
 

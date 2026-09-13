@@ -158,7 +158,7 @@ After startup, the admin panel gains:
 - **A2A Agent**: Enter a remote Agent base URL, skills auto-fetched
 - **AI Memory**: Readable by humans, writable by the model
 
-For more details see the [erupt-ai module docs](/en/modules/erupt-ai) and [erupt-ai-claw](/en/modules/erupt-ai-claw).
+For more details see the [erupt-ai module docs](/en/modules/erupt-ai/) and [erupt-ai-claw](/en/modules/erupt-ai-claw/).
 
 ---
 

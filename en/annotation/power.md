@@ -31,6 +31,7 @@ public class EruptTest extends BaseModel {
 | `importable` | boolean | false | Whether importing data is allowed |
 | `print` | boolean | true | Whether printing row data is allowed (1.14.1+) |
 | `copy` | boolean | true | Whether to allow one-click row copy (2.0.0+) |
+| `cellEdit` | boolean | true | Whether rows may be edited one cell at a time in the table (2.2.0+) |
 | `ai` | boolean | true | Whether AI tools may inspect and operate on this model (2.1.0+) |
 | `powerHandler` | Class | - | Implement this interface to control permissions dynamically |
 
@@ -55,6 +56,9 @@ public @interface Power {
     boolean print() default true; // print row data (1.14.1+)
 
     boolean copy() default true; // one-click row copy (2.0.0+)
+
+    // in-table cell editing (2.2.0+)
+    boolean cellEdit() default true;
 
     // whether AI tools may inspect and operate on this model (2.1.0+)
     boolean ai() default true;
@@ -112,6 +116,54 @@ For models that should stay AI-accessible, keeping `ai = true` is not enough on 
 
 :::tip
 Erupts served by remote `erupt-cloud` nodes carry no local annotation, so the `ai` switch does not apply to them — the owning node runs its own permission pipeline.
+:::
+
+## cellEdit: In-table Cell Editing <Badge type="tip" text="v2.2.0+" />
+
+`cellEdit` controls whether the table offers **in-place cell editing**. Defaults to `true`.
+
+Double-click a cell (or its edit icon) to change one field without opening the row form. The floating editor is the row form's own `erupt-edit-type` component fed a one-field model, so value conversion, validation and the reference pickers behave identically, and the write goes through the single-field endpoint `POST /erupt-api/data/modify/{erupt}/update-cell`.
+
+```java
+// rows here should always be changed as a reviewed whole
+@Erupt(name = "Settlement", power = @Power(cellEdit = false))
+```
+
+### One cell is validated as a whole row
+
+The server serializes the stored row, patches it with the new value and **validates the whole row** — the same call the edit form makes. As a result:
+
+- Every field's rules take part, so a cross-field invariant cannot be broken one cell at a time
+- A [@Dynamic](/en/annotation/dynamic) rule that reads another field resolves correctly
+- `DataProxy#beforeUpdate` / `afterUpdate` see a complete entity
+- The operate log and edit event match a form submission
+
+### Two switches, both enforced server side
+
+| Level | Switch | Default |
+| --- | --- | --- |
+| Model | `@Erupt(power = @Power(cellEdit = false))` | `true` |
+| Field | `@Edit(cellEdit = false)` | `true` |
+
+Both are checked where the write happens: a crafted request to the single-field endpoint is rejected for a model or a field that opted out.
+
+The field-level switch is for values the form should still edit but a grid cell should not — typically anything that grants access or changes identity. The framework opts out of exactly those: a user's account, admin flag, roles, org scopes, expiry, IP allowlist and status; a role's code and status; an open api key's secret, validity and status; the API domain of an LLM or embedding model; the agent url; and the BI datasource connection string.
+
+```java
+@EruptField(
+    views = @View(title = "Status"),
+    // status may only move through the workflow, never by a grid edit
+    edit = @Edit(title = "Status", type = EditType.CHOICE, cellEdit = false)
+)
+private String status;
+```
+
+:::warning Fields rewritten in afterFetch
+The cell editor seeds itself from the row the table query returned. If `DataProxy.afterFetch` rewrites a field for display (masking, formatting, turning it into markup), that display value is what gets written back. Rewrite view-only fields, or mark an editable one `@Edit(cellEdit = false)`.
+:::
+
+:::tip
+Cell editing opens nothing new: the table still needs `edit` permission, tree menus and sub-tables have no grid to click, and collection fields (many-to-many and friends) stay out because the list query does not select their values.
 :::
 
 ## Notes

@@ -1,10 +1,8 @@
 # API Development & Operation Logs (@EruptRouter)
 
-## Version 1.12.x and Above
+> Applies to **version 1.12.x and above**
 
-Because `@EruptRouter` was difficult to use, version 1.12.x introduced a new, simpler permission annotation API.
-
-### API Example
+## API Example
 
 ```java
 @RestController
@@ -35,11 +33,11 @@ public class TestController {
 
 > Operation log recording is only supported for endpoints whose root path starts with `/erupt-api`.
 
-### Making API Requests
+## API Requests
 
 When calling endpoints annotated with `@EruptLoginAuth` or `@EruptMenuAuth`, the frontend must pass a token in the request header.
 
-#### How to Get the Token
+### How to Get the Token
 
 ```javascript
 // Method 1: If using the tpl module, retrieve the token via the following JS snippet.
@@ -50,7 +48,7 @@ parent.getAppToken().token
 var token = new URLSearchParams(location.search).get("_token")
 ```
 
-#### Request Examples
+### Request Examples
 
 Import the tpl module and call network requests from template files. The token must not be obtained cross-origin — it must be retrieved from within the application.
 
@@ -77,7 +75,7 @@ $.ajax({
 });
 ```
 
-### Frontend-Backend Separation
+## Frontend-Backend Separation
 
 If your frontend and backend are deployed separately, enable `redisSession`:
 
@@ -95,7 +93,3 @@ spring:
 > Spring Boot 3 removed the `spring.redis.*` prefix — you must use `spring.data.redis.*`.
 
 > **Note:** If testing with Postman and Redis Session is not enabled, you must pass both the token and the cookie.
-
-## Version 1.11.x and Below
-
-Versions 1.11.x and below use the `@EruptRouter` annotation. Refer to the legacy documentation for details.

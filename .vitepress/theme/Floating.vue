@@ -32,7 +32,7 @@ const items = [
     icon: svgSpark,
     label: 'Erupt AI',
     desc: '大模型深度集成，低代码构建 AI 应用',
-    link: '/modules/erupt-ai',
+    link: '/modules/erupt-ai/',
   },
   {
     icon: svgCube,

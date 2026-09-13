@@ -37,12 +37,31 @@ public class MyAutoCompleteHandler implements AutoCompleteHandler<MyModel> {
 
 > **2.0.0+**: A refresh button is displayed next to AUTO_COMPLETE fields in the edit form, allowing candidates to be re-fetched on demand.
 
+## Static Candidates <Badge type="tip" text="v2.2.0+" />
+
+When the candidate list is fixed there is no need for a handler — list them in `values`, matched **case-insensitively** against the input:
+
+```java
+@EruptField(
+    views = @View(title = "Country"),
+    edit = @Edit(title = "Country", type = EditType.AUTO_COMPLETE,
+                 autoCompleteType = @AutoCompleteType(values = {"China", "United States", "Japan", "Germany"}))
+)
+private String country;
+```
+
+`values` and `handler` can be combined; the final list is the two merged. As of 2.2.0 `handler` is no longer required.
+
 ## Configuration
 
 ```java
 public @interface AutoCompleteType {
 
-    Class<? extends AutoCompleteHandler> handler(); // Candidate handler (required)
+    // Predefined candidates, matched case-insensitively, merged with handler results (2.2.0+)
+    String[] values() default {};
+
+    // Candidate handler; optional as of 2.2.0 (the default AutoCompleteHandler.class means no handler)
+    Class<? extends AutoCompleteHandler> handler() default AutoCompleteHandler.class;
 
     String[] param() default {}; // Parameters passed to the handler
 

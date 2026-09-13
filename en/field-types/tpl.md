@@ -113,7 +113,7 @@ Rule of thumb: for a **widely useful** component (one most projects would want),
 A TPL field takes no part in condition search or Excel import/export, and the list page will not render its value automatically. To show it in the list, handle it with the `template` or `tpl` attribute of [@View](/en/annotation/view).
 :::
 
-## Talking to the Form <Badge type="tip" text="2.1.2+" />
+## Talking to the Form <Badge type="tip" text="2.2.0+" />
 
 `EditType.TPL` is embedded as an iframe, so by default the template cannot see the values of the other fields in the form. The front end provides a `postMessage` bridge for field-level TPL: a template can **read all current form values**, **watch them change**, and **write back** into the form.
 

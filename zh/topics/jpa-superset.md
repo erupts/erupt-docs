@@ -50,7 +50,7 @@ MyBatis-Plus 解决"少写 SQL"这一件事，已经做到天花板。但**写�
 | 5 | **i18n**（12 种语言） | [`I18nTranslate.$translate(key)`](/zh/advanced/i18n) + CSV 词典 |
 | 6 | **DataProxy 业务钩子** | [`beforeAdd / afterAdd / ...` 10+ 钩子](/zh/advanced/data-proxy) |
 | 7 | **Lambda 查询** | [`EruptLambdaQuery<T>`](/zh/advanced/erupt-dao-lambda) 类型安全 DSL |
-| 8 | **AI Agent** | [`erupt-ai-claw`](/zh/modules/erupt-ai-claw) 引入即用，LLM 零代码 CRUD |
+| 8 | **AI Agent** | [`erupt-ai-claw`](/zh/modules/erupt-ai-claw/) 引入即用，LLM 零代码 CRUD |
 | 9 | **审批流** | [`@EruptFlow`](/zh/modules/pro/erupt-flow/) 实体即流程载体 |
 | 10 | **跨服务聚合** | [`erupt-cloud-node-jpa`](/zh/modules/cloud-node) 心跳上报中央 admin |
 
@@ -172,7 +172,7 @@ eruptDao.lambdaQuery(Customer.class)
 
 源码：`erupt-data/erupt-jpa/.../EruptLambdaQuery.java`
 
-## 五、杀手锏一：[`erupt-ai-claw`](/zh/modules/erupt-ai-claw) —— LLM 零代码 CRUD 全实体
+## 五、杀手锏一：[`erupt-ai-claw`](/zh/modules/erupt-ai-claw/) —— LLM 零代码 CRUD 全实体
 
 这是 Erupt 在 JPA 之上做的**最反直觉**的一件事——
 
@@ -242,7 +242,7 @@ LLM 直接 CRUD 数据库听起来很危险，所以 Erupt 给了三道闸——
 2. **写操作走 `@Power` RBAC**：`insertEruptData / updateEruptData / deleteEruptData` 内部走 `EruptModifyService`，跟运营手动点"新建"按钮走同一套权限闸门——你给 `@Power(delete = false)` 的实体，LLM 也删不了
 3. **角色级 Tool 权限**：`LLMRoleService.getAllowedToolsByUid(...)` 按角色过滤可调 Tool，普通员工只能调读 Tool，管理员才能调写 Tool
 
-底层 [`erupt-ai`](/zh/modules/erupt-ai) 模块自带 17 个 LLM provider——ChatGPT / Claude / DeepSeek / Gemini / Grok / Qwen / Moonshot / Ollama / OpenAI 兼容协议……admin 里一键切换，**今天 DeepSeek 跑 demo、明天 Ollama 跑生产，业务代码不动**。
+底层 [`erupt-ai`](/zh/modules/erupt-ai/) 模块自带 17 个 LLM provider——ChatGPT / Claude / DeepSeek / Gemini / Grok / Qwen / Moonshot / Ollama / OpenAI 兼容协议……admin 里一键切换，**今天 DeepSeek 跑 demo、明天 Ollama 跑生产，业务代码不动**。
 
 这一层的工程性质是——**AI 不是另一个独立服务、不是聊天框、不是浮层。它是 `@Erupt` 元数据图直接喂给 LLM**。元数据 = UI = LLM Tool，三者同源，所以 LLM 接管 admin 不需要额外代码。
 

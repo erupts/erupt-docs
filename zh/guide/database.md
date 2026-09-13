@@ -1,10 +1,18 @@
 # 数据源支持
 
-erupt 支持市面上所有主流数据库，甚至支持 MongoDB，也可自定义数据源。
+「数据在哪，后台就在哪」——同一套 `@Erupt` 注解模型，既能管关系型数据库，也能管 NoSQL、REST 接口、文件、对象存储乃至 SaaS 表格。
 
 ![数据源支持](/database/img.png)
 
-> **注意：** 使用前需导入数据库所依赖的 JDBC 包！
+Erupt 的数据接入分三层，按需选择：
+
+| 层级 | 适用场景 | 怎么用 |
+| --- | --- | --- |
+| **关系型数据库（JPA）** | 绝大多数业务系统 | 引入 `erupt-data-jpa`，按下文配置数据库连接即可，本页主要讲这一层 |
+| **[数据连接层](#数据连接层)** | MongoDB、ES、Redis、REST 接口、文件、K8s、S3… | 引入对应 `erupt-data-*` 模块，在 `@Erupt` 上声明 `dataProxy` 之外的数据源 |
+| **[自定义数据源](#自定义数据源)** | 上面都不覆盖的私有协议、内部服务 | 实现 `IEruptDataService` 或继承 `EruptBeanDataService` |
+
+> **注意：** 使用关系型数据库前需导入对应的 JDBC 驱动包！
 
 以下示例仅提供基础的使用模板，具体参数值需通过实际情况修改，各数据库在 `application.yml` 中的配置如下：
 
@@ -132,15 +140,40 @@ spring:
 </dependency>
 ```
 
-## MongoDB
+## 数据连接层
 
-erupt 作为通用数据管理框架，不限于仅支持关系型数据库，也支持 MongoDB。
+关系型数据库之外的数据，由 **erupt-data** 数据连接层接入：统一的数据源接口之上，同一套注解模型即可完成增删改查、分页与检索，表格、表单、权限、导出等能力与 JPA 模型完全一致。
 
-详见：[NoSQL数据源 erupt-mongodb](/zh/modules/erupt-mongodb)
+| 模块 | artifactId | 说明 |
+| --- | --- | --- |
+| [erupt-jpa](/zh/modules/erupt-jpa) | `erupt-data-jpa` | 关系型数据库，多数项目的默认选择 |
+| [erupt-mongodb](/zh/modules/erupt-mongodb) | `erupt-data-mongodb` | MongoDB 文档数据源 |
+| [erupt-jdbc](/zh/modules/erupt-jdbc) | `erupt-data-jdbc` | 纯 JDBC 单表数据源，无需 JPA 实体映射，适配 ClickHouse、Doris、TDengine、达梦等 |
+| [erupt-http](/zh/modules/erupt-http) | `erupt-data-http` | REST 接口即数据源，把任意 HTTP 服务映射成后台表格 |
+| [erupt-es](/zh/modules/erupt-es) | `erupt-data-es` | Elasticsearch 索引管理与全文检索 |
+| [erupt-redis](/zh/modules/erupt-redis) | `erupt-data-redis` | Redis 键值数据的可视化管理 |
+| [erupt-memory](/zh/modules/erupt-memory) | `erupt-data-memory` | 内存数据源，无需数据库即可管理数据 |
+| [erupt-file](/zh/modules/erupt-file) | `erupt-data-file` | 文件即数据表，支持 CSV、JSONL、TSV、INI 等 |
+| [erupt-k8s](/zh/modules/erupt-k8s) | `erupt-data-k8s` | Kubernetes 集群资源管理 |
+| [erupt-ldap](/zh/modules/erupt-ldap) | `erupt-data-ldap` | LDAP / AD 目录服务 |
+| [erupt-feishu](/zh/modules/erupt-feishu) | `erupt-data-feishu` | 飞书多维表格 |
+| [erupt-notion](/zh/modules/erupt-notion) | `erupt-data-notion` | Notion 数据库 |
+| [erupt-s3](/zh/modules/erupt-s3) | `erupt-data-s3` | S3 兼容对象存储 |
+
+一个项目里可以同时引入多个数据源模块，不同 `@Erupt` 模型各自归属不同数据源，互不影响。
+
+:::warning 能力边界
+非 JPA 数据源受各自协议限制：例如文件与 REST 数据源没有事务，Redis / 内存数据源不支持复杂关联查询。各模块文档中列出了具体支持的查询与写入能力。
+:::
 
 ## 自定义数据源
 
-erupt 定位是通用数据管理框架，所以将自定义数据源能力开放，希望此功能能为 erupt 生态创建无限可能！
+以上模块都不覆盖时，可自行实现数据源接入私有协议或内部服务：
+
+- **`IEruptDataService`**：完整接口，查询、分页、下钻、增删改全部自行实现，对接能力最强
+- **`EruptBeanDataService`**：只需实现一个 `data()` 方法返回全量数据，条件求值、排序、分页、下钻由基类完成——**大多数「只能把行整体捞出来」的数据源（文件、REST、SaaS 表格、目录服务、对象存储）用它就够了**
+
+实现类通过 `DataProcessorManager.register(...)` 注册，再在模型上用 `@EruptDataProcessor` 指定即可生效，完整示例见 [自定义数据源（EruptDataService）](/zh/advanced/custom-datasource)。
 
 ## 其他数据库
 

@@ -113,7 +113,7 @@ private String mindMap;
 TPL 字段不参与条件搜索与 Excel 导入导出，列表页也不会自动渲染它的值——需要在列表展示时，请配合 [@View](/zh/annotation/view) 的 `template` 或 `tpl` 自行处理。
 :::
 
-## 与表单通信 <Badge type="tip" text="2.1.2+" />
+## 与表单通信 <Badge type="tip" text="2.2.0+" />
 
 `EditType.TPL` 以 iframe 方式内嵌，模板默认看不到表单里其他字段的值。前端为字段级 TPL 提供了一条 `postMessage` 桥，模板可以**读取当前表单的全部值**、**监听值的变化**，并**反向写回**表单。
 

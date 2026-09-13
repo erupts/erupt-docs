@@ -1,4 +1,20 @@
+---
+aside: false
+---
+
 # Architecture
+
+<script setup>
+import EruptArch from '../../.vitepress/theme/EruptArch.vue'
+</script>
+
+## Architecture at a Glance
+
+From any data source to any UI, every layer is pluggable. Click any capability to jump to its docs:
+
+<EruptArch lang="en" embed />
+
+---
 
 ## Class Capabilities
 

@@ -9,7 +9,7 @@ erupt-ai-staff 是 erupt-ai 的数字员工扩展模块。不止是聊天助手�
 
 ## 使用方法
 
-1. 添加依赖（需配合 [erupt-ai](/zh/modules/erupt-ai) 使用）：
+1. 添加依赖（需配合 [erupt-ai](/zh/modules/erupt-ai/) 使用）：
 
 ```xml
 <dependency>

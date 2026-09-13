@@ -34,7 +34,9 @@ No additional configuration is needed after adding the dependency. The module is
 
 ## Preview
 
-Upon successful connection, the terminal displays a banner with the current hostname, operating system, Java version, and then drops into an interactive shell:
+Upon successful connection, the terminal displays a banner with the current hostname, operating system and Java version, then drops into an interactive shell. The TABS panel on the left keeps several sessions side by side:
+
+![Erupt Terminal](/erupt-terminal/terminal.png)
 
 ```
 ───────────────────────────────────────
@@ -45,6 +47,23 @@ Upon successful connection, the terminal displays a banner with the current host
 ───────────────────────────────────────
 [root@my-server ~]$
 ```
+
+## How This Differs from erupt-remote
+
+Both modules put a terminal in the browser, but **not on the same machine**:
+
+| | [erupt-terminal](/en/modules/erupt-terminal) | [erupt-remote](/en/modules/erupt-remote) |
+| --- | --- | --- |
+| Target | **The host running erupt itself** — fixed, not selectable | **Other managed machines**, kept as records in the Remote Host table |
+| Transport | A local PTY: it forks a shell process | Network protocols: SSH (`jsch`) or VNC (RFB) |
+| Capability | Shell terminal | Shell terminal **plus a graphical desktop** |
+| Identity | The system user running the Java process — **no credentials to enter** | Per-host account / password / private key, stored AES-GCM encrypted |
+| Sessions | Multiple tabs, disconnected after 30 idle minutes | One-time ticket + global concurrency cap + idle reaping |
+| Permission | The `terminal` menu permission | The `RemoteHost` menu permission (checked on the ticket API and again on the WebSocket) |
+| WebSocket path | `/erupt-terminal` | `/erupt-remote` |
+| Target preparation | None | SSH uses the system's sshd; VNC needs a VNC server on the target |
+
+In short: use erupt-terminal to **operate the machine erupt itself runs on**; use erupt-remote to **manage a fleet of servers, or when you need a graphical desktop**. Neither depends on the other, and both can be installed together.
 
 ## Permission Configuration
 

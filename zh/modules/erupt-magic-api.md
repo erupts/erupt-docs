@@ -53,13 +53,27 @@ if (window.MAGIC_EDITOR_CONFIG) {
 
 ## Magic-API 前端 IDE 权限控制
 
+### IDE 操作权限
+
+模块初始化时会自动生成 **Online IDE** 菜单（菜单类型「自定义页面」，菜单值 `magic-api.ftl`，编码 `magic-api`，图标 `fa fa-bolt`），并在其下生成一组**按钮类型**的子菜单，用来控制非超管用户在 IDE 中能做哪些操作：
+
+<img src="/magic-api/permission.png" width="900">
+
+| 子菜单 | 菜单值 | 控制的能力 |
+| --- | --- | --- |
+| Function | `ERUPT_MAGIC_FUNCTION` | 保存 / 删除函数 |
+| Data Source | `ERUPT_MAGIC_DATASOURCE` | 保存 / 删除数据源 |
+| SAVE / VIEW / DELETE | `ERUPT_MAGIC_SAVE` 等 | 接口的保存、查看、删除 |
+| DOWNLOAD / UPLOAD / PUSH | `ERUPT_MAGIC_DOWNLOAD` 等 | 导出、导入、推送到其他环境 |
+| LOCK / UNLOCK / RELOAD | `ERUPT_MAGIC_LOCK` 等 | 锁定、解锁、重新加载 |
+
+在角色管理中把需要的按钮授予角色即可；**超级管理员不受这些按钮限制**。
+
 ### 接口权限校验
 
 使用 erupt-magic-api 可融合 erupt 提供的权限校验功能，保证接口安全调用。
 
 **使用方法**：选中接口 → 点击接口选项 → 点击右侧添加按钮，即可看到如下配置，权限校验支持多个累加。
-
-<img src="/magic-api/permission.png" width="900">
 
 | 权限类型 | 说明 |
 | --- | --- |

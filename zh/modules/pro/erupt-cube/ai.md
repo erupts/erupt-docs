@@ -18,7 +18,7 @@
 </dependency>
 ```
 
-AI 问数基于 [erupt-ai](/zh/modules/erupt-ai) 提供的 LLM 接入能力（OpenAI、Claude、Gemini、DeepSeek、Qwen、Ollama 本地模型等 17+ 提供商），请确保项目已引入 `erupt-ai` 并在管理端配置好大模型。
+AI 问数基于 [erupt-ai](/zh/modules/erupt-ai/) 提供的 LLM 接入能力（OpenAI、Claude、Gemini、DeepSeek、Qwen、Ollama 本地模型等 17+ 提供商），请确保项目已引入 `erupt-ai` 并在管理端配置好大模型。
 
 ### 2. 直接提问
 

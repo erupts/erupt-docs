@@ -11,8 +11,8 @@ const groups = [
     {
         title: 'AI Modules',
         items: [
-            {icon: '🐴', name: 'Erupt AI Harness', artifact: 'erupt-ai', desc: 'Deep LLM integration, build AI apps with low code', link: '/en/modules/erupt-ai'},
-            {icon: '🦞', name: 'Erupt AI Claw', artifact: 'erupt-ai-claw', desc: 'Drive your server with natural language, chat with data & business', link: '/en/modules/erupt-ai-claw'},
+            {icon: '🐴', name: 'Erupt AI Harness', artifact: 'erupt-ai', desc: 'Deep LLM integration, build AI apps with low code', link: '/en/modules/erupt-ai/'},
+            {icon: '🦞', name: 'Erupt AI Claw', artifact: 'erupt-ai-claw', desc: 'Drive your server with natural language, chat with data & business', link: '/en/modules/erupt-ai-claw/'},
             {icon: '🎨', name: 'Erupt AI Canvas', artifact: 'erupt-ai-canvas', desc: 'Generate a page from one sentence, wired live to the Erupt backend', link: '/en/modules/erupt-ai-canvas'},
             {icon: '📖', name: 'Erupt AI RAG', artifact: 'erupt-ai-rag', desc: 'Knowledge bases with vector retrieval, AI-driven Agentic RAG', link: '/en/modules/erupt-ai-rag'},
             {icon: '👩‍💻', name: 'Erupt AI Staff', artifact: 'erupt-ai-staff', desc: 'AI digital staff running scheduled tasks and pushing work reports', link: '/en/modules/erupt-ai-staff'},
@@ -50,6 +50,8 @@ const groups = [
         title: 'Tool Modules',
         items: [
             {icon: '⌨️', name: 'Erupt Terminal', artifact: 'erupt-terminal', desc: 'Server shell terminal right in the browser', link: '/en/modules/erupt-terminal'},
+            {icon: '🖥️', name: 'Erupt Remote', artifact: 'erupt-remote', desc: 'VNC desktops and SSH shells for remote hosts, in the browser', link: '/en/modules/erupt-remote'},
+            {icon: '🕸️', name: 'Erupt Atlas', artifact: 'erupt-atlas', desc: 'Model relation graph, lineage tracing and structural audit', link: '/en/modules/erupt-atlas'},
             {icon: '🔌', name: 'Erupt Websocket', artifact: 'erupt-websocket', desc: 'WebSocket real-time messaging and data push', link: '/en/modules/erupt-websocket'},
             {icon: '⚙️', name: 'Erupt Generator', artifact: 'erupt-generator', desc: 'Visual generator for Erupt entity classes', link: '/en/modules/erupt-generator'},
             {icon: '⏰', name: 'Erupt Job', artifact: 'erupt-job', desc: 'Visual scheduled jobs with Cron config and logs', link: '/en/modules/erupt-job'},

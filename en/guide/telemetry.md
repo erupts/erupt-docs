@@ -1,4 +1,4 @@
-# Anonymous Telemetry <Badge type="tip" text="v2.1.2+" />
+# Anonymous Telemetry <Badge type="tip" text="v2.2.0+" />
 
 After startup, Erupt reports an **anonymous instance profile**. It exists to answer questions like "which JDK / database / Spring Boot versions still need support" and "which modules deserve investment" with real numbers instead of guesses.
 
@@ -17,7 +17,7 @@ The payload is defined by `xyz.erupt.upms.telemetry.TelemetryPayload`. These are
 | `schema` | `2` | Payload layout version, bumped when fields change |
 | `eventType` | `boot` / `heartbeat` | Distinguishes the startup report from the periodic one |
 | `instanceId` | Random UUID | **Deduplication only**, see [Instance identity](#instance-identity) |
-| `eruptVersion` | `2.1.2` | Version distribution — decides how long old versions stay supported |
+| `eruptVersion` | `2.2.0` | Version distribution — decides how long old versions stay supported |
 | `modules` | `["erupt-jpa","erupt-ai"]` | Installed modules — tells which ones deserve investment |
 | `eruptCount` | `37` | Number of registered `@Erupt` classes — separates real deployments from tutorial demos |
 | `javaVersion` | `17.0.11` | Decides when the JDK baseline can be raised |
@@ -124,7 +124,7 @@ The contract is small:
 When the endpoint returns `200` with a body shaped like the following, Erupt logs the `message` — useful for release or security advisories:
 
 ```json
-{"level": "warn", "message": "2.1.0 has a known issue, upgrading to 2.1.2 is recommended"}
+{"level": "warn", "message": "2.1.0 has a known issue, upgrading to 2.2.0 is recommended"}
 ```
 
 - `level: warn` is written through `log.warn`, anything else through `log.info`;

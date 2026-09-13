@@ -9,7 +9,7 @@ AI 在对话中会**自主决定**何时查询哪个知识库（Agentic RAG）�
 
 ## 使用方法
 
-1. 添加依赖（需配合 [erupt-ai](/zh/modules/erupt-ai) 使用）：
+1. 添加依赖（需配合 [erupt-ai](/zh/modules/erupt-ai/) 使用）：
 
 ```xml
 <dependency>

@@ -31,6 +31,7 @@ public class EruptTest extends BaseModel {
 | `importable` | boolean | false | 是否允许导入数据 |
 | `print` | boolean | true | 是否允许打印行数据（1.14.1+） |
 | `copy` | boolean | true | 是否允许一键复制行数据（2.0.0+） |
+| `cellEdit` | boolean | true | 是否允许在表格中直接编辑单元格（2.2.0+） |
 | `ai` | boolean | true | AI 工具是否可以检视和操作该模型（2.1.0+） |
 | `powerHandler` | Class | - | 实现此接口动态控制权限 |
 
@@ -55,6 +56,9 @@ public @interface Power {
     boolean print() default true; // 数据打印功能（1.14.1+）
 
     boolean copy() default true; // 一键复制行数据（2.0.0+）
+
+    // 表格内单元格编辑（2.2.0+）
+    boolean cellEdit() default true;
 
     // AI 工具是否可以检视和操作该模型（2.1.0+）
     boolean ai() default true;
@@ -112,6 +116,54 @@ public class SensitiveModel extends BaseModel {
 
 :::tip
 `erupt-cloud` 远程节点上的 erupt 没有本地注解，`ai` 开关对其不生效，权限判定由所属节点自行完成。
+:::
+
+## cellEdit 单元格编辑 <Badge type="tip" text="v2.2.0+" />
+
+`cellEdit` 控制表格是否支持**行内单元格编辑**，默认 `true`。
+
+开启后，双击单元格（或点击单元格上的编辑图标）即可修改单个字段，无需打开行表单。浮层里用的就是行表单同一套 `erupt-edit-type` 组件，因此值转换、校验、引用选择器的行为完全一致，写入走单字段更新接口 `POST /erupt-api/data/modify/{erupt}/update-cell`。
+
+```java
+// 该表格的行数据必须整体审阅后修改，关闭单元格编辑
+@Erupt(name = "结算单", power = @Power(cellEdit = false))
+```
+
+### 一次单元格提交会跑完整条编辑链路
+
+服务端把库中原始行序列化出来、打上新值，再**按整行校验**——与表单提交调用的是同一个方法。因此：
+
+- 每个字段的校验规则都会参与，跨字段的不变式不会被逐格改写绕过
+- 读取其他字段的 [@Dynamic](/zh/annotation/dynamic) 规则可以正常解析
+- `DataProxy` 的 `beforeUpdate` / `afterUpdate` 拿到的是完整实体
+- 操作日志与编辑事件与表单提交一致
+
+### 两级开关，服务端都校验
+
+| 层级 | 开关 | 默认值 |
+| --- | --- | --- |
+| 模型 | `@Erupt(power = @Power(cellEdit = false))` | `true` |
+| 字段 | `@Edit(cellEdit = false)` | `true` |
+
+两个开关都在写入端校验：即使构造请求直接调用单字段更新接口，关闭了单元格编辑的模型与字段同样会被拒绝。
+
+字段级开关适用于「表单里可以改、但不该在表格浮层里随手改」的字段——典型的是决定身份与访问权的值。框架自身即按此原则关闭了：用户的账号、管理员标记、角色、组织范围、有效期、IP 白名单与状态，角色的编码与状态，Open API 的密钥、有效期与状态，LLM / 嵌入模型的 API 域名，Agent 地址，以及 BI 数据源的连接串。
+
+```java
+@EruptField(
+    views = @View(title = "状态"),
+    // 状态只能通过工作流流转，不允许在表格里直接改
+    edit = @Edit(title = "状态", type = EditType.CHOICE, cellEdit = false)
+)
+private String status;
+```
+
+:::warning afterFetch 改写过的字段
+单元格编辑器的初始值取自表格查询返回的那一行。如果 `DataProxy.afterFetch` 为了展示而改写了某个字段（脱敏、格式化、拼成 HTML），这个「展示值」会被原样写回。请只改写只读字段，或给可编辑字段加上 `@Edit(cellEdit = false)`。
+:::
+
+:::tip
+单元格编辑不会放开任何新入口：表格本身仍需 `edit` 权限，树形菜单与子表没有表格可点，集合类字段（多对多等）因列表查询不返回其值而不参与单元格编辑。
 :::
 
 ## 注意事项

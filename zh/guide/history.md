@@ -12,7 +12,7 @@
 
 🌟 新增 [erupt-terminal](/zh/modules/erupt-terminal) 模块，无需 SSH 客户端，直接在后台界面操作服务器终端
 
-🌟 erupt-ai 支持 [A2A（Agent-to-Agent）协作](/zh/modules/erupt-ai#多-agent-协作-a2a)，多个 AI 智能体可相互通信与协作分工
+🌟 erupt-ai 支持 [A2A（Agent-to-Agent）协作](/zh/modules/erupt-ai/a2a)，多个 AI 智能体可相互通信与协作分工
 
 🌟 erupt-ai 新增跨会话记忆（Memory），AI 可跨对话保留用户偏好与上下文
 
@@ -20,7 +20,7 @@
 
 🌟 erupt-ai 支持 Thinking Mode，在对话中展示增强推理过程
 
-🌟 erupt-ai-claw 新增 `enableExecShell` 配置项，可灵活开关 [Shell 执行能力](/zh/modules/erupt-ai-claw#使用方法)
+🌟 erupt-ai-claw 新增 `enableExecShell` 配置项，可灵活开关 [Shell 执行能力](/zh/modules/erupt-ai-claw/#使用方法)
 
 🌟 [DataProxy](/zh/advanced/data-proxy#extracontent-自定义内容注入) 新增 `extraContent` 方法，支持向表格或任意视图顶部注入自定义 HTML 内容
 
@@ -76,7 +76,7 @@
 
 🧩 重构时间格式处理逻辑，统一采用 ISO 8601（`yyyy-MM-dd'T'HH:mm:ss.SSS`）进行交互，返回时间自动跟随浏览器语言环境格式化，对国际化场景更加友好
 
-🚀 开源 [erupt-ai-claw](/zh/modules/erupt-ai-claw) 模块，可通过 AI 操作任意 Erupt 数据，支持 Skill、File、Shell 调用等能力
+🚀 开源 [erupt-ai-claw](/zh/modules/erupt-ai-claw/) 模块，可通过 AI 操作任意 Erupt 数据，支持 Skill、File、Shell 调用等能力
 
 🌟 Spring Boot 版本升级至 3.5.13
 
@@ -107,7 +107,7 @@
 
 + **时间格式调整**：统一为 ISO 8601 标准格式（`yyyy-MM-dd'T'HH:mm:ss.SSS`）。直接对接 Erupt API 的前端需手动处理时间格式化，建议使用 `new Date(date).toLocaleString()` 进行转换。
 + **配置项重命名**：`erupt.ai.mcp.enabled` 已更名为 `erupt.ai.mcp.server-enabled`，请同步更新配置文件。
-+ **AI Tools 声明方式变更**：功能方法的注解声明从类级别调整为方法级别，需同步修改相关代码，详见：[Erupt AI 大模型深度集成](/zh/modules/erupt-ai#jA3q1)。
++ **AI Tools 声明方式变更**：功能方法的注解声明从类级别调整为方法级别，需同步修改相关代码，详见：[Erupt AI 大模型深度集成](/zh/modules/erupt-ai/tools)。
 + 用户管理新增分管组织能力，数据库新增 `e_upms_user_org_division` 表。
 
 ```plsql
@@ -140,7 +140,7 @@ create table e_upms_user_org_division (
 
 🌟 erupt-ai 支持渲染数学公式与流程图
 
-🌟 erupt-ai [MCP](/zh/modules/erupt-ai#SjygW) 增加 Open API 授权机制
+🌟 erupt-ai [MCP](/zh/modules/erupt-ai/mcp) 增加 Open API 授权机制
 
 🌟 erupt-flow 支持自定义打印模板的能力
 
@@ -159,7 +159,7 @@ create table e_upms_user_org_division (
 
 🌟 增加排序按钮，可灵活配置多字段排序
 
-🌟 [MCP](/zh/modules/erupt-ai#SjygW) 能力增加鉴权控制及默认实现，支持 Cursor 等工具交互访问 erupt 实体数据
+🌟 [MCP](/zh/modules/erupt-ai/mcp) 能力增加鉴权控制及默认实现，支持 Cursor 等工具交互访问 erupt 实体数据
 
 🌟 Erupt-AI 增加了新的大模型支持：Grok/Fireworks/MinMax/Mistral/OpenRouter/Together
 
@@ -207,7 +207,7 @@ create table e_upms_user_org_division (
 
 🌟 新增[签名组件](/zh/field-types/signature)，用于审批签字等场景
 
-🌟 erupt-ai 支持 [MCP](/zh/modules/erupt-ai#SjygW)
+🌟 erupt-ai 支持 [MCP](/zh/modules/erupt-ai/mcp)
 
 🌟 全面支持 **Spring Boot 3.0**，JDK 最低版本要求 17
 
@@ -225,7 +225,7 @@ create table e_upms_user_org_division (
 
 🌟 新增[签名组件](/zh/field-types/signature)，用于审批签字等场景
 
-🌟 erupt-ai 支持 [MCP](/zh/modules/erupt-ai#SjygW)
+🌟 erupt-ai 支持 [MCP](/zh/modules/erupt-ai/mcp)
 
 🌟 全面支持 **Spring Boot 3.0**，JDK 最低版本要求 17
 
@@ -332,7 +332,7 @@ create table e_upms_user_org_division (
 
 🌟 erupt-jap 支持多对一对象[ with 语法的 lambda 查询 ](/zh/advanced/erupt-dao-lambda#多对一查询-with-语法) 
 
-🌟 [开源erupt-ai模块](/zh/modules/erupt-ai)
+🌟 [开源erupt-ai模块](/zh/modules/erupt-ai/)
 
 + 支持多模型：ChatGpt、Olama、DeepSeek、GML、Gemini、Moonshot等
 + 支持智能体、Function Call、交互式聊天

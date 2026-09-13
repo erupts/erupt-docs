@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onMounted, onUnmounted } from 'vue'
 import { useData } from 'vitepress'
+import EruptArch from './EruptArch.vue'
 
 const props = defineProps({
     lang: { type: String, default: 'zh' },
@@ -22,6 +23,7 @@ const dict = {
         ctaDemoLink: 'https://demo.erupt.xyz',
         ctaGit: 'GitHub ↗',
         ctaGitLink: 'https://github.com/erupts/erupt',
+        ctaArch: '全景架构 ↓',
         changelog: '更新日志 →',
         changelogLink: '/zh/guide/changelog',
         stats: [
@@ -52,6 +54,7 @@ const dict = {
         ctaDemoLink: 'https://demo.erupt.xyz',
         ctaGit: 'GitHub ↗',
         ctaGitLink: 'https://github.com/erupts/erupt',
+        ctaArch: 'Architecture ↓',
         changelog: 'Changelog →',
         changelogLink: '/en/guide/changelog',
         stats: [
@@ -101,6 +104,7 @@ const latestVersion = computed(() => theme.value.latestVersion)
                         <a class="rf-btn rf-btn-main" :href="t.ctaMainLink">{{ t.ctaMain }}</a>
                         <a class="rf-btn" :href="t.ctaDemoLink" target="_blank" rel="noreferrer">{{ t.ctaDemo }}</a>
                         <a class="rf-btn" :href="t.ctaGitLink" target="_blank" rel="noreferrer">{{ t.ctaGit }}</a>
+                        <a class="rf-btn rf-btn-arch" href="#arch">{{ t.ctaArch }}</a>
                     </div>
                     <div class="rf-stats rf-pop" style="--d:.38s">
                         <div v-for="s in t.stats" :key="s.label" class="rf-stat">
@@ -163,6 +167,8 @@ const latestVersion = computed(() => theme.value.latestVersion)
                 </div>
             </div>
         </section>
+
+        <EruptArch :lang="lang" />
 
         <footer class="rf-tech">
             <div class="rf-tech-inner">
@@ -246,6 +252,8 @@ const latestVersion = computed(() => theme.value.latestVersion)
 /* ============ HERO (single screen) ============ */
 .rf-hero {
     flex: 1;
+    min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     align-items: center;
     padding: calc(var(--vp-nav-height) + 20px) 32px 32px;
@@ -370,6 +378,11 @@ const latestVersion = computed(() => theme.value.latestVersion)
 
 .rf-btn-main {
     background: var(--rf-pink);
+    color: var(--black);
+}
+
+.rf-btn-arch {
+    background: var(--rf-green);
     color: var(--black);
 }
 
