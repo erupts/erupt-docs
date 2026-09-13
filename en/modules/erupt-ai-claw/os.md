@@ -1,4 +1,4 @@
-# Claw and Operating System Interaction
+# Shell & File Operations
 
 <img src="/ai-claw/os-1.png" width="803">
 

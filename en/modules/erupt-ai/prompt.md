@@ -1,4 +1,4 @@
-# Prompt Engineering
+# Inject System Prompts Dynamically
 
 Beyond the global `system-prompt` and agent prompts, erupt-ai offers two finer-grained injection points: the application-level `SystemPromptProvider` and the request-level `LlmRequest`.
 

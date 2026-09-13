@@ -1,4 +1,4 @@
-# 跨会话记忆（Memory） <Badge type="tip" text="v1.14.3+" />
+# 长期记忆 <Badge type="tip" text="v1.14.3+" />
 
 :::info
 AI 具备持久化记忆能力，跨会话保留用户偏好与对话上下文，打造真正有记忆的个性化 AI 助手。不同用户的记忆相互隔离，记忆条目持久化在 `e_ai_memory` 表中。

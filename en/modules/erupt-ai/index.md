@@ -65,16 +65,17 @@ erupt:
 
 | Page | Contents |
 |---|---|
-| [LLM Setup](/en/modules/erupt-ai/llm) | Add and test models, 19 built-in adapters |
-| [AI Chat](/en/modules/erupt-ai/chat) | Immersive conversation, multimodal image input, model picker |
-| [Experts](/en/modules/erupt-ai/agent) | Freeze a prompt, model and parameters into a selectable identity; rewrite prompts with `EruptPromptHandler` |
-| [Tools & Role Authorization](/en/modules/erupt-ai/tools) | Register tools with `@AiToolbox` + `@Tool`, authorize tools and system prompts per role |
-| [Connecting MCP Servers](/en/modules/erupt-ai/mcp) | Mount external MCP Servers to widen the model's toolset |
-| [Built-in MCP Server](/en/modules/erupt-ai/mcp-server) | Expose erupt's AI Tools so Cursor / Claude Code can connect |
-| [Prompt Engineering](/en/modules/erupt-ai/prompt) | `SystemPromptProvider` dynamic injection, `LlmRequest` request-level extensions |
-| [Multi-Agent Collaboration (A2A)](/en/modules/erupt-ai/a2a) | Google A2A protocol, automatic discovery and delegation to sub-agents |
-| [Cross-Session Memory](/en/modules/erupt-ai/memory) | Persistent memory isolated per user |
-| [AI Writing Assistant](/en/modules/erupt-ai/writing-assistant) | Generate / polish / continue / shorten / expand form text fields |
+| [Configure LLMs](/en/modules/erupt-ai/llm) | Add and test models, 19 built-in adapters |
+| [Chat Workbench](/en/modules/erupt-ai/chat) | Immersive conversation, multimodal image input, model picker |
+| [Experts (Preset AI Roles)](/en/modules/erupt-ai/agent) | Freeze a prompt, model and parameters into a selectable identity; rewrite prompts with `EruptPromptHandler` |
+| [Build Custom Tools](/en/modules/erupt-ai/tools) | Register any Spring Bean method as an AI tool with `@AiToolbox` + `@Tool` |
+| [Authorize Tools by Role](/en/modules/erupt-ai/tool-auth) | Draw each role's tool boundary and give it its own system prompt |
+| [Connect External MCP Servers](/en/modules/erupt-ai/mcp) | Mount external MCP Servers to widen the model's toolset |
+| [Expose Erupt as an MCP Server](/en/modules/erupt-ai/mcp-server) | Expose erupt's AI Tools so Cursor / Claude Code can connect |
+| [Inject System Prompts Dynamically](/en/modules/erupt-ai/prompt) | `SystemPromptProvider` dynamic injection, `LlmRequest` request-level extensions |
+| [Connect External Agents (A2A)](/en/modules/erupt-ai/a2a) | Google A2A protocol, automatic discovery and delegation to sub-agents |
+| [Long-Term Memory](/en/modules/erupt-ai/memory) | Persistent memory isolated per user |
+| [AI Writing Assistant for Forms](/en/modules/erupt-ai/writing-assistant) | Generate / polish / continue / shorten / expand form text fields |
 
 ## Extension Modules
 

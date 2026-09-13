@@ -1,7 +1,7 @@
 # 🦞 Erupt AI Claw
 
 <a href="https://www.erupt.xyz/#!/ai-claw" target="_blank">
-  <img src="/ai-claw/banner.png" width="1747">
+  <img src="/ai-claw/banner.png" width="1000">
 </a>
 
 :::info
@@ -40,7 +40,7 @@ erupt:
 ```
 
 :::warning
-🦞 默认拥有全量工具权限，**生产环境请通过角色配置限制可用 Tool 范围**（v1.14.3+ 支持，详见 [角色级 Tool 授权](/zh/modules/erupt-ai/tools#角色级-tool-授权)），安全第一！
+🦞 默认拥有全量工具权限，**生产环境请通过角色配置限制可用 Tool 范围**（v1.14.3+ 支持，详见 [按角色授权 Tool](/zh/modules/erupt-ai/tool-auth)），安全第一！
 :::
 
 ## ☄️ Token 准备
@@ -51,10 +51,10 @@ erupt:
 
 | 页面 | 内容 |
 |---|---|
-| [🦞 与 Skill](/zh/modules/erupt-ai-claw/skill) | 对接 70W+ Agent Skills，对话中创建、修补与执行 Skill |
-| [🦞 与 Erupt 模型交互](/zh/modules/erupt-ai-claw/erupt-model) | 用自然语言对任意 Erupt 模型做增删改查 |
-| [🦞 与操作系统交互](/zh/modules/erupt-ai-claw/os) | 沙箱内执行 Shell、读写文件，以及多层安全防护 |
-| [🦞 与浏览器交互](/zh/modules/erupt-ai-claw/browser) | 借助 chrome-devtools MCP 驱动浏览器 |
-| [🦞 与长期记忆](/zh/modules/erupt-ai-claw/memory) | 跨会话、按用户隔离的记忆持久化 |
-| [🦞 与 Spring Boot](/zh/modules/erupt-ai-claw/spring-boot) | 对话获取线程、配置、GC、调度等运行时信息 |
+| [安装与使用 Skill](/zh/modules/erupt-ai-claw/skill) | 对接 70W+ Agent Skills，对话中创建、修补与执行 Skill |
+| [对话操作 Erupt 数据](/zh/modules/erupt-ai-claw/erupt-model) | 用自然语言对任意 Erupt 模型做增删改查 |
+| [执行 Shell 与文件操作](/zh/modules/erupt-ai-claw/os) | 沙箱内执行 Shell、读写文件，以及多层安全防护 |
+| [操控浏览器](/zh/modules/erupt-ai-claw/browser) | 借助 chrome-devtools MCP 驱动浏览器 |
+| [长期记忆](/zh/modules/erupt-ai-claw/memory) | 跨会话、按用户隔离的记忆持久化 |
+| [查看应用运行状态（Spring Boot）](/zh/modules/erupt-ai-claw/spring-boot) | 对话获取线程、配置、GC、调度等运行时信息 |
 | [工具清单与角色授权](/zh/modules/erupt-ai-claw/tools) | 全部内置 `@Tool` 说明表，按角色勾选授权 |

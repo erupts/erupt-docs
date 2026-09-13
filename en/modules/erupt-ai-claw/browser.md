@@ -1,4 +1,4 @@
-# Claw and Browser Interaction
+# Control a Browser
 
 This can be achieved indirectly via the MCP feature. Add the following configuration in the MCP menu:
 

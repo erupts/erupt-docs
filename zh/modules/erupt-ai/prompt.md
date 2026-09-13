@@ -1,4 +1,4 @@
-# 提示词工程
+# 动态注入系统提示词
 
 除了全局 `system-prompt` 与 Agent 提示词，erupt-ai 还提供两个更细粒度的提示词注入点：应用级的 `SystemPromptProvider` 与请求级的 `LlmRequest`。
 

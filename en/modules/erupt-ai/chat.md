@@ -1,4 +1,4 @@
-# AI Chat
+# Chat Workbench
 
 erupt-ai ships a complete chat workbench: Markdown, code, Mermaid and math render live, images can be attached, models switched mid-conversation, and tool calls and agent orchestration happen automatically inside the dialogue.
 

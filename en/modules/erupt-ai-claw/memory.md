@@ -1,4 +1,4 @@
-# Claw and Long-Term Memory
+# Long-Term Memory
 
 erupt-ai-claw supports cross-session long-term memory persistence via the Memory tool.
 

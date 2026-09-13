@@ -1,4 +1,4 @@
-# 接入 MCP 生态
+# 接入外部 MCP Server
 
 把外部 MCP Server 挂进 erupt，大模型即可在对话中调用它们的工具——控制浏览器、操作桌面文件、调用第三方服务，与 erupt 自身的 Tool 混合编排。
 
@@ -6,7 +6,7 @@
 支持完整的 MCP 协议，接入后可在 erupt 平台内操作任意 MCP。
 :::
 
-反向能力（把 erupt 的 AI Tools 暴露给 Cursor、Claude Code 等客户端）见 [内置 MCP Server](/zh/modules/erupt-ai/mcp-server)。
+反向能力（把 erupt 的 AI Tools 暴露给 Cursor、Claude Code 等客户端）见 [对外提供 MCP Server](/zh/modules/erupt-ai/mcp-server)。
 
 ## 添加 MCP Server
 

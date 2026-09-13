@@ -1,4 +1,4 @@
-# AI Writing Assistant <Badge type="tip" text="v2.2.0+" />
+# AI Writing Assistant for Forms <Badge type="tip" text="v2.2.0+" />
 
 Text fields in the form carry an AI icon: open it and the model drafts the field, polishes it, continues it, shortens it or expands it. The draft streams back over SSE and **persists nothing** — the value only becomes real if the user keeps it and saves the form.
 

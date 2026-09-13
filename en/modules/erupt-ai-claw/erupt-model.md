@@ -1,4 +1,4 @@
-# Claw and Erupt Model Interaction
+# Operate Erupt Data by Chat
 
 Creating an organizational structure via conversation (data insertion):
 

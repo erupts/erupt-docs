@@ -109,7 +109,7 @@
 | 项目 | 2.1.x | 2.2.0 |
 | --- | --- | --- |
 | `@Power(cellEdit)` | —— | `true`，表格默认支持单元格编辑，详见 [@Power](/zh/annotation/power#celledit-单元格编辑) |
-| `@Edit(ai)` | —— | `true`，文本字段默认提供 [AI 写作助手](/zh/modules/erupt-ai/writing-assistant) |
+| `@Edit(ai)` | —— | `true`，文本字段默认提供 [表单 AI 写作助手](/zh/modules/erupt-ai/writing-assistant) |
 | 前端默认主题色 | `#00B515` | `rgb(22, 119, 255)`，可用 `app.js` 的 `theme.primaryColor` 覆盖 |
 | 菜单树展开层级 | 5 级 | 1 级 |
 

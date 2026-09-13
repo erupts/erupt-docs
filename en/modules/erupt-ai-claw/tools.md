@@ -6,7 +6,7 @@
 Claw's capability boundaries are determined by role. Administrators naturally have all tools; other roles can only call explicitly authorized Tools — high-risk operations are completely invisible and uncallable for unauthorized roles. This enables Claw to be safely deployed in production environments while providing a personalized AI experience for every user.
 :::
 
-In the erupt-ai role management interface, check the available Tools for each role and configure a dedicated system prompt. Changes take effect immediately without a restart. See [Role-Level Tool Authorization](/en/modules/erupt-ai/tools#role-level-tool-authorization).
+In the erupt-ai role management interface, check the available Tools for each role and configure a dedicated system prompt. Changes take effect immediately without a restart. See [Authorize Tools by Role](/en/modules/erupt-ai/tool-auth).
 
 ## @Tools Reference Table
 

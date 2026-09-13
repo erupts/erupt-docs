@@ -65,16 +65,17 @@ erupt:
 
 | 页面 | 内容 |
 |---|---|
-| [LLM 接入](/zh/modules/erupt-ai/llm) | 添加与测试大模型，19 个内置适配器 |
-| [AI 对话](/zh/modules/erupt-ai/chat) | 沉浸式对话、多模态图片输入、模型选择器 |
-| [专家](/zh/modules/erupt-ai/agent) | 把提示词、模型与参数固化成可选身份，`EruptPromptHandler` 动态改写提示词 |
-| [工具与角色授权](/zh/modules/erupt-ai/tools) | `@AiToolbox` + `@Tool` 注册工具，按角色授权工具与系统提示词 |
-| [接入 MCP 生态](/zh/modules/erupt-ai/mcp) | 挂载外部 MCP Server，扩展大模型可用的工具 |
-| [内置 MCP Server](/zh/modules/erupt-ai/mcp-server) | 把 erupt 的 AI Tools 暴露出去，Cursor / Claude Code 直连 |
-| [提示词工程](/zh/modules/erupt-ai/prompt) | `SystemPromptProvider` 动态注入，`LlmRequest` 请求级扩展 |
-| [多 Agent 协作（A2A）](/zh/modules/erupt-ai/a2a) | 兼容 Google A2A 协议，自动发现并委派子 Agent |
+| [配置大模型](/zh/modules/erupt-ai/llm) | 添加与测试大模型，19 个内置适配器 |
+| [对话工作台](/zh/modules/erupt-ai/chat) | 沉浸式对话、多模态图片输入、模型选择器 |
+| [专家（预设 AI 角色）](/zh/modules/erupt-ai/agent) | 把提示词、模型与参数固化成可选身份，`EruptPromptHandler` 动态改写提示词 |
+| [开发自定义 Tool](/zh/modules/erupt-ai/tools) | `@AiToolbox` + `@Tool` 把任意 Spring Bean 方法注册为 AI 工具 |
+| [按角色授权 Tool](/zh/modules/erupt-ai/tool-auth) | 按角色划定工具边界，并为角色配置专属系统提示词 |
+| [接入外部 MCP Server](/zh/modules/erupt-ai/mcp) | 挂载外部 MCP Server，扩展大模型可用的工具 |
+| [对外提供 MCP Server](/zh/modules/erupt-ai/mcp-server) | 把 erupt 的 AI Tools 暴露出去，Cursor / Claude Code 直连 |
+| [动态注入系统提示词](/zh/modules/erupt-ai/prompt) | `SystemPromptProvider` 动态注入，`LlmRequest` 请求级扩展 |
+| [接入外部 Agent（A2A）](/zh/modules/erupt-ai/a2a) | 兼容 Google A2A 协议，自动发现并委派子 Agent |
 | [跨会话记忆](/zh/modules/erupt-ai/memory) | 按用户隔离的持久化记忆 |
-| [AI 写作助手](/zh/modules/erupt-ai/writing-assistant) | 表单文本字段的生成 / 润色 / 续写 / 缩写 / 扩写 |
+| [表单 AI 写作助手](/zh/modules/erupt-ai/writing-assistant) | 表单文本字段的生成 / 润色 / 续写 / 缩写 / 扩写 |
 
 ## 扩展模块
 

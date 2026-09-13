@@ -1,4 +1,4 @@
-# 🦞 与操作系统交互
+# 🦞 执行 Shell 与文件操作
 
 <img src="/ai-claw/os-1.png" width="803">
 

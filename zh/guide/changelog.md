@@ -16,7 +16,7 @@
 
 🌟 表格新增[多维表格能力](/zh/annotation/power#celledit-单元格编辑)：双击单元格就地改一个字段，无需打开行表单。服务端按整行校验，`DataProxy`、操作日志与事件的表现同表单提交完全一致；模型级 `@Power(cellEdit)` 与字段级 `@Edit(cellEdit)` 两级开关
 
-🌟 文本字段新增 [AI 写作助手](/zh/modules/erupt-ai/writing-assistant)：以同表单其他字段为背景，生成 / 润色 / 续写 / 缩写 / 扩写字段内容，SSE 流式返回且不落库，`@Edit(prompt)` 即该字段的写作指引
+🌟 文本字段新增 [表单 AI 写作助手](/zh/modules/erupt-ai/writing-assistant)：以同表单其他字段为背景，生成 / 润色 / 续写 / 缩写 / 扩写字段内容，SSE 流式返回且不落库，`@Edit(prompt)` 即该字段的写作指引
 
 🌟 [erupt-ai 支持多模态对话](/zh/modules/erupt-ai/chat#多模态对话)：回形针按钮或剪贴板粘贴即可上传图片，与文本一并发给大模型；图片随消息持久化，重建历史上下文、重新生成、编辑重发时一并带上
 

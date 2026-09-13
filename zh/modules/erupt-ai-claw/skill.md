@@ -1,4 +1,4 @@
-# 🦞 与 Skill
+# 🦞 安装与使用 Skill
 
 :::info
 支持与 70W+ 个 Skill 交互，也可通过提示词动态创建 Skill；erupt-🦞 将根据提示词自动匹配并执行对应 Skill。

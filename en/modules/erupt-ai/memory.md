@@ -1,4 +1,4 @@
-# Cross-Session Memory <Badge type="tip" text="v1.14.3+" />
+# Long-Term Memory <Badge type="tip" text="v1.14.3+" />
 
 :::info
 The AI has persistent memory capabilities, retaining user preferences and conversation context across sessions — creating a truly personalized AI assistant with memory. Different users' memories are isolated from each other and are persisted in the `e_ai_memory` table.

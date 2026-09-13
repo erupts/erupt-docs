@@ -1,8 +1,8 @@
-# Built-in MCP Server
+# Expose Erupt as an MCP Server
 
 Expose erupt's own AI Tools as an MCP Server so Cursor, Claude Code, VS Code and other clients can connect directly and read or write erupt entity data in natural language.
 
-For the other direction — mounting external MCP Servers into erupt — see [Connecting MCP Servers](/en/modules/erupt-ai/mcp).
+For the other direction — mounting external MCP Servers into erupt — see [Connect External MCP Servers](/en/modules/erupt-ai/mcp).
 
 1. Enable the MCP configuration in `application.yml`:
 

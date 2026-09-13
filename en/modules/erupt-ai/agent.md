@@ -1,4 +1,4 @@
-# Experts
+# Experts (Preset AI Roles)
 
 An **Expert** freezes "one system prompt + one model + one set of runtime parameters" into a reusable identity. Once configured, users pick it at the top of the chat box and the AI answers as a support agent, a SQL engineer, a finance reviewer — instead of everyone restating the same brief every time.
 

@@ -1,4 +1,4 @@
-# LLM Setup
+# Configure LLMs
 
 Register a model under **AI Manager → Language Model**: pick the provider, fill in the model name and API domain, and paste the API key issued by the provider.
 

@@ -1,16 +1,16 @@
-# Tools & Role Authorization
+# Build Custom Tools
 
-Tools are the bridge between the AI and your business system: any Spring Bean method can be registered as a tool and invoked by intent, and role-level authorization draws a separate tool boundary for each position.
+Tools are the bridge between the AI and your business system: any Spring Bean method can be registered as a tool and invoked by intent during a conversation — querying data, triggering business logic, executing operations, all from one sentence.
 
-## Custom Tool Injection
+Who may call which tool is decided by role, see [Authorize Tools by Role](/en/modules/erupt-ai/tool-auth).
+
+## Registering a tool
 
 :::info
-Use `@AiToolbox` + `@Tool` to register any Spring Bean method as an AI tool. The AI can automatically recognize intent during a conversation and call it, enabling deep interaction with the current system — querying data, triggering business logic, executing operations, all with a single sentence.
+Use `@AiToolbox` + `@Tool` to register any Spring Bean method as an AI tool. The AI recognizes intent during a conversation and calls it, reaching deep into the running system.
 :::
 
 **For versions below 1.14.1, see:** https://www.yuque.com/erupts/1.13.x/qsk71q5zyy3segr6_gxxnld#jA3q1
-
-**For version 1.14.1 and above:**
 
 ```java
 import dev.langchain4j.agent.tool.P;
@@ -52,24 +52,3 @@ public class TestTools {
 ```
 
 <img src="/ai/tools-demo.png" width="760">
-
-## Role-Level Tool Authorization <Badge type="tip" text="v1.14.3+" />
-
-:::tip
-AI capabilities are no longer one-size-fits-all. By independently configuring a **system prompt** and **tool permissions** for each role, each user sees an AI tailored to their position upon login — finance staff chat about reports, DevOps engineers query logs, business users ask about data, each getting exactly what they need with no overlap.
-
-Administrators naturally have full tool permissions; other roles are authorized as needed, enabling Claw to be safely deployed in production environments.
-:::
-
-In the Role Management interface, check the callable tools for a target role and fill in the dedicated system prompt. Changes take effect immediately:
-
-<img src="/ai/ai-role.png" width="1270">
-
-Configure role permission policies for each AI Tool; different roles can call different tool sets, with fine-grained control over AI capability and security boundaries. Each role can be bound to an independent system prompt, giving users in different positions a dedicated AI assistant.
-
-| | Description |
-|---|---|
-| **Administrator** | Naturally has all tools; no additional configuration needed |
-| **Other Roles** | Authorized by checking in the interface; unchecked tools are completely hidden from that role |
-| **System Prompt** | Each role can set an independent prompt to precisely anchor that role's business context and response style |
-

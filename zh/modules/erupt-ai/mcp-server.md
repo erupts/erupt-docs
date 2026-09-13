@@ -1,8 +1,8 @@
-# 内置 MCP Server
+# 对外提供 MCP Server
 
 把 erupt 自身的 AI Tools 作为 MCP Server 对外暴露，Cursor、Claude Code、VS Code 等客户端即可直连，用自然语言读写 erupt 的实体数据。
 
-反向能力（把外部 MCP 挂进 erupt）见 [接入 MCP 生态](/zh/modules/erupt-ai/mcp)。
+反向能力（把外部 MCP 挂进 erupt）见 [接入外部 MCP Server](/zh/modules/erupt-ai/mcp)。
 
 1. 在 `application.yml` 中开启 MCP 配置：
 

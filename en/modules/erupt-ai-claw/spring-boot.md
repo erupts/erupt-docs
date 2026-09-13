@@ -1,4 +1,4 @@
-# Claw and Spring Boot
+# Inspect App Runtime (Spring Boot)
 
 Supports obtaining real-time service status and configuration information through conversation.
 

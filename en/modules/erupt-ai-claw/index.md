@@ -1,7 +1,7 @@
 # Erupt AI Claw
 
 <a href="https://www.erupt.xyz/#!/ai-claw" target="_blank">
-  <img src="/ai-claw/banner.png" width="1747">
+  <img src="/ai-claw/banner.png" width="1000">
 </a>
 
 :::info
@@ -40,7 +40,7 @@ erupt:
 ```
 
 :::warning
-Claw has full tool permissions by default. **In production environments, restrict the available Tool scope via role configuration** (supported from v1.14.3+, see [Role-Level Tool Authorization](/en/modules/erupt-ai/tools#role-level-tool-authorization)). Security first!
+Claw has full tool permissions by default. **In production environments, restrict the available Tool scope via role configuration** (supported from v1.14.3+, see [Authorize Tools by Role](/en/modules/erupt-ai/tool-auth)). Security first!
 :::
 
 ## Token Preparation
@@ -51,10 +51,10 @@ The effectiveness of Claw varies by model. Mainstream public models are recommen
 
 | Page | Contents |
 |---|---|
-| [Claw and Skills](/en/modules/erupt-ai-claw/skill) | 700,000+ Agent Skills; create, patch and run Skills from the conversation |
-| [Claw and Erupt Model Interaction](/en/modules/erupt-ai-claw/erupt-model) | CRUD any Erupt model in natural language |
-| [Claw and Operating System Interaction](/en/modules/erupt-ai-claw/os) | Sandboxed shell and file access, with layered guardrails |
-| [Claw and Browser Interaction](/en/modules/erupt-ai-claw/browser) | Drive a browser through the chrome-devtools MCP |
-| [Claw and Long-Term Memory](/en/modules/erupt-ai-claw/memory) | Cross-session memory persisted per user |
-| [Claw and Spring Boot](/en/modules/erupt-ai-claw/spring-boot) | Threads, configuration, GC and scheduler info via chat |
+| [Install & Use Skills](/en/modules/erupt-ai-claw/skill) | 700,000+ Agent Skills; create, patch and run Skills from the conversation |
+| [Operate Erupt Data by Chat](/en/modules/erupt-ai-claw/erupt-model) | CRUD any Erupt model in natural language |
+| [Shell & File Operations](/en/modules/erupt-ai-claw/os) | Sandboxed shell and file access, with layered guardrails |
+| [Control a Browser](/en/modules/erupt-ai-claw/browser) | Drive a browser through the chrome-devtools MCP |
+| [Long-Term Memory](/en/modules/erupt-ai-claw/memory) | Cross-session memory persisted per user |
+| [Inspect App Runtime (Spring Boot)](/en/modules/erupt-ai-claw/spring-boot) | Threads, configuration, GC and scheduler info via chat |
 | [Tool Reference & Role Authorization](/en/modules/erupt-ai-claw/tools) | Every built-in `@Tool`, authorized per role |

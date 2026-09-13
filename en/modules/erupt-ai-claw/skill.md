@@ -1,4 +1,4 @@
-# Claw and Skills
+# Install & Use Skills
 
 :::info
 Supports interaction with 700,000+ Skills, and can also dynamically create Skills via prompts. Erupt Claw will automatically match and execute the corresponding Skill based on the prompt.
