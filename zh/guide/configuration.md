@@ -254,20 +254,21 @@ window.eruptSiteConfig = {
 
 ## 前端样式（app.css）
 
-文件需手动创建，位置：`/resources/public/app.css`
+文件需手动创建，位置：`/resources/public/app.css`。它在框架样式之后加载，用来覆盖默认样式或补充新样式。
 
-可通过 app.css 覆盖页面原有样式，或定义新的样式。
+主题色、顶栏颜色已经有 `app.js` 的 `theme` 配置，不需要写 CSS。下面以调整登录框为例：
 
 ```css
-/* 例：修改登录页样式 */
-layout-passport > .container {
-    background-position: center !important;
-    background-repeat: repeat !important;
-    background-size: cover !important;
-    background-color: #fff !important;
-    background-image: url(https://www.erupt.xyz/login-bg.svg) !important;
+/* 例：登录框加宽、加大圆角、顶部加一条主题色 */
+:root layout-passport .lp-card {
+    max-width: 420px;
+    border-radius: 16px;
+    border-top: 4px solid var(--ant-primary-color);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18);
 }
 ```
+
+选择器前加 `:root` 是为了压过组件自带样式的优先级；暗色模式下 `<html>` 带 `.dark`，需要区分时写 `:root.dark layout-passport .lp-card`。
 
 ## 自定义首页（home.html）
 

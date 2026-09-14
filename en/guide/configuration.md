@@ -256,20 +256,21 @@ window.eruptSiteConfig = {
 
 ## Frontend Styles (`app.css`)
 
-Create the file manually at `/resources/public/app.css`.
+Create the file manually at `/resources/public/app.css`. It is loaded after the framework stylesheets and is where you override defaults or add styles of your own.
 
-Use `app.css` to override default styles or define new ones.
+The primary and header colors are already covered by the `theme` block in `app.js`, so they need no CSS. Here is the login card as an example:
 
 ```css
-/* Example: customize the login page */
-layout-passport > .container {
-    background-position: center !important;
-    background-repeat: repeat !important;
-    background-size: cover !important;
-    background-color: #fff !important;
-    background-image: url(https://www.erupt.xyz/login-bg.svg) !important;
+/* Example: wider login card, bigger radius, primary-colored top edge */
+:root layout-passport .lp-card {
+    max-width: 420px;
+    border-radius: 16px;
+    border-top: 4px solid var(--ant-primary-color);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18);
 }
 ```
+
+The `:root` prefix out-ranks the component's own styles. In dark mode `<html>` carries `.dark`, so write `:root.dark layout-passport .lp-card` when the two modes need different values.
 
 ## Custom Home Page (`home.html`)
 
