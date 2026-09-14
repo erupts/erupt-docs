@@ -154,12 +154,6 @@ Image and version info: [https://hub.docker.com/repository/docker/erupts/erupt/g
 
 The Docker image is `erupt-cloud-server`. You can develop `erupt-cloud-node` nodes to achieve distributed capabilities.
 
-## Cannot log in after a successful start
-
-If the default password does not work, check the database for user data. If the user table is empty, locate the `.erupt` folder in the project, delete it, and restart.
-
-See [FAQ](/en/guide/faq) for more details.
-
 ## Next Step
 
 After the project starts successfully, head to the [First Example](/en/guide/getting-started) to learn how to build your first admin page with a single Java class.
