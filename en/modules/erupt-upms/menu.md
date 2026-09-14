@@ -26,6 +26,22 @@ Your own business models can declare menus in code instead of entering them by h
 | Report | Report code | Requires the erupt-report module |
 | Template | Template filename (under the tpl directory) | Requires the erupt-tpl module |
 
+## Link vs Micro-frontend Link
+
+Both **Micro-frontend Link** and **Link** embed an external site and take a full URL as the type value. They differ in what the target site has to allow.
+
+The micro frontend is not affected by the target's `X-Frame-Options` or `frame-ancestors`, because the remote page is never navigated to as a frame — the host fetches it. The price is that the target must allow cross-origin reads: the HTML and every static asset need CORS headers that permit your admin domain.
+
+**Link** (the iframe route) is the opposite: no CORS needed, but any one of the headers below makes the browser refuse it, leaving a blank area or a broken-document icon:
+
+```
+X-Frame-Options: DENY
+X-Frame-Options: SAMEORIGIN
+Content-Security-Policy: frame-ancestors 'none'
+```
+
+This is the target server's policy and cannot be worked around from the frontend. The only fix is to have them allow `frame-ancestors` for your admin domain.
+
 ## Fields
 
 | Field | Description |

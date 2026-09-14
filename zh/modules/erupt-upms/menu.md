@@ -26,6 +26,22 @@
 | 报表 | 报表编码 | 需引入 erupt-report 模块 |
 | 模板 | 模板文件名（在 tpl 目录下） | 需引入 erupt-tpl 模块 |
 
+## 链接 vs 微前端链接
+
+「微前端链接」和「链接」都用来嵌入外部站点，类型值填完整 URL，区别在于对方站点需要满足的条件不同。
+
+微前端方式不受对方 `X-Frame-Options` 和 `frame-ancestors` 的限制，因为远端页面从未作为 frame 被导航，是宿主 fetch 回来的。代价是对方必须允许跨域读取——HTML 和每一个静态资源都要带上放行你后台域名的 CORS 响应头。
+
+如果改用「链接」（iframe 方式），则相反：不需要 CORS，但只要对方响应头里有下面任意一条，浏览器就会拒绝，页面显示为空白或裂开的文档图标：
+
+```
+X-Frame-Options: DENY
+X-Frame-Options: SAMEORIGIN
+Content-Security-Policy: frame-ancestors 'none'
+```
+
+这是对方服务端的策略，前端无法绕过，只能请对方把 `frame-ancestors` 放开到你的后台域名。
+
 ## 字段说明
 
 | 字段 | 说明 |

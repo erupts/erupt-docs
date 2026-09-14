@@ -64,12 +64,11 @@ Once erupt-tpl is on the classpath, two extra entries appear under **Menu Type**
 |---|---|---|---|
 | Custom Page (Iframe) | `tpl` | Native iframe | `/tpl/<filename>` |
 | Custom Page (Micro Frontend) | `mtpl` | Micro-frontend container | `/mtpl/<filename>` |
-| External Link (Micro Frontend) | `mlink` | Micro-frontend container | `/msite/<base64 URL>` |
 
-For `tpl` and `mtpl` the **type value is a file name under the `tpl` directory** — no path prefix, no absolute path; the backend resolves it to `/tpl/<filename>` on the classpath. For `mlink` the type value is a full URL.
+For `tpl` and `mtpl` the **type value is a file name under the `tpl` directory** — no path prefix, no absolute path; the backend resolves it to `/tpl/<filename>` on the classpath.
 
 :::warning Never put a URL in `mtpl`
-The type value of `tpl` / `mtpl` becomes a route segment, so the slashes in a URL get chopped up by the router and you land on something like `#/tpl/https:`. To embed an external system use `mlink` or `link`, which base64-encode the URL before it enters the route.
+The type value of `tpl` / `mtpl` becomes a route segment, so the slashes in a URL get chopped up by the router and you land on something like `#/tpl/https:`. To embed an external system use the built-in upms **Link** or **Micro-frontend Link** menu types (see [Menu Management](/en/modules/erupt-upms/menu)), which base64-encode the URL before it enters the route.
 :::
 
 :::warning Templates must live under `resources/tpl/`
@@ -136,22 +135,6 @@ With SSR streaming hydration the server HTML and the hydration bootstrap scripts
 - **Keep-alive**: switching tabs does not unmount the sub-app; coming back restores it instead of reloading.
 - **Multiple instances**: the container's app name is derived from the sub-app URL, so several micro-frontend menus can be open at once without colliding.
 - **Visible failures**: when a sub-app fails to load an error is shown rather than a blank page.
-
-### Embedding an External Site
-
-Pick the `mlink` menu type and put the full URL in the type value.
-
-The micro frontend is not affected by the target's `X-Frame-Options` or `frame-ancestors`, because the remote page is never navigated to as a frame — the host fetches it. The price is that the target must allow cross-origin reads: the HTML and every static asset need CORS headers that permit your admin domain.
-
-The iframe route (the `link` menu type) is the opposite: no CORS needed, but any one of the headers below makes the browser refuse it, leaving a blank area or a broken-document icon:
-
-```
-X-Frame-Options: DENY
-X-Frame-Options: SAMEORIGIN
-Content-Security-Policy: frame-ancestors 'none'
-```
-
-This is the target server's policy and cannot be worked around from the frontend. The only fix is to have them allow `frame-ancestors` for your admin domain.
 
 :::tip Which one to pick
 If the sub-app is yours, use the micro frontend: height adapts naturally, its dialogs are not clipped by a frame, and switching tabs does not reload it. If the sub-app is not fully trusted, or is an SSR streaming framework, use the iframe.
