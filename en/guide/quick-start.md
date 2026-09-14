@@ -31,8 +31,7 @@ demo -- project name
 │         │              └── DemoApplication -- entry class
 │         └── resources -- resources
 │                  ├── public
-│                  │    ├── app.js    -- frontend config (title, logo, etc.)
-│                  │    └── home.html -- home layout
+│                  │    └── app.js -- frontend config (title, logo, etc.)
 │                  └── application.yml -- configuration file
 └── pom.xml -- Maven dependencies
 ```
@@ -132,7 +131,6 @@ public class DemoApplication {
 | --- | --- |
 | `resources/public/app.js` | Frontend config — title, logo, lifecycle hooks, etc. |
 | `resources/public/app.css` | Frontend styles (optional) |
-| `resources/public/home.html` | Home layout (without it, the home page returns 404) |
 
 ### 4. Configure the database and start
 

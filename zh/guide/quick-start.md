@@ -31,8 +31,7 @@ demo -- 项目名称
 │         │              └── DemoApplication -- 入口类
 │         └── resources -- 资源文件目录
 │                  ├── public
-│                  │    ├── app.js    -- 前端配置（标题、Logo 等）
-│                  │    └── home.html -- 首页布局
+│                  │    └── app.js -- 前端配置（标题、Logo 等）
 │                  └── application.yml -- 配置文件
 └── pom.xml -- Maven 依赖配置
 ```
@@ -132,7 +131,6 @@ public class DemoApplication {
 | --- | --- |
 | `resources/public/app.js` | 前端配置，可修改标题、Logo、生命周期函数等 |
 | `resources/public/app.css` | 前端样式（可选） |
-| `resources/public/home.html` | 首页布局（不创建则首页 404） |
 
 ### 4. 配置数据库并启动
 

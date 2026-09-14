@@ -323,7 +323,7 @@ layout-passport > .container {
 
 ## Custom Home Page (`home.html`)
 
-Create the file manually at `/resources/public/home.html`.
+Erupt ships a default home page that works out of the box. To replace it with your own, create `/resources/public/home.html` — the framework loads it in place of the default:
 
 ```html
 <!DOCTYPE html>

@@ -321,7 +321,7 @@ layout-passport > .container {
 
 ## 自定义首页（home.html）
 
-文件需手动创建，位置：`/resources/public/home.html`
+Erupt 自带默认首页，无需配置即可使用。如需替换为自己的首页，在 `/resources/public/home.html` 创建文件即可，框架会优先加载它：
 
 ```html
 <!DOCTYPE html>
