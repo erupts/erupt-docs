@@ -1,10 +1,18 @@
 # Database Support
 
-Erupt supports all mainstream relational databases, MongoDB, and custom data sources.
+"Wherever the data lives, the admin lives too" — one set of `@Erupt` annotations manages relational databases, NoSQL, REST APIs, files, object storage and even SaaS tables.
 
 ![Database support](/database/img.png)
 
-> **Note:** Import the corresponding JDBC driver dependency before use.
+Data access comes in three layers; pick what you need:
+
+| Layer | When to use it | How |
+| --- | --- | --- |
+| **Relational (JPA)** | Most business systems | Add `erupt-data-jpa` and configure the connection as below — the bulk of this page |
+| **[Data connectors](#data-connectors)** | MongoDB, ES, Redis, REST APIs, files, K8s, S3… | Add the matching `erupt-data-*` module |
+| **[Custom data source](#custom-data-source)** | A private protocol or internal service none of the above covers | Implement `IEruptDataService` or extend `EruptBeanDataService` |
+
+> **Note:** Import the corresponding JDBC driver dependency before using a relational database.
 
 The snippets below are minimal templates — adjust the values to your environment. The configuration for each database in `application.yml` is as follows.
 
@@ -134,15 +142,40 @@ spring:
 </dependency>
 ```
 
-## MongoDB
+## Data Connectors
 
-As a universal data-management framework, Erupt is not limited to relational databases and also supports MongoDB.
+Everything beyond relational databases is reached through the **erupt-data** connector layer: one data source interface, and the same annotated model gets CRUD, paging and search — with tables, forms, permissions and export behaving exactly as they do for a JPA model.
 
-See: [NoSQL data source · erupt-mongodb](/en/modules/erupt-mongodb).
+| Module | artifactId | What it connects |
+| --- | --- | --- |
+| [erupt-jpa](/en/modules/erupt-jpa) | `erupt-data-jpa` | Relational databases — the default for most projects |
+| [erupt-mongodb](/en/modules/erupt-mongodb) | `erupt-data-mongodb` | MongoDB documents |
+| [erupt-jdbc](/en/modules/erupt-jdbc) | `erupt-data-jdbc` | Plain JDBC single-table access with no JPA mapping — ClickHouse, Doris, TDengine, Dameng… |
+| [erupt-http](/en/modules/erupt-http) | `erupt-data-http` | A REST API as a data source: any HTTP service becomes a managed table |
+| [erupt-es](/en/modules/erupt-es) | `erupt-data-es` | Elasticsearch indices and full-text search |
+| [erupt-redis](/en/modules/erupt-redis) | `erupt-data-redis` | Redis key-value data |
+| [erupt-memory](/en/modules/erupt-memory) | `erupt-data-memory` | In-memory data, no database required |
+| [erupt-file](/en/modules/erupt-file) | `erupt-data-file` | Files as tables — CSV, JSONL, TSV, INI… |
+| [erupt-k8s](/en/modules/erupt-k8s) | `erupt-data-k8s` | Kubernetes cluster resources |
+| [erupt-ldap](/en/modules/erupt-ldap) | `erupt-data-ldap` | LDAP / Active Directory entries |
+| [erupt-feishu](/en/modules/erupt-feishu) | `erupt-data-feishu` | Feishu Bitable |
+| [erupt-notion](/en/modules/erupt-notion) | `erupt-data-notion` | Notion databases |
+| [erupt-s3](/en/modules/erupt-s3) | `erupt-data-s3` | S3-compatible object storage |
+
+Several connectors can coexist in one project; each `@Erupt` model belongs to its own data source without affecting the others.
+
+:::warning Know the limits
+Non-JPA sources inherit their protocol's limits: file and REST sources have no transactions, Redis and memory sources cannot do complex joins. Each module's page lists the query and write capabilities it actually supports.
+:::
 
 ## Custom Data Source
 
-Erupt is positioned as a universal data-management framework, so the custom data-source capability is open by design — we hope it unlocks endless possibilities for the Erupt ecosystem.
+When none of the modules fit, implement your own to reach a private protocol or an internal service:
+
+- **`IEruptDataService`** — the full interface: querying, paging, drill-down and writes are all yours to implement, and nothing is off limits
+- **`EruptBeanDataService`** — implement a single `data()` method returning the rows; condition evaluation, sorting, paging and drill-down come from the base class. **For any source that can only hand you whole rows (files, REST, SaaS tables, directory services, object storage), this is the one to use.**
+
+Register the implementation with `DataProcessorManager.register(...)` and point a model at it with `@EruptDataProcessor`. Full walkthrough: [Custom Data Source (EruptDataService)](/en/advanced/custom-datasource).
 
 ## Other Databases
 

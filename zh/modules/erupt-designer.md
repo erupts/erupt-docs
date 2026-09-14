@@ -55,8 +55,34 @@ public class MyModel extends BaseModel {
 - 每次服务启动时，所有已发布的设计模型会自动重新注册，无需手动操作。
 - 若同名的真实 `@Erupt` 类已存在，设计器无法覆盖，避免冲突。
 
+## 数据存储 <Badge type="tip" text="v2.2.0+" />
+
+2.2.0 起，设计器模型的**业务数据**存放在一个内嵌 SQLite 文件中，每个已发布的设计对应其中一张真实表（表名 `d_<类名小写>`）：
+
+```yaml
+erupt:
+  designer:
+    # SQLite 文件路径，相对路径相对 JVM 工作目录解析
+    db-path: data/designer.db
+    # 连接池大小；SQLite 同一时刻只允许一个写入者，WAL 模式下读取可并发
+    max-pool-size: 4
+```
+
+这样标量字段落成原生列，过滤、排序、分页都下推为 SQL，且不受宿主项目用的是哪种数据库影响。引用与多值字段保留复合值，以 JSON 文本存储，用 `json_extract` / `json_each` 检索。
+
+表结构变更是**只增不减**且幂等的：只新增列，不删除、不改类型；字段重命名会按发布时分配的字段 id 移动原列，使已有数据跟着新名字走，而不是滞留在旧列中。
+
+:::warning 该文件不在主数据库里
+`designer.db` 是独立文件，请挂载到持久化卷并纳入备份，否则容器重建后设计器数据会丢失。
+:::
+
+:::info 从 2.1.x 升级
+旧版数据保存在主库的 `e_designer_data` 表中，2.2.0 **不会自动迁移**。升级后重新发布设计即可得到新表结构；如需保留历史数据，请从 `e_designer_data` 中导出 JSON 后重新导入。
+
+该表升级后不再被读写，Hibernate 也不会自动删除，确认数据无用后可手动 `DROP TABLE e_designer_data`。设计配置本身（`e_designer`）仍在使用，不受影响。
+:::
+
 ## 注意事项
 
-- 设计器模型的数据存储在 `e_designer_data` 表中，不会自动建表（DDL 由 `ddl-auto` 控制）。
 - 字段类型支持：`INPUT`、`TEXTAREA`、`NUMBER`、`DATE`、`BOOLEAN`、`CHOICE`、`MULTI_CHOICE`、`SLIDER`、`RATE`、`COLOR`、`REFERENCE_TREE`、`REFERENCE_TABLE` 等常用类型。
 - 关联字段（`REFERENCE_*`）需要关联到已存在的 Erupt 模型。

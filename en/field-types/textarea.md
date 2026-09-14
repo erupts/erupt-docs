@@ -15,7 +15,7 @@ Multi-line text input, suitable for storing longer content.
 private String textarea;
 ```
 
-## Configuration <Badge type="tip" text="v2.1.2+" />
+## Configuration <Badge type="tip" text="v2.2.0+" />
 
 Configured through the `textareaType` attribute of `@Edit`:
 
@@ -52,7 +52,7 @@ public @interface TextareaType {
 private String remark;
 ```
 
-## Mentions <Badge type="tip" text="v2.1.2+" />
+## Mentions <Badge type="tip" text="v2.2.0+" />
 
 Typing a trigger character (such as `@`) inside the textarea opens a suggestion list, and picking an entry inserts it into the text. Useful for mentioning an assignee in a ticket note, referencing an order number with `#`, and similar cases.
 

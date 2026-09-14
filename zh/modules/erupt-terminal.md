@@ -34,7 +34,9 @@ Terminal 模块可执行任意 Shell 命令，权限等同于运行 Java 进程�
 
 ## 效果预览
 
-连接成功后，终端会展示当前主机名、操作系统、Java 版本等信息横幅，随后进入可交互的 Shell：
+连接成功后，终端会展示当前主机名、操作系统、Java 版本等信息横幅，随后进入可交互的 Shell。左侧 TABS 面板管理多个并行会话：
+
+![Erupt Terminal](/erupt-terminal/terminal.png)
 
 ```
 ───────────────────────────────────────
@@ -45,6 +47,23 @@ Terminal 模块可执行任意 Shell 命令，权限等同于运行 Java 进程�
 ───────────────────────────────────────
 [root@my-server ~]$
 ```
+
+## 与 erupt-remote 的区别
+
+两个模块都把终端搬进了浏览器，但**连的不是同一台机器**：
+
+| | [erupt-terminal](/zh/modules/erupt-terminal) | [erupt-remote](/zh/modules/erupt-remote) |
+| --- | --- | --- |
+| 连接目标 | **erupt 服务自身所在的主机**，固定，不可选择 | **受管的其他主机**，在「远程主机」表格中按条目维护 |
+| 连接方式 | 本机 PTY（伪终端），直接 fork 一个 Shell 进程 | 网络协议：SSH（`jsch`）或 VNC（RFB） |
+| 能力 | Shell 终端 | Shell 终端 + **图形桌面** |
+| 身份 | 运行 Java 进程的系统用户，**无需填账号密码** | 每台主机各自的账号 / 密码 / 私钥，AES-GCM 加密存储 |
+| 会话管理 | 多标签页，30 分钟空闲断开 | 一次性票据 + 全局并发上限 + 空闲回收 |
+| 权限 | `terminal` 菜单权限 | `RemoteHost` 菜单权限（票据接口与 WebSocket 各校验一次） |
+| WebSocket 路径 | `/erupt-terminal` | `/erupt-remote` |
+| 目标主机准备 | 无需任何准备 | SSH 用系统自带 sshd；VNC 需目标主机运行 VNC 服务端 |
+
+一句话选型：**运维 erupt 自己所在的那台机器**用 erupt-terminal；**管理一批服务器、或者需要图形桌面**用 erupt-remote。两者互不依赖，可同时引入。
 
 ## 权限配置
 

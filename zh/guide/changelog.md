@@ -1,5 +1,149 @@
 # 更新日志
 
+## 2.2.0（2026-09-15） <Badge type="tip" text="Spring Boot 3.5.16" />
+
+:::warning 破坏性变更
+升级前请阅读 [V 2.2.0 升级指南](/zh/guide/upgrade#v-2-2-0-升级指南)。
+
+**erupt-designer 数据迁移到内嵌 SQLite**：业务数据不再存放于主库 `e_designer_data` 表，**不会自动迁移**，该文件需单独纳入备份与持久化卷。
+
+另有数据库表结构变更，见本版本末尾的[数据库变更](#数据库变更)。
+:::
+
+🦞 开源 [erupt-atlas](/zh/modules/erupt-atlas) 模型图谱模块：注解里已有的关系直接画成图，含血缘追溯、依赖分层、模块耦合矩阵、影响面分析，以及循环引用 / 共享表 / 孤岛模型的结构体检
+
+🦞 开源 [erupt-remote](/zh/modules/erupt-remote) 远程访问模块：浏览器内直连远程主机，VNC 桌面与 SSH 终端共用一条 WebSocket，凭据 AES-GCM 加密存储，VNC 认证由服务端代答，密码不下发到前端
+
+🌟 表格新增[多维表格能力](/zh/annotation/power#celledit-单元格编辑)：双击单元格就地改一个字段，无需打开行表单。服务端按整行校验，`DataProxy`、操作日志与事件的表现同表单提交完全一致；模型级 `@Power(cellEdit)` 与字段级 `@Edit(cellEdit)` 两级开关
+
+🌟 文本字段新增 [表单 AI 写作助手](/zh/modules/erupt-ai/writing-assistant)：以同表单其他字段为背景，生成 / 润色 / 续写 / 缩写 / 扩写字段内容，SSE 流式返回且不落库，`@Edit(prompt)` 即该字段的写作指引
+
+🌟 [erupt-ai 支持多模态对话](/zh/modules/erupt-ai/chat#多模态对话)：回形针按钮或剪贴板粘贴即可上传图片，与文本一并发给大模型；图片随消息持久化，重建历史上下文、重新生成、编辑重发时一并带上
+
+🌟 新增 [Liquid Glass 液态玻璃皮肤](/zh/modules/erupt-web#主题与皮肤)：侧边栏是一块带背景模糊与高光边缘的半透明玻璃面板，悬浮在环境色场之上，与默认、Brutalist 皮肤在设置抽屉中一键切换
+
+🌟 新增[暗色主题](/zh/modules/erupt-web#主题与皮肤)：亮色 / 暗色 / 跟随系统三档，跟随系统随 OS 实时切换，图表、代码编辑器、Markdown 预览同步适配；紧凑模式可与之自由组合
+
+🌟 [TPL 字段](/zh/field-types/tpl#与表单通信)与表单双向通信：模板可读取同表单全部字段值，也能回写 formData 与 editExpr，自定义编辑器不再是信息孤岛
+
+🧩 [主题色与顶栏色](/zh/modules/erupt-web#主题与皮肤)支持取色器自定义并记住选择，默认主题色调整为 `rgb(22, 119, 255)`
+
+🧩 [菜单布局](/zh/modules/erupt-web#主题与皮肤)新增单列 / 分栏 / 双列三种模式，双列为一级图标栏 + 所选分类子菜单；侧边栏折叠时可在图标下方显示菜单名
+
+🧩 亮色主题下可单独启用[深色侧边栏](/zh/modules/erupt-web#主题与皮肤)
+
+🧩 [登录页](/zh/modules/erupt-web#主题与皮肤)新增皮肤下拉与主题色取色器，登录前就能把界面调成想要的样子
+
+🧩 多标签页增强：行操作或链接打开的非菜单页面（远程主机、AI 画布、Cube 仪表盘、表单设计器）按其数据命名标签，返回时自动关闭
+
+🧩 菜单树默认只展开一级，菜单较多时不再一次铺满屏幕
+
+🧩 图标库升级至 Font Awesome 7，可用图标由 675 个增加到 1992 个，FA4 旧类名继续可用
+
+🧩 微前端容器改用 iframe 沙箱，Vite / ESM 构建的子应用可正常加载，多个微前端菜单可同时打开
+
+🧩 菜单新增[微前端链接类型](/zh/modules/erupt-upms/menu)：目标站点拒绝被 iframe 嵌入时，改在微前端容器中打开
+
+🧩 甘特图与 Markdown 编辑器按需加载，页面真正用到时才拉取依赖
+
+🧩 [TEXTAREA](/zh/field-types/textarea#配置项) 新增配置项：最大长度、可见行数区间，以及 `@` / `#` 提及（静态候选项 + `TagsFetchHandler` 动态候选项，服务端按需下发）
+
+🧩 [AUTO_COMPLETE](/zh/field-types/auto-complete#静态候选项) 支持 `values` 静态候选项，`handler` 不再必填
+
+🧩 [NUMBER](/zh/field-types/number) 数值输入框不再响应鼠标滚轮，滚动页面时不会误改数值
+
+🧩 树视图标签支持 [@EruptI18n](/zh/advanced/i18n) 多语言翻译，菜单管理等树形页面不再固定显示中文
+
+🧩 [erupt-designer](/zh/modules/erupt-designer#数据存储) 数据改存内嵌 SQLite：每个已发布设计对应一张真实表，过滤 / 排序 / 分页全部下推为 SQL，不再受宿主数据库类型影响
+
+🧩 [erupt-ai-canvas](/zh/modules/erupt-ai-canvas) 增强：一个画布可绑定多个数据模型并分别配置增 / 改 / 删权限，生成改为异步轮询，新增页面校验与发布版本
+
+🧩 AI 对话输入栏新增[模型选择器](/zh/modules/erupt-ai/chat#模型选择器)，存在多个已启用模型时可随时切换，`?llm=` 锁定模型时自动隐藏
+
+🧩 AI 回复语言跟随控制台当前语言，不再无论用什么语言提问都倾向中文作答
+
+🧩 新增 [`erupt.ai.request-timeout`](/zh/guide/configuration#erupt-ai-ai-模块) 配置，LLM 请求读超时默认放宽到 15 分钟（langchain4j 默认 60 秒，长文本非流式生成会被截断）
+
+🧩 [erupt-print](/zh/modules/erupt-print) 打印模板内容改用 CKEditor 编辑，与前端打印模板编辑器的存储格式（Velocity 占位符 + 组件标记）保持一致
+
+🧩 新增[匿名遥测](/zh/guide/telemetry)，仅上报版本、模块等匿名信息，可随时关闭
+
+🧩 用户与角色列表不再按创建人过滤，可见性统一由菜单与角色权限决定，**升级后请复核这两个菜单的授权范围**，详见[升级指南](/zh/guide/upgrade#v-2-2-0-升级指南)
+
+🧩 WebSocket 推送改为按连接异步队列，业务线程不再被慢客户端阻塞
+
+🧩 ip2region 改为按需加载 xdb 文件，不再随包分发内置库
+
+🐞 修复 erupt-api 返回 Map / Collection 时绕过 Gson 安全序列化，导致 64 位 ID 在浏览器端精度丢失的问题
+
+🐞 修复开启 `redis-session` 后定时任务崩溃的问题，改为从 Spring 容器获取 LockProvider，感谢 [chenxiaolong8023](https://github.com/chenxiaolong8023) 贡献的代码
+
+🐞 修复子表临时主键不稳定导致行数据错乱的问题
+
+🐞 修复拖拽排序时占位行与测量行也带出拖拽手柄的问题
+
+🐞 修复设计器复制字段时沿用原字段 id 的问题
+
+
+### 数据库变更
+
+:::info
+表结构变更由 JPA / Hibernate 在启动时自动执行，仅当项目禁用了自动 DDL（`spring.jpa.hibernate.ddl-auto=none` 或 `validate`）时才需手动执行。
+:::
+
+本版本涉及：新增 `e_ai_canvas_model` 表；`e_ai_canvas` 迁移后删除两列；`e_ai_chat_message` 新增一列；`e_designer_data` 不再使用。引入 [erupt-remote](/zh/modules/erupt-remote) 时会新建 `e_remote_host` 表，由 Hibernate 自动创建。
+
+::: details 展开 SQL（MySQL 语法，其他数据库请自行转换）
+
+**`e_ai_canvas_model` 新增表（erupt-ai-canvas）**
+
+```sql
+CREATE TABLE e_ai_canvas_model
+(
+    id           BIGINT NOT NULL AUTO_INCREMENT,
+    canvas_id    BIGINT,
+    data_type    VARCHAR(255),
+    model        VARCHAR(255),
+    purpose      VARCHAR(255),
+    allow_add    BIT(1),
+    allow_edit   BIT(1),
+    allow_delete BIT(1),
+    PRIMARY KEY (id)
+);
+ALTER TABLE e_ai_canvas_model ADD CONSTRAINT fk_ai_canvas_model_canvas FOREIGN KEY (canvas_id) REFERENCES e_ai_canvas (id);
+```
+
+**`e_ai_canvas` 字段调整（erupt-ai-canvas）**
+
+数据模型绑定移入 `e_ai_canvas_model`，原单模型字段不再使用。**先迁移数据，再删除旧列**：
+
+```sql
+INSERT INTO e_ai_canvas_model (canvas_id, data_type, model, allow_add, allow_edit, allow_delete)
+SELECT id, data_type, target_model, 0, 0, 0 FROM e_ai_canvas WHERE target_model IS NOT NULL;
+
+ALTER TABLE e_ai_canvas DROP COLUMN data_type;
+ALTER TABLE e_ai_canvas DROP COLUMN target_model;
+```
+
+**`e_ai_chat_message` 新增字段（erupt-ai）**
+
+```sql
+ALTER TABLE e_ai_chat_message ADD COLUMN images LONGTEXT COMMENT '用户消息携带的图片附件路径 JSON 数组';
+```
+
+**`e_designer_data` 不再使用（erupt-designer）**
+
+设计器业务数据改存内嵌 SQLite（默认 `data/designer.db`），该表不再被读写，**Hibernate 也不会再自动删除它**。数据不会自动迁移，请确认已无需要保留的数据（或已导出）后再手动删除：
+
+```sql
+-- 删除前务必确认数据已迁移或不再需要，该操作不可逆
+DROP TABLE e_designer_data;
+```
+
+设计配置表 `e_designer` 仍在使用，请勿删除。
+
+:::
+
 ## 2.1.1（2026-08-30） <Badge type="tip" text="Spring Boot 3.5.16" />
 
 🌟 新增 [MULTI_FORM 多表单块](/zh/field-types/multi-form)编辑类型，一对多子表以内联表单块方式直接编辑，适合子表字段较多的录入场景
@@ -72,7 +216,7 @@
 
 🌟 [erupt-cube](/zh/modules/pro/erupt-cube/sql) 新增 SQL Port：PostgreSQL 兼容协议端口（基于 Calcite 查询下推），任意 BI 工具可像连接 PostgreSQL 一样直连语义层
 
-🌟 [erupt-ai-claw](/zh/modules/erupt-ai-claw) 增强：沙箱化文件与 Shell 工具、Agent Skills 技能库与技能沉淀、Erupt 模型增删改查工具箱、JVM 与 Spring 运行时诊断工具
+🌟 [erupt-ai-claw](/zh/modules/erupt-ai-claw/) 增强：沙箱化文件与 Shell 工具、Agent Skills 技能库与技能沉淀、Erupt 模型增删改查工具箱、JVM 与 Spring 运行时诊断工具
 
 🌟 [erupt-cloud](/zh/modules/erupt-cloud) 增强：节点生命周期管理、资源上报、路由容灾与优雅停机，并支持挂载 erupt-flow、erupt-ai-claw、erupt-monitor 等模块
 
@@ -115,7 +259,7 @@
 
 🧩 AI 模型、MCP Server、智能体、定时任务等内置表单新增测试/校验按钮，连接与配置正确性一键验证
 
-🧩 [erupt-ai](/zh/modules/erupt-ai) 支持嵌入式聊天模式，LLM 的 apiKey 改用密码视图掩码展示
+🧩 [erupt-ai](/zh/modules/erupt-ai/) 支持嵌入式聊天模式，LLM 的 apiKey 改用密码视图掩码展示
 
 🧩 日期解析更宽容，兼容更多日期/时间输入格式
 
@@ -157,7 +301,7 @@
 
 🌟 [erupt-monitor](/zh/modules/erupt-monitor) **完全重写**：全新诊断监控体系，覆盖 JVM、HikariCP 连接池、HTTP 统计、Redis 健康指标
 
-🌟 [erupt-ai](/zh/modules/erupt-ai#llmrequest-请求级扩展)：LLM 请求支持 `agentPrompt` 与 `contextPrompt`，可按调用场景注入上下文感知提示词
+🌟 [erupt-ai](/zh/modules/erupt-ai/prompt#llmrequest-请求级扩展)：LLM 请求支持 `agentPrompt` 与 `contextPrompt`，可按调用场景注入上下文感知提示词
 
 🌟 [@Vis](/zh/annotation/vis) 新增日历视图（`CALENDAR`）与看板视图（`BOARD`）类型，数据可视化展示方式更多样
 

@@ -158,7 +158,7 @@ erupt:
 - **A2A Agent**：填远端 Agent base URL，自动拉 skill
 - **AI Memory**：人也能看、模型也能写
 
-更细节见 [erupt-ai 模块文档](/zh/modules/erupt-ai) 与 [erupt-ai-claw](/zh/modules/erupt-ai-claw)。
+更细节见 [erupt-ai 模块文档](/zh/modules/erupt-ai/) 与 [erupt-ai-claw](/zh/modules/erupt-ai-claw/)。
 
 ---
 

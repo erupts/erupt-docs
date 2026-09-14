@@ -37,12 +37,31 @@ public class MyAutoCompleteHandler implements AutoCompleteHandler<MyModel> {
 
 > **2.0.0+**：编辑表单中 AUTO_COMPLETE 字段旁新增刷新按钮，可按需重新拉取候选项。
 
+## 静态候选项 <Badge type="tip" text="v2.2.0+" />
+
+候选项固定时无需写 Handler，直接用 `values` 列出即可，输入时按**不区分大小写**匹配：
+
+```java
+@EruptField(
+    views = @View(title = "国家"),
+    edit = @Edit(title = "国家", type = EditType.AUTO_COMPLETE,
+                 autoCompleteType = @AutoCompleteType(values = {"中国", "美国", "日本", "德国"}))
+)
+private String country;
+```
+
+`values` 与 `handler` 可以同时配置，最终候选项为两者合并的结果。2.2.0 起 `handler` 不再是必填项。
+
 ## 配置项
 
 ```java
 public @interface AutoCompleteType {
 
-    Class<? extends AutoCompleteHandler> handler(); // 候选项处理器（必填）
+    // 预置候选项，按不区分大小写匹配输入，与 handler 结果合并（2.2.0+）
+    String[] values() default {};
+
+    // 候选项处理器；2.2.0 起可省略（默认值 AutoCompleteHandler.class 表示不使用 Handler）
+    Class<? extends AutoCompleteHandler> handler() default AutoCompleteHandler.class;
 
     String[] param() default {}; // 传递给 handler 的参数
 

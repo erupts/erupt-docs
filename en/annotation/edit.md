@@ -20,7 +20,9 @@ Configures how a field behaves in the add/edit form, including the component typ
 | `onchangeParams` | Parameters (`String[]`) passed to the `onchange` handler, readable inside the OnChange interface |
 | `orderBy` | Sort rule, HQL `ORDER BY` syntax; only applicable when the field is a related object |
 | `filter` | Filter condition, HQL `WHERE` syntax; only applicable when the field is a related object |
-| `prompt` | AI agent prompt — injected as field-level context when erupt-ai invokes this field's tool, added in 2.0.0 |
+| `prompt` | AI prompt, added in 2.0.0 — injected as field-level context when erupt-ai invokes this field's tool, and used as the authoring guidance for the [AI writing assistant](/en/modules/erupt-ai/writing-assistant) |
+| `cellEdit` | Whether this field may be edited directly in the table, defaults to `true` (2.2.0+), see [@Power cellEdit](/en/annotation/power#celledit-in-table-cell-editing) |
+| `ai` | Whether the [AI writing assistant](/en/modules/erupt-ai/writing-assistant) is offered on this field, defaults to `true`; only text-bearing components carry it (2.2.0+) |
 
 ## Component Types (EditType)
 

@@ -6,7 +6,7 @@
 
 ## Introduction
 
-AI Canvas is an AI page-generation module built on top of [erupt-ai](/en/modules/erupt-ai): pick a data model in the designer, describe the page you want, and the LLM outputs a complete HTML page (rendered live with Vue 3 + Element Plus). The page reads **real data** through the Erupt REST API via a built-in SDK, the result is stored in the database, and it can be published to the admin menu with one click.
+AI Canvas is an AI page-generation module built on top of [erupt-ai](/en/modules/erupt-ai/): pick a data model in the designer, describe the page you want, and the LLM outputs a complete HTML page (rendered live with Vue 3 + Element Plus). The page reads **real data** through the Erupt REST API via a built-in SDK, the result is stored in the database, and it can be published to the admin menu with one click.
 
 <img src="/ai-canvas/ai-canvas.png" width="900" alt="A live-data dashboard generated from one sentence">
 
@@ -35,7 +35,7 @@ Key capabilities:
 The module depends on `erupt-ai` (LLM configuration) and `erupt-upms` (menus and permissions), and bundles the Vue 3 / Element Plus / axios frontend assets. Everything is pulled in transitively — no extra setup required.
 
 :::warning
-Before use, configure at least one working LLM in erupt-ai's **LLM menu** and set a default model. See [Erupt AI Quick Start](/en/modules/erupt-ai#quick-start).
+Before use, configure at least one working LLM in erupt-ai's **LLM menu** and set a default model. See [Erupt AI Quick Start](/en/modules/erupt-ai/#quick-start).
 :::
 
 ## Quick Start
@@ -139,4 +139,4 @@ erupt:
     sse-timeout: 900000
 ```
 
-LLM onboarding and default-model selection are done in erupt-ai's LLM menu. See [Erupt AI Deep LLM Integration](/en/modules/erupt-ai).
+LLM onboarding and default-model selection are done in erupt-ai's LLM menu. See [Erupt AI Deep LLM Integration](/en/modules/erupt-ai/).

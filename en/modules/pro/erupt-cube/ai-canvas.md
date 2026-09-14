@@ -59,7 +59,7 @@ Same Cube data, one prompt — "generate a new style" — and you get a complete
 </dependency>
 ```
 
-Make sure a default LLM is configured in the erupt-ai **LLM menu**; see [Erupt AI Quick Start](/en/modules/erupt-ai#quick-start).
+Make sure a default LLM is configured in the erupt-ai **LLM menu**; see [Erupt AI Quick Start](/en/modules/erupt-ai/#quick-start).
 
 ### 2. Pick a Cube
 

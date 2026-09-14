@@ -11,8 +11,8 @@ const groups = [
     {
         title: 'AI 模块',
         items: [
-            {icon: '🐴', name: 'Erupt AI Harness', artifact: 'erupt-ai', desc: '大模型深度集成，低代码开发 AI 应用', link: '/zh/modules/erupt-ai'},
-            {icon: '🦞', name: 'Erupt AI Claw', artifact: 'erupt-ai-claw', desc: '自然语言驱动服务器，对话式操作数据与业务', link: '/zh/modules/erupt-ai-claw'},
+            {icon: '🐴', name: 'Erupt AI Harness', artifact: 'erupt-ai', desc: '大模型深度集成，低代码开发 AI 应用', link: '/zh/modules/erupt-ai/'},
+            {icon: '🦞', name: 'Erupt AI Claw', artifact: 'erupt-ai-claw', desc: '自然语言驱动服务器，对话式操作数据与业务', link: '/zh/modules/erupt-ai-claw/'},
             {icon: '🎨', name: 'Erupt AI Canvas', artifact: 'erupt-ai-canvas', desc: '一句话生成页面，数据实时来自 Erupt 后端', link: '/zh/modules/erupt-ai-canvas'},
             {icon: '📖', name: 'Erupt AI RAG', artifact: 'erupt-ai-rag', desc: '知识库与向量检索，AI 自主决策的 Agentic RAG', link: '/zh/modules/erupt-ai-rag'},
             {icon: '👩‍💻', name: 'Erupt AI Staff', artifact: 'erupt-ai-staff', desc: 'AI 数字员工，定时执行任务并推送工作报告', link: '/zh/modules/erupt-ai-staff'},
@@ -22,7 +22,7 @@ const groups = [
     {
         title: '核心模块',
         items: [
-            {icon: '🔐', name: 'Erupt Upms', artifact: 'erupt-upms', desc: '用户、角色、菜单、组织的完整权限管理', link: '/zh/modules/erupt-upms'},
+            {icon: '🔐', name: 'Erupt Upms', artifact: 'erupt-upms', desc: '用户、角色、菜单、组织的完整权限管理', link: '/zh/modules/erupt-upms/'},
             {icon: '📄', name: 'Erupt Tpl', artifact: 'erupt-tpl', desc: '自定义 HTML 模板页面，多套 UI 库集成', link: '/zh/modules/erupt-tpl'},
             {icon: '🖥️', name: 'Erupt Web', artifact: 'erupt-web', desc: 'Angular 前端源码，Jar 形式分发', link: '/zh/modules/erupt-web'},
             {icon: '🎨', name: 'Erupt Designer', artifact: 'erupt-designer', desc: '运行时拖拽设计实体模型，可导出注解代码', link: '/zh/modules/erupt-designer'},
@@ -50,6 +50,8 @@ const groups = [
         title: '工具模块',
         items: [
             {icon: '⌨️', name: 'Erupt Terminal', artifact: 'erupt-terminal', desc: '浏览器内直连服务器 Shell 终端', link: '/zh/modules/erupt-terminal'},
+            {icon: '🖥️', name: 'Erupt Remote', artifact: 'erupt-remote', desc: '浏览器直连远程主机，VNC 桌面与 SSH 终端', link: '/zh/modules/erupt-remote'},
+            {icon: '🕸️', name: 'Erupt Atlas', artifact: 'erupt-atlas', desc: '模型关系图谱、血缘追溯与结构审计', link: '/zh/modules/erupt-atlas'},
             {icon: '🔌', name: 'Erupt Websocket', artifact: 'erupt-websocket', desc: 'WebSocket 实时通信与数据推送', link: '/zh/modules/erupt-websocket'},
             {icon: '⚙️', name: 'Erupt Generator', artifact: 'erupt-generator', desc: '可视化生成 Erupt 实体类代码', link: '/zh/modules/erupt-generator'},
             {icon: '⏰', name: 'Erupt Job', artifact: 'erupt-job', desc: '可视化定时任务，Cron 配置与任务日志', link: '/zh/modules/erupt-job'},

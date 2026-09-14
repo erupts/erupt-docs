@@ -1,4 +1,4 @@
-# 匿名遥测 <Badge type="tip" text="v2.1.2+" />
+# 匿名遥测 <Badge type="tip" text="v2.2.0+" />
 
 Erupt 会在启动后上报一份**匿名的实例画像**，用来回答「该继续支持哪个 JDK / 数据库 / Spring Boot 版本」「哪些模块值得投入」这类问题——用真实数字，而不是靠猜。
 
@@ -17,7 +17,7 @@ Erupt 会在启动后上报一份**匿名的实例画像**，用来回答「该�
 | `schema` | `2` | 上报体版本号，字段增删时递增 |
 | `eventType` | `boot` / `heartbeat` | 区分启动上报与心跳上报 |
 | `instanceId` | 随机 UUID | **仅用于去重**，见下文「实例标识」 |
-| `eruptVersion` | `2.1.2` | 版本分布，决定旧版本还要维护多久 |
+| `eruptVersion` | `2.2.0` | 版本分布，决定旧版本还要维护多久 |
 | `modules` | `["erupt-jpa","erupt-ai"]` | 已装模块列表，决定哪些模块值得投入 |
 | `eruptCount` | `37` | 注册的 `@Erupt` 类数量，区分真实部署与教程 demo |
 | `javaVersion` | `17.0.11` | 决定 JDK 基线何时可以抬高 |
@@ -124,7 +124,7 @@ erupt:
 当 endpoint 返回 `200` 且响应体是如下结构时，Erupt 会把 `message` 打进日志——可用于推送版本升级或安全公告：
 
 ```json
-{"level": "warn", "message": "2.1.0 存在一个已知问题，建议升级到 2.1.2"}
+{"level": "warn", "message": "2.1.0 存在一个已知问题，建议升级到 2.2.0"}
 ```
 
 - `level` 为 `warn` 时以 `log.warn` 输出，其余情况 `log.info`；

@@ -8,7 +8,7 @@ erupt-ai-staff is the digital-staff extension of erupt-ai. More than a chat assi
 
 ## Getting Started
 
-1. Add the dependency (requires [erupt-ai](/en/modules/erupt-ai)):
+1. Add the dependency (requires [erupt-ai](/en/modules/erupt-ai/)):
 
 ```xml
 <dependency>

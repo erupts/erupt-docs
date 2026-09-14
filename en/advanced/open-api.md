@@ -4,7 +4,7 @@ Erupt supports external systems obtaining a token via **appid + secret** to call
 
 :::info
 APPID and Secret are managed in the **UPMS → Open API** menu, corresponding to the `EruptOpenApi` entity class.
-View the [Open API Management →](/en/modules/erupt-upms#open-api)
+View the [Open API Management →](/en/modules/erupt-upms/open-api)
 :::
 
 :::warning

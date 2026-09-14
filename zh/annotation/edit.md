@@ -20,7 +20,9 @@
 | `onchangeParams` | 传递给 `onchange` 处理器的参数（`String[]`），可在 OnChange 接口中读取 |
 | `orderBy` | 排序规则，HQL order by 语法；仅当字段为关联对象时可用 |
 | `filter` | 过滤条件，HQL where 语法；仅当字段为关联对象时可用 |
-| `prompt` | AI 智能体提示词，供 erupt-ai 工具调用时注入字段级上下文，2.0.0 新增 |
+| `prompt` | AI 提示词，2.0.0 新增。erupt-ai 工具调用时注入字段级上下文，同时作为 [表单 AI 写作助手](/zh/modules/erupt-ai/writing-assistant)的字段级写作指引 |
+| `cellEdit` | 是否允许在表格中直接编辑该字段，默认 `true`（2.2.0+），详见 [@Power cellEdit](/zh/annotation/power#celledit-单元格编辑) |
+| `ai` | 是否为该字段提供 [表单 AI 写作助手](/zh/modules/erupt-ai/writing-assistant)，默认 `true`；仅文本类组件生效（2.2.0+） |
 
 ## 组件类型（EditType）
 
