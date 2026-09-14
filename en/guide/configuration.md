@@ -85,8 +85,6 @@ erupt:
   init-method-enum: file
   # Default language used during initialization for text values (v1.12.3+)
   default-locales: zh-CN
-  # Enable job scheduling (effective when erupt-job is imported)
-  job.enable: true
   # Enable log collection — viewable under System Logs in real time (v1.12.14+)
   log-track: true
   # Maximum number of buffered log lines (v1.12.14+)
@@ -145,57 +143,9 @@ erupt:
 
 For the full list of collected fields see [Anonymous Telemetry](/en/guide/telemetry).
 
-### erupt.ai — AI module
+### Module-specific settings
 
-```yaml
-erupt:
-  ai:
-    # Max sequential tool calls per conversation turn
-    max-sequential-tools-invocations: 30
-    # Read timeout for a single HTTP request to the LLM provider, 15 minutes by default (v2.2.0+).
-    # langchain4j defaults to 60s, far too short for long non-streaming generations such as AI Canvas pages
-    request-timeout: 15m
-    claw:
-      # Without an explicit enabled: true, none of the claw @Tool methods are registered
-      enabled: false
-      # Allow the AI to execute shell commands. High risk, false by default
-      enable-exec-shell: false
-      # Absolute paths outside the sandbox (~/.erupt/{account}) where execShell may run
-      shell-allowed-paths: []
-      # Archive stale skills daily (moved to .archive, never deleted)
-      skill-curator-enabled: true
-      # Days without use before a skill is considered stale
-      skill-stale-days: 30
-```
-
-System prompt, SSE timeout and the remaining options are documented in [Erupt AI](/en/modules/erupt-ai/) and [Erupt AI Claw](/en/modules/erupt-ai-claw/).
-
-### erupt.designer — Form Designer <Badge type="tip" text="v2.2.0+" />
-
-```yaml
-erupt:
-  designer:
-    # SQLite file holding designer data; relative paths resolve against the JVM working directory
-    db-path: data/designer.db
-    # Connection pool size
-    max-pool-size: 4
-```
-
-The file is separate from the main database and must be backed up — see [Erupt Designer](/en/modules/erupt-designer#data-storage).
-
-### erupt.remote — Remote Access <Badge type="tip" text="v2.2.0+" />
-
-```yaml
-erupt:
-  remote:
-    # Credential encryption key; every node of a cluster must share one value
-    secret-key: ${ERUPT_REMOTE_SECRET_KEY}
-    max-sessions: 20
-    idle-timeout-minutes: 30
-    connect-timeout-seconds: 5
-```
-
-See [Erupt Remote](/en/modules/erupt-remote).
+Settings that belong to an extension module (`erupt.ai.*`, `erupt.designer.*`, `erupt.remote.*`, `erupt.job.*`, …) only take effect once that module is on the classpath, and are documented on the module's own page rather than repeated here: [Erupt AI](/en/modules/erupt-ai/) · [Erupt AI Claw](/en/modules/erupt-ai-claw/) · [Erupt Designer](/en/modules/erupt-designer) · [Erupt Remote](/en/modules/erupt-remote) · [Erupt Job](/en/modules/erupt-job).
 
 ## Frontend Configuration (`app.js`)
 

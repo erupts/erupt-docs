@@ -29,6 +29,19 @@ spring:
 
 After starting the application, the **Task Management**, **Task Logs**, and **Send Email** menus are automatically added.
 
+## Settings
+
+```yaml
+erupt:
+  job:
+    # Enable job scheduling, default true; when off the menus remain but no job is triggered
+    enable: true
+    # Max time the cluster lock is held (ms); must exceed the longest job run, default 30 min; only applies with redis-session on
+    lock-at-most-for-millis: 1800000
+    # Min time the lock is held after a job finishes (ms), absorbs clock skew between instances; keep below the shortest cron interval, default 1 s
+    lock-at-least-for-millis: 1000
+```
+
 ## Features
 
 ### Task Management

@@ -85,8 +85,6 @@ erupt:
   init-method-enum: file
   # 默认语言，控制初始化场景中各类文本的数据，v1.12.3+
   default-locales: zh-CN
-  # 是否开启任务调度（导入 erupt-job 时有效）
-  job.enable: true
   # 是否开启日志采集，开启后可在【系统日志】中查看实时日志，v1.12.14+
   log-track: true
   # 日志采集最大暂存行数，v1.12.14+
@@ -143,57 +141,9 @@ erupt:
 
 收集字段清单见[匿名遥测](/zh/guide/telemetry)。
 
-### erupt.ai AI 模块
+### 模块自有配置
 
-```yaml
-erupt:
-  ai:
-    # 单轮对话最大连续工具调用次数
-    max-sequential-tools-invocations: 30
-    # 单次 LLM HTTP 请求的读超时，默认 15 分钟，v2.2.0+
-    # langchain4j 默认 60s，对 AI Canvas 这类长文本非流式生成远远不够
-    request-timeout: 15m
-    claw:
-      # 不显式配置 enabled: true 时，claw 的全部 @Tool 都不会注册
-      enabled: false
-      # 是否允许 AI 执行 Shell 命令，高危，默认 false
-      enable-exec-shell: false
-      # 沙箱（~/.erupt/{account}）之外允许 execShell 落脚的绝对路径
-      shell-allowed-paths: []
-      # 每日归档闲置技能（移入 .archive，不删除）
-      skill-curator-enabled: true
-      # 多少天未使用视为闲置
-      skill-stale-days: 30
-```
-
-系统提示词、SSE 超时等完整配置见 [Erupt AI](/zh/modules/erupt-ai/) 与 [Erupt AI Claw](/zh/modules/erupt-ai-claw/)。
-
-### erupt.designer 表单设计器 <Badge type="tip" text="v2.2.0+" />
-
-```yaml
-erupt:
-  designer:
-    # 设计器数据的 SQLite 文件路径，相对 JVM 工作目录解析
-    db-path: data/designer.db
-    # 连接池大小
-    max-pool-size: 4
-```
-
-该文件独立于主数据库，需纳入备份，详见 [Erupt Designer](/zh/modules/erupt-designer#数据存储)。
-
-### erupt.remote 远程访问 <Badge type="tip" text="v2.2.0+" />
-
-```yaml
-erupt:
-  remote:
-    # 凭据加密密钥，多节点部署必须共用同一个值
-    secret-key: ${ERUPT_REMOTE_SECRET_KEY}
-    max-sessions: 20
-    idle-timeout-minutes: 30
-    connect-timeout-seconds: 5
-```
-
-详见 [Erupt Remote](/zh/modules/erupt-remote)。
+各扩展模块的配置项（如 `erupt.ai.*`、`erupt.designer.*`、`erupt.remote.*`、`erupt.job.*`）只在引入对应模块后生效，统一放在各模块文档中说明，不在此处重复：[Erupt AI](/zh/modules/erupt-ai/) · [Erupt AI Claw](/zh/modules/erupt-ai-claw/) · [Erupt Designer](/zh/modules/erupt-designer) · [Erupt Remote](/zh/modules/erupt-remote) · [Erupt Job](/zh/modules/erupt-job)。
 
 ## 前端配置（app.js）
 
