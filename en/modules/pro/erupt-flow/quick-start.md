@@ -45,4 +45,4 @@ erupt:
 
 ---
 
-Once integrated, continue with [Workflow Development](/en/modules/pro/erupt-flow/development).
+Once integrated, continue with [Approval Forms](/en/modules/pro/erupt-flow/approval-form) and [Workflow Development](/en/modules/pro/erupt-flow/development).

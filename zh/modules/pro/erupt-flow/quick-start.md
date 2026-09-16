@@ -45,4 +45,4 @@ erupt:
 
 ---
 
-接入完成后，请继续阅读 [流程开发](/zh/modules/pro/erupt-flow/development)。
+接入完成后，请继续阅读 [审批表单](/zh/modules/pro/erupt-flow/approval-form) 与 [流程开发](/zh/modules/pro/erupt-flow/development)。

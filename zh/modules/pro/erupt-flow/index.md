@@ -19,7 +19,7 @@
 演示：[https://demo.erupt.xyz](https://demo.erupt.xyz) &nbsp; 账号：`flow` 密码：`flow`
 
 :::info 使用文档
-[快速开始](/zh/modules/pro/erupt-flow/quick-start) · [流程开发](/zh/modules/pro/erupt-flow/development) · [自定义扩展](/zh/modules/pro/erupt-flow/custom-node) · [流程打印](/zh/modules/pro/erupt-flow/print) · [数据库设计](/zh/modules/pro/erupt-flow/database)
+[快速开始](/zh/modules/pro/erupt-flow/quick-start) · [审批表单](/zh/modules/pro/erupt-flow/approval-form) · [流程开发](/zh/modules/pro/erupt-flow/development) · [自定义扩展](/zh/modules/pro/erupt-flow/custom-node) · [流程打印](/zh/modules/pro/erupt-flow/print) · [数据库设计](/zh/modules/pro/erupt-flow/database)
 :::
 
 ---
@@ -54,6 +54,8 @@ erupt-flow 支持两种方式定义流程表单：
 | **拖拽设计**（配合 [erupt-designer](/zh/modules/erupt-designer)） | 在可视化画布上拖拽组件、配置字段，无需编写任何 Java 代码 | 业务人员独立维护，快速迭代表单 |
 
 引入 erupt-designer 后，在流程配置阶段可直接进入可视化表单设计界面，拖拽添加文本框、下拉选择、日期、附件等组件并实时预览，发布即生效。两种方式可混合使用：技术字段用注解定义，业务字段由设计器维护。
+
+两种方式的能力边界、如何混用、以及从拖拽迁移到注解的步骤，详见 [审批表单 →](/zh/modules/pro/erupt-flow/approval-form)
 
 ## 为什么不用 Camunda / Flowable / 钉钉飞书审批？
 
