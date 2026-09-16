@@ -19,7 +19,7 @@ Officially produced and maintained by the open-source Erupt framework team ([Git
 Demo: [https://demo.erupt.xyz](https://demo.erupt.xyz) &nbsp; Username: `flow` Password: `flow`
 
 :::info Documentation
-[Quick Start](/en/modules/pro/erupt-flow/quick-start) · [Workflow Development](/en/modules/pro/erupt-flow/development) · [Custom Extensions](/en/modules/pro/erupt-flow/custom-node) · [Flow Printing](/en/modules/pro/erupt-flow/print) · [Database Design](/en/modules/pro/erupt-flow/database)
+[Quick Start](/en/modules/pro/erupt-flow/quick-start) · [Approval Forms](/en/modules/pro/erupt-flow/approval-form) · [Workflow Development](/en/modules/pro/erupt-flow/development) · [Custom Extensions](/en/modules/pro/erupt-flow/custom-node) · [Flow Printing](/en/modules/pro/erupt-flow/print) · [Database Design](/en/modules/pro/erupt-flow/database)
 :::
 
 ---
@@ -54,6 +54,8 @@ erupt-flow supports two ways to define workflow forms:
 | **Visual designer** (with [erupt-designer](/en/modules/erupt-designer)) | Drag and drop components on a visual canvas to configure fields — no Java code required | Business users maintaining forms independently, rapid iteration |
 
 Once erupt-designer is integrated, the workflow configuration step includes a visual form design interface. Drag in text inputs, dropdowns, date pickers, attachments, and more — preview in real time, publish to go live. Both approaches can be combined: define technical fields via annotations and let business users manage domain-specific fields through the designer.
+
+For what each approach can and cannot do, how to mix them, and how to migrate a designed form to annotations, see [Approval Forms →](/en/modules/pro/erupt-flow/approval-form)
 
 ## Why Not Use Camunda / Flowable / DingTalk / Feishu Approvals?
 

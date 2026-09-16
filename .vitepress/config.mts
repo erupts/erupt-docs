@@ -507,6 +507,7 @@ export default withMermaid(defineConfig({
                                     items: [
                                         {text: 'Introduction', link: '/en/modules/pro/erupt-flow/'},
                                         {text: 'Quick Start', link: '/en/modules/pro/erupt-flow/quick-start'},
+                                        {text: 'Approval Forms', link: '/en/modules/pro/erupt-flow/approval-form'},
                                         {text: 'Workflow Development', link: '/en/modules/pro/erupt-flow/development'},
                                         {text: 'Custom Extensions', link: '/en/modules/pro/erupt-flow/custom-node'},
                                         {text: 'Flow Printing', link: '/en/modules/pro/erupt-flow/print'},
@@ -1035,6 +1036,7 @@ export default withMermaid(defineConfig({
                                     items: [
                                         {text: '产品介绍', link: '/zh/modules/pro/erupt-flow/'},
                                         {text: '快速开始', link: '/zh/modules/pro/erupt-flow/quick-start'},
+                                        {text: '审批表单', link: '/zh/modules/pro/erupt-flow/approval-form'},
                                         {text: '流程开发', link: '/zh/modules/pro/erupt-flow/development'},
                                         {text: '自定义扩展', link: '/zh/modules/pro/erupt-flow/custom-node'},
                                         {text: '流程打印', link: '/zh/modules/pro/erupt-flow/print'},
