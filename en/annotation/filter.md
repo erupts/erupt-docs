@@ -78,6 +78,78 @@ public class AutoFilter implements FilterHandler {
 }
 ```
 
+### Row-Level Filtering by User Role
+
+A common data-permission scenario: admins see everything, department managers see their own department, and regular staff see only the records they own.
+
+```java
+@Erupt(
+        name = "Customer",
+        filter = @Filter(conditionHandler = RoleDataFilter.class)
+)
+@Table(name = "customer")
+@Entity
+public class Customer extends BaseModel {
+
+    @EruptField(
+            views = @View(title = "Customer Name"),
+            edit = @Edit(title = "Customer Name")
+    )
+    private String name;
+
+    @EruptField(views = @View(title = "Department"))
+    @ManyToOne
+    private EruptOrg org;
+
+    @EruptField(views = @View(title = "Owner"))
+    @ManyToOne
+    private EruptUser owner;
+
+}
+```
+
+```java
+@Service
+public class RoleDataFilter implements FilterHandler {
+
+    @Resource
+    private EruptUserService eruptUserService;
+
+    @Override
+    public String filter(String condition, String[] params) {
+        EruptUser user = eruptUserService.getCurrentEruptUser();
+        // admins are unrestricted
+        if (user.getIsAdmin()) return null;
+        Set<String> roles = user.getRoles().stream()
+                .map(EruptRole::getCode).collect(Collectors.toSet());
+        // department manager: all records of their department
+        if (roles.contains(RoleCode.MANAGER.name()) && null != user.getEruptOrg()) {
+            return "org.id = " + user.getEruptOrg().getId();
+        }
+        // regular staff: only records they own
+        return "owner.id = " + user.getId();
+    }
+
+}
+```
+
+:::tip
+Returning `null` or an empty string from `filter` appends no condition at all, meaning all rows are visible.
+:::
+
+Always build conditions from numeric fields such as ids. If you must concatenate user-supplied strings, escape them or validate against a whitelist first to avoid HQL injection. Multiple roles can be combined with `or`:
+
+```java
+List<String> conditions = new ArrayList<>();
+if (roles.contains(RoleCode.MANAGER.name())) {
+    conditions.add("org.id = " + user.getEruptOrg().getId());
+}
+if (roles.contains(RoleCode.SALES.name())) {
+    conditions.add("owner.id = " + user.getId());
+}
+return conditions.isEmpty() ? "1 = 2" : String.join(" or ", conditions);
+```
+
 ## Notes
 
 - Filter conditions must follow HQL syntax.
