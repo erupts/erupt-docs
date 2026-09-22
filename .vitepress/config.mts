@@ -36,7 +36,10 @@ export default withMermaid(defineConfig({
             GitChangelog({
                 repoURL: 'https://github.com/erupts/erupt-docs',
             }),
-            GitChangelogMarkdownSection(),
+            GitChangelogMarkdownSection({
+                // iframe 嵌入页不需要贡献者 / 页面历史区块
+                exclude: (id: string) => id.includes('/embed/'),
+            }),
         ],
         build: {
             rollupOptions: {
