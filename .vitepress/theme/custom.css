@@ -308,3 +308,20 @@ body.medium-zoom--opened .floating-promo {
     background: transparent !important;
     border-color: #F0E8D6 !important;
 }
+
+/* ── /embed/architecture：供 erupt-site 以 iframe 嵌入的全景架构页 ── */
+.arch-embed .VPPage,
+.arch-embed .VPContent {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.arch-embed .floating-promo,
+.arch-embed .VPLocalNav,
+.arch-embed .VPBackdrop {
+    display: none !important;
+}
+
+.arch-embed .ea {
+    margin: 0;
+}
