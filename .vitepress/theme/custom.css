@@ -318,10 +318,25 @@ body.medium-zoom--opened .floating-promo {
 
 .arch-embed .floating-promo,
 .arch-embed .VPLocalNav,
-.arch-embed .VPBackdrop {
+.arch-embed .VPBackdrop,
+.arch-embed .VPDocFooter,
+.arch-embed .vp-nolebase-git-changelog,
+.arch-embed [class*="NolebaseGitChangelog"],
+.arch-embed [class*="vp-nolebase-git-changelog"] {
     display: none !important;
 }
 
 .arch-embed .ea {
     margin: 0;
+}
+
+/* 标题与导语由嵌入方（erupt-site）提供，避免重复 */
+.arch-embed .ea-head {
+    display: none;
+}
+
+/* 嵌入方按内容高度调整 iframe，页面自身不再出现滚动条 */
+html:has(.arch-embed),
+html:has(.arch-embed) body {
+    overflow: hidden;
 }
