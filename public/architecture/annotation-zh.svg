@@ -377,8 +377,8 @@ rect.c-bg-rect { fill: var(--bg); }
           <text x="745" y="165" class="t-muted" font-size="7" text-anchor="middle">/erupt-api/data/*</text>
         </g>
 
-        <g id="node-schema" data-node-id="schema" data-node-label="Schema 下发" tabindex="0" role="button" aria-label="Focus Schema 下发, 表格 / 表单 / 搜索栏, 04 / 能力生成" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="表格 / 表单 / 搜索栏" data-node-context="04 / 能力生成">
-          <title>Schema 下发 · 表格 / 表单 / 搜索栏 · 04 / 能力生成</title>
+        <g id="node-schema" data-node-id="schema" data-node-label="Schema 下发" tabindex="0" role="button" aria-label="Focus Schema 下发, 表格 / 表单 / 多级表头, 04 / 能力生成" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="表格 / 表单 / 多级表头" data-node-context="04 / 能力生成">
+          <title>Schema 下发 · 表格 / 表单 / 多级表头 · 04 / 能力生成</title>
           <rect x="689" y="356" width="112" height="58" rx="6" class="c-mask"/>
           <rect x="689" y="356" width="112" height="58" rx="6" class="c-frontend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(695 362) scale(0.6875)">
@@ -388,11 +388,11 @@ rect.c-bg-rect { fill: var(--bg); }
             <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
           </g>
           <text x="745" y="377" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">Schema 下发</text>
-          <text x="745" y="393" class="t-muted" font-size="7" text-anchor="middle">表格 / 表单 / 搜索栏</text>
+          <text x="745" y="393" class="t-muted" font-size="7.6" text-anchor="middle">表格 / 表单 / 多级表头</text>
         </g>
 
-        <g id="node-perm" data-node-id="perm" data-node-label="权限控制" tabindex="0" role="button" aria-label="Focus 权限控制, 菜单 · 行 · 列 · 按钮, 04 / 能力生成" aria-pressed="false" data-node-kind="security" data-node-sublabel="菜单 · 行 · 列 · 按钮" data-node-context="04 / 能力生成">
-          <title>权限控制 · 菜单 · 行 · 列 · 按钮 · 04 / 能力生成</title>
+        <g id="node-perm" data-node-id="perm" data-node-label="权限控制" tabindex="0" role="button" aria-label="Focus 权限控制, 菜单 · 行 · 列 · 按钮 · AI, 04 / 能力生成" aria-pressed="false" data-node-kind="security" data-node-sublabel="菜单 · 行 · 列 · 按钮 · AI" data-node-context="04 / 能力生成">
+          <title>权限控制 · 菜单 · 行 · 列 · 按钮 · AI · 04 / 能力生成</title>
           <rect x="689" y="584" width="112" height="58" rx="6" class="c-mask"/>
           <rect x="689" y="584" width="112" height="58" rx="6" class="c-security" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(695 590) scale(0.6875)">
@@ -400,11 +400,11 @@ rect.c-bg-rect { fill: var(--bg); }
             <path d="m5.8 8 1.5 1.5 3-3"/>
           </g>
           <text x="745" y="605" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">权限控制</text>
-          <text x="745" y="621" class="t-muted" font-size="7" text-anchor="middle">菜单 · 行 · 列 · 按钮</text>
+          <text x="745" y="621" class="t-muted" font-size="7.6" text-anchor="middle">菜单 · 行 · 列 · 按钮 · AI</text>
         </g>
 
-        <g id="node-page" data-node-id="page" data-node-label="完整后台管理页面" tabindex="0" role="button" aria-label="Focus 完整后台管理页面, 增删改查开箱即用, 05 / 成果" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="增删改查开箱即用" data-node-tag="0 前端代码" data-node-context="05 / 成果">
-          <title>完整后台管理页面 · 增删改查开箱即用 · 05 / 成果 · 0 前端代码</title>
+        <g id="node-page" data-node-id="page" data-node-label="完整后台管理页面" tabindex="0" role="button" aria-label="Focus 完整后台管理页面, 增删改查 · 多视图即用, 05 / 成果" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="增删改查 · 多视图即用" data-node-tag="0 前端代码" data-node-context="05 / 成果">
+          <title>完整后台管理页面 · 增删改查 · 多视图即用 · 05 / 成果 · 0 前端代码</title>
           <rect x="904" y="356" width="112" height="58" rx="6" class="c-mask"/>
           <rect x="904" y="356" width="112" height="58" rx="6" class="c-frontend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(910 362) scale(0.6875)">
@@ -414,7 +414,7 @@ rect.c-bg-rect { fill: var(--bg); }
             <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
           </g>
           <text x="960" y="377" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">完整后台管理页面</text>
-          <text x="960" y="393" class="t-muted" font-size="7" text-anchor="middle">增删改查开箱即用</text>
+          <text x="960" y="393" class="t-muted" font-size="7.6" text-anchor="middle">增删改查 · 多视图即用</text>
         <text x="960" y="403" class="t-frontend" font-size="7" text-anchor="middle">0 前端代码</text>
         </g>
 

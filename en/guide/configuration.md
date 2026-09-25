@@ -1,10 +1,15 @@
-# Configuration
+# Backend Configuration (`application.yml`)
 
-Erupt is configured in two places: the **backend** in `application.yml`, and the **frontend** through static files under `resources/public/` (`app.js`, `app.css`, `home.html`). Every entry is optional — configure only what you need.
+:::info Configuration is split into four pages
+Erupt is configured in two places: the **backend** in `application.yml`, and the **frontend** through static files under `resources/public/`. Every entry is optional; configure only what you need.
 
-## Backend Configuration (`application.yml`)
+- [Backend configuration (`application.yml`)](/en/guide/configuration): `erupt-app`, `erupt`, `erupt.upms`, `erupt.redis-session`, `erupt.telemetry`
+- [Frontend configuration (`app.js`)](/en/guide/config-frontend): site info, logos, appearance defaults, PWA, router and lifecycle hooks
+- [Frontend styles (`app.css`)](/en/guide/config-style): override or extend the UI styles
+- [Custom home page (`home.html`)](/en/guide/config-home): replace the welcome page shown after login
+:::
 
-### erupt-app — frontend application settings
+## erupt-app — frontend application settings
 
 `erupt-app.*` controls **frontend presentation** (watermark, captcha policy, languages, login page). It is backed by `xyz.erupt.upms.prop.EruptAppProp` and ships with `erupt-upms`. The frontend pulls the whole set once at startup via `GET /erupt-api/erupt-app`.
 
@@ -69,9 +74,9 @@ public void init() {
 
 The response also carries two read-only fields filled in by the server — `hash` (hashCode of the controller instance, used by the frontend to detect changes) and `version` (the current Erupt version). Setting them in yaml has no effect.
 
-See also: [Custom Login Page](/en/advanced/custom-login-page) · [Internationalization](/en/advanced/i18n)
+See also: [Custom Login Page](/en/advanced/auth#custom-login-page) · [Internationalization](/en/advanced/i18n)
 
-### erupt — framework core
+## erupt — framework core
 
 ```yaml
 erupt:
@@ -108,9 +113,14 @@ erupt:
     default-account: erupt
     # Default super-admin password used at system initialization (v1.12.18+)
     default-password: erupt
+    # Login lock: after max-failures consecutive wrong passwords for one account + IP the pair is locked for lock-minutes; a wrong captcha counts too (v2.3.0+)
+    login-lock:
+      enable: true
+      max-failures: 10
+      lock-minutes: 10
 ```
 
-### erupt.redis-session — distributed sessions
+## erupt.redis-session — distributed sessions
 
 When enabled, sessions are stored in Redis. Add the standard Spring Boot Redis configuration alongside it:
 
@@ -129,7 +139,7 @@ spring:
       host: 127.0.0.1
 ```
 
-### erupt.telemetry — anonymous telemetry
+## erupt.telemetry — anonymous telemetry
 
 ```yaml
 erupt:
@@ -143,148 +153,6 @@ erupt:
 
 For the full list of collected fields see [Anonymous Telemetry](/en/guide/telemetry).
 
-### Module-specific settings
+## Module-specific settings
 
-Settings that belong to an extension module (`erupt.ai.*`, `erupt.designer.*`, `erupt.remote.*`, `erupt.job.*`, …) only take effect once that module is on the classpath, and are documented on the module's own page rather than repeated here: [Erupt AI](/en/modules/erupt-ai/) · [Erupt AI Claw](/en/modules/erupt-ai-claw/) · [Erupt Designer](/en/modules/erupt-designer) · [Erupt Remote](/en/modules/erupt-remote) · [Erupt Job](/en/modules/erupt-job).
-
-## Frontend Configuration (`app.js`)
-
-Create the file manually at `/resources/public/app.js`.
-
-It covers: basic parameters, route callbacks, global lifecycle hooks, and more.
-
-```javascript
-window.eruptSiteConfig = {
-    // Erupt API endpoint — required for frontend/backend separation
-    domain: "",
-    // Attachment URL — usually not required, but needed when using a custom object-storage provider
-    fileDomain: "",
-    // Title
-    title: "Erupt",
-    // Description
-    desc: "Universal data management framework",
-    // Whether to display copyright info
-    copyright: true,
-    // Enable multi-tab route reuse by default (v2.2.0+); the user's choice in the settings drawer wins
-    tabReuse: false,
-    // Custom copyright content (v1.12.8+)
-    copyrightTxt: function() {
-      return "Copyright xxxx"
-    },
-    // AMap (高德) API key — required when using the map component
-    amapKey: "xxxx",
-    // AMap SecurityJsCode
-    amapSecurityJsCode: "xxxxx",
-    // Logo path
-    logoPath: "erupt.svg",
-    // Logo shown when the sidebar is collapsed (v1.12.21+)
-    logoFoldPath: null,
-    // Logo text
-    logoText: "erupt",
-    // Registration page URL
-    registerPage: "",
-    // Appearance defaults. Each one applies only until the user picks something in the
-    // "Page config" drawer; that choice is remembered in the browser and wins from then on
-    theme: {
-        // Primary color; the default is rgb(22, 119, 255) as of 2.2.0
-        primaryColor: "rgb(22, 119, 255)",
-        // Header bar color: "primary" (follow the primary color) or any CSS color
-        headerColor: "primary",
-        // Color scheme: false | true | "auto" (follow the OS)
-        dark: false,
-        // Compact mode
-        compact: false,
-        // Skin: "default" | "brutalist" | "liquid-glass"
-        skin: "default",
-        // Menu mode: "normal" sidebar | "split" categories in the header | "dual" two-column sidebar | "top" whole menu in the header, no sidebar
-        menuMode: "normal"
-    },
-    // Custom items shown in the user-avatar menu (v1.12.21+)
-    userTools: [{
-        text: "Custom user tool",
-        icon: "fa fa-snowflake-o",
-        click: function (event) {
-            alert("On Click")
-        }
-    }],
-    // Custom buttons in the top-right navigation bar
-    r_tools: [{
-        icon: "fa-eercast",
-        render: () => {
-          return `<h2>Custom render</h2>`
-        },
-        mobileHidden: false,
-        click: function (event) {
-            alert("Function button");
-        }
-    }],
-};
-
-// Route callbacks
-window.eruptRouterEvent = {
-    demo: {
-        load: function (e) { },
-        unload: function (e) { }
-    },
-    $: {
-        load: function (e) { },
-        unload: function (e) { }
-    }
-};
-
-// Erupt lifecycle hooks
-window.eruptEvent = {
-    startup: function () { },
-    login: function(user){
-      window.notify.success("Tip", "login success")
-    },
-    logout: function(user){ }
-}
-```
-
-Minimal recommended configuration:
-
-```javascript
-window.eruptSiteConfig = {
-  title: "Your App Title",
-  desc: "description",
-  copyright: false,
-  logoPath: "erupt.svg",
-  logoText: "APP",
-};
-```
-
-## Frontend Styles (`app.css`)
-
-Create the file manually at `/resources/public/app.css`. It is loaded after the framework stylesheets and is where you override defaults or add styles of your own.
-
-The primary and header colors are already covered by the `theme` block in `app.js`, so they need no CSS. Here is the login card as an example:
-
-```css
-/* Example: wider login card, bigger radius, primary-colored top edge */
-:root layout-passport .lp-card {
-    max-width: 420px;
-    border-radius: 16px;
-    border-top: 4px solid var(--ant-primary-color);
-    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18);
-}
-```
-
-The `:root` prefix out-ranks the component's own styles. In dark mode `<html>` carries `.dark`, so write `:root.dark layout-passport .lp-card` when the two modes need different values.
-
-## Custom Home Page (`home.html`)
-
-Erupt ships a default home page that works out of the box. To replace it with your own, create `/resources/public/home.html` — the framework loads it in place of the default:
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1" name="viewport">
-</head>
-<body>
-    <h1>Hello World</h1>
-</body>
-</html>
-```
+Settings that belong to an extension module (`erupt.ai.*`, `erupt.designer.*`, `erupt.remote.*`, `erupt.job.*`, `erupt.s3.*`, `erupt.dingtalk.*`, `erupt.airtable.*`, …) only take effect once that module is on the classpath, and are documented on the module's own page rather than repeated here: [Erupt AI](/en/modules/erupt-ai/) · [Erupt AI Claw](/en/modules/erupt-ai-claw/) · [Erupt Designer](/en/modules/erupt-designer) · [Erupt Remote](/en/modules/erupt-remote) · [Erupt Job](/en/modules/erupt-job) · [erupt-data-s3](/en/modules/erupt-s3) · [erupt-data-dingtalk](/en/modules/erupt-dingtalk) · [erupt-data-airtable](/en/modules/erupt-airtable).

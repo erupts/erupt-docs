@@ -16,6 +16,7 @@ const groups = [
             {icon: '🎨', name: 'Erupt AI Canvas', artifact: 'erupt-ai-canvas', desc: '一句话生成页面，数据实时来自 Erupt 后端', link: '/zh/modules/erupt-ai-canvas'},
             {icon: '📖', name: 'Erupt AI RAG', artifact: 'erupt-ai-rag', desc: '知识库与向量检索，AI 自主决策的 Agentic RAG', link: '/zh/modules/erupt-ai-rag'},
             {icon: '👩‍💻', name: 'Erupt AI Staff', artifact: 'erupt-ai-staff', desc: 'AI 数字员工，定时执行任务并推送工作报告', link: '/zh/modules/erupt-ai-staff'},
+            {icon: '🔀', name: 'Erupt AI Decision', artifact: 'erupt-ai-decision', desc: '把大模型的判断变成带概率的类型化答案，代码直接分支', link: '/zh/modules/erupt-ai-decision'},
             {icon: '🛠️', name: 'Erupt AI Skills', artifact: 'claude skills', desc: 'Claude 技能包，AI 辅助 Erupt 开发', link: 'https://github.com/plinian/erupt-skill', external: true},
         ],
     },
@@ -44,6 +45,8 @@ const groups = [
             {icon: '📊', name: 'Erupt Feishu', artifact: 'erupt-data-feishu', desc: '飞书多维表格数据源，直接管理 Bitable 记录', link: '/zh/modules/erupt-feishu'},
             {icon: '📓', name: 'Erupt Notion', artifact: 'erupt-data-notion', desc: 'Notion 数据库数据源，页面即数据行', link: '/zh/modules/erupt-notion'},
             {icon: '🪣', name: 'Erupt S3', artifact: 'erupt-data-s3', desc: 'S3 兼容对象存储数据源，可检索可审计', link: '/zh/modules/erupt-s3'},
+            {icon: '📋', name: 'Erupt DingTalk', artifact: 'erupt-data-dingtalk', desc: '钉钉多维表数据源，直接管理 Notable 记录', link: '/zh/modules/erupt-dingtalk'},
+            {icon: '🗂️', name: 'Erupt Airtable', artifact: 'erupt-data-airtable', desc: 'Airtable 数据源，表格记录即数据行', link: '/zh/modules/erupt-airtable'},
         ],
     },
     {
@@ -52,6 +55,8 @@ const groups = [
             {icon: '⌨️', name: 'Erupt Terminal', artifact: 'erupt-terminal', desc: '浏览器内直连服务器 Shell 终端', link: '/zh/modules/erupt-terminal'},
             {icon: '🖥️', name: 'Erupt Remote', artifact: 'erupt-remote', desc: '浏览器直连远程主机，VNC 桌面与 SSH 终端', link: '/zh/modules/erupt-remote'},
             {icon: '🕸️', name: 'Erupt Atlas', artifact: 'erupt-atlas', desc: '模型关系图谱、血缘追溯与结构审计', link: '/zh/modules/erupt-atlas'},
+            {icon: '💬', name: 'Erupt Comment', artifact: 'erupt-comment', desc: '任意记录可评论，@提及通知、置顶与已解决', link: '/zh/modules/erupt-comment'},
+            {icon: '🔑', name: 'Erupt SSO', artifact: 'erupt-sso', desc: 'OAuth2 / OIDC 单点登录，后台配置认证源无需重启', link: '/zh/modules/erupt-sso'},
             {icon: '🔌', name: 'Erupt Websocket', artifact: 'erupt-websocket', desc: 'WebSocket 实时通信与数据推送', link: '/zh/modules/erupt-websocket'},
             {icon: '⚙️', name: 'Erupt Generator', artifact: 'erupt-generator', desc: '可视化生成 Erupt 实体类代码', link: '/zh/modules/erupt-generator'},
             {icon: '⏰', name: 'Erupt Job', artifact: 'erupt-job', desc: '可视化定时任务，Cron 配置与任务日志', link: '/zh/modules/erupt-job'},
@@ -75,7 +80,7 @@ const groups = [
         ],
     },
     {
-        title: '第三方插件',
+        title: '第三方模块',
         badge: '社区',
         items: [
             {icon: '🔍', name: 'Erupt Dsl', artifact: 'erupt-dsl', desc: 'ORM 动态查询，DSL 语法构建复杂查询条件', link: '/zh/modules/third-party/erupt-dsl'},
@@ -96,7 +101,7 @@ const filtered = computed(() => {
 })
 </script>
 
-# 插件总览
+# 模块总览
 
 Erupt 采用模块化设计，核心功能拆分为独立 Maven 模块，按需引入，版本号与核心保持一致。
 

@@ -66,6 +66,55 @@ The desktop and terminal pages share a toolbar along the top; a dot on the left 
 | Fullscreen | Go fullscreen |
 | Disconnect | End the session; the button becomes Reconnect |
 
+SSH hosts with file transfer enabled also get a **Files** button that opens an SFTP panel next to the terminal — see [SFTP File Transfer](#sftp-file-transfer) below.
+
+## SFTP File Transfer <Badge type="tip" text="v2.3.0+" />
+
+The **Files** button on the SSH terminal page opens a side panel that works on the remote file system over the SFTP subsystem — nothing extra to install on the target host:
+
+- **Browse**: starts in the login user's home directory and descends into any directory; directories first, sorted by name, and symlinks are shown as what they point at so linked directories can be entered.
+- **Upload**: pick files with the button or drag-and-drop them onto the panel; shows progress, and an existing file of the same name is replaced.
+- **Download**: saves a remote file to the local machine as an attachment.
+- **New folder**: creates a subdirectory in the current directory.
+- **Delete**: removes one file, or one **empty** directory.
+- **Insert path**: types an entry's quoted path into the shell, ready for the next command.
+
+The panel is shown only when the host has **file transfer enabled**. VNC hosts have no file channel (the RFB protocol has none) — configure the same machine as an SSH host when files need to move.
+
+### Per-host toggle
+
+The **File Transfer** switch on the **Remote Host** record (`RemoteHost.fileTransfer`, column `e_remote_host.file_transfer`, `BIT(1)`) defaults to on and is shown only when the protocol is SSH. Turning it off:
+
+- removes the **Files** button from the terminal page;
+- makes every SFTP endpoint refuse with "File transfer is not enabled for this host";
+- leaves the shell itself untouched.
+
+Use it for hosts whose users should type commands but not carry files in or out.
+
+### Security notes
+
+| Concern | How it is handled |
+| --- | --- |
+| Connections | Every call opens its own **short-lived** SSH session and closes it when done; it is never tied to the terminal WebSocket, so a dropped terminal does not kill a running download |
+| Credentials and host keys | **Shared** with the terminal: the record's username / password / private key, the TOFU host-key policy (`.erupt/remote_known_hosts`) and `connect-timeout-seconds`. Remote permissions are those of the SSH login user |
+| Authorization | Re-checked on every call: erupt-upms token + the `RemoteHost` menu permission + host **Enabled** + **Authorized Users** + the **File Transfer** toggle. A host that was disabled, lost this user or had file transfer switched off after the page opened is refused on the next click |
+| Path rules | Enforced by `SftpPaths`: paths must be absolute, `.` / `..` are resolved lexically on the server, and any NUL character is rejected; names for new folders and uploads must be bare file names — no `/` or `\`, not `.` or `..` |
+| Deletion | **Never recursive**: only a single file or an empty directory, and `/` is refused. Clearing a tree is a shell job, where the user sees what they are typing |
+| Uploads | The raw request body is **streamed straight into SFTP** — no temp file, no multipart, hence no multipart size ceiling; size a reverse proxy's `client_max_body_size` accordingly |
+
+### Endpoints
+
+All routes live under `/erupt-api/remote/sftp/{id}` (`{id}` is the host record id), require the `RemoteHost` menu permission, and take absolute paths on the remote host:
+
+| Method | Path | Params | What it does |
+| --- | --- | --- | --- |
+| GET | `/{id}/home` | — | Absolute path of the login user's home directory |
+| GET | `/{id}/ls` | `path` | Lists a directory; returns `name` / `directory` / `size` / `mtime` / `mode` |
+| GET | `/{id}/download` | `path` | Streams a file as an attachment, `_token` in the URL; refuses directories |
+| POST | `/{id}/upload` | `path` (directory), `name` | Request body is the file content, written to `path/name`, replacing an existing file |
+| POST | `/{id}/mkdir` | `path` (directory), `name` | Creates directory `name` under `path` |
+| DELETE | `/{id}` | `path` | Removes one file or one empty directory |
+
 ## Host fields
 
 | Field | Meaning |
@@ -77,6 +126,7 @@ The desktop and terminal pages share a toolbar along the top; a dot on the left 
 | Username | SSH login user, shown when the protocol is SSH |
 | Password | VNC: the server password (first 8 characters are used). SSH: the login password, or the passphrase when a private key is set |
 | Private Key | PEM private key for SSH public-key authentication; takes precedence over the password |
+| File Transfer <Badge type="tip" text="v2.3.0+" /> | Whether to show the SFTP file panel (browse, upload, download) next to the SSH terminal. On by default, shown only when the protocol is SSH; when off, the Files button and the SFTP endpoints are disabled while the shell is untouched |
 | Enabled | Disabled hosts cannot be connected |
 
 Credentials are stored **AES-GCM encrypted**. The key comes from `erupt.remote.secret-key`, or is generated once into `.erupt/remote.key` when that is empty.

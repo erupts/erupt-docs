@@ -33,6 +33,7 @@ public class EruptTest extends BaseModel {
 | `copy` | boolean | true | Whether to allow one-click row copy (2.0.0+) |
 | `cellEdit` | boolean | true | Whether rows may be edited one cell at a time in the table (2.2.0+) |
 | `ai` | boolean | true | Whether AI tools may inspect and operate on this model (2.1.0+) |
+| `comment` | boolean | true | Whether records of this model carry a comment stream; needs erupt-comment (2.3.0+) |
 | `powerHandler` | Class | - | Implement this interface to control permissions dynamically |
 
 ## Annotation Definition
@@ -62,6 +63,9 @@ public @interface Power {
 
     // whether AI tools may inspect and operate on this model (2.1.0+)
     boolean ai() default true;
+
+    // whether records carry a comment stream, needs the erupt-comment module (2.3.0+)
+    boolean comment() default true;
 
     // implement this interface to control permissions dynamically
     Class<? extends PowerHandler> powerHandler() default PowerHandler.class;
@@ -165,6 +169,17 @@ The cell editor seeds itself from the row the table query returned. If `DataProx
 :::tip
 Cell editing opens nothing new: the table still needs `edit` permission, tree menus and sub-tables have no grid to click, and collection fields (many-to-many and friends) stay out because the list query does not select their values.
 :::
+
+## comment: Comment Switch <Badge type="tip" text="v2.3.0+" />
+
+`comment` controls whether records of this model carry a **comment stream**. Defaults to `true`. It only matters when the [erupt-comment](/en/modules/erupt-comment) module is present: the record form panel then shows a comment entry in its title bar and table rows show a comment count.
+
+```java
+// a log model has nothing to discuss; turn comments off
+@Erupt(name = "Login Log", power = @Power(comment = false))
+```
+
+With it off the frontend hides the entry and the add-comment endpoint refuses writes as well. Reading and writing comments otherwise follows the model's own menu permission; nothing extra needs to be granted.
 
 ## Notes
 

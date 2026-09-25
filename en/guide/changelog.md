@@ -1,5 +1,131 @@
 # Changelog
 
+## 2.3.0 (2026-09-24) <Badge type="tip" text="Spring Boot 3.5.16" />
+
+:::warning Before you upgrade
+Read the [V 2.3.0 Upgrade Guide](/en/guide/upgrade#v-2-3-0-upgrade-guide): the login lock is on by default, a password change signs out other sessions, `logoPath: null` in `app.js` now means "no logo", and there are [database changes](#database-changes).
+:::
+
+🦞 Open-sourced [erupt-sso](/en/modules/erupt-sso): OAuth2 authorization code + PKCE with 17 [provider presets](/en/modules/erupt-sso#provider-presets) (Keycloak, Okta, Auth0, Entra ID, GitHub, Feishu, DingTalk, WeCom, WeChat and more): pick the type, paste the credentials, done. Providers are rows configured in the admin, no restart; the code is exchanged server side and the token never travels in a URL
+
+🦞 Open-sourced [erupt-comment](/en/modules/erupt-comment): a comment stream on any record with one-level replies, pinned / resolved threads and per-row counts; an @mention sends an erupt-notice that deep-links to the record; `@Power(comment = false)` opts a model out
+
+🦞 Open-sourced [erupt-ai-decision](/en/modules/erupt-ai-decision): yes/no, choice and score questions answered by a System One decision model as typed answers with a probability distribution, so code branches on a threshold instead of parsing a sentence; supports TypeSafe Jev and the self-hostable open-source Laya
+
+🦞 Open-sourced the [erupt-data-dingtalk](/en/modules/erupt-dingtalk) (DingTalk Notable) and [erupt-data-airtable](/en/modules/erupt-airtable) data sources, sharing one REST-table base with Feishu and Notion
+
+🌟 New [ICON](/en/field-types/icon) edit component: picks from the full Font Awesome catalogue and renders the icon in tables
+
+🌟 New [KEY_VALUE](/en/field-types/key-value) edit component: edits a JSON object stored as a String or as a `Map` on a JSON column
+
+🌟 New [TRANSFER](/en/field-types/transfer) edit component: handles many-to-many relations as a searchable two-list transfer, and `@MultiChoiceType(type = TRANSFER)` gives value lists the same widget
+
+🌟 Tables support [multi-level headers](/en/annotation/view#group-multi-level-headers): adjacent columns sharing `@View(group)` merge under one parent header while column settings keep working per column
+
+🌟 [Form panel](/en/guide/ui#form-panel): record forms open centered, docked to the side or fullscreen and keep unsaved input when switching; the title bar offers previous / next, a view-edit toggle, copy link, delete, AI assistant and print; `?id=` deep-links open a record
+
+🌟 [Login page layouts](/en/guide/ui#login-page-layouts): four new layouts (cover / wide / wallpaper / poster) and a configurable login picture (`theme.loginLayout` / `theme.loginBackground`), switchable from the login page itself
+
+🌟 [Workspace and Classic skins](/en/guide/ui#appearance): Workspace is a Slack / Feishu style shell with 32 light and dark frame presets; Classic is the Ant Design Pro navy sidebar; the Brutalist skin was redrawn against raft.build
+
+🌟 [Install as a desktop app (PWA)](/en/guide/pwa): the manifest is generated from the site config, the header doubles as a draggable title bar, and `pwa.icon` / `pwa.shortcuts` / `faviconPath` are configurable
+
+🌟 [Two-factor authentication (MFA)](/en/modules/erupt-upms/user#two-factor-authentication-mfa): TOTP codes, self-enrolled from the avatar menu; after the password a 6-digit code is required before a session is issued; recovery codes are single-use and stored hashed, and an admin can reset MFA in one click
+
+🌟 [Login lock](/en/modules/erupt-upms/user#login-lock): ten failed passwords for one account from one IP lock the pair for ten minutes (`erupt.upms.login-lock`), a wrong captcha counts too; changing a password signs out the account's other sessions
+
+🌟 erupt-notice gains [provider-backed channels](/en/modules/erupt-notice#provider-backed-channels): Feishu, DingTalk, WeCom and Slack push notifications through the erupt-sso provider row's own credentials; any user who has signed in through that provider can be reached, no separate bot setup. `EruptSsoBindService` lets other modules read a user's identifier and profile snapshot at the provider
+
+🌟 [erupt-generator rewritten](/en/modules/erupt-generator#import-from-database): read the schema of any registered datasource and turn tables into entities: comments become titles, foreign keys become references, documented enum values become `@Choice`; preview in the code editor drawer, download several classes as a zip
+
+🌟 [S3AttachmentProxy](/en/modules/erupt-s3#attachment-upload-s3attachmentproxy): `erupt-data-s3` ships a ready-made attachment proxy; set `erupt.s3.*` and every upload lands in S3 / MinIO / OSS / COS / R2; the attachment domain now comes from the backend, no app.js edit needed
+
+🌟 [erupt-remote SFTP file transfer](/en/modules/erupt-remote#sftp-file-transfer): a file panel next to the SSH terminal browses remote directories, uploads by drag-and-drop, downloads, creates folders and deletes files; switchable per host and sharing the terminal's credentials and authorization
+
+🧩 New [`ViewType.AVATAR`](/en/annotation/view#display-types-viewtype) round avatar view type, used by the user table
+
+🧩 [`@Tree(maxLevel)`](/en/annotation/tree#limiting-depth-with-maxlevel) caps a tree's depth: the UI stops offering "add child" at the limit and the server refuses any save that would place a node deeper
+
+🧩 [`@Layout(tableTruncate = false)`](/en/annotation/layout#tabletruncate-wrapping-cells) wraps overflowing cells instead of truncating, so a crowded operation column keeps every action reachable
+
+🧩 [`@BoolType(type)`](/en/field-types/boolean#widget-type) picks a switch or radios, default AUTO: a required field renders as a switch, others as radios; a null table cell no longer shows an empty tag
+
+🧩 [`theme.customizable = false`](/en/guide/config-frontend) locks the branding side of the appearance (theme color, header color, skin, menu mode) for everyone; light/dark and compact stay per-user
+
+🧩 `app.js` logo keys: leave out for the default, `null` / `''` for none; a collapsed sidebar without a logo shows the site's initial instead of the Erupt mark; new `faviconPath`
+
+🧩 "Publish to menu" in reports, the designer, Atlas and AI Canvas lets you pick the menu icon
+
+🧩 [Profile and lock screen](/en/modules/erupt-upms/user#profile-and-lock-screen): users change their own avatar and display name (`LoginProxy.beforeUpdateProfile` can veto); a lock screen in the avatar menu unlocks with the password without issuing a new session
+
+🧩 IP whitelist accepts IPv4 / IPv6 CIDR ranges, thanks to [chenxiaolong8023](https://github.com/chenxiaolong8023) for the contribution
+
+🧩 [erupt-atlas "Used by"](/en/modules/erupt-atlas#used-by): modules report what a model is used for through `EruptUsageProvider` (flow forms and custom nodes, menus, cube dashboards, print templates, row-operation forms); table views now fill the screen
+
+🐞 Fixed every scheduled job failing with a missing ShedLock `LockProvider` when `redis-session` is on and the host application component-scans `xyz.erupt`; a job without a lock is now skipped and logged instead of running unlocked on every node
+
+🐞 Fixed week pickers throwing a RangeError
+
+🐞 Fixed print entries showing despite `@Power(print = false)`
+
+🐞 Fixed `@View(column)` on a COMBINE field not reaching the table (Gitee IKGOKN)
+
+🐞 Fixed `item.xxx` in `@View(template)` reading the stored value instead of the cell's display text
+
+### Database Changes
+
+:::info
+Hibernate applies these changes automatically at startup; run them by hand only when automatic DDL is disabled (`spring.jpa.hibernate.ddl-auto=none` or `validate`).
+:::
+
+This release changes:
+
+- `e_upms_user`: three new columns (MFA)
+- `e_generator_class`, `e_generator_field`: new columns (when erupt-generator is used)
+- `e_remote_host`: one new column (when erupt-remote is used)
+
+Tables for newly introduced modules are created by Hibernate automatically, nothing to run by hand:
+
+- erupt-sso: `e_upms_sso`, `e_upms_sso_role`, `e_upms_sso_bind`
+- erupt-comment: `e_record_comment`
+- erupt-ai-decision: `e_ai_decision_def`, `e_ai_decision_model`, `e_ai_decision_question`
+
+::: details Show SQL (MySQL syntax; adapt for other databases)
+
+**New columns on `e_upms_user` (erupt-upms)**
+
+```sql
+ALTER TABLE e_upms_user ADD COLUMN mfa_enabled        BIT(1)        COMMENT 'two-factor authentication enabled';
+ALTER TABLE e_upms_user ADD COLUMN mfa_secret         VARCHAR(64)   COMMENT 'TOTP secret';
+ALTER TABLE e_upms_user ADD COLUMN mfa_recovery_codes VARCHAR(2000) COMMENT 'hashed recovery codes, JSON array';
+```
+
+**New columns on `e_generator_class` (erupt-generator)**
+
+```sql
+ALTER TABLE e_generator_class ADD COLUMN super_class  VARCHAR(255) COMMENT 'parent class';
+ALTER TABLE e_generator_class ADD COLUMN package_name VARCHAR(255) COMMENT 'package';
+```
+
+**New columns on `e_generator_field` (erupt-generator)**
+
+```sql
+ALTER TABLE e_generator_field ADD COLUMN column_name    VARCHAR(255) COMMENT 'column name';
+ALTER TABLE e_generator_field ADD COLUMN java_type      VARCHAR(255) COMMENT 'java type';
+ALTER TABLE e_generator_field ADD COLUMN length         INT          COMMENT 'length';
+ALTER TABLE e_generator_field ADD COLUMN type_code      VARCHAR(255) COMMENT 'JDBC type code';
+ALTER TABLE e_generator_field ADD COLUMN primary_key    BIT(1)       COMMENT 'primary key';
+ALTER TABLE e_generator_field ADD COLUMN auto_increment BIT(1)       COMMENT 'auto increment';
+```
+
+**New column on `e_remote_host` (erupt-remote)**
+
+```sql
+ALTER TABLE e_remote_host ADD COLUMN file_transfer BIT(1) DEFAULT b'1' COMMENT 'SFTP file transfer allowed on this SSH host';
+```
+
+:::
+
 ## 2.2.0 (2026-09-15) <Badge type="tip" text="Spring Boot 3.5.16" />
 
 :::warning Breaking changes
@@ -7,7 +133,7 @@ Read the [V 2.2.0 Upgrade Guide](/en/guide/upgrade#v-2-2-0-upgrade-guide) before
 
 **erupt-designer data moves to an embedded SQLite file**: business data no longer lives in the main database's `e_designer_data` table and is **not migrated automatically**; the file needs its own backup and a persistent volume.
 
-Table structures change too — see [Database Changes](#database-changes) at the end of this release.
+Table structures change too — see [Database Changes](#database-changes-1) at the end of this release.
 :::
 
 🦞 Open-sourced [erupt-atlas](/en/modules/erupt-atlas): the relations already implied by your annotations, drawn as a graph — lineage tracing, dependency layers, a module coupling matrix, impact analysis, and a structural audit for cycles, shared tables and orphan models.
@@ -62,7 +188,7 @@ Table structures change too — see [Database Changes](#database-changes) at the
 
 🧩 The AI now replies in the language the console is set to, instead of drifting to Chinese whatever language the question was asked in.
 
-🧩 Added [`erupt.ai.request-timeout`](/en/guide/configuration#erupt-ai-—-ai-module), raising the LLM read timeout to 15 minutes by default (langchain4j defaults to 60s, which cuts off long non-streaming generations).
+🧩 Added [`erupt.ai.request-timeout`](/en/modules/erupt-ai/), raising the LLM read timeout to 15 minutes by default (langchain4j defaults to 60s, which cuts off long non-streaming generations).
 
 🧩 [erupt-print](/en/modules/erupt-print) templates are authored with CKEditor, matching the storage format the frontend print-template editor expects (Velocity tokens plus widget markup).
 

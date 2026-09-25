@@ -45,8 +45,7 @@ const groups = [
     {
         title: 'Login & Security',
         items: [
-            {icon: '🔑', name: 'Login & Authentication', desc: 'Custom login logic, token validation, permission extension', link: '/en/advanced/auth'},
-            {icon: '🚪', name: 'Custom Login Page', desc: 'Captcha login, WeChat QR login and other custom login flows', link: '/en/advanced/custom-login-page'},
+            {icon: '🔑', name: 'Login & Authentication', desc: 'erupt-sso single sign-on, LoginProxy, custom login page and issuing tokens yourself', link: '/en/advanced/auth'},
             {icon: '🔓', name: 'Open API', desc: 'Token via appid + secret for external system calls', link: '/en/advanced/open-api'},
         ],
     },

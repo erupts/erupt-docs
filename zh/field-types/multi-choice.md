@@ -85,10 +85,30 @@ public @interface MultiChoiceType {
     enum Type {
         SELECT,   // 下拉多选
         CHECKBOX, // 复选框组（默认）
+        TRANSFER, // 穿梭框，适合选项很多的场景（2.3.0+）
     }
 
 }
 ```
+
+## 穿梭框 <Badge type="tip" text="v2.3.0+" />
+
+选项很多时可改用可搜索的双列穿梭框，选项来源与存储方式不变，仅切换控件：
+
+```java
+@JdbcTypeCode(SqlTypes.JSON)
+@Column(length = 2000)
+@EruptField(
+    edit = @Edit(title = "工具", type = EditType.MULTI_CHOICE,
+                 multiChoiceType = @MultiChoiceType(type = MultiChoiceType.Type.TRANSFER,
+                                                    fetchHandler = ToolFetchHandler.class))
+)
+private Set<String> tools;
+```
+
+:::tip
+实体多对多关联（`@ManyToMany`）的穿梭框请使用 [TRANSFER](/zh/field-types/transfer)。
+:::
 
 ## 一对多表存储
 

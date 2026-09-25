@@ -36,5 +36,5 @@
 
 | 变量名 | 配置项参考 | JS 示例 |
 | --- | --- | --- |
-| eruptSiteConfig | 参考 app.js 中 eruptSiteConfig 节点配置项<br/>[前端配置说明](/zh/guide/configuration) | `//定义网站copyright信息`<br/>`eruptSiteConfig.copyrightTxt = "<a>xxx<a>"` |
+| eruptSiteConfig | 参考 app.js 中 eruptSiteConfig 节点配置项<br/>[前端配置说明](/zh/guide/config-frontend) | `//定义网站copyright信息`<br/>`eruptSiteConfig.copyrightTxt = "<a>xxx<a>"` |
 | eruptAppProp | 参考 application.yml 中 erupt-app 节点配置项<br/>[后端配置说明](/zh/guide/configuration) | `//定义语言`<br/>`eruptAppProp.locales=["ja-JP","ko-KR"]`<br/>`//关闭水印`<br/>`eruptAppProp.waterMark = false` |

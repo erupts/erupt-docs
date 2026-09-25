@@ -73,6 +73,10 @@ erupt:
     validate-access-token: true
 ```
 
+:::tip @EruptRouter(cloudProxy) <Badge type="tip" text="v2.3.0+" />
+面向模块作者：默认情况下，Server 收到针对节点模型的 `/erupt-api/**` 请求后会转发给持有该模型的 Node 执行。若某个接口只以模型名作为键、逻辑完全属于 Server 端（例如记录评论——Node 既没有该模块，也不认识 Server 的用户），可标注 `@EruptRouter(cloudProxy = false)`：该接口永远不转发到 Node，由 Server 以 `nodeName.eruptName` 的形式自行处理。erupt-comment 正是借此让节点模型的记录也能携带评论。
+:::
+
 ## Docker 部署
 
 Server 端支持 Docker 方式部署，新功能仅需开发 Node 节点即可：

@@ -62,8 +62,8 @@ flowchart LR
 
 | 需求 | 文档 |
 |---|---|
-| 自定义登录逻辑（对接 LDAP / SSO / 短信验证码） | [登录与认证 LoginProxy](/zh/advanced/auth) |
-| 替换登录页 | [自定义登录页](/zh/advanced/custom-login-page) |
+| 单点登录、自定义登录逻辑（LDAP / 短信验证码）、自行签发 Token | [登录与认证](/zh/advanced/auth) |
+| 替换登录页 | [登录与认证 → 自定义登录页](/zh/advanced/auth#自定义登录页) |
 | 自己写的接口要求登录或菜单权限 | [REST API 接口权限](/zh/advanced/rest-api) |
 | 按组织 / 岗位 / 创建人过滤数据 | [PreDataProxy 与 Looker](/zh/advanced/pre-data-proxy) |
 | 字典作为下拉选项 | [单选 CHOICE → 字典选项](/zh/field-types/choice#字典选项) |

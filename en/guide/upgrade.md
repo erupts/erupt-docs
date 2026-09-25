@@ -2,6 +2,130 @@
 
 This document lists the notable changes for each Erupt release. Read the sections in version order.
 
+## V 2.3.0 Upgrade Guide
+
+This section covers what to watch for when upgrading from 2.2.x to 2.3.0.
+
+### Requirements
+
+| Item | Requirement |
+| --- | --- |
+| Erupt | Bump every dependency to `2.3.0` |
+| Spring Boot | **3.5.16**, same as 2.2.x, nothing to change |
+| JDK | **JDK 17** minimum, unchanged |
+| Database | No minimum-version change; schema changes below |
+| erupt-cloud-node | Projects using [erupt-cloud-node](/en/modules/cloud-node) **must upgrade the node service to 2.3.0 as well** |
+
+### Step 1: Bump the dependency version
+
+```xml
+<properties>
+    <erupt.version>2.3.0</erupt.version>
+</properties>
+```
+
+Without a shared property, change the `<version>` of every `xyz.erupt` coordinate in `pom.xml` to `2.3.0`. **No** artifactId was renamed or retired in this release; 2.2.x coordinates keep working.
+
+### Step 2: Add the new modules (optional)
+
+2.3.0 open-sources five modules. Leaving them out changes nothing; adding one initializes its menus and tables on first start. `erupt-spring-boot-starter-all` already includes the first three.
+
+| Module | artifactId | Purpose |
+| --- | --- | --- |
+| [Single sign-on](/en/modules/erupt-sso) | `erupt-sso` | OAuth2 / OIDC providers configured in the admin with 17 presets; the login page shows their buttons automatically, and erupt-notice can push to Feishu / DingTalk / WeCom / Slack through the same credentials |
+| [Record comments](/en/modules/erupt-comment) | `erupt-comment` | A comment stream on any record; @mention notices need erupt-notice |
+| [AI Decision](/en/modules/erupt-ai-decision) | `erupt-ai-decision` | Typed, probability-backed judgements; depends on erupt-data-jpa only |
+| [DingTalk Notable data source](/en/modules/erupt-dingtalk) | `erupt-data-dingtalk` | Bind a DingTalk Notable sheet as an `@Erupt` model |
+| [Airtable data source](/en/modules/erupt-airtable) | `erupt-data-airtable` | Bind an Airtable table as an `@Erupt` model |
+
+:::tip erupt-sso needs a registered redirect URI
+Each provider's redirect URI is `<erupt host>/erupt-api/sso/callback/<code>` and must match what is registered in the provider's console; see the [module page](/en/modules/erupt-sso#configuring-a-provider).
+:::
+
+### Breaking and behavioural changes
+
+#### 1. The login lock is on by default <Badge type="warning" text="changed default" />
+
+**Affects**: every project that signs in through erupt-upms.
+
+Ten failed passwords for one account from one IP lock the pair for ten minutes; a wrong captcha counts too. Regular users will hardly ever hit it. Load tests, automated logins or many users behind one egress IP can tune or disable it:
+
+```yaml
+erupt:
+  upms:
+    login-lock:
+      enable: true
+      max-failures: 10
+      lock-minutes: 10
+```
+
+#### 2. A password change signs out the other sessions
+
+Whether the user changes their password or an admin uses **Reset Password**, every other session of that account is revoked at once; only the session that made the change stays. Automation that relied on old sessions surviving a password change needs adjusting.
+
+#### 3. Account status, expiry and IP whitelist apply to every login path
+
+The three checks moved into `EruptUserService.checkAccountUsable` and run for password logins, erupt-sso and custom `LoginProxy` logins alike. A project whose `LoginProxy` used to bypass them will now be refused.
+
+#### 4. `logoPath: null` in `app.js` now means "no logo" <Badge type="warning" text="check app.js" />
+
+**Affects**: projects whose `app.js` says `logoPath: null` (the 2.2.x template default) while still showing the bundled logo.
+
+From 2.3.0 the three logo keys share one rule: **leave a key out** for the default (the bundled Erupt mark; collapsed and login logos follow `logoPath`), set it to **`null` or `''`** to show nothing in that slot. If the header logo disappears after upgrading, delete the `logoPath: null` line or point it at your own logo. A collapsed sidebar with no logo at all shows the site's initial instead of the Erupt mark.
+
+#### 5. Strict validation of sort fields and condition keys
+
+Sort fields and `queryColumn` condition keys must now be legal property paths (dotted Java identifiers), and condition values are bound as parameters. A client calling `/erupt-api/data/...` directly with an expression in `sort` (such as `id desc, (select ...)`) is refused; send field names only.
+
+#### 6. erupt-generator rewritten
+
+The generator moved from typing models in by hand to [importing them from a database](/en/modules/erupt-generator#import-from-database). `e_generator_class` / `e_generator_field` gain columns; old rows survive but lack the new column name, java type and similar fields, so re-importing is recommended. The per-field "unique" switch and the print button are gone, and the module no longer depends on freemarker or erupt-tpl.
+
+#### 7. The `EruptUser` form is no longer a wizard
+
+The four `DIVIDE` step markers (`accountStep` / `orgStep` / `pwdStep` / `securityStep`) became GROUP fields (`orgGroup` / `pwdGroup` / `securityGroup`). All are `@Transient`, so there is **no database impact**; only custom code that referenced those field names needs to change.
+
+### Changed defaults worth knowing
+
+| Item | 2.2.x | 2.3.0 |
+| --- | --- | --- |
+| `@BoolType(type)` | — | `AUTO`: a `notNull` BOOLEAN renders as a switch, others as radios; restore the old look with `@BoolType(type = BoolType.Type.RADIO)`, see [BOOLEAN](/en/field-types/boolean#widget-type) |
+| Empty BOOLEAN table cell | Empty tag | Nothing |
+| Row click opens the detail panel | On | Off (users can enable it in the settings drawer) |
+| Whole-tree menu drag sorting | Supported | Removed, menus follow the server order; favorites still drag |
+| `theme.customizable` | — | `true`; `false` locks the appearance for everyone |
+| Attachment domain `fileDomain` | Set in `app.js` | Served by `/erupt-app`; an empty `app.js` value adopts it |
+| Enum columns of new tables | Native enum / check constraint | Plain `VARCHAR`; existing tables untouched |
+| `@Power(comment)` | — | `true`; with erupt-comment installed every model accepts comments, add `@Power(comment = false)` to sensitive ones |
+
+### Database Changes
+
+:::info
+Hibernate applies these changes automatically at startup; run them by hand only when automatic DDL is disabled (`spring.jpa.hibernate.ddl-auto=none` or `validate`).
+:::
+
+The full SQL is in [2.3.0 Changelog → Database Changes](/en/guide/changelog#database-changes). It covers:
+
+- `e_upms_user`: new columns `mfa_enabled`, `mfa_secret`, `mfa_recovery_codes`
+- `e_generator_class`, `e_generator_field`: new columns (with erupt-generator)
+- `e_remote_host`: new `file_transfer` column (with erupt-remote)
+- Tables of the new modules, created by Hibernate: `e_upms_sso`, `e_upms_sso_role`, `e_upms_sso_bind` (erupt-sso); `e_record_comment` (erupt-comment); `e_ai_decision_def`, `e_ai_decision_model`, `e_ai_decision_question` (erupt-ai-decision)
+
+### Post-upgrade Checklist
+
+After restarting, confirm in order:
+
+1. **Login lock thresholds** — 10 failures / 10 minutes by default; tune for load tests and automated logins (change 1)
+2. **Header logo** — remove `logoPath: null` from `app.js` or set a real path (change 4)
+3. **Custom LoginProxy** — make sure the account status / expiry / IP whitelist checks are what you expect for your login flow (change 3)
+4. **Required BOOLEAN fields** — spot-check switches vs radios in forms and pin `@BoolType(type)` where needed
+5. **MFA for administrators** — have every admin enrol in [two-factor authentication](/en/modules/erupt-upms/user#two-factor-authentication-mfa) from the avatar menu
+6. **Projects adding erupt-comment** — add `@Power(comment = false)` to models that must not carry comments; @mention notices need erupt-notice
+7. **Old erupt-generator rows** — they lack the new fields, re-import from the database
+8. **Projects with automatic DDL disabled** — confirm the SQL above has been run
+9. **Frontend cache** — the frontend changed a lot (skins, login page, form panel); force-refresh the browser if styles look off
+
+
 ## V 2.2.0 Upgrade Guide
 
 This section covers the notable changes when upgrading from 2.1.x to 2.2.0.
@@ -125,7 +249,7 @@ Menu initialization **only adds, never moves**, so the existing `EruptClassInfo`
 Schema changes are applied automatically by JPA / Hibernate at startup. Run them manually only if automatic DDL is disabled (`spring.jpa.hibernate.ddl-auto=none` or `validate`).
 :::
 
-The full SQL is in [2.2.0 Changelog → Database Changes](/en/guide/changelog#database-changes). It covers:
+The full SQL is in [2.2.0 Changelog → Database Changes](/en/guide/changelog#database-changes-1). It covers:
 
 - `e_remote_host`: created when [erupt-remote](/en/modules/erupt-remote) is added; Hibernate builds it on its own
 - `e_ai_canvas_model`: new table; `data_type` and `target_model` on `e_ai_canvas` are migrated and then dropped (when erupt-ai-canvas is used)

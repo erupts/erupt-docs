@@ -30,6 +30,8 @@ erupt-atlas 把运行时注册表里的全部 `@Erupt` 模型和它们之间的�
 
 ## 七种视图
 
+自 2.3.0 起，层级、矩阵、权限、体检等表格类视图铺满屏幕宽度，宽屏下不再两侧留白。
+
 | 视图 | 说明 |
 | --- | --- |
 | 血缘 Lineage | 选中一个模型，按 1~5 跳深度追溯：谁引用了它、它又引用了谁 |
@@ -80,6 +82,47 @@ erupt-atlas 把运行时注册表里的全部 `@Erupt` 模型和它们之间的�
 | `remote` | 由 [erupt-cloud](/zh/modules/erupt-cloud) 节点提供的远程模型 |
 
 边的类型涵盖 `reference`（引用字段）、`tab`（子表）、`embed`（内嵌）、`drill`（下钻）、`operation`（行操作）、`cubeOf`、`join`、`table`（共享表）。
+
+## 使用方追溯 <Badge type="tip" text="v2.3.0+" />
+
+图谱只知道字段声明了什么：引用、子表、内嵌都写在模型上，扫一遍注解就能画出来。但另一半关系是用户在运行时绑定的，存在某张配置表里，模型上的任何注解都不会提到——流程绑定了哪个表单、菜单打开了哪张表、看板读了哪个 Cube。
+
+2.3.0 起，各模块通过 `EruptUsageProvider`（erupt-core，`xyz.erupt.core.usage`）自己上报这些绑定，图谱反向汇总：打开一个模型，底部面板多出 **被谁用（Used by）** 标签页，列出所有用到它的配置，改动模型前一眼看清哪些地方需要重新打开。
+
+| 上报模块 | 上报内容 |
+| --- | --- |
+| erupt-flow | 流程绑定的表单模型、自定义节点的配置模型 |
+| erupt-upms | 以该模型为类型值的菜单 |
+| erupt-cube | 读取该 Cube 的看板 |
+| erupt-print | 挂在该模型上的打印模板 |
+| erupt-core | `@RowOperation` 弹出表单所用的模型 |
+
+模块作者只需声明一个 Spring Bean，实现 `EruptUsageProvider` 并返回 `List<EruptUsage>`。`EruptUsage` 是一个 record：`target`（被使用的模型名或 Cube 名）、`type`（`ERUPT` / `CUBE`）、`usage`（用作什么，已翻译）、`owner`（使用它的那条配置，按其页面上的叫法命名）、`route`（打开该配置的控制台路由，没有独立页面时为 `null`）：
+
+```java
+@Component
+public class ReportUsageProvider implements EruptUsageProvider {
+
+    @Resource
+    private ReportRepository reportRepository;
+
+    @Override
+    public List<EruptUsage> usages() {
+        List<EruptUsage> usages = new ArrayList<>();
+        for (Report report : reportRepository.findAll()) {
+            usages.add(new EruptUsage(
+                    report.getErupt(),                        // 被使用的模型名
+                    I18nTranslate.$translate("Report"),       // 用作什么
+                    report.getTitle(),                        // 哪条配置在用
+                    EruptUsage.tableRoute(Report.class)       // 打开该配置的路由
+            ));
+        }
+        return usages;
+    }
+}
+```
+
+图谱每次请求都会询问所有 Provider，因此实现应当轻量；没有内容可报、或依赖的表尚不存在时返回空列表即可，不要抛异常——一个沉默的模块不应拖垮整个页面。
 
 ## 类注册表 <Badge type="tip" text="v2.2.0 自 erupt-monitor 迁入" />
 

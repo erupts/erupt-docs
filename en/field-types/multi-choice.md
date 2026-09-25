@@ -85,10 +85,30 @@ public @interface MultiChoiceType {
     enum Type {
         SELECT,   // Dropdown multi-select
         CHECKBOX, // Checkbox group (default)
+        TRANSFER, // Transfer list, suits large option sets (2.3.0+)
     }
 
 }
 ```
+
+## Transfer List <Badge type="tip" text="v2.3.0+" />
+
+When there are many options, switch to a searchable two-list transfer. The option source and storage stay the same; only the widget changes:
+
+```java
+@JdbcTypeCode(SqlTypes.JSON)
+@Column(length = 2000)
+@EruptField(
+    edit = @Edit(title = "Tools", type = EditType.MULTI_CHOICE,
+                 multiChoiceType = @MultiChoiceType(type = MultiChoiceType.Type.TRANSFER,
+                                                    fetchHandler = ToolFetchHandler.class))
+)
+private Set<String> tools;
+```
+
+:::tip
+For entity many-to-many relations (`@ManyToMany`) use [TRANSFER](/en/field-types/transfer) instead.
+:::
 
 ## One-to-Many Table Storage
 

@@ -56,8 +56,30 @@ public @interface Tree {
      */
     Expr rootPid() default @Expr;
 
+    /**
+     * 最大层级，根节点为第 1 级，0 表示不限制（2.3.0+）
+     * 达到该层级的节点不再提供「添加子节点」，服务端同时拒绝任何会让节点更深的保存（新增、移动、单元格编辑改父级、导入、API）
+     */
+    int maxLevel() default 0;
+
 }
 ```
+
+## maxLevel 限制层级 <Badge type="tip" text="v2.3.0+" />
+
+层级数据往往有业务上限——组织架构不超过三级、分类目录不超过两级。`maxLevel` 把这个上限交给框架执行：
+
+```java
+@Erupt(
+        name = "部门",
+        tree = @Tree(pid = "parent.id", maxLevel = 3)
+)
+public class Department extends BaseModel { ... }
+```
+
+- 根节点为第 1 级，`maxLevel = 3` 即最深只能到第 3 级；默认 `0` 表示不限制
+- 已达上限的节点在树上不再显示「添加子节点」
+- 服务端同步校验：新增、拖动移动、单元格编辑改父级、导入、直接调用 API，只要会让节点落到更深一层都会被拒绝
 
 ## 效果展示
 

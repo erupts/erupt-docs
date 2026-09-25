@@ -19,6 +19,10 @@ private Set<RefEntity> options;
 
 > `RefEntity` 需是一个已被 `@Erupt` 注解修饰的实体类，Erupt 会自动读取其数据作为复选框选项。
 
+:::tip
+选项数量较多时，可改用 [TRANSFER 穿梭框](/zh/field-types/transfer)（2.3.0+），支持搜索，存储方式与 CHECKBOX 完全一致，仅切换控件。
+:::
+
 ## 配置项
 
 通过 `@Edit` 的 `checkboxType` 指定选项从关联实体的哪些列取值：

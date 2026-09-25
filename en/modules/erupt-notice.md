@@ -80,11 +80,45 @@ eruptNoticeService.send(noticeScene, List.of("EruptInternalNotice"), Arrays.asLi
 - `scene_code` must be an existing code in "Notification Scene", otherwise a `Notice Scene not found` exception is thrown.
 :::
 
+## Provider-backed Channels <Badge type="tip" text="v2.3.0+" />
+
+erupt-notice ships four channels — Feishu, DingTalk, WeCom and Slack — that need no appId or token of their own. Each sends through the [erupt-sso](/en/modules/erupt-sso) provider row of the matching **Provider Type**: the row's client credentials are the app the message is sent from, and the Open ID recorded on the user's binding when they signed in through that provider is the recipient. The four channels are wired up only when erupt-sso is on the classpath.
+
+| Channel | Provider type required | Messaging Key | Recipient identifier (value of the Open ID Claim) | Message shape |
+| --- | --- | --- | --- | --- |
+| Feishu `FeishuNoticeChannel` | Feishu | Not needed; the App ID / App Secret obtain a `tenant_access_token` | `open_id` | Bot rich-text message (post): title on top, content below, plus a "View details" line when there is a link |
+| DingTalk `DingTalkNoticeChannel` | DingTalk | Needed: the app's **AgentId** | `unionId`, resolved to the corp userid once at send time and cached | Work notification in markdown, the title as a heading, plus "View details" when there is a link |
+| WeCom `WeComNoticeChannel` | WeCom | Needed: the self-built app's **AgentId** | `userid` | Application message: a textcard with a "View details" button when there is a link, plain text otherwise |
+| Slack `SlackNoticeChannel` | Slack | Needed: the **Bot User OAuth Token** (`xoxb-...`); the OIDC client secret cannot post | `https://slack.com/user_id` | Direct message from the bot (`chat.postMessage`): bold title + content, plus "View details" when there is a link |
+
+Steps:
+
+1. Add a row under **System Management → SSO Provider**, pick the matching preset as Provider Type, fill in the client credentials and enable it.
+2. For WeCom / DingTalk / Slack also fill in the **Messaging Key** (AgentId or bot token); Feishu needs none.
+3. Keep the **Open ID Claim** the preset filled in — do not clear it; it decides which identifier the binding records as the recipient.
+4. Have the recipient **sign in once** through that provider, so their binding gets an Open ID.
+5. The channel list of a **Notification Scene** now offers an entry such as "Feishu (row name)"; tick it. When sending through the API the channel code is the class name, e.g. `FeishuNoticeChannel`.
+
+With several enabled rows of one type the first by sort is used; with none, the channel hides itself from the list (see `available()` below).
+
+:::tip Link rule
+A relative path passed to `NoticeMessage.setUrl(...)` (such as `/some/page`) only means something to the in-app channel and is dropped when pushing to a chat app; only an **absolute URL** starting with `http://` / `https://` becomes a "View details" link.
+:::
+
+When a send fails, the error column of the notification log records why:
+
+| Message | Situation |
+| --- | --- |
+| No enabled SSO provider of this type is configured (…) | At send time there is no enabled provider row of that type; the brackets show the type |
+| The user has never signed in through this provider (…) | The recipient has no binding with that provider, or the binding's Open ID is empty; for DingTalk also when the unionId resolves to no corp userid |
+| The provider row has no Messaging Key (…) | The WeCom / DingTalk / Slack row has no Messaging Key |
+| The identity provider could not be reached (…) | The provider's API returned an error; the brackets carry its own code and message |
+
 ## Notification Channels
 
 <img src="/notice/channel.png" width="900">
 
-Extend the abstract class `AbstractNoticeChannel` to register a custom notification channel and simultaneously deliver notification content to platforms like Slack, Feishu, SMS, etc.:
+Extend the abstract class `AbstractNoticeChannel` to connect another platform (SMS, email, Microsoft Teams, ...) and deliver notification content there. Feishu, DingTalk, WeCom and Slack are already built in, see above, so there is no need to write them again:
 
 ```java
 import xyz.erupt.notice.channel.AbstractNoticeChannel;
@@ -92,24 +126,25 @@ import xyz.erupt.notice.pojo.NoticeMessage;
 import xyz.erupt.upms.model.EruptUser;
 
 @Component
-public class SlackNoticeChannel extends AbstractNoticeChannel {
+public class TeamsNoticeChannel extends AbstractNoticeChannel {
 
     // Display name of the channel
     @Override
     public String name() {
-        return "Slack";
+        return "Microsoft Teams";
     }
 
     // Called once per recipient
     @Override
     public void send(EruptUser receiveUser, NoticeMessage noticeMessage) {
-        // Call the Slack API with noticeMessage.getTitle() / getContent()
+        // Call the Teams API with noticeMessage.getTitle() / getContent()
     }
 }
 ```
 
-:::tip Channel code and ordering
-- `code()` returns the class `SimpleName` by default (e.g. `SlackNoticeChannel`). That value is the channel code used in notice scene configuration and in `send(...)`. Override it if you need a custom code.
+:::tip Channel code, ordering and availability
+- `code()` returns the class `SimpleName` by default (e.g. `TeamsNoticeChannel`). That value is the channel code used in notice scene configuration and in `send(...)`. Override it if you need a custom code.
 - Override `order()` to control the position of the channel in the list — lower values come first.
+- Override `available()` (2.3.0+, default `true`) to let a channel hide itself from the channel list until its runtime configuration exists — this is how the built-in provider-backed channels disappear while no enabled provider row of their type exists.
 - Channel instances register themselves into `AbstractNoticeChannel.getHandlers()` in the constructor, so declaring the class as a Spring Bean is enough.
 :::
