@@ -19,6 +19,10 @@ private Set<RefEntity> options;
 
 > `RefEntity` must be an entity class annotated with `@Erupt`. Erupt will automatically read its data to populate the checkbox options.
 
+:::tip
+For large option sets, switch to [TRANSFER](/en/field-types/transfer) (2.3.0+): a searchable transfer list with exactly the same storage as CHECKBOX, only the widget changes.
+:::
+
 ## Configuration
 
 Use the `checkboxType` attribute of `@Edit` to control which columns of the related entity supply the option values:

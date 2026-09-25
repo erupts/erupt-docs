@@ -33,6 +33,7 @@ public class EruptTest extends BaseModel {
 | `copy` | boolean | true | 是否允许一键复制行数据（2.0.0+） |
 | `cellEdit` | boolean | true | 是否允许在表格中直接编辑单元格（2.2.0+） |
 | `ai` | boolean | true | AI 工具是否可以检视和操作该模型（2.1.0+） |
+| `comment` | boolean | true | 是否允许该模型的记录携带评论流，需引入 erupt-comment（2.3.0+） |
 | `powerHandler` | Class | - | 实现此接口动态控制权限 |
 
 ## 配置项注解定义
@@ -62,6 +63,9 @@ public @interface Power {
 
     // AI 工具是否可以检视和操作该模型（2.1.0+）
     boolean ai() default true;
+
+    // 记录是否携带评论流，需引入 erupt-comment 模块（2.3.0+）
+    boolean comment() default true;
 
     // 实现此接口动态控制权限
     Class<? extends PowerHandler> powerHandler() default PowerHandler.class;
@@ -165,6 +169,17 @@ private String status;
 :::tip
 单元格编辑不会放开任何新入口：表格本身仍需 `edit` 权限，树形菜单与子表没有表格可点，集合类字段（多对多等）因列表查询不返回其值而不参与单元格编辑。
 :::
+
+## comment 评论开关 <Badge type="tip" text="v2.3.0+" />
+
+`comment` 控制该模型的记录是否携带**评论流**，默认 `true`。只有引入了 [erupt-comment](/zh/modules/erupt-comment) 模块时才有意义：模块存在时，记录表单面板的标题栏出现评论入口，表格行上显示评论计数。
+
+```java
+// 日志类模型没有讨论的必要，关闭评论
+@Erupt(name = "登录日志", power = @Power(comment = false))
+```
+
+关闭后前端隐藏评论入口，服务端的新增评论接口同样拒绝写入；评论的读写权限本身沿用模型的菜单权限，不需要额外授权。
 
 ## 注意事项
 

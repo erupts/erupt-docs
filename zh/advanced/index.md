@@ -45,8 +45,7 @@ const groups = [
     {
         title: '登录与安全',
         items: [
-            {icon: '🔑', name: '登录与认证', desc: '自定义登录逻辑、Token 校验、权限扩展', link: '/zh/advanced/auth'},
-            {icon: '🚪', name: '自定义登录页', desc: '验证码登录、微信扫码等个性化登录场景', link: '/zh/advanced/custom-login-page'},
+            {icon: '🔑', name: '登录与认证', desc: 'erupt-sso 单点登录、LoginProxy、自定义登录页与自行签发 Token', link: '/zh/advanced/auth'},
             {icon: '🔓', name: '开放接口', desc: 'appid + secret 获取 token，供外部系统调用', link: '/zh/advanced/open-api'},
         ],
     },

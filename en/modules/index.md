@@ -16,6 +16,7 @@ const groups = [
             {icon: '🎨', name: 'Erupt AI Canvas', artifact: 'erupt-ai-canvas', desc: 'Generate a page from one sentence, wired live to the Erupt backend', link: '/en/modules/erupt-ai-canvas'},
             {icon: '📖', name: 'Erupt AI RAG', artifact: 'erupt-ai-rag', desc: 'Knowledge bases with vector retrieval, AI-driven Agentic RAG', link: '/en/modules/erupt-ai-rag'},
             {icon: '👩‍💻', name: 'Erupt AI Staff', artifact: 'erupt-ai-staff', desc: 'AI digital staff running scheduled tasks and pushing work reports', link: '/en/modules/erupt-ai-staff'},
+            {icon: '🔀', name: 'Erupt AI Decision', artifact: 'erupt-ai-decision', desc: 'Typed, probability-backed judgements your code can branch on', link: '/en/modules/erupt-ai-decision'},
             {icon: '🛠️', name: 'Erupt AI Skills', artifact: 'claude skills', desc: 'Claude skill pack for AI-assisted Erupt development', link: 'https://github.com/plinian/erupt-skill', external: true},
         ],
     },
@@ -44,6 +45,8 @@ const groups = [
             {icon: '📊', name: 'Erupt Feishu', artifact: 'erupt-data-feishu', desc: 'Feishu Bitable data source, manage records directly', link: '/en/modules/erupt-feishu'},
             {icon: '📓', name: 'Erupt Notion', artifact: 'erupt-data-notion', desc: 'Notion database data source, pages as rows', link: '/en/modules/erupt-notion'},
             {icon: '🪣', name: 'Erupt S3', artifact: 'erupt-data-s3', desc: 'S3-compatible object storage data source, searchable & auditable', link: '/en/modules/erupt-s3'},
+            {icon: '📋', name: 'Erupt DingTalk', artifact: 'erupt-data-dingtalk', desc: 'DingTalk Notable data source, manage records directly', link: '/en/modules/erupt-dingtalk'},
+            {icon: '🗂️', name: 'Erupt Airtable', artifact: 'erupt-data-airtable', desc: 'Airtable data source, table records as rows', link: '/en/modules/erupt-airtable'},
         ],
     },
     {
@@ -52,6 +55,8 @@ const groups = [
             {icon: '⌨️', name: 'Erupt Terminal', artifact: 'erupt-terminal', desc: 'Server shell terminal right in the browser', link: '/en/modules/erupt-terminal'},
             {icon: '🖥️', name: 'Erupt Remote', artifact: 'erupt-remote', desc: 'VNC desktops and SSH shells for remote hosts, in the browser', link: '/en/modules/erupt-remote'},
             {icon: '🕸️', name: 'Erupt Atlas', artifact: 'erupt-atlas', desc: 'Model relation graph, lineage tracing and structural audit', link: '/en/modules/erupt-atlas'},
+            {icon: '💬', name: 'Erupt Comment', artifact: 'erupt-comment', desc: 'Comment on any record: @mentions, pinned and resolved threads', link: '/en/modules/erupt-comment'},
+            {icon: '🔑', name: 'Erupt SSO', artifact: 'erupt-sso', desc: 'OAuth2 / OIDC single sign-on, providers configured in the admin without a restart', link: '/en/modules/erupt-sso'},
             {icon: '🔌', name: 'Erupt Websocket', artifact: 'erupt-websocket', desc: 'WebSocket real-time messaging and data push', link: '/en/modules/erupt-websocket'},
             {icon: '⚙️', name: 'Erupt Generator', artifact: 'erupt-generator', desc: 'Visual generator for Erupt entity classes', link: '/en/modules/erupt-generator'},
             {icon: '⏰', name: 'Erupt Job', artifact: 'erupt-job', desc: 'Visual scheduled jobs with Cron config and logs', link: '/en/modules/erupt-job'},
@@ -75,7 +80,7 @@ const groups = [
         ],
     },
     {
-        title: 'Third-party Plugins',
+        title: 'Third-party Modules',
         badge: 'Community',
         items: [
             {icon: '🔍', name: 'Erupt Dsl', artifact: 'erupt-dsl', desc: 'Dynamic ORM queries built with a DSL syntax', link: '/en/modules/third-party/erupt-dsl'},
@@ -96,7 +101,7 @@ const filtered = computed(() => {
 })
 </script>
 
-# Plugins Overview
+# Modules Overview
 
 Erupt follows a modular design — core capabilities are split into independent Maven modules so you can pull in only what you need, all versioned in lockstep with the core.
 

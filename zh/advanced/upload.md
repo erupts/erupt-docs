@@ -2,6 +2,10 @@
 
 通过自定义文件上传规则，可以将文件上传到阿里云 OSS、七牛云、腾讯云 COS 等对象存储服务，而不是存储在本地磁盘。
 
+:::tip 现成实现 <Badge type="tip" text="v2.3.0+" />
+S3 兼容存储（AWS S3 / MinIO / OSS / COS / R2）无需自己实现——引入 erupt-data-s3 并注册 `S3AttachmentProxy` 即可，详见 [S3 附件上传](/zh/modules/erupt-s3#附件上传-s3attachmentproxy)。
+:::
+
 ## 本地存储配置项
 
 不实现 `AttachmentProxy` 时，附件默认存储在本地磁盘，相关配置位于 `EruptProp`：
@@ -178,3 +182,5 @@ public class EruptDemoApplication {
 ```javascript
 window.eruptSiteConfig.fileDomain = "http://xxxx.com"; // OSS 域名路径
 ```
+
+2.3.0 起 `/erupt-app` 接口会返回 `AttachmentProxy.fileDomain()`，前端在 `eruptSiteConfig.fileDomain` 为空时自动采用，因此这一步可以省略；`app.js` 中的值仍作为显式覆盖优先生效。

@@ -2,7 +2,9 @@
 
 The erupt-data-s3 module provides an S3-compatible object storage data source, built on AWS SDK v2. Bind an `@Erupt` model to a bucket (AWS S3, MinIO, Aliyun OSS, Tencent COS, Cloudflare R2, etc.) and get a permissioned, searchable, auditable admin view of objects in the Erupt console — with the standard delete flow wired up.
 
-**Read + delete only.** Uploading raw object content through an admin form is not a good fit — use the S3 SDK or your app's own upload flow directly.
+**The data source is read + delete only.** Uploading raw object content through an admin form is not a good fit — use the S3 SDK or your app's own upload flow directly.
+
+The module also ships `S3AttachmentProxy`, a ready-made `AttachmentProxy` that sends every Erupt attachment upload (`@Edit(type = ATTACHMENT)`, rich-text images, etc.) to a bucket instead of the local disk — see [Attachment Upload](#attachment-upload-s3attachmentproxy).
 
 ## Adding the Dependency
 
@@ -135,4 +137,56 @@ S3's `ListObjectsV2` only supports `prefix` filtering, so every condition other 
 - every list refresh re-issues the paginated `ListObjectsV2` calls (nothing is cached), so large buckets feel noticeably slow.
 
 Narrow the scope with `prefix` down to a manageable size rather than raising `maxObjects`.
+:::
+
+## Attachment Upload (S3AttachmentProxy) <Badge type="tip" text="v2.3.0+" />
+
+Beyond browsing objects as a data source, the module ships `S3AttachmentProxy`, which points Erupt's attachment storage at a bucket in two steps — no need to write your own [AttachmentProxy](/en/advanced/upload).
+
+**Step 1**: register the proxy on the Spring Boot entry class:
+
+```java
+@SpringBootApplication
+@EruptScan
+@EruptAttachmentUpload(S3AttachmentProxy.class)
+public class DemoApplication { ... }
+```
+
+**Step 2**: configure `erupt.s3.*`:
+
+```yaml
+erupt:
+  s3:
+    bucket: erupt-uploads
+    region: ap-southeast-1
+    endpoint: http://minio.internal:9000   # omit for AWS
+    path-style: true                       # MinIO / self-hosted
+    prefix: erupt/                         # optional key prefix
+    access-key: ${S3_ACCESS_KEY}
+    secret-key: ${S3_SECRET_KEY}
+    domain: https://cdn.example.com        # optional public base URL (CDN); derived from endpoint + bucket when empty
+    local-save: false                      # true keeps a copy under erupt.upload-path as well
+```
+
+| Property | Default | Description |
+| --- | --- | --- |
+| `erupt.s3.bucket` | — | Bucket that receives uploads; required |
+| `erupt.s3.prefix` | `""` | Key prefix inside the bucket; empty stores at the bucket root |
+| `erupt.s3.region` | `"us-east-1"` | Region name; for non-AWS providers, any non-empty value paired with `endpoint` |
+| `erupt.s3.endpoint` | `""` | Endpoint URL; empty uses the AWS default. Set for MinIO / OSS / COS / R2 |
+| `erupt.s3.access-key` / `secret-key` | `""` | Static credentials; empty falls back to the default provider chain |
+| `erupt.s3.path-style` | `false` | Path-style addressing (`endpoint/bucket/key`), required by MinIO and most self-hosted gateways |
+| `erupt.s3.domain` | `""` | Public base URL the browser loads files from; empty derives `https://<bucket>.s3.<region>.amazonaws.com`, `<endpoint>/<bucket>` (path-style) or `<scheme>://<bucket>.<endpoint-host>` |
+| `erupt.s3.local-save` | `false` | Also keep the file on the local server |
+
+### Storage Path and Public URL
+
+The upload path Erupt generates (`/yyyy-MM-dd/xxxx.ext`) becomes the object key under `prefix` verbatim, and the value stored in the database stays that path — swapping storage later does not rewrite your data. Objects are written with a `Content-Type` guessed from the extension so images render inline. The public URL of an attachment is `fileDomain() + path`, where `fileDomain()` is `domain` (or the derived bucket URL) followed by `prefix`. The bucket (or the CDN in front of it) must allow public reads, or `domain` must point at something that does.
+
+### No Frontend Change Needed
+
+Since 2.3.0, `/erupt-app` returns the registered `AttachmentProxy`'s `fileDomain()`, and the frontend adopts it automatically when `eruptSiteConfig.fileDomain` is empty — so wiring up S3 needs no `app.js` edit. A `fileDomain` set explicitly in `app.js` still takes precedence and can be used to override the value the backend returns.
+
+:::tip Data source vs. attachment proxy
+The connection attributes on the `@EruptS3` annotation serve only the object-browsing data source, and `erupt.s3.*` serves only the attachment proxy. They are independent — use either one alone, or point them at different buckets.
 :::

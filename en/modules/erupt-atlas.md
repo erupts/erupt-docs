@@ -30,6 +30,8 @@ The module depends on `erupt-upms`, `erupt-tpl` and `erupt-data-jpa` (all `provi
 
 ## Seven views
 
+Since 2.3.0 the tabular views — Layers, Matrix, Power, Audit — fill the full width of the screen instead of leaving margins on wide displays.
+
 | View | What it shows |
 | --- | --- |
 | Lineage | Pick a model and walk 1–5 hops in and out: what references it, and what it references |
@@ -80,6 +82,47 @@ The `Audit` view collects four kinds of structural finding:
 | `remote` | A model served by an [erupt-cloud](/en/modules/erupt-cloud) node |
 
 Edge kinds cover `reference` (reference field), `tab` (sub-table), `embed`, `drill`, `operation` (row operation), `cubeOf`, `join` and `table` (shared table).
+
+## Used By <Badge type="tip" text="v2.3.0+" />
+
+The graph only knows what fields declare: references, sub-tables and embeds are written on the model, and one pass over the annotations draws them. The other half of the picture is bound by users at runtime and lives in a configuration row that no annotation will ever mention — which form a flow is bound to, which table a menu opens, which cube a dashboard reads.
+
+Since 2.3.0, modules report those bindings themselves through `EruptUsageProvider` (erupt-core, `xyz.erupt.core.usage`) and the atlas reads them backwards: open a model and the bottom panel gains a **Used by** tab listing every configuration that uses it — everything that would have to be reopened if the model changed.
+
+| Reporting module | What it reports |
+| --- | --- |
+| erupt-flow | The form model a flow is bound to, and the config models of its custom nodes |
+| erupt-upms | Menus whose type value is this model |
+| erupt-cube | Dashboards that read this cube |
+| erupt-print | Print templates attached to this model |
+| erupt-core | Models used as the pop-up form of a `@RowOperation` |
+
+A module author declares one Spring bean that implements `EruptUsageProvider` and returns `List<EruptUsage>`. `EruptUsage` is a record: `target` (the erupt name or cube name being used), `type` (`ERUPT` / `CUBE`), `usage` (what it is used as, already translated), `owner` (the configuration that uses it, named the way its own page names it) and `route` (the console route that opens that configuration, or `null` when it has no page of its own):
+
+```java
+@Component
+public class ReportUsageProvider implements EruptUsageProvider {
+
+    @Resource
+    private ReportRepository reportRepository;
+
+    @Override
+    public List<EruptUsage> usages() {
+        List<EruptUsage> usages = new ArrayList<>();
+        for (Report report : reportRepository.findAll()) {
+            usages.add(new EruptUsage(
+                    report.getErupt(),                        // the model being used
+                    I18nTranslate.$translate("Report"),       // what it is used as
+                    report.getTitle(),                        // which configuration uses it
+                    EruptUsage.tableRoute(Report.class)       // route that opens that configuration
+            ));
+        }
+        return usages;
+    }
+}
+```
+
+The atlas asks every provider on every request, so keep the implementation light. A provider with nothing to say, or whose tables are not there yet, returns an empty list rather than throwing — one silent module must not cost the page.
 
 ## Class registry <Badge type="tip" text="v2.2.0, moved from erupt-monitor" />
 

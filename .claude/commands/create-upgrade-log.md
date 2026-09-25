@@ -110,6 +110,7 @@
     - 版本号不确定时，先询问用户
 
 8. **同步侧边栏**：若 `.vitepress/config.mts` 的 `/guide/` sidebar 中缺少 changelog 条目，补充进去。
+9. 更新架构图
 
 ## Emoji 约定
 

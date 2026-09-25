@@ -62,8 +62,8 @@ Code-level extensions of the permission system live in the Advanced section:
 
 | Need | Page |
 |---|---|
-| Custom login logic (LDAP / SSO / SMS codes) | [Login & Authentication with LoginProxy](/en/advanced/auth) |
-| Replace the login page | [Custom Login Page](/en/advanced/custom-login-page) |
+| Single sign-on, custom login logic (LDAP / SMS codes), issuing tokens yourself | [Login & Authentication](/en/advanced/auth) |
+| Replace the login page | [Login & Authentication → Custom Login Page](/en/advanced/auth#custom-login-page) |
 | Require login or a menu permission on your own API | [REST API permissions](/en/advanced/rest-api) |
 | Filter data by organization / post / creator | [PreDataProxy and Lookers](/en/advanced/pre-data-proxy) |
 | Use a dictionary as dropdown options | [CHOICE → Dictionary options](/en/field-types/choice#dictionary-options) |

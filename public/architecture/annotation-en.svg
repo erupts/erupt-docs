@@ -377,8 +377,8 @@ rect.c-bg-rect { fill: var(--bg); }
           <text x="745" y="165" class="t-muted" font-size="7" text-anchor="middle">/erupt-api/data/*</text>
         </g>
 
-        <g id="node-schema" data-node-id="schema" data-node-label="Schema Delivery" tabindex="0" role="button" aria-label="Focus Schema Delivery, table / form / search bar, 04 / Capability Generation" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="table / form / search bar" data-node-context="04 / Capability Generation">
-          <title>Schema Delivery · table / form / search bar · 04 / Capability Generation</title>
+        <g id="node-schema" data-node-id="schema" data-node-label="Schema Delivery" tabindex="0" role="button" aria-label="Focus Schema Delivery, table / form / headers, 04 / Capability Generation" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="table / form / headers" data-node-context="04 / Capability Generation">
+          <title>Schema Delivery · table / form / headers · 04 / Capability Generation</title>
           <rect x="689" y="356" width="112" height="58" rx="6" class="c-mask"/>
           <rect x="689" y="356" width="112" height="58" rx="6" class="c-frontend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(695 362) scale(0.6875)">
@@ -388,11 +388,11 @@ rect.c-bg-rect { fill: var(--bg); }
             <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
           </g>
           <text x="745" y="377" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">Schema Delivery</text>
-          <text x="745" y="393" class="t-muted" font-size="6.9" text-anchor="middle">table / form / search bar</text>
+          <text x="745" y="393" class="t-muted" font-size="7.2" text-anchor="middle">table / form / headers</text>
         </g>
 
-        <g id="node-perm" data-node-id="perm" data-node-label="Permission Control" tabindex="0" role="button" aria-label="Focus Permission Control, menu · row · column · button, 04 / Capability Generation" aria-pressed="false" data-node-kind="security" data-node-sublabel="menu · row · column · button" data-node-context="04 / Capability Generation">
-          <title>Permission Control · menu · row · column · button · 04 / Capability Generation</title>
+        <g id="node-perm" data-node-id="perm" data-node-label="Permission Control" tabindex="0" role="button" aria-label="Focus Permission Control, menu · row · col · btn · AI, 04 / Capability Generation" aria-pressed="false" data-node-kind="security" data-node-sublabel="menu · row · col · btn · AI" data-node-context="04 / Capability Generation">
+          <title>Permission Control · menu · row · col · btn · AI · 04 / Capability Generation</title>
           <rect x="689" y="584" width="112" height="58" rx="6" class="c-mask"/>
           <rect x="689" y="584" width="112" height="58" rx="6" class="c-security" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(695 590) scale(0.6875)">
@@ -400,11 +400,11 @@ rect.c-bg-rect { fill: var(--bg); }
             <path d="m5.8 8 1.5 1.5 3-3"/>
           </g>
           <text x="745" y="605" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">Permission Control</text>
-          <text x="745" y="621" class="t-muted" font-size="6.1" text-anchor="middle">menu · row · column · button</text>
+          <text x="745" y="621" class="t-muted" font-size="7.2" text-anchor="middle">menu · row · col · btn · AI</text>
         </g>
 
-        <g id="node-page" data-node-id="page" data-node-label="Complete Admin Page" tabindex="0" role="button" aria-label="Focus Complete Admin Page, CRUD out of the box, 05 / Result" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="CRUD out of the box" data-node-tag="zero frontend code" data-node-context="05 / Result">
-          <title>Complete Admin Page · CRUD out of the box · 05 / Result · zero frontend code</title>
+        <g id="node-page" data-node-id="page" data-node-label="Complete Admin Page" tabindex="0" role="button" aria-label="Focus Complete Admin Page, CRUD · views built in, 05 / Result" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="CRUD · views built in" data-node-tag="zero frontend code" data-node-context="05 / Result">
+          <title>Complete Admin Page · CRUD · views built in · 05 / Result · zero frontend code</title>
           <rect x="904" y="356" width="112" height="58" rx="6" class="c-mask"/>
           <rect x="904" y="356" width="112" height="58" rx="6" class="c-frontend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(910 362) scale(0.6875)">
@@ -414,7 +414,7 @@ rect.c-bg-rect { fill: var(--bg); }
             <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
           </g>
           <text x="960" y="377" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">Complete Admin Page</text>
-          <text x="960" y="393" class="t-muted" font-size="7" text-anchor="middle">CRUD out of the box</text>
+          <text x="960" y="393" class="t-muted" font-size="7.2" text-anchor="middle">CRUD · views built in</text>
         <text x="960" y="403" class="t-frontend" font-size="7" text-anchor="middle">zero frontend code</text>
         </g>
 

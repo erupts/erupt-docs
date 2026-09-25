@@ -36,5 +36,5 @@ Context variables available in tenant JS:
 
 | Variable | Reference | JS Example |
 | --- | --- | --- |
-| eruptSiteConfig | The eruptSiteConfig node in app.js<br/>[Frontend configuration](/en/guide/configuration) | `//Set website copyright`<br/>`eruptSiteConfig.copyrightTxt = "<a>xxx<a>"` |
+| eruptSiteConfig | The eruptSiteConfig node in app.js<br/>[Frontend configuration](/en/guide/config-frontend) | `//Set website copyright`<br/>`eruptSiteConfig.copyrightTxt = "<a>xxx<a>"` |
 | eruptAppProp | The erupt-app node in application.yml<br/>[Backend configuration](/en/guide/configuration) | `//Set languages`<br/>`eruptAppProp.locales=["ja-JP","ko-KR"]`<br/>`//Disable watermark`<br/>`eruptAppProp.waterMark = false` |

@@ -64,6 +64,9 @@ public @interface Layout {
     // 将表格行的查看详情、修改、删除按钮折叠到下拉菜单（2.0.0+）
     boolean collapseActionButton() default false;
 
+    // 单元格超出列宽时是否以省略号截断，false 则换行显示，同时保证操作列的按钮全部可见（2.3.0+）
+    boolean tableTruncate() default true;
+
     enum FormSize {
         // 默认布局，每行显示三个表单组件
         DEFAULT, 
@@ -114,6 +117,21 @@ public @interface Layout {
     layout = @Layout(collapseActionButton = true)
 )
 ```
+
+## tableTruncate 单元格换行 <Badge type="tip" text="v2.3.0+" />
+
+表格默认把超出列宽的内容截断为省略号，悬浮查看完整值。设置 `tableTruncate = false` 后，单元格改为**换行显示**，长文本、多标签、多按钮都能一次看全：
+
+```java
+@Erupt(
+    name = "示例",
+    layout = @Layout(tableTruncate = false)
+)
+```
+
+- 数据列去掉 `nowrap` / 省略号，按内容自动换行
+- 操作列按一行图标的宽度计算，多出的按钮顺延到下一行——行操作很多的模型不再有按钮被省略号吞掉
+- 行高随内容变化，因此这类表格不启用固定行高的虚拟滚动，数据量特别大的模型建议保持默认值
 
 ## 列固定（Fixed Columns）
 

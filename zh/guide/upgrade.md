@@ -2,6 +2,130 @@
 
 本文档按版本说明 Erupt 升级时需要注意的事项，请按版本顺序依次阅读。
 
+## V 2.3.0 升级指南
+
+本节说明从 2.2.x 升级到 2.3.0 时需要注意的事项。
+
+### 升级要求
+
+| 项目 | 要求 |
+| --- | --- |
+| Erupt | 全部依赖统一升级至 `2.3.0` |
+| Spring Boot | **3.5.16**，与 2.2.x 相同，无需调整 |
+| JDK | 最低 **JDK 17**，无变化 |
+| 数据库 | 无最低版本变化；表结构变更见下文 |
+| erupt-cloud-node | 使用了 [erupt-cloud-node](/zh/modules/cloud-node) 的项目，**节点服务必须同步升级至 2.3.0** |
+
+### 第一步：修改依赖版本
+
+```xml
+<properties>
+    <erupt.version>2.3.0</erupt.version>
+</properties>
+```
+
+未使用统一属性时，请把 `pom.xml` 中所有 `xyz.erupt` 坐标的 `<version>` 一并改为 `2.3.0`。本次升级**没有** artifactId 重命名或模块下线，2.2.x 的依赖坐标可直接沿用。
+
+### 第二步：按需引入新模块（可选）
+
+2.3.0 新开源五个模块，不引入不会有任何影响；引入后首次启动自动初始化菜单与表结构。使用 `erupt-spring-boot-starter-all` 的项目已包含前三个。
+
+| 模块 | artifactId | 用途 |
+| --- | --- | --- |
+| [单点登录](/zh/modules/erupt-sso) | `erupt-sso` | OAuth2 / OIDC 认证源在后台配置，17 种供应商预设，登录页自动出现登录按钮；引入后 erupt-notice 可借用认证源凭据向飞书 / 钉钉 / 企业微信 / Slack 推送 |
+| [记录评论](/zh/modules/erupt-comment) | `erupt-comment` | 任意记录的评论流，@提及通知依赖 erupt-notice |
+| [AI 决策](/zh/modules/erupt-ai-decision) | `erupt-ai-decision` | 带概率的类型化判断，仅依赖 erupt-data-jpa |
+| [钉钉多维表数据源](/zh/modules/erupt-dingtalk) | `erupt-data-dingtalk` | 把钉钉多维表绑定为 `@Erupt` 模型 |
+| [Airtable 数据源](/zh/modules/erupt-airtable) | `erupt-data-airtable` | 把 Airtable 表绑定为 `@Erupt` 模型 |
+
+:::tip erupt-sso 需要在认证源登记回调地址
+每个认证源的回调地址为 `<erupt 地址>/erupt-api/sso/callback/<编码>`，须与认证源控制台中登记的一致，详见[模块文档](/zh/modules/erupt-sso#配置认证源)。
+:::
+
+### 破坏性变更与行为变化
+
+#### 1. 登录锁定默认开启 <Badge type="warning" text="默认值变化" />
+
+**影响范围**：所有使用 erupt-upms 登录的项目。
+
+同一账号从同一 IP 连续密码错误达到 10 次后，该组合锁定 10 分钟；填错验证码同样计数。这是一道新增的暴力破解防线，正常用户几乎不会触发。压测脚本、自动化登录或共享出口 IP 的场景若受影响，可调整或关闭：
+
+```yaml
+erupt:
+  upms:
+    login-lock:
+      enable: true
+      max-failures: 10
+      lock-minutes: 10
+```
+
+#### 2. 修改密码后其他会话下线
+
+无论用户自行修改还是管理员**重置密码**，该账号的其他 Session 都会立即注销，只有发起修改的会话保留。依赖「改密后旧会话仍可用」的自动化流程需要调整。
+
+#### 3. 账户状态、有效期与 IP 白名单对所有登录方式生效
+
+三项检查移入 `EruptUserService.checkAccountUsable`，密码登录、erupt-sso 与自定义 `LoginProxy` 的登录一律执行。此前通过 `LoginProxy` 接管登录的项目，如果依赖跳过这些检查，升级后会被拒绝。
+
+#### 4. `app.js` 中 `logoPath: null` 的含义改变 <Badge type="warning" text="请检查 app.js" />
+
+**影响范围**：`app.js` 里写了 `logoPath: null`（2.2.x 官方模板的默认写法）却仍显示着默认 Logo 的项目。
+
+2.3.0 起三个 Logo 键语义统一：**不写** 取默认（内置 Erupt 标识，折叠 / 登录页 Logo 跟随 `logoPath`），**`null` 或 `''`** 表示该位置不显示 Logo。升级后若顶栏 Logo 消失，删掉 `logoPath: null` 这一行或填入自己的 Logo 路径即可。折叠侧栏在没有任何 Logo 时显示站点名称首字母，而不再显示 Erupt 标识。
+
+#### 5. 查询排序字段与条件键的严格校验
+
+排序字段、`queryColumn` 的条件键现在必须是合法的属性路径（点分 Java 标识符），条件值改为参数绑定。直接调用 `/erupt-api/data/...` 接口并在 `sort` 里拼接了表达式（如 `id desc, (select ...)`）的客户端会被拒绝，请改为只传字段名。
+
+#### 6. erupt-generator 重写
+
+生成器从手工录入改为[从数据库导入](/zh/modules/erupt-generator#从数据库导入)，`e_generator_class` / `e_generator_field` 新增列，旧记录保留但缺少列名、Java 类型等新字段，建议重新导入。字段上的「唯一」开关与列表的打印按钮已移除；模块不再依赖 freemarker 与 erupt-tpl。
+
+#### 7. `EruptUser` 表单不再分步
+
+用户表单的四个 `DIVIDE` 步骤标记（`accountStep` / `orgStep` / `pwdStep` / `securityStep`）替换为 GROUP 分组字段（`orgGroup` / `pwdGroup` / `securityGroup`），均为 `@Transient`，**无数据库影响**。仅在自定义代码引用了这些字段名时需要调整。
+
+### 需要留意的默认值变化
+
+| 项目 | 2.2.x | 2.3.0 |
+| --- | --- | --- |
+| `@BoolType(type)` | —— | `AUTO`：`notNull` 的 BOOLEAN 字段渲染为开关，其余为单选；恢复旧外观用 `@BoolType(type = BoolType.Type.RADIO)`，详见 [BOOLEAN](/zh/field-types/boolean#控件类型) |
+| 表格空 BOOLEAN 单元格 | 空标签 | 不显示 |
+| 行点击打开详情 | 开启 | 关闭（用户可在设置抽屉中开启） |
+| 菜单整树拖拽排序 | 支持 | 移除，菜单顺序以服务端为准；收藏仍可拖拽 |
+| `theme.customizable` | —— | `true`，设为 `false` 可锁定外观让全员一致 |
+| 附件域名 `fileDomain` | 需在 `app.js` 配置 | 后端 `/erupt-app` 下发，`app.js` 留空即自动采用 |
+| 新建表的枚举列 | 原生枚举 / check 约束 | 普通 `VARCHAR`，已有表不受影响 |
+| `@Power(comment)` | —— | `true`，引入 erupt-comment 后所有模型默认可评论，敏感模型加 `@Power(comment = false)` |
+
+### 数据库变更
+
+:::info
+表结构变更由 JPA / Hibernate 在启动时自动执行，仅当项目禁用了自动 DDL（`spring.jpa.hibernate.ddl-auto=none` 或 `validate`）时才需手动执行。
+:::
+
+完整 SQL 见 [2.3.0 更新日志 → 数据库变更](/zh/guide/changelog#数据库变更)，涉及：
+
+- `e_upms_user`：新增 `mfa_enabled`、`mfa_secret`、`mfa_recovery_codes` 三列
+- `e_generator_class`、`e_generator_field`：新增列（引入 erupt-generator 时）
+- `e_remote_host`：新增 `file_transfer` 列（引入 erupt-remote 时）
+- 新模块表由 Hibernate 自动创建：`e_upms_sso`、`e_upms_sso_role`、`e_upms_sso_bind`（erupt-sso）；`e_record_comment`（erupt-comment）；`e_ai_decision_def`、`e_ai_decision_model`、`e_ai_decision_question`（erupt-ai-decision）
+
+### 升级后核查清单
+
+重启后请依次确认：
+
+1. **登录锁定阈值** —— 默认 10 次 / 10 分钟，压测与自动化登录场景按需调整（见行为变化 1）
+2. **顶栏 Logo** —— `app.js` 中若有 `logoPath: null` 请删除或改为实际路径（见行为变化 4）
+3. **自定义 LoginProxy** —— 确认账户状态 / 有效期 / IP 白名单检查对你的登录方式是预期行为（见行为变化 3）
+4. **BOOLEAN 必填字段外观** —— 抽查表单中开关 / 单选是否符合预期，不满意的字段显式指定 `@BoolType(type)`
+5. **管理员账号绑定 MFA** —— 建议所有管理员在头像菜单完成[双因素认证](/zh/modules/erupt-upms/user#双因素认证-mfa)绑定
+6. **引入 erupt-comment 的项目** —— 复核不该被评论的模型是否已加 `@Power(comment = false)`，@提及通知需已引入 erupt-notice
+7. **erupt-generator 旧数据** —— 旧生成记录缺少新字段，建议重新从数据库导入
+8. **禁用了自动 DDL 的项目** —— 确认上述 SQL 已执行
+9. **前端资源缓存** —— 前端资源本次变化较大（皮肤、登录页、表单面板），页面样式异常时强制刷新浏览器缓存
+
+
 ## V 2.2.0 升级指南
 
 本节说明从 2.1.x 升级到 2.2.0 时需要注意的事项。
@@ -125,7 +249,7 @@
 表结构变更由 JPA / Hibernate 在启动时自动执行，仅当项目禁用了自动 DDL（`spring.jpa.hibernate.ddl-auto=none` 或 `validate`）时才需手动执行。
 :::
 
-完整 SQL 见 [2.2.0 更新日志 → 数据库变更](/zh/guide/changelog#数据库变更)，涉及：
+完整 SQL 见 [2.2.0 更新日志 → 数据库变更](/zh/guide/changelog#数据库变更-1)，涉及：
 
 - `e_remote_host`：引入 [erupt-remote](/zh/modules/erupt-remote) 时新建，由 Hibernate 自动创建
 - `e_ai_canvas_model`：新增表；`e_ai_canvas` 的 `data_type`、`target_model` 两列迁移后删除（引入 erupt-ai-canvas 时）

@@ -1,5 +1,131 @@
 # 更新日志
 
+## 2.3.0（2026-09-24） <Badge type="tip" text="Spring Boot 3.5.16" />
+
+:::warning 升级须知
+升级前请阅读 [V 2.3.0 升级指南](/zh/guide/upgrade#v-2-3-0-升级指南)：登录锁定默认开启、改密后其他会话下线、`app.js` 中 `logoPath: null` 改为不显示 Logo，并有[数据库变更](#数据库变更)。
+:::
+
+🦞 开源 [erupt-sso](/zh/modules/erupt-sso) 单点登录模块：OAuth2 授权码 + PKCE，内置 Keycloak、Okta、Auth0、Entra ID、GitHub、飞书、钉钉、企业微信、微信等 17 种[供应商预设](/zh/modules/erupt-sso#供应商预设)，选好类型贴上凭据即可；认证源在后台配置、不用重启，授权码在服务端交换，token 不经 URL 传递
+
+🦞 开源 [erupt-comment](/zh/modules/erupt-comment) 记录评论模块：任意记录可评论，支持一级回复、置顶 / 已解决、表格行评论计数，@提及经 erupt-notice 通知并深链到该记录；`@Power(comment = false)` 可按模型关闭
+
+🦞 开源 [erupt-ai-decision](/zh/modules/erupt-ai-decision) AI 决策模块：把「是否 / 选项 / 评分」三类判断交给 System One 决策模型，返回带概率分布的类型化答案，代码按阈值分支而不是解析一句话；支持 TypeSafe Jev 与可本地部署的开源 Laya
+
+🦞 开源 [erupt-data-dingtalk](/zh/modules/erupt-dingtalk) 钉钉多维表与 [erupt-data-airtable](/zh/modules/erupt-airtable) 数据源，与飞书、Notion 共用同一套 REST 表格基座
+
+🌟 新增 [ICON 图标选择](/zh/field-types/icon) 编辑组件：在完整的 Font Awesome 图标库中检索选取，表格直接渲染图标
+
+🌟 新增 [KEY_VALUE 键值对](/zh/field-types/key-value) 编辑组件：编辑 JSON 对象，可存 String 或 JSON 列上的 `Map`
+
+🌟 新增 [TRANSFER 穿梭框](/zh/field-types/transfer) 编辑组件：以可搜索的双列表处理多对多关联，`@MultiChoiceType(type = TRANSFER)` 让多选值列表也能用穿梭框
+
+🌟 表格支持[多级表头](/zh/annotation/view#group-多级表头)：`@View(group)` 相同的相邻列合并到同一个上级表头，列设置仍按单列操作
+
+🌟 [表单面板](/zh/guide/ui#表单面板)：记录表单支持居中 / 侧栏 / 全屏三种模式，切换不丢未保存内容；标题栏可上一条 / 下一条翻页、查看与编辑互切、复制链接、删除、AI 助手、打印，`?id=` 深链直接打开记录
+
+🌟 [登录页布局](/zh/guide/ui#登录页布局)：新增 cover / wide / wallpaper / poster 四种布局与自定义登录图片（`theme.loginLayout` / `theme.loginBackground`），登录页上就能切换
+
+🌟 [Workspace 与 Classic 皮肤](/zh/guide/ui#外观)：Workspace 是 Slack / 飞书式一体化导航框架，内置 32 组明暗色预设；Classic 是 Ant Design Pro 经典深色侧栏；Brutalist 皮肤按 raft.build 重绘
+
+🌟 [安装为桌面应用（PWA）](/zh/guide/pwa)：manifest 按站点配置实时生成，顶栏充当可拖拽的窗口标题栏，`pwa.icon` / `pwa.shortcuts` / `faviconPath` 可定制
+
+🌟 [双因素认证（MFA）](/zh/modules/erupt-upms/user#双因素认证-mfa)：TOTP 动态口令，用户在头像菜单自助绑定，密码正确后还要再输 6 位验证码才发放会话；恢复码单次有效并哈希存储，管理员可一键重置 MFA
+
+🌟 [登录锁定](/zh/modules/erupt-upms/user#登录锁定)：同一账号 + IP 连续密码错误 10 次锁定 10 分钟（`erupt.upms.login-lock`），错误验证码同样计数；修改密码后该账号其他会话立即下线
+
+🌟 erupt-notice 新增[认证源推送渠道](/zh/modules/erupt-notice#认证源推送渠道)：飞书、钉钉、企业微信、Slack 四个渠道直接借用 erupt-sso 的认证源凭据向用户推送通知，用户通过该认证源登录过即可送达，无需再单独配置机器人；`EruptSsoBindService` 可供其他模块读取用户在认证源侧的标识与资料快照
+
+🌟 [erupt-generator 重写](/zh/modules/erupt-generator#从数据库导入)：从任意已注册数据源读取表结构直接生成实体类，注释成标题、外键成引用、注释里的枚举说明成 `@Choice`，代码编辑器抽屉预览，多选打包 zip 下载
+
+🌟 [S3AttachmentProxy](/zh/modules/erupt-s3#附件上传-s3attachmentproxy)：`erupt-data-s3` 内置附件代理，`erupt.s3.*` 配好即可把全部附件上传到 S3 / MinIO / OSS / COS / R2；附件域名改由后端下发，不用再改 app.js
+
+🌟 [erupt-remote SFTP 文件传输](/zh/modules/erupt-remote#sftp-文件传输)：SSH 终端旁新增文件面板，浏览远程目录、拖拽上传、下载、建目录、删文件，可按主机开关，与终端共用凭据与授权
+
+🧩 新增 [`ViewType.AVATAR`](/zh/annotation/view#展示类型-viewtype) 圆形头像展示类型，用户表的头像列已采用
+
+🧩 [`@Tree(maxLevel)`](/zh/annotation/tree#maxlevel-限制层级) 限制树的最大层级：前端不再提供越级的「添加子节点」，服务端拒绝任何会让节点更深的保存
+
+🧩 [`@Layout(tableTruncate = false)`](/zh/annotation/layout#tabletruncate-单元格换行) 让超长单元格换行而非省略，操作列按钮多时不再被截断
+
+🧩 [`@BoolType(type)`](/zh/field-types/boolean#控件类型) 可指定开关或单选，默认 AUTO：必填字段渲染为开关，其余为单选；表格中的空值不再显示空标签
+
+🧩 [`theme.customizable = false`](/zh/guide/config-frontend) 可锁定外观（主题色、顶栏色、皮肤、菜单模式）让全员界面一致，明暗与紧凑仍由用户自选
+
+🧩 `app.js` Logo 语义明确：不写取默认、`null` / `''` 不显示；折叠侧栏无 Logo 时显示站点首字母而非 Erupt 标识；新增 `faviconPath`
+
+🧩 报表、设计器、图谱、AI 画布的「发布到菜单」可直接选择菜单图标
+
+🧩 [个人资料与锁屏](/zh/modules/erupt-upms/user#个人资料与锁屏)：用户可自助修改头像与姓名（`LoginProxy.beforeUpdateProfile` 可否决），头像菜单新增锁屏，凭密码解锁且不产生新会话
+
+🧩 IP 白名单支持 IPv4 / IPv6 CIDR 网段，感谢 [chenxiaolong8023](https://github.com/chenxiaolong8023) 贡献的代码
+
+🧩 [erupt-atlas 使用方追溯](/zh/modules/erupt-atlas#使用方追溯)：模块通过 `EruptUsageProvider` 上报模型被谁使用（流程表单与自定义节点、菜单、Cube 仪表盘、打印模板、行操作表单），图谱视图改为自适应全屏宽度
+
+🐞 修复开启 `redis-session` 且宿主应用用 `@ComponentScan` 扫描 `xyz.erupt` 时，定时任务因找不到 ShedLock `LockProvider` 而全部失败的问题；缺少锁时任务改为跳过并记入任务日志，不会在多节点上无锁执行
+
+🐞 修复周选择器抛 RangeError 的问题
+
+🐞 修复 `@Power(print = false)` 仍显示打印入口的问题
+
+🐞 修复 `@View(column)` 在 COMBINE 字段上不显示的问题（Gitee IKGOKN）
+
+🐞 修复 `@View(template)` 中 `item.xxx` 读到的是存储值而非单元格显示文案的问题
+
+### 数据库变更
+
+:::info
+表结构变更由 JPA / Hibernate 在启动时自动执行，仅当项目禁用了自动 DDL（`spring.jpa.hibernate.ddl-auto=none` 或 `validate`）时才需手动执行。
+:::
+
+本版本涉及：
+
+- `e_upms_user` 新增三列（MFA）
+- `e_generator_class`、`e_generator_field` 新增列（引入 erupt-generator 时）
+- `e_remote_host` 新增一列（引入 erupt-remote 时）
+
+新引入的模块建表由 Hibernate 自动完成，无需手动执行：
+
+- erupt-sso：`e_upms_sso`、`e_upms_sso_role`、`e_upms_sso_bind`
+- erupt-comment：`e_record_comment`
+- erupt-ai-decision：`e_ai_decision_def`、`e_ai_decision_model`、`e_ai_decision_question`
+
+::: details 展开 SQL（MySQL 语法，其他数据库请自行转换）
+
+**`e_upms_user` 新增字段（erupt-upms）**
+
+```sql
+ALTER TABLE e_upms_user ADD COLUMN mfa_enabled        BIT(1)        COMMENT '是否开启双因素认证';
+ALTER TABLE e_upms_user ADD COLUMN mfa_secret         VARCHAR(64)   COMMENT 'TOTP 密钥';
+ALTER TABLE e_upms_user ADD COLUMN mfa_recovery_codes VARCHAR(2000) COMMENT '恢复码哈希 JSON 数组';
+```
+
+**`e_generator_class` 新增字段（erupt-generator）**
+
+```sql
+ALTER TABLE e_generator_class ADD COLUMN super_class  VARCHAR(255) COMMENT '父类';
+ALTER TABLE e_generator_class ADD COLUMN package_name VARCHAR(255) COMMENT '包名';
+```
+
+**`e_generator_field` 新增字段（erupt-generator）**
+
+```sql
+ALTER TABLE e_generator_field ADD COLUMN column_name    VARCHAR(255) COMMENT '列名';
+ALTER TABLE e_generator_field ADD COLUMN java_type      VARCHAR(255) COMMENT 'Java 类型';
+ALTER TABLE e_generator_field ADD COLUMN length         INT          COMMENT '长度';
+ALTER TABLE e_generator_field ADD COLUMN type_code      VARCHAR(255) COMMENT 'JDBC 类型编码';
+ALTER TABLE e_generator_field ADD COLUMN primary_key    BIT(1)       COMMENT '是否主键';
+ALTER TABLE e_generator_field ADD COLUMN auto_increment BIT(1)       COMMENT '是否自增';
+```
+
+**`e_remote_host` 新增字段（erupt-remote）**
+
+```sql
+ALTER TABLE e_remote_host ADD COLUMN file_transfer BIT(1) DEFAULT b'1' COMMENT 'SSH 主机是否允许 SFTP 文件传输';
+```
+
+:::
+
 ## 2.2.0（2026-09-15） <Badge type="tip" text="Spring Boot 3.5.16" />
 
 :::warning 破坏性变更
@@ -7,7 +133,7 @@
 
 **erupt-designer 数据迁移到内嵌 SQLite**：业务数据不再存放于主库 `e_designer_data` 表，**不会自动迁移**，该文件需单独纳入备份与持久化卷。
 
-另有数据库表结构变更，见本版本末尾的[数据库变更](#数据库变更)。
+另有数据库表结构变更，见本版本末尾的[数据库变更](#数据库变更-1)。
 :::
 
 🦞 开源 [erupt-atlas](/zh/modules/erupt-atlas) 模型图谱模块：注解里已有的关系直接画成图，含血缘追溯、依赖分层、模块耦合矩阵、影响面分析，以及循环引用 / 共享表 / 孤岛模型的结构体检
@@ -62,7 +188,7 @@
 
 🧩 AI 回复语言跟随控制台当前语言，不再无论用什么语言提问都倾向中文作答
 
-🧩 新增 [`erupt.ai.request-timeout`](/zh/guide/configuration#erupt-ai-ai-模块) 配置，LLM 请求读超时默认放宽到 15 分钟（langchain4j 默认 60 秒，长文本非流式生成会被截断）
+🧩 新增 [`erupt.ai.request-timeout`](/zh/modules/erupt-ai/) 配置，LLM 请求读超时默认放宽到 15 分钟（langchain4j 默认 60 秒，长文本非流式生成会被截断）
 
 🧩 [erupt-print](/zh/modules/erupt-print) 打印模板内容改用 CKEditor 编辑，与前端打印模板编辑器的存储格式（Velocity 占位符 + 组件标记）保持一致
 

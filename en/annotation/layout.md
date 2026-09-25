@@ -64,6 +64,9 @@ public @interface Layout {
     // collapse the row's view-details, edit, and delete buttons into a dropdown menu (2.0.0+)
     boolean collapseActionButton() default false;
 
+    // truncate a cell that overflows its column with an ellipsis; false wraps it instead and keeps every button of the operation column visible (2.3.0+)
+    boolean tableTruncate() default true;
+
     enum FormSize {
         // default layout: up to three form components per row
         DEFAULT, 
@@ -114,6 +117,21 @@ When `collapseActionButton = true`, the per-row **view details, edit, and delete
     layout = @Layout(collapseActionButton = true)
 )
 ```
+
+## tableTruncate Wrapping Cells <Badge type="tip" text="v2.3.0+" />
+
+By default a cell that overflows its column is cut off with an ellipsis and the full value shows on hover. With `tableTruncate = false` cells **wrap** instead, so long text, many tags or many buttons are visible at once:
+
+```java
+@Erupt(
+    name = "Example",
+    layout = @Layout(tableTruncate = false)
+)
+```
+
+- Data columns drop their `nowrap` / ellipsis and wrap with the content
+- The operation column is sized for one row of icons and the remaining buttons flow onto the next line — a model with many row actions no longer loses the tail of them behind an ellipsis
+- Row height varies with the content, so fixed-height virtual scrolling stays off for these tables; keep the default on models with very large result sets
 
 ## Fixed Columns
 

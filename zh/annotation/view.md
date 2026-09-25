@@ -9,6 +9,8 @@ const viewTypes = [
             {type: 'NUMBER', glyph: '42', desc: '数值展示'},
             {type: 'BOOLEAN', glyph: '✓', desc: '布尔值展示'},
             {type: 'COLOR', glyph: '■', desc: '以色块展示十六进制颜色值；编辑类型为 COLOR 时自动推断'},
+            {type: 'ICON', glyph: '★', ver: '2.3.0+', desc: '按 Font Awesome 类名渲染图标'},
+            {type: 'KEY_VALUE', glyph: '⋮', ver: '2.3.0+', desc: 'JSON 对象按「键: 值」标签逐对展示'},
             {type: 'PASSWORD', glyph: '••••', ver: '2.0.4+', desc: '密码掩码展示，实际值以占位符替代，不会下发到客户端'},
             {type: 'DATE', glyph: '📅', desc: '日期格式化展示'},
             {type: 'DATE_TIME', glyph: '🕐', desc: '日期时间格式化展示'},
@@ -19,6 +21,7 @@ const viewTypes = [
         group: '图像与媒体',
         items: [
             {type: 'IMAGE', glyph: '🖼️', desc: '图片'},
+            {type: 'AVATAR', glyph: '👤', ver: '2.3.0+', desc: '圆形头像缩略图，表格 32px、详情 120px，为空时显示默认剪影'},
             {type: 'IMAGE_BASE64', glyph: '🖼️', desc: 'Base64 编码图片'},
             {type: 'QR_CODE', glyph: '▦', desc: '二维码'},
             {type: 'MAP', glyph: '📍', desc: '地图展示'},
@@ -61,6 +64,7 @@ const viewTypes = [
 | `type` | 数据展示类型，默认 `AUTO`，详见下方类型表 |
 | `show` | 是否显示，默认 `true` |
 | `sortable` | 是否支持点击列头排序，默认 `false` |
+| `group` | 表头分组：相邻且 group 相同的列合并到同一个上级表头，形成多级表头（2.3.0+） |
 | `export` | 是否包含在 Excel 导出中，默认 `true` |
 | `width` | 列宽度，需带单位，如 `200px`、`20%` |
 | `column` | 字段为对象类型时，指定要展示的属性名（`@ManyToOne` 场景常用） |
@@ -86,6 +90,23 @@ const viewTypes = [
         </div>
     </div>
 </template>
+
+## group 多级表头 <Badge type="tip" text="v2.3.0+" />
+
+相邻且 `group` 值相同的列会被折叠到同一个上级表头之下，形成两级表头：
+
+```java
+@EruptField(views = @View(title = "单价", group = "金额"))
+private BigDecimal price;
+
+@EruptField(views = @View(title = "数量", group = "金额"))
+private Integer quantity;
+
+@EruptField(views = @View(title = "合计", group = "金额"))
+private BigDecimal total;
+```
+
+`group` 文本与 `title` 一样会经过多语言翻译；固定列（`fixed`）以及组内只有一列的「孤立成员」不会被分组；列设置面板仍按平铺的列列表操作，不受分组影响。
 
 <style scoped>
 .vt-group {

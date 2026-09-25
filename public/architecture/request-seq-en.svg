@@ -410,8 +410,8 @@ rect.c-bg-rect { fill: var(--bg); }
         </g>
 
         <!-- Participants -->
-        <g id="node-user" data-node-id="user" data-node-label="Browser" tabindex="0" role="button" aria-label="Focus Browser, admin UI, Sequence participant" aria-pressed="false" data-node-kind="external" data-node-sublabel="admin UI" data-node-context="Sequence participant">
-          <title>Browser · admin UI · Sequence participant</title>
+        <g id="node-user" data-node-id="user" data-node-label="Browser" tabindex="0" role="button" aria-label="Focus Browser, admin UI / PWA, Sequence participant" aria-pressed="false" data-node-kind="external" data-node-sublabel="admin UI / PWA" data-node-context="Sequence participant">
+          <title>Browser · admin UI / PWA · Sequence participant</title>
           <rect x="62" y="72" width="143" height="54" rx="6" class="c-mask"/>
           <rect x="62" y="72" width="143" height="54" rx="6" class="c-external" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(68 78) scale(0.6875)">
@@ -419,11 +419,11 @@ rect.c-bg-rect { fill: var(--bg); }
             <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
           </g>
           <text x="133.5" y="94" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Browser</text>
-          <text x="133.5" y="111" class="t-muted" font-size="7" text-anchor="middle">admin UI</text>
+          <text x="133.5" y="111" class="t-muted" font-size="7" text-anchor="middle">admin UI / PWA</text>
         </g>
 
-        <g id="node-sec" data-node-id="sec" data-node-label="erupt-security" tabindex="0" role="button" aria-label="Focus erupt-security, authentication, Sequence participant" aria-pressed="false" data-node-kind="security" data-node-sublabel="authentication" data-node-context="Sequence participant">
-          <title>erupt-security · authentication · Sequence participant</title>
+        <g id="node-sec" data-node-id="sec" data-node-label="erupt-security" tabindex="0" role="button" aria-label="Focus erupt-security, token · menu permission, Sequence participant" aria-pressed="false" data-node-kind="security" data-node-sublabel="token · menu permission" data-node-context="Sequence participant">
+          <title>erupt-security · token · menu permission · Sequence participant</title>
           <rect x="240.75" y="72" width="143" height="54" rx="6" class="c-mask"/>
           <rect x="240.75" y="72" width="143" height="54" rx="6" class="c-security" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(246.75 78) scale(0.6875)">
@@ -431,7 +431,7 @@ rect.c-bg-rect { fill: var(--bg); }
             <path d="m5.8 8 1.5 1.5 3-3"/>
           </g>
           <text x="312.25" y="94" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-security</text>
-          <text x="312.25" y="111" class="t-muted" font-size="7" text-anchor="middle">authentication</text>
+          <text x="312.25" y="111" class="t-muted" font-size="7" text-anchor="middle">token · menu permission</text>
         </g>
 
         <g id="node-core" data-node-id="core" data-node-label="erupt-core" tabindex="0" role="button" aria-label="Focus erupt-core, CRUD engine, Sequence participant" aria-pressed="false" data-node-kind="backend" data-node-sublabel="CRUD engine" data-node-context="Sequence participant">
@@ -456,16 +456,16 @@ rect.c-bg-rect { fill: var(--bg); }
           <text x="669.75" y="111" class="t-muted" font-size="7" text-anchor="middle">lifecycle hooks</text>
         </g>
 
-        <g id="node-db" data-node-id="db" data-node-label="Database" tabindex="0" role="button" aria-label="Focus Database, JPA / Mongo, Sequence participant" aria-pressed="false" data-node-kind="database" data-node-sublabel="JPA / Mongo" data-node-context="Sequence participant">
-          <title>Database · JPA / Mongo · Sequence participant</title>
+        <g id="node-db" data-node-id="db" data-node-label="Data source" tabindex="0" role="button" aria-label="Focus Data source, any erupt-data-* source, Sequence participant" aria-pressed="false" data-node-kind="database" data-node-sublabel="any erupt-data-* source" data-node-context="Sequence participant">
+          <title>Data source · any erupt-data-* source · Sequence participant</title>
           <rect x="777" y="72" width="143" height="54" rx="6" class="c-mask"/>
           <rect x="777" y="72" width="143" height="54" rx="6" class="c-database" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(783 78) scale(0.6875)">
             <ellipse cx="8" cy="4" rx="5" ry="2"/>
             <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
-          <text x="848.5" y="94" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Database</text>
-          <text x="848.5" y="111" class="t-muted" font-size="7" text-anchor="middle">JPA / Mongo</text>
+          <text x="848.5" y="94" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Data source</text>
+          <text x="848.5" y="111" class="t-muted" font-size="7" text-anchor="middle">any erupt-data-* source</text>
         </g>
 
         <!-- Legend -->

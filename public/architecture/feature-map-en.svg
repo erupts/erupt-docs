@@ -1,4 +1,4 @@
-<svg viewBox="0 0 1240 760" role="img" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="classic" data-quality-profile="showcase" style="" width="1240" height="760" xmlns="http://www.w3.org/2000/svg"><style>@font-face { font-family: 'JetBrains Mono'; font-weight: 400; src: local('JetBrains Mono'), local('JetBrainsMono-Regular'); }
+<svg viewBox="0 0 1380 800" role="img" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="classic" data-quality-profile="showcase" style="" width="1380" height="800" xmlns="http://www.w3.org/2000/svg"><style>@font-face { font-family: 'JetBrains Mono'; font-weight: 400; src: local('JetBrains Mono'), local('JetBrainsMono-Regular'); }
 @font-face { font-family: 'JetBrains Mono'; font-weight: 500; src: local('JetBrains Mono'), local('JetBrainsMono-Regular'); }
 @font-face { font-family: 'JetBrains Mono'; font-weight: 600; src: local('JetBrains Mono'), local('JetBrainsMono-Regular'); }
 @font-face { font-family: 'JetBrains Mono'; font-weight: 700; src: local('JetBrains Mono'), local('JetBrainsMono-Regular'); }
@@ -305,141 +305,153 @@ rect.c-bg-rect { fill: var(--bg); }
         <rect width="100%" height="100%" fill="url(#grid)"/>
 
         <!-- Boundaries (behind everything) -->
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="0" x="30" y="70" width="290" height="530" rx="12" class="c-region" stroke-width="1"/>
-        <text x="38" y="88" class="t-cloud" font-size="9" font-weight="600">Modeling &amp; UI</text>
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="0" x="30" y="40" width="360" height="670" rx="12" class="c-region" stroke-width="1"/>
+        <text x="38" y="58" class="t-cloud" font-size="9" font-weight="600">Modeling &amp; UI</text>
 
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="1" x="920" y="30" width="290" height="650" rx="12" class="c-region" stroke-width="1"/>
-        <text x="928" y="48" class="t-cloud" font-size="9" font-weight="600">Data &amp; ecosystem</text>
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="1" x="990" y="40" width="360" height="670" rx="12" class="c-region" stroke-width="1"/>
+        <text x="998" y="58" class="t-cloud" font-size="9" font-weight="600">Data &amp; ecosystem</text>
 
         <!-- Connection paths (before components for correct z-order) -->
-        <path data-edge-from="erupt" data-edge-to="annotation" data-edge-key="0" data-edge-id="erupt-annotation" data-composition-points="510,354;400,354;400,130;290,130" d="M 510 354 L 408 354 Q 400 354 400 346 L 400 138 Q 400 130 392 130 L 290 130" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
-        <path data-edge-from="erupt" data-edge-to="components" data-edge-key="1" data-edge-id="erupt-components" data-composition-points="510,368;400,368;400,270;290,270" d="M 510 368 L 408 368 Q 400 368 400 360 L 400 278 Q 400 270 392 270 L 290 270" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="erupt" data-edge-to="ui" data-edge-key="2" data-edge-id="erupt-ui" data-composition-points="510,382;400,382;400,410;290,410" d="M 510 382 L 408 382 Q 400 382 400 390 L 400 402 Q 400 410 392 410 L 290 410" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="erupt" data-edge-to="custom" data-edge-key="3" data-edge-id="erupt-custom" data-composition-points="510,396;400,396;400,550;290,550" d="M 510 396 L 408 396 Q 400 396 400 404 L 400 542 Q 400 550 392 550 L 290 550" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="erupt" data-edge-to="dao" data-edge-key="4" data-edge-id="erupt-dao" data-composition-points="730,347;840,347;840,90;950,90" d="M 730 347 L 832 347 Q 840 347 840 339 L 840 98 Q 840 90 848 90 L 950 90" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="erupt" data-edge-to="ds" data-edge-key="5" data-edge-id="erupt-ds" data-composition-points="730,361;840,361;840,225;950,225" d="M 730 361 L 832 361 Q 840 361 840 353 L 840 233 Q 840 225 848 225 L 950 225" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
-        <path data-edge-from="erupt" data-edge-to="i18n" data-edge-key="6" data-edge-id="erupt-i18n" data-composition-points="730,375;754,375;754,391;926,391;926,360;950,360" d="M 730 375 L 746 375 Q 754 375 754 383 L 754 383 Q 754 391 762 391 L 918 391 Q 926 391 926 383 L 926 368 Q 926 360 934 360 L 950 360" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="erupt" data-edge-to="ext" data-edge-key="7" data-edge-id="erupt-ext" data-composition-points="730,389;840,389;840,495;950,495" d="M 730 389 L 832 389 Q 840 389 840 397 L 840 487 Q 840 495 848 495 L 950 495" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="erupt" data-edge-to="deploy" data-edge-key="8" data-edge-id="erupt-deploy" data-composition-points="730,403;840,403;840,630;950,630" d="M 730 403 L 832 403 Q 840 403 840 411 L 840 622 Q 840 630 848 630 L 950 630" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="erupt" data-edge-to="annotation" data-edge-key="0" data-edge-id="erupt-annotation" data-composition-points="580,352;470,352;470,100;360,100" d="M 580 352 L 478 352 Q 470 352 470 344 L 470 108 Q 470 100 462 100 L 360 100" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="erupt" data-edge-to="components" data-edge-key="1" data-edge-id="erupt-components" data-composition-points="580,366;470,366;470,240;360,240" d="M 580 366 L 478 366 Q 470 366 470 358 L 470 248 Q 470 240 462 240 L 360 240" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="erupt" data-edge-to="ui" data-edge-key="2" data-edge-id="erupt-ui" data-composition-points="580,380;360,380" d="M 580 380 L 360 380" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="erupt" data-edge-to="custom" data-edge-key="3" data-edge-id="erupt-custom" data-composition-points="580,394;470,394;470,520;360,520" d="M 580 394 L 478 394 Q 470 394 470 402 L 470 512 Q 470 520 462 520 L 360 520" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="erupt" data-edge-to="i18n" data-edge-key="4" data-edge-id="erupt-i18n" data-composition-points="580,408;470,408;470,660;360,660" d="M 580 408 L 478 408 Q 470 408 470 416 L 470 652 Q 470 660 462 660 L 360 660" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="erupt" data-edge-to="dao" data-edge-key="5" data-edge-id="erupt-dao" data-composition-points="800,352;910,352;910,100;1020,100" d="M 800 352 L 902 352 Q 910 352 910 344 L 910 108 Q 910 100 918 100 L 1020 100" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="erupt" data-edge-to="ds" data-edge-key="6" data-edge-id="erupt-ds" data-composition-points="800,366;910,366;910,240;1020,240" d="M 800 366 L 902 366 Q 910 366 910 358 L 910 248 Q 910 240 918 240 L 1020 240" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="erupt" data-edge-to="ai" data-edge-key="7" data-edge-id="erupt-ai" data-composition-points="800,380;1020,380" d="M 800 380 L 1020 380" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="erupt" data-edge-to="ext" data-edge-key="8" data-edge-id="erupt-ext" data-composition-points="800,394;910,394;910,520;1020,520" d="M 800 394 L 902 394 Q 910 394 910 402 L 910 512 Q 910 520 918 520 L 1020 520" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="erupt" data-edge-to="deploy" data-edge-key="9" data-edge-id="erupt-deploy" data-composition-points="800,408;910,408;910,660;1020,660" d="M 800 408 L 902 408 Q 910 408 910 416 L 910 652 Q 910 660 918 660 L 1020 660" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
         <g id="node-erupt" data-node-id="erupt" data-node-label="erupt" tabindex="0" role="button" aria-label="Focus erupt, Annotation-driven low-code framework, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Annotation-driven low-code framework" data-node-tag="Core" data-node-context="Architecture component">
           <title>erupt · Annotation-driven low-code framework · Architecture component · Core</title>
-          <rect x="510" y="320" width="220" height="110" rx="6" class="c-mask"/>
-          <rect x="510" y="320" width="220" height="110" rx="6" class="c-backend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(516 326) scale(0.6875)">
+          <rect x="580" y="325" width="220" height="110" rx="6" class="c-mask"/>
+          <rect x="580" y="325" width="220" height="110" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(586 331) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text x="620" y="373" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt</text>
-        <text x="620" y="389" class="t-muted" font-size="9" text-anchor="middle">Annotation-driven low-code framework</text>
-        <text x="620" y="422" class="t-backend" font-size="7" text-anchor="middle">Core</text>
+          <text x="690" y="378" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt</text>
+        <text x="690" y="394" class="t-muted" font-size="9" text-anchor="middle">Annotation-driven low-code framework</text>
+        <text x="690" y="427" class="t-backend" font-size="7" text-anchor="middle">Core</text>
         </g>
 
         <g id="node-annotation" data-node-id="annotation" data-node-label="Annotations" tabindex="0" role="button" aria-label="Focus Annotations, @Erupt · @EruptField · @View · @Edit, Modeling &amp; UI" aria-pressed="false" data-node-kind="backend" data-node-sublabel="@Erupt · @EruptField · @View · @Edit" data-node-context="Modeling &amp; UI">
           <title>Annotations · @Erupt · @EruptField · @View · @Edit · Modeling &amp; UI</title>
-          <rect x="60" y="100" width="230" height="60" rx="6" class="c-mask"/>
-          <rect x="60" y="100" width="230" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(66 106) scale(0.6875)">
+          <rect x="60" y="70" width="300" height="60" rx="6" class="c-mask"/>
+          <rect x="60" y="70" width="300" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(66 76) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text x="175" y="128" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Annotations</text>
-        <text x="175" y="144" class="t-muted" font-size="9" text-anchor="middle">@Erupt · @EruptField · @View · @Edit</text>
+          <text x="210" y="98" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Annotations</text>
+        <text x="210" y="114" class="t-muted" font-size="9" text-anchor="middle">@Erupt · @EruptField · @View · @Edit</text>
         </g>
 
-        <g id="node-components" data-node-id="components" data-node-label="Edit Components" tabindex="0" role="button" aria-label="Focus Edit Components, INPUT · DATE · CHOICE — 22 types, Modeling &amp; UI" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="INPUT · DATE · CHOICE — 22 types" data-node-context="Modeling &amp; UI">
-          <title>Edit Components · INPUT · DATE · CHOICE — 22 types · Modeling &amp; UI</title>
-          <rect x="60" y="240" width="230" height="60" rx="6" class="c-mask"/>
-          <rect x="60" y="240" width="230" height="60" rx="6" class="c-frontend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(66 246) scale(0.6875)">
+        <g id="node-components" data-node-id="components" data-node-label="Edit Components" tabindex="0" role="button" aria-label="Focus Edit Components, INPUT · DATE · CHOICE · ICON … 38 types, Modeling &amp; UI" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="INPUT · DATE · CHOICE · ICON … 38 types" data-node-context="Modeling &amp; UI">
+          <title>Edit Components · INPUT · DATE · CHOICE · ICON … 38 types · Modeling &amp; UI</title>
+          <rect x="60" y="210" width="300" height="60" rx="6" class="c-mask"/>
+          <rect x="60" y="210" width="300" height="60" rx="6" class="c-frontend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(66 216) scale(0.6875)">
             <rect x="2" y="3" width="12" height="10" rx="2"/>
             <path d="M2 6.5h12"/>
             <circle cx="4.1" cy="4.8" r=".7" class="sigil-fill"/>
             <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
           </g>
-          <text x="175" y="268" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Edit Components</text>
-        <text x="175" y="284" class="t-muted" font-size="9" text-anchor="middle">INPUT · DATE · CHOICE — 22 types</text>
+          <text x="210" y="238" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Edit Components</text>
+        <text x="210" y="254" class="t-muted" font-size="9" text-anchor="middle">INPUT · DATE · CHOICE · ICON … 38 types</text>
         </g>
 
-        <g id="node-ui" data-node-id="ui" data-node-label="Rich UI" tabindex="0" role="button" aria-label="Focus Rich UI, Table · tree · link · report · custom page, Modeling &amp; UI" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="Table · tree · link · report · custom page" data-node-context="Modeling &amp; UI">
-          <title>Rich UI · Table · tree · link · report · custom page · Modeling &amp; UI</title>
-          <rect x="60" y="380" width="230" height="60" rx="6" class="c-mask"/>
-          <rect x="60" y="380" width="230" height="60" rx="6" class="c-frontend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(66 386) scale(0.6875)">
+        <g id="node-ui" data-node-id="ui" data-node-label="Rich UI" tabindex="0" role="button" aria-label="Focus Rich UI, table · tree · board · calendar · gantt · 5 skins, Modeling &amp; UI" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="table · tree · board · calendar · gantt · 5 skins" data-node-context="Modeling &amp; UI">
+          <title>Rich UI · table · tree · board · calendar · gantt · 5 skins · Modeling &amp; UI</title>
+          <rect x="60" y="350" width="300" height="60" rx="6" class="c-mask"/>
+          <rect x="60" y="350" width="300" height="60" rx="6" class="c-frontend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(66 356) scale(0.6875)">
             <rect x="2" y="3" width="12" height="10" rx="2"/>
             <path d="M2 6.5h12"/>
             <circle cx="4.1" cy="4.8" r=".7" class="sigil-fill"/>
             <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
           </g>
-          <text x="175" y="408" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Rich UI</text>
-        <text x="175" y="424" class="t-muted" font-size="8.8" text-anchor="middle">Table · tree · link · report · custom page</text>
+          <text x="210" y="378" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Rich UI</text>
+        <text x="210" y="394" class="t-muted" font-size="9" text-anchor="middle">table · tree · board · calendar · gantt · 5 skins</text>
         </g>
 
-        <g id="node-custom" data-node-id="custom" data-node-label="Customization" tabindex="0" role="button" aria-label="Focus Customization, Login · pages · OSS upload · datasource, Modeling &amp; UI" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Login · pages · OSS upload · datasource" data-node-context="Modeling &amp; UI">
-          <title>Customization · Login · pages · OSS upload · datasource · Modeling &amp; UI</title>
-          <rect x="60" y="520" width="230" height="60" rx="6" class="c-mask"/>
-          <rect x="60" y="520" width="230" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(66 526) scale(0.6875)">
+        <g id="node-custom" data-node-id="custom" data-node-label="Customization" tabindex="0" role="button" aria-label="Focus Customization, login / SSO · pages · S3 upload · data sources, Modeling &amp; UI" aria-pressed="false" data-node-kind="backend" data-node-sublabel="login / SSO · pages · S3 upload · data sources" data-node-context="Modeling &amp; UI">
+          <title>Customization · login / SSO · pages · S3 upload · data sources · Modeling &amp; UI</title>
+          <rect x="60" y="490" width="300" height="60" rx="6" class="c-mask"/>
+          <rect x="60" y="490" width="300" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(66 496) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text x="175" y="548" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Customization</text>
-        <text x="175" y="564" class="t-muted" font-size="9" text-anchor="middle">Login · pages · OSS upload · datasource</text>
+          <text x="210" y="518" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Customization</text>
+        <text x="210" y="534" class="t-muted" font-size="9" text-anchor="middle">login / SSO · pages · S3 upload · data sources</text>
         </g>
 
-        <g id="node-dao" data-node-id="dao" data-node-label="JDBC Queries" tabindex="0" role="button" aria-label="Focus JDBC Queries, EruptDao · LambdaQuery · Mybatis, Data &amp; ecosystem" aria-pressed="false" data-node-kind="database" data-node-sublabel="EruptDao · LambdaQuery · Mybatis" data-node-context="Data &amp; ecosystem">
-          <title>JDBC Queries · EruptDao · LambdaQuery · Mybatis · Data &amp; ecosystem</title>
-          <rect x="950" y="60" width="230" height="60" rx="6" class="c-mask"/>
-          <rect x="950" y="60" width="230" height="60" rx="6" class="c-database" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(956 66) scale(0.6875)">
+        <g id="node-i18n" data-node-id="i18n" data-node-label="Internationalization" tabindex="0" role="button" aria-label="Focus Internationalization, 12 languages, Modeling &amp; UI" aria-pressed="false" data-node-kind="backend" data-node-sublabel="12 languages" data-node-context="Modeling &amp; UI">
+          <title>Internationalization · 12 languages · Modeling &amp; UI</title>
+          <rect x="60" y="630" width="300" height="60" rx="6" class="c-mask"/>
+          <rect x="60" y="630" width="300" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(66 636) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text x="210" y="658" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Internationalization</text>
+        <text x="210" y="674" class="t-muted" font-size="9" text-anchor="middle">12 languages</text>
+        </g>
+
+        <g id="node-dao" data-node-id="dao" data-node-label="Data access" tabindex="0" role="button" aria-label="Focus Data access, EruptDao · LambdaQuery · DataProxy, Data &amp; ecosystem" aria-pressed="false" data-node-kind="database" data-node-sublabel="EruptDao · LambdaQuery · DataProxy" data-node-context="Data &amp; ecosystem">
+          <title>Data access · EruptDao · LambdaQuery · DataProxy · Data &amp; ecosystem</title>
+          <rect x="1020" y="70" width="300" height="60" rx="6" class="c-mask"/>
+          <rect x="1020" y="70" width="300" height="60" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(1026 76) scale(0.6875)">
             <ellipse cx="8" cy="4" rx="5" ry="2"/>
             <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
-          <text x="1065" y="88" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">JDBC Queries</text>
-        <text x="1065" y="104" class="t-muted" font-size="9" text-anchor="middle">EruptDao · LambdaQuery · Mybatis</text>
+          <text x="1170" y="98" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Data access</text>
+        <text x="1170" y="114" class="t-muted" font-size="9" text-anchor="middle">EruptDao · LambdaQuery · DataProxy</text>
         </g>
 
-        <g id="node-ds" data-node-id="ds" data-node-label="Multi Datasource" tabindex="0" role="button" aria-label="Focus Multi Datasource, MySQL · Oracle · DM · MongoDB…, Data &amp; ecosystem" aria-pressed="false" data-node-kind="database" data-node-sublabel="MySQL · Oracle · DM · MongoDB…" data-node-context="Data &amp; ecosystem">
-          <title>Multi Datasource · MySQL · Oracle · DM · MongoDB… · Data &amp; ecosystem</title>
-          <rect x="950" y="195" width="230" height="60" rx="6" class="c-mask"/>
-          <rect x="950" y="195" width="230" height="60" rx="6" class="c-database" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(956 201) scale(0.6875)">
+        <g id="node-ds" data-node-id="ds" data-node-label="15 Data Connectors" tabindex="0" role="button" aria-label="Focus 15 Data Connectors, MySQL · Oracle · MongoDB · ES · Feishu · DingTalk …, Data &amp; ecosystem" aria-pressed="false" data-node-kind="database" data-node-sublabel="MySQL · Oracle · MongoDB · ES · Feishu · DingTalk …" data-node-context="Data &amp; ecosystem">
+          <title>15 Data Connectors · MySQL · Oracle · MongoDB · ES · Feishu · DingTalk … · Data &amp; ecosystem</title>
+          <rect x="1020" y="210" width="300" height="60" rx="6" class="c-mask"/>
+          <rect x="1020" y="210" width="300" height="60" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(1026 216) scale(0.6875)">
             <ellipse cx="8" cy="4" rx="5" ry="2"/>
             <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
-          <text x="1065" y="223" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Multi Datasource</text>
-        <text x="1065" y="239" class="t-muted" font-size="9" text-anchor="middle">MySQL · Oracle · DM · MongoDB…</text>
+          <text x="1170" y="238" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">15 Data Connectors</text>
+        <text x="1170" y="254" class="t-muted" font-size="9" text-anchor="middle">MySQL · Oracle · MongoDB · ES · Feishu · DingTalk …</text>
         </g>
 
-        <g id="node-i18n" data-node-id="i18n" data-node-label="Internationalization" tabindex="0" role="button" aria-label="Focus Internationalization, Chinese · EN · FR · RU · ES · KR · JP…, Data &amp; ecosystem" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Chinese · EN · FR · RU · ES · KR · JP…" data-node-context="Data &amp; ecosystem">
-          <title>Internationalization · Chinese · EN · FR · RU · ES · KR · JP… · Data &amp; ecosystem</title>
-          <rect x="950" y="330" width="230" height="60" rx="6" class="c-mask"/>
-          <rect x="950" y="330" width="230" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(956 336) scale(0.6875)">
-            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
-          </g>
-          <text x="1065" y="358" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Internationalization</text>
-        <text x="1065" y="374" class="t-muted" font-size="9" text-anchor="middle">Chinese · EN · FR · RU · ES · KR · JP…</text>
-        </g>
-
-        <g id="node-ext" data-node-id="ext" data-node-label="Extension Modules" tabindex="0" role="button" aria-label="Focus Extension Modules, job · flow · bi · magic-api…, Data &amp; ecosystem" aria-pressed="false" data-node-kind="backend" data-node-sublabel="job · flow · bi · magic-api…" data-node-context="Data &amp; ecosystem">
-          <title>Extension Modules · job · flow · bi · magic-api… · Data &amp; ecosystem</title>
-          <rect x="950" y="465" width="230" height="60" rx="6" class="c-mask"/>
-          <rect x="950" y="465" width="230" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(956 471) scale(0.6875)">
-            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
-          </g>
-          <text x="1065" y="493" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Extension Modules</text>
-        <text x="1065" y="509" class="t-muted" font-size="9" text-anchor="middle">job · flow · bi · magic-api…</text>
-        </g>
-
-        <g id="node-deploy" data-node-id="deploy" data-node-label="Deployment" tabindex="0" role="button" aria-label="Focus Deployment, Hot build · cluster · distributed Cloud, Data &amp; ecosystem" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="Hot build · cluster · distributed Cloud" data-node-context="Data &amp; ecosystem">
-          <title>Deployment · Hot build · cluster · distributed Cloud · Data &amp; ecosystem</title>
-          <rect x="950" y="600" width="230" height="60" rx="6" class="c-mask"/>
-          <rect x="950" y="600" width="230" height="60" rx="6" class="c-cloud" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(956 606) scale(0.6875)">
+        <g id="node-ai" data-node-id="ai" data-node-label="AI" tabindex="0" role="button" aria-label="Focus AI, Harness · Claw · RAG · Canvas · Staff · Decision, Data &amp; ecosystem" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="Harness · Claw · RAG · Canvas · Staff · Decision" data-node-context="Data &amp; ecosystem">
+          <title>AI · Harness · Claw · RAG · Canvas · Staff · Decision · Data &amp; ecosystem</title>
+          <rect x="1020" y="350" width="300" height="60" rx="6" class="c-mask"/>
+          <rect x="1020" y="350" width="300" height="60" rx="6" class="c-cloud" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(1026 356) scale(0.6875)">
             <path d="M4.3 12.5h7.3a2.4 2.4 0 0 0 .2-4.8 4 4 0 0 0-7.5-1.3A3.1 3.1 0 0 0 4.3 12.5Z"/>
           </g>
-          <text x="1065" y="628" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Deployment</text>
-        <text x="1065" y="644" class="t-muted" font-size="9" text-anchor="middle">Hot build · cluster · distributed Cloud</text>
+          <text x="1170" y="378" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">AI</text>
+        <text x="1170" y="394" class="t-muted" font-size="9" text-anchor="middle">Harness · Claw · RAG · Canvas · Staff · Decision</text>
+        </g>
+
+        <g id="node-ext" data-node-id="ext" data-node-label="Extension Modules" tabindex="0" role="button" aria-label="Focus Extension Modules, job · flow · cube · sso · comment · atlas …, Data &amp; ecosystem" aria-pressed="false" data-node-kind="backend" data-node-sublabel="job · flow · cube · sso · comment · atlas …" data-node-context="Data &amp; ecosystem">
+          <title>Extension Modules · job · flow · cube · sso · comment · atlas … · Data &amp; ecosystem</title>
+          <rect x="1020" y="490" width="300" height="60" rx="6" class="c-mask"/>
+          <rect x="1020" y="490" width="300" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1026 496) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text x="1170" y="518" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Extension Modules</text>
+        <text x="1170" y="534" class="t-muted" font-size="9" text-anchor="middle">job · flow · cube · sso · comment · atlas …</text>
+        </g>
+
+        <g id="node-deploy" data-node-id="deploy" data-node-label="Deployment" tabindex="0" role="button" aria-label="Focus Deployment, hot build · cluster · distributed Cloud · PWA, Data &amp; ecosystem" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="hot build · cluster · distributed Cloud · PWA" data-node-context="Data &amp; ecosystem">
+          <title>Deployment · hot build · cluster · distributed Cloud · PWA · Data &amp; ecosystem</title>
+          <rect x="1020" y="630" width="300" height="60" rx="6" class="c-mask"/>
+          <rect x="1020" y="630" width="300" height="60" rx="6" class="c-cloud" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(1026 636) scale(0.6875)">
+            <path d="M4.3 12.5h7.3a2.4 2.4 0 0 0 .2-4.8 4 4 0 0 0-7.5-1.3A3.1 3.1 0 0 0 4.3 12.5Z"/>
+          </g>
+          <text x="1170" y="658" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Deployment</text>
+        <text x="1170" y="674" class="t-muted" font-size="9" text-anchor="middle">hot build · cluster · distributed Cloud · PWA</text>
         </g>
 
         <!-- Connection labels -->
@@ -453,24 +465,25 @@ rect.c-bg-rect { fill: var(--bg); }
 
 
 
+
         <!-- Legend -->
         <g data-legend="">
-          <text x="40" y="724" class="t-primary" font-size="12" font-weight="650">Legend</text>
-          <g data-legend-semantic-kind="frontend" data-legend-x="40" data-legend-baseline="744" data-legend-width="83">
-            <rect x="40" y="735" width="16" height="10" rx="2.5" class="c-frontend" stroke-width="1"/>
-            <text x="62" y="744" class="t-muted" font-size="10" font-weight="500">Frontend</text>
+          <text x="40" y="764" class="t-primary" font-size="12" font-weight="650">Legend</text>
+          <g data-legend-semantic-kind="frontend" data-legend-x="40" data-legend-baseline="784" data-legend-width="53">
+            <rect x="40" y="775" width="16" height="10" rx="2.5" class="c-frontend" stroke-width="1"/>
+            <text x="62" y="784" class="t-muted" font-size="10" font-weight="500">UI</text>
           </g>
-          <g data-legend-semantic-kind="backend" data-legend-x="145" data-legend-baseline="744" data-legend-width="78">
-            <rect x="145" y="735" width="16" height="10" rx="2.5" class="c-backend" stroke-width="1"/>
-            <text x="167" y="744" class="t-muted" font-size="10" font-weight="500">Backend</text>
+          <g data-legend-semantic-kind="backend" data-legend-x="115" data-legend-baseline="784" data-legend-width="88">
+            <rect x="115" y="775" width="16" height="10" rx="2.5" class="c-backend" stroke-width="1"/>
+            <text x="137" y="784" class="t-muted" font-size="10" font-weight="500">Framework</text>
           </g>
-          <g data-legend-semantic-kind="database" data-legend-x="245" data-legend-baseline="744" data-legend-width="83">
-            <rect x="245" y="735" width="16" height="10" rx="2.5" class="c-database" stroke-width="1"/>
-            <text x="267" y="744" class="t-muted" font-size="10" font-weight="500">Database</text>
+          <g data-legend-semantic-kind="database" data-legend-x="225" data-legend-baseline="784" data-legend-width="63">
+            <rect x="225" y="775" width="16" height="10" rx="2.5" class="c-database" stroke-width="1"/>
+            <text x="247" y="784" class="t-muted" font-size="10" font-weight="500">Data</text>
           </g>
-          <g data-legend-semantic-kind="cloud" data-legend-x="350" data-legend-baseline="744" data-legend-width="68">
-            <rect x="350" y="735" width="16" height="10" rx="2.5" class="c-cloud" stroke-width="1"/>
-            <text x="372" y="744" class="t-muted" font-size="10" font-weight="500">Cloud</text>
+          <g data-legend-semantic-kind="cloud" data-legend-x="310" data-legend-baseline="784" data-legend-width="118">
+            <rect x="310" y="775" width="16" height="10" rx="2.5" class="c-cloud" stroke-width="1"/>
+            <text x="332" y="784" class="t-muted" font-size="10" font-weight="500">Deployment &amp; AI</text>
           </g>
         </g>
       </svg>

@@ -73,6 +73,10 @@ erupt:
     validate-access-token: true
 ```
 
+:::tip @EruptRouter(cloudProxy) <Badge type="tip" text="v2.3.0+" />
+For module authors: by default, a `/erupt-api/**` request that targets a node model is forwarded by the Server to the Node that owns it. When an API only keys on the erupt name and its logic belongs entirely to the Server — record comments, for example, where the node neither carries the module nor knows the server's users — mark it `@EruptRouter(cloudProxy = false)`. Such an API is never forwarded to a node; the Server answers it itself under the `nodeName.eruptName` it addressed. erupt-comment uses exactly this so that records of node models can carry comments too.
+:::
+
 ## Docker Deployment
 
 The Server side supports Docker deployment. New features only require developing Node instances:

@@ -72,14 +72,15 @@ export default withMermaid(defineConfig({
                     {text: 'Annotations', link: '/en/annotation/', activeMatch: '/en/annotation/'},
                     {text: 'Components', link: '/en/field-types/', activeMatch: '/en/field-types/'},
                     {text: 'Advanced', link: '/en/advanced/', activeMatch: '/en/advanced/'},
-                    {text: 'Plugins', link: '/en/modules/', activeMatch: '/en/modules/'},
+                    {text: 'Modules', link: '/en/modules/', activeMatch: '/en/modules/'},
                     {text: 'Topics', link: '/en/topics/', activeMatch: '/en/topics/'},
                     {text: 'Architecture', link: '/en/guide/architecture'},
-                    {text: '⚡ No-Code', link: 'https://skill.erupt.xyz'},
+                    {text: 'Changelog', link: '/en/guide/changelog'},
                     {
-                        text: 'Links',
+                        text: 'Resources',
                         items: [
                             {text: '🚀 Project Init', link: 'https://start.erupt.xyz/'},
+                            {text: '⚡ AI Skill', link: 'https://skill.erupt.xyz'},
                             {text: 'Website', link: 'https://www.erupt.xyz'},
                             {text: 'Linq.J', link: 'https://linq.erupt.xyz/'},
                             {text: 'GitHub', link: 'https://github.com/erupts/erupt'},
@@ -99,8 +100,18 @@ export default withMermaid(defineConfig({
                                 {text: 'Framework Introduction', link: '/en/guide/'},
                                 {text: 'Quick Start', link: '/en/guide/quick-start'},
                                 {text: 'First Example', link: '/en/guide/getting-started'},
-                                {text: 'Configuration', link: '/en/guide/configuration'},
+                                {
+                                    text: 'Configuration',
+                                    collapsed: true,
+                                    items: [
+                                        {text: 'Backend: application.yml', link: '/en/guide/configuration'},
+                                        {text: 'Frontend: app.js', link: '/en/guide/config-frontend'},
+                                        {text: 'Frontend: app.css', link: '/en/guide/config-style'},
+                                        {text: 'Home page: home.html', link: '/en/guide/config-home'},
+                                    ],
+                                },
                                 {text: 'UI & Interaction <span class="VPBadge tip">new</span>', link: '/en/guide/ui'},
+                                {text: 'Desktop App (PWA) <span class="VPBadge tip">new</span>', link: '/en/guide/pwa'},
                             ],
                         },
                         {
@@ -195,6 +206,8 @@ export default withMermaid(defineConfig({
                                 {text: 'BOOLEAN', link: '/en/field-types/boolean'},
                                 {text: 'MAP', link: '/en/field-types/map'},
                                 {text: 'COLOR', link: '/en/field-types/color'},
+                                {text: 'ICON', link: '/en/field-types/icon'},
+                                {text: 'KEY_VALUE', link: '/en/field-types/key-value'},
                                 {text: 'RATE', link: '/en/field-types/rate'},
                             ],
                         },
@@ -224,6 +237,7 @@ export default withMermaid(defineConfig({
                                 {text: 'REFERENCE_TABLE', link: '/en/field-types/reference-table'},
                                 {text: 'REFERENCE_TREE', link: '/en/field-types/reference-tree'},
                                 {text: 'CHECKBOX', link: '/en/field-types/checkbox'},
+                                {text: 'TRANSFER', link: '/en/field-types/transfer'},
                                 {text: 'TAB_TREE', link: '/en/field-types/tab-tree'},
                                 {text: 'TAB_TABLE_REFER', link: '/en/field-types/tab-table-refer'},
                                 {text: 'TAB_TABLE_ADD', link: '/en/field-types/tab-table-add'},
@@ -290,7 +304,6 @@ export default withMermaid(defineConfig({
                             text: 'Login & Security',
                             items: [
                                 {text: 'Login & Authentication', link: '/en/advanced/auth'},
-                                {text: 'Custom Login Page', link: '/en/advanced/custom-login-page'},
                                 {text: 'Open API', link: '/en/advanced/open-api'},
                             ],
                         },
@@ -381,9 +394,9 @@ export default withMermaid(defineConfig({
 
                     '/en/modules/': [
                         {
-                            text: 'Plugins',
+                            text: 'Modules',
                             items: [
-                                {text: 'Plugin Overview', link: '/en/modules/'},
+                                {text: 'Modules Overview', link: '/en/modules/'},
                             ],
                         },
                         {
@@ -424,6 +437,7 @@ export default withMermaid(defineConfig({
                                 {text: '🎨 Erupt AI Canvas <span class="VPBadge tip">new</span>', link: '/en/modules/erupt-ai-canvas'},
                                 {text: '📖 Erupt AI RAG <span class="VPBadge tip">new</span>', link: '/en/modules/erupt-ai-rag'},
                                 {text: '👩‍💻 Erupt AI Staff <span class="VPBadge tip">new</span>', link: '/en/modules/erupt-ai-staff'},
+                                {text: '🔀 Erupt AI Decision <span class="VPBadge tip">new</span>', link: '/en/modules/erupt-ai-decision'},
                                 {text: '🛠️ Erupt AI Skills', link: 'https://github.com/plinian/erupt-skill'},
                             ],
                         },
@@ -457,6 +471,8 @@ export default withMermaid(defineConfig({
                                 {text: 'Erupt Terminal', link: '/en/modules/erupt-terminal'},
                                 {text: 'Erupt Remote <span class="VPBadge tip">new</span>', link: '/en/modules/erupt-remote'},
                                 {text: 'Erupt Atlas <span class="VPBadge tip">new</span>', link: '/en/modules/erupt-atlas'},
+                                {text: 'Erupt Comment <span class="VPBadge tip">new</span>', link: '/en/modules/erupt-comment'},
+                                {text: 'Erupt SSO <span class="VPBadge tip">new</span>', link: '/en/modules/erupt-sso'},
                                 {text: 'Erupt Websocket', link: '/en/modules/erupt-websocket'},
                                 {text: 'Erupt Generator', link: '/en/modules/erupt-generator'},
                                 {text: 'Erupt Job', link: '/en/modules/erupt-job'},
@@ -552,10 +568,12 @@ export default withMermaid(defineConfig({
                                 {text: 'Erupt Feishu', link: '/en/modules/erupt-feishu'},
                                 {text: 'Erupt Notion', link: '/en/modules/erupt-notion'},
                                 {text: 'Erupt S3', link: '/en/modules/erupt-s3'},
+                                {text: 'Erupt DingTalk <span class="VPBadge tip">new</span>', link: '/en/modules/erupt-dingtalk'},
+                                {text: 'Erupt Airtable <span class="VPBadge tip">new</span>', link: '/en/modules/erupt-airtable'},
                             ],
                         },
                         {
-                            text: 'Third-party Plugins',
+                            text: 'Third-party Modules',
                             items: [
                                 {text: 'Erupt Dsl', link: '/en/modules/third-party/erupt-dsl'},
                                 {text: 'Erupt Pf4j', link: '/en/modules/third-party/erupt-pf4j'},
@@ -597,18 +615,19 @@ export default withMermaid(defineConfig({
             lang: 'zh-CN',
             themeConfig: {
                 nav: [
-                    {text: '快速上手', link: '/zh/guide/', activeMatch: '/zh/guide/'},
-                    {text: '注解参考', link: '/zh/annotation/', activeMatch: '/zh/annotation/'},
+                    {text: '指南', link: '/zh/guide/', activeMatch: '/zh/guide/'},
+                    {text: '注解', link: '/zh/annotation/', activeMatch: '/zh/annotation/'},
                     {text: '组件', link: '/zh/field-types/', activeMatch: '/zh/field-types/'},
                     {text: '进阶', link: '/zh/advanced/', activeMatch: '/zh/advanced/'},
-                    {text: '插件', link: '/zh/modules/', activeMatch: '/zh/modules/'},
+                    {text: '模块', link: '/zh/modules/', activeMatch: '/zh/modules/'},
                     {text: '专题', link: '/zh/topics/', activeMatch: '/zh/topics/'},
-                    {text: '架构设计', link: '/zh/guide/architecture'},
-                    {text: '⚡ 零代码', link: 'https://skill.erupt.xyz'},
+                    {text: '架构', link: '/zh/guide/architecture'},
+                    {text: '更新日志', link: '/zh/guide/changelog'},
                     {
-                        text: '相关链接',
+                        text: '资源',
                         items: [
                             {text: '🚀 项目初始化', link: 'https://start.erupt.xyz/'},
+                            {text: '⚡ AI Skill', link: 'https://skill.erupt.xyz'},
                             {text: '官网', link: 'https://www.erupt.xyz'},
                             {text: 'Linq.J', link: 'https://linq.erupt.xyz/'},
                             {text: 'GitHub', link: 'https://github.com/erupts/erupt'},
@@ -628,8 +647,18 @@ export default withMermaid(defineConfig({
                                 {text: '框架介绍', link: '/zh/guide/'},
                                 {text: '快速部署', link: '/zh/guide/quick-start'},
                                 {text: '入门示例', link: '/zh/guide/getting-started'},
-                                {text: '参数配置', link: '/zh/guide/configuration'},
+                                {
+                                    text: '参数配置',
+                                    collapsed: true,
+                                    items: [
+                                        {text: '后端配置 application.yml', link: '/zh/guide/configuration'},
+                                        {text: '前端配置 app.js', link: '/zh/guide/config-frontend'},
+                                        {text: '前端样式 app.css', link: '/zh/guide/config-style'},
+                                        {text: '自定义首页 home.html', link: '/zh/guide/config-home'},
+                                    ],
+                                },
                                 {text: '界面与交互 <span class="VPBadge tip">new</span>', link: '/zh/guide/ui'},
+                                {text: '安装为桌面应用（PWA） <span class="VPBadge tip">new</span>', link: '/zh/guide/pwa'},
                             ],
                         },
                         {
@@ -643,7 +672,7 @@ export default withMermaid(defineConfig({
                         {
                             text: '参考',
                             items: [
-                                {text: '架构设计', link: '/zh/guide/architecture'},
+                                {text: '架构', link: '/zh/guide/architecture'},
                                 {text: '数据源支持', link: '/zh/guide/database'},
                                 {text: '常见问题', link: '/zh/guide/faq'},
                                 {text: '匿名遥测', link: '/zh/guide/telemetry'},
@@ -724,6 +753,8 @@ export default withMermaid(defineConfig({
                                 {text: 'BOOLEAN 布尔开关', link: '/zh/field-types/boolean'},
                                 {text: 'MAP 地理位置', link: '/zh/field-types/map'},
                                 {text: 'COLOR 颜色选择', link: '/zh/field-types/color'},
+                                {text: 'ICON 图标选择', link: '/zh/field-types/icon'},
+                                {text: 'KEY_VALUE 键值对', link: '/zh/field-types/key-value'},
                                 {text: 'RATE 评分器', link: '/zh/field-types/rate'},
                             ],
                         },
@@ -753,6 +784,7 @@ export default withMermaid(defineConfig({
                                 {text: 'REFERENCE_TABLE 多对一表引用', link: '/zh/field-types/reference-table'},
                                 {text: 'REFERENCE_TREE 多对一树引用', link: '/zh/field-types/reference-tree'},
                                 {text: 'CHECKBOX 多对多复选框', link: '/zh/field-types/checkbox'},
+                                {text: 'TRANSFER 多对多穿梭框', link: '/zh/field-types/transfer'},
                                 {text: 'TAB_TREE 多对多树引用', link: '/zh/field-types/tab-tree'},
                                 {text: 'TAB_TABLE_REFER 多对多表引用', link: '/zh/field-types/tab-table-refer'},
                                 {text: 'TAB_TABLE_ADD 一对多新增', link: '/zh/field-types/tab-table-add'},
@@ -819,7 +851,6 @@ export default withMermaid(defineConfig({
                             text: '登录与安全',
                             items: [
                                 {text: '登录与认证', link: '/zh/advanced/auth'},
-                                {text: '自定义登录页', link: '/zh/advanced/custom-login-page'},
                                 {text: '开放接口', link: '/zh/advanced/open-api'},
                             ],
                         },
@@ -910,9 +941,9 @@ export default withMermaid(defineConfig({
 
                     '/zh/modules/': [
                         {
-                            text: '插件',
+                            text: '模块',
                             items: [
-                                {text: '插件总览', link: '/zh/modules/'},
+                                {text: '模块总览', link: '/zh/modules/'},
                             ],
                         },
                         {
@@ -953,6 +984,7 @@ export default withMermaid(defineConfig({
                                 {text: '🎨 Erupt Ai Canvas <span class="VPBadge tip">new</span>', link: '/zh/modules/erupt-ai-canvas'},
                                 {text: '📖 Erupt Ai RAG 知识库 <span class="VPBadge tip">new</span>', link: '/zh/modules/erupt-ai-rag'},
                                 {text: '👩‍💻 Erupt Ai Staff 数字员工 <span class="VPBadge tip">new</span>', link: '/zh/modules/erupt-ai-staff'},
+                                {text: '🔀 Erupt Ai Decision 决策模型 <span class="VPBadge tip">new</span>', link: '/zh/modules/erupt-ai-decision'},
                                 {text: '🛠️ Erupt Ai Skills', link: 'https://github.com/plinian/erupt-skill'},
                             ],
                         },
@@ -986,6 +1018,8 @@ export default withMermaid(defineConfig({
                                 {text: 'Erupt Terminal 服务终端', link: '/zh/modules/erupt-terminal'},
                                 {text: 'Erupt Remote 远程访问 <span class="VPBadge tip">new</span>', link: '/zh/modules/erupt-remote'},
                                 {text: 'Erupt Atlas 模型图谱 <span class="VPBadge tip">new</span>', link: '/zh/modules/erupt-atlas'},
+                                {text: 'Erupt Comment 记录评论 <span class="VPBadge tip">new</span>', link: '/zh/modules/erupt-comment'},
+                                {text: 'Erupt SSO 单点登录 <span class="VPBadge tip">new</span>', link: '/zh/modules/erupt-sso'},
                                 {text: 'Erupt Websocket 实时交互', link: '/zh/modules/erupt-websocket'},
                                 {text: 'Erupt Generator 代码生成', link: '/zh/modules/erupt-generator'},
                                 {text: 'Erupt Job 定时任务', link: '/zh/modules/erupt-job'},
@@ -1081,10 +1115,12 @@ export default withMermaid(defineConfig({
                                 {text: 'Erupt Feishu 多维表格数据源', link: '/zh/modules/erupt-feishu'},
                                 {text: 'Erupt Notion 数据源', link: '/zh/modules/erupt-notion'},
                                 {text: 'Erupt S3 对象存储数据源', link: '/zh/modules/erupt-s3'},
+                                {text: 'Erupt DingTalk 钉钉多维表数据源 <span class="VPBadge tip">new</span>', link: '/zh/modules/erupt-dingtalk'},
+                                {text: 'Erupt Airtable 数据源 <span class="VPBadge tip">new</span>', link: '/zh/modules/erupt-airtable'},
                             ],
                         },
                         {
-                            text: '第三方插件',
+                            text: '第三方模块',
                             items: [
                                 {text: 'Erupt Dsl ORM动态查询', link: '/zh/modules/third-party/erupt-dsl'},
                                 {text: 'Erupt Pf4j 动态加载', link: '/zh/modules/third-party/erupt-pf4j'},

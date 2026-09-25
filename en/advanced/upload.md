@@ -2,6 +2,10 @@
 
 By implementing custom file upload rules, you can upload files to cloud object storage services such as Alibaba Cloud OSS, Qiniu Cloud, or Tencent Cloud COS, instead of storing them on the local disk.
 
+:::tip Ready-made implementation <Badge type="tip" text="v2.3.0+" />
+S3-compatible storage (AWS S3 / MinIO / OSS / COS / R2) needs no implementation of your own — add erupt-data-s3 and register `S3AttachmentProxy`; see [S3 Attachment Upload](/en/modules/erupt-s3#attachment-upload-s3attachmentproxy).
+:::
+
 ## Local Storage Configuration
 
 Without an `AttachmentProxy` implementation, attachments are stored on the local disk. The relevant properties live in `EruptProp`:
@@ -178,3 +182,5 @@ Since the attachment base URL has changed, update `app.js`:
 ```javascript
 window.eruptSiteConfig.fileDomain = "http://xxxx.com"; // Your OSS domain
 ```
+
+Since 2.3.0, `/erupt-app` returns `AttachmentProxy.fileDomain()` and the frontend adopts it automatically when `eruptSiteConfig.fileDomain` is empty, so this step can be skipped; a value set in `app.js` still acts as an explicit override.

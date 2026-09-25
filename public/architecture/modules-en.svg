@@ -352,15 +352,15 @@ rect.c-bg-rect { fill: var(--bg); }
         <text x="285" y="192" class="t-muted" font-size="9" text-anchor="middle">notifications</text>
         </g>
 
-        <g id="node-aiapps" data-node-id="aiapps" data-node-label="erupt-ai-claw · rag · canvas" tabindex="0" role="button" aria-label="Focus erupt-ai-claw · rag · canvas, conversational ops · RAG · page generation, Architecture component" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="conversational ops · RAG · page generation" data-node-context="Architecture component">
-          <title>erupt-ai-claw · rag · canvas · conversational ops · RAG · page generation · Architecture component</title>
+        <g id="node-aiapps" data-node-id="aiapps" data-node-label="erupt-ai-claw · rag · canvas · decision" tabindex="0" role="button" aria-label="Focus erupt-ai-claw · rag · canvas · decision, conversational ops · RAG · page generation · decisions, Architecture component" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="conversational ops · RAG · page generation · decisions" data-node-context="Architecture component">
+          <title>erupt-ai-claw · rag · canvas · decision · conversational ops · RAG · page generation · decisions · Architecture component</title>
           <rect x="1000" y="150" width="270" height="56" rx="6" class="c-mask"/>
           <rect x="1000" y="150" width="270" height="56" rx="6" class="c-cloud" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(1006 156) scale(0.6875)">
             <path d="M4.3 12.5h7.3a2.4 2.4 0 0 0 .2-4.8 4 4 0 0 0-7.5-1.3A3.1 3.1 0 0 0 4.3 12.5Z"/>
           </g>
-          <text x="1135" y="176" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-ai-claw · rag · canvas</text>
-        <text x="1135" y="192" class="t-muted" font-size="9" text-anchor="middle">conversational ops · RAG · page generation</text>
+          <text x="1135" y="176" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">erupt-ai-claw · rag · canvas · decision</text>
+        <text x="1135" y="192" class="t-muted" font-size="7.6" text-anchor="middle">conversational ops · RAG · page generation · decisions</text>
         </g>
 
         <g id="node-jobgen" data-node-id="jobgen" data-node-label="erupt-job · generator" tabindex="0" role="button" aria-label="Focus erupt-job · generator, scheduled jobs · code generation, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="scheduled jobs · code generation" data-node-context="Architecture component">
@@ -410,15 +410,15 @@ rect.c-bg-rect { fill: var(--bg); }
         <text x="645" y="322" class="t-muted" font-size="9" text-anchor="middle">API scripting · SQL reports</text>
         </g>
 
-        <g id="node-tools" data-node-id="tools" data-node-label="erupt-print · designer · terminal" tabindex="0" role="button" aria-label="Focus erupt-print · designer · terminal, printing · model designer · terminal, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="printing · model designer · terminal" data-node-context="Architecture component">
-          <title>erupt-print · designer · terminal · printing · model designer · terminal · Architecture component</title>
+        <g id="node-tools" data-node-id="tools" data-node-label="erupt-print · designer · terminal · comment" tabindex="0" role="button" aria-label="Focus erupt-print · designer · terminal · comment, printing · model designer · terminal · comments, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="printing · model designer · terminal · comments" data-node-context="Architecture component">
+          <title>erupt-print · designer · terminal · comment · printing · model designer · terminal · comments · Architecture component</title>
           <rect x="760" y="280" width="230" height="56" rx="6" class="c-mask"/>
           <rect x="760" y="280" width="230" height="56" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(766 286) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text x="875" y="306" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-print · designer · terminal</text>
-        <text x="875" y="322" class="t-muted" font-size="9" text-anchor="middle">printing · model designer · terminal</text>
+          <text x="875" y="306" class="t-primary" font-size="8.4" font-weight="600" text-anchor="middle">erupt-print · designer · terminal · comment</text>
+        <text x="875" y="322" class="t-muted" font-size="7.6" text-anchor="middle">printing · designer · terminal · comments</text>
         </g>
 
         <g id="node-ai" data-node-id="ai" data-node-label="erupt-ai" tabindex="0" role="button" aria-label="Focus erupt-ai, LLM access · agent harness, Architecture component" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="LLM access · agent harness" data-node-context="Architecture component">
@@ -444,8 +444,8 @@ rect.c-bg-rect { fill: var(--bg); }
         <text x="630" y="488" class="t-backend" font-size="7" text-anchor="middle">shared base for extensions</text>
         </g>
 
-        <g id="node-security" data-node-id="security" data-node-label="erupt-security" tabindex="0" role="button" aria-label="Focus erupt-security, authentication, Architecture component" aria-pressed="false" data-node-kind="security" data-node-sublabel="authentication" data-node-context="Architecture component">
-          <title>erupt-security · authentication · Architecture component</title>
+        <g id="node-security" data-node-id="security" data-node-label="erupt-security" tabindex="0" role="button" aria-label="Focus erupt-security, authentication · erupt-sso, Architecture component" aria-pressed="false" data-node-kind="security" data-node-sublabel="authentication · erupt-sso" data-node-context="Architecture component">
+          <title>erupt-security · authentication · erupt-sso · Architecture component</title>
           <rect x="1000" y="420" width="180" height="76" rx="6" class="c-mask"/>
           <rect x="1000" y="420" width="180" height="76" rx="6" class="c-security" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(1006 426) scale(0.6875)">
@@ -453,7 +453,7 @@ rect.c-bg-rect { fill: var(--bg); }
             <path d="m5.8 8 1.5 1.5 3-3"/>
           </g>
           <text x="1090" y="456" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-security</text>
-        <text x="1090" y="472" class="t-muted" font-size="9" text-anchor="middle">authentication</text>
+        <text x="1090" y="472" class="t-muted" font-size="9" text-anchor="middle">authentication · erupt-sso</text>
         </g>
 
         <g id="node-server" data-node-id="server" data-node-label="erupt-cloud-server" tabindex="0" role="button" aria-label="Focus erupt-cloud-server, distributed control plane, Architecture component" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="distributed control plane" data-node-context="Architecture component">
@@ -479,16 +479,17 @@ rect.c-bg-rect { fill: var(--bg); }
         <text x="170" y="604" class="t-muted" font-size="9" text-anchor="middle">JPA data access</text>
         </g>
 
-        <g id="node-dataother" data-node-id="dataother" data-node-label="erupt-data-*" tabindex="0" role="button" aria-label="Focus erupt-data-*, mongodb · jdbc · http · es · redis · memory · file · k8s · ldap · feishu · notion · s3, Architecture component" aria-pressed="false" data-node-kind="database" data-node-sublabel="mongodb · jdbc · http · es · redis · memory · file · k8s · ldap · feishu · notion · s3" data-node-context="Architecture component">
-          <title>erupt-data-* · mongodb · jdbc · http · es · redis · memory · file · k8s · ldap · feishu · notion · s3 · Architecture component</title>
+        <g id="node-dataother" data-node-id="dataother" data-node-label="erupt-data-*" tabindex="0" role="button" aria-label="Focus erupt-data-*, mongodb · jdbc · http · es · redis · memory · file · k8s · ldap · feishu · notion · s3 · dingtalk · airtable, Architecture component" aria-pressed="false" data-node-kind="database" data-node-sublabel="mongodb · jdbc · http · es · redis · memory · file · k8s · ldap · feishu · notion · s3 · dingtalk · airtable" data-node-context="Architecture component">
+          <title>erupt-data-* · mongodb · jdbc · http · es · redis · memory · file · k8s · ldap · feishu · notion · s3 · dingtalk · airtable · Architecture component</title>
           <rect x="320" y="560" width="440" height="60" rx="6" class="c-mask"/>
           <rect x="320" y="560" width="440" height="60" rx="6" class="c-database" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(326 566) scale(0.6875)">
             <ellipse cx="8" cy="4" rx="5" ry="2"/>
             <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
-          <text x="540" y="588" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-data-*</text>
-        <text x="540" y="604" class="t-muted" font-size="8.3" text-anchor="middle">mongodb · jdbc · http · es · redis · memory · file · k8s · ldap · feishu · notion · s3</text>
+          <text x="540" y="585" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-data-*</text>
+        <text x="540" y="600" class="t-muted" font-size="8" text-anchor="middle">mongodb · jdbc · http · es · redis · memory · file</text>
+        <text x="540" y="612" class="t-muted" font-size="8" text-anchor="middle">k8s · ldap · feishu · notion · s3 · dingtalk · airtable</text>
         </g>
 
         <g id="node-tpl" data-node-id="tpl" data-node-label="erupt-tpl" tabindex="0" role="button" aria-label="Focus erupt-tpl, custom pages, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="custom pages" data-node-context="Architecture component">

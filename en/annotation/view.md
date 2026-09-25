@@ -9,6 +9,8 @@ const viewTypes = [
             {type: 'NUMBER', glyph: '42', desc: 'Numeric display'},
             {type: 'BOOLEAN', glyph: '✓', desc: 'Boolean value display'},
             {type: 'COLOR', glyph: '■', desc: 'Renders a hex color value as a color swatch; inferred automatically when the edit type is COLOR'},
+            {type: 'ICON', glyph: '★', ver: '2.3.0+', desc: 'Renders an icon from its Font Awesome class name'},
+            {type: 'KEY_VALUE', glyph: '⋮', ver: '2.3.0+', desc: 'Renders a JSON object as one "key: value" tag per pair'},
             {type: 'PASSWORD', glyph: '••••', ver: '2.0.4+', desc: 'Password mask; the actual value is replaced with a placeholder and never sent to the client'},
             {type: 'DATE', glyph: '📅', desc: 'Date formatted display'},
             {type: 'DATE_TIME', glyph: '🕐', desc: 'Date-time formatted display'},
@@ -19,6 +21,7 @@ const viewTypes = [
         group: 'Image & Media',
         items: [
             {type: 'IMAGE', glyph: '🖼️', desc: 'Image'},
+            {type: 'AVATAR', glyph: '👤', ver: '2.3.0+', desc: 'Round avatar thumbnail: 32px in tables, 120px in detail view; silhouette placeholder when empty'},
             {type: 'IMAGE_BASE64', glyph: '🖼️', desc: 'Base64-encoded image'},
             {type: 'QR_CODE', glyph: '▦', desc: 'QR code'},
             {type: 'MAP', glyph: '📍', desc: 'Map display'},
@@ -61,6 +64,7 @@ Configures how a field is displayed as a column in the list table, including the
 | `type` | Data display type, defaults to `AUTO`, see the type table below |
 | `show` | Whether to display the column, defaults to `true` |
 | `sortable` | Whether clicking the column header sorts the table, defaults to `false` |
+| `group` | Header group: adjacent columns sharing the same group are merged under one parent header cell, forming a multi-level header (2.3.0+) |
 | `export` | Whether to include in Excel exports, defaults to `true` |
 | `width` | Column width with unit, e.g. `200px`, `20%` |
 | `column` | When the field is an object type, specifies the property name to display (commonly used with `@ManyToOne`) |
@@ -86,6 +90,23 @@ Configures how a field is displayed as a column in the list table, including the
         </div>
     </div>
 </template>
+
+## group Multi-level Headers <Badge type="tip" text="v2.3.0+" />
+
+Adjacent columns with the same `group` value are folded under one parent header cell, producing a two-level header:
+
+```java
+@EruptField(views = @View(title = "Unit Price", group = "Amount"))
+private BigDecimal price;
+
+@EruptField(views = @View(title = "Quantity", group = "Amount"))
+private Integer quantity;
+
+@EruptField(views = @View(title = "Total", group = "Amount"))
+private BigDecimal total;
+```
+
+The `group` text is translated like `title`; fixed columns and lone members (a group with a single column) stay ungrouped, and the column settings panel keeps operating on the flat column list.
 
 <style scoped>
 .vt-group {
