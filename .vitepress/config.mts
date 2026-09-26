@@ -343,6 +343,42 @@ export default withMermaid(defineConfig({
                             ],
                         },
                         {
+                            text: 'Issue 14 · Generator',
+                            items: [
+                                {text: 'Generating Models from an Existing Database', link: '/en/topics/generator-reads-database'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 13 · Identity',
+                            items: [
+                                {text: 'A Login Chain Without Spring Security', link: '/en/topics/identity-without-security-stack'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 12 · Remote Access',
+                            items: [
+                                {text: 'Security Boundaries for Remote Hosts', link: '/en/topics/remote-sftp-boundary'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 11 · Record Comment',
+                            items: [
+                                {text: "Why Comments Don't Bind to Business Tables", link: '/en/topics/record-comment-crosscut'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 10 · Cell Edit',
+                            items: [
+                                {text: 'Why Cell Edits Run the Whole-Row Pipeline', link: '/en/topics/cell-edit-whole-row'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 09 · Model Atlas',
+                            items: [
+                                {text: 'Model Atlas as a Static Audit', link: '/en/topics/model-atlas-audit'},
+                            ],
+                        },
+                        {
                             text: 'Issue 08 · Annotation DX',
                             items: [
                                 {text: 'Code With Syntax, Not a String', link: '/en/topics/annotation-language-injection'},
@@ -887,6 +923,42 @@ export default withMermaid(defineConfig({
                             text: '专题',
                             items: [
                                 {text: '专题总览', link: '/zh/topics/'},
+                            ],
+                        },
+                        {
+                            text: '第 14 期 · Generator',
+                            items: [
+                                {text: '从数据库反向生成模型', link: '/zh/topics/generator-reads-database'},
+                            ],
+                        },
+                        {
+                            text: '第 13 期 · Identity',
+                            items: [
+                                {text: '不依赖 Spring Security 的登录链', link: '/zh/topics/identity-without-security-stack'},
+                            ],
+                        },
+                        {
+                            text: '第 12 期 · Remote Access',
+                            items: [
+                                {text: '远程主机的安全边界', link: '/zh/topics/remote-sftp-boundary'},
+                            ],
+                        },
+                        {
+                            text: '第 11 期 · Record Comment',
+                            items: [
+                                {text: '记录评论为什么不绑定业务表', link: '/zh/topics/record-comment-crosscut'},
+                            ],
+                        },
+                        {
+                            text: '第 10 期 · Cell Edit',
+                            items: [
+                                {text: '单元格编辑为什么走整行管线', link: '/zh/topics/cell-edit-whole-row'},
+                            ],
+                        },
+                        {
+                            text: '第 09 期 · Model Atlas',
+                            items: [
+                                {text: '模型图谱与静态审计', link: '/zh/topics/model-atlas-audit'},
                             ],
                         },
                         {
