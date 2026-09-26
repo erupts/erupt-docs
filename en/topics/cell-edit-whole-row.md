@@ -270,14 +270,6 @@ private String apiKey;
 
 Configuration options and UI behavior are detailed in [@Power → cellEdit](/en/annotation/power); table interaction is covered in the [UI Guide](/en/guide/ui).
 
-## 8. Next Issue Preview
-
-This issue argued that "a new write path should not have new rules." Next issue we go back to the thread left dangling at the end of #09 and ask a more awkward question: **of all those rules, how many have never once been triggered?**
-
-> **Issue 11 · `@Power` × Menu Tree × `EruptOperateLog`: Permissions Aren't Configured, They're Used**
-
-Overlay three things — the static declarations in `@Power`, what the menu tree actually grants, and the real calls in the operation log — and most admin permission models turn out to be over-engineered. More than half of the permissions granted have never been used by anyone.
-
 ---
 
 :::info Join the discussion

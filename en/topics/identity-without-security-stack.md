@@ -246,12 +246,6 @@ erupt:
 
 Note what `mfa.enable` defaulting to `true` means: it **only opens the entry point** and does not force existing users to enroll, so upgrading locks nobody out.
 
-## 8. Next Issue Preview
-
-This issue was about "how people get in". The next one, **#14**, is about the reverse direction: `erupt-generator` can now read an existing database and reverse-engineer its table structure into `@Erupt` model code.
-
-That puts us in an interesting position — **annotation-based low-code has, for the first time, acquired the verb "generate"**. In Issue 05 we made "no generation" a cornerstone of our identity, so this issue has to be clear: what this generator produces is **one-off source code**, not a DSL interpreted at runtime — once it lands in your Git, the framework no longer knows it exists. Where the difference lies and why this line must not be crossed — see you next issue.
-
 ---
 
 :::info Join the discussion

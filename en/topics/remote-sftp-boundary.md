@@ -253,14 +253,6 @@ erupt:
 
 After a restart, **Remote Hosts** appears in the menu. Add an SSH host, name people under **Authorized Users**, switch on **File Transfer**, and the **Connect** row action opens a terminal with a file panel attached. The full module reference is in the [erupt-remote module docs](/en/modules/erupt-remote).
 
-## 8. Next Issue Preview
-
-Issue 13 returns to the act of writing code itself, covering the new **reverse-reading of models from the database** that has grown in `erupt-generator`.
-
-What's interesting isn't "it can read the database now" — every framework in China has a code generator. What's interesting is what it reads: foreign keys in `DatabaseMetaData` become `@ReferenceTableType`, unique indexes become `unique`, and **a column comment like `状态 0-禁用 1-启用` ("status 0-disabled 1-enabled") is parsed by a 19-line regex into a complete `@ChoiceType`**.
-
-Our thesis: **half of your UI is already written in your database; for the past twenty years, no generator bothered to read it properly.** Along the way there's an even less conformist decision — this generator writes no files into your source directory whatsoever.
-
 ---
 
 :::info Join the discussion

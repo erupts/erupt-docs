@@ -156,10 +156,6 @@ public class Order { /* ... */ }
 
 `OrderPowerHandler` implements `PowerHandler`, injects your service, and decides `power.setExport(...)` based on the currently logged-in user. As for the password part, **you don't need to do anything** — plug in erupt-upms and it's SHA-512 with a salt by default.
 
-## 8. Next Issue Preview
-
-This issue was about "which side the default value of a sensitive operation stands on." But there's a finer layer of permissions — **field-level**: on the same table, role A can see the phone number, while role B only sees the masked last few digits. How do Erupt's field visibility, masking, and row-level filtering (`FilterHandler`) get declared alongside `@EruptField`? Next issue, **#07**, drills permissions down from "operation-level" to "field-level and row-level," continuing this thread of "secure by default."
-
 ---
 :::info Join the Discussion
 The core source code for this issue: `xyz.erupt.annotation.sub_erupt.Power`, `xyz.erupt.annotation.fun.PowerHandler`, `xyz.erupt.core.util.MD5Util`, `xyz.erupt.upms.service.EruptUserService`. Feel free to post about your permission-design pitfalls in [GitHub Discussions](https://github.com/erupts/erupt/discussions).

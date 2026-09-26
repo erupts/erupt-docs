@@ -288,12 +288,6 @@ Restart, ask the AI "what time is it?" — it calls your method.
 
 The whole flow **never leaves the IDE.**
 
-## 8. Coming up next
-
-Issue 06 follows this "controllable + AI by default" thread one more step — the three built-in toolkits inside `erupt-ai-claw`: `EruptMemoryTools`, `EruptModelTools`, `EruptSystemTools`. They let the LLM read Erupt metadata, manipulate Erupt models, even reach for the shell — and we'll show how `LLMRoleService`'s RBAC keeps that autonomy on a leash.
-
-That issue answers a question people keep asking: **"Let an AI loose inside the admin — how do you keep it from breaking things?"**
-
 ---
 
 :::info Discuss

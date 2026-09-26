@@ -277,12 +277,6 @@ If you want `@` to actually send in-app messages, add one more optional dependen
 
 It works without it too, see Section 3.
 
-## 8. Next Issue Preview
-
-Issue 12 covers the new SFTP file panel in `erupt-remote`. The interesting part isn't "it can transfer files now," it's that **it didn't open a new connection to do so**: the file panel and the SSH terminal share the same already-authenticated session, paired with the new `RemoteHost.authUsers` — one host reaches exactly one group of people, and grants nothing else.
-
-Putting control of a host inside the browser: where the security boundary is drawn, next issue.
-
 ---
 
 :::info Join the discussion

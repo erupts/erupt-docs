@@ -239,18 +239,6 @@ public class ShopOrder extends BaseModel {
 
 跑通之后，把生成的类当作你自己手写的类来对待：§四 里猜错的字典、§五 里没推出来的富文本，直接在 IDE 里改。
 
-## 八、下一期预告
-
-这一期讲的是：让程序读数据库，替人把重复劳动做掉。下一期 **#15** 讲另一类替人判断的事。
-
-主仓 9 月 22 日新增了 `erupt-ai/erupt-ai-decision`。它不接聊天框，只回答三类问题：是或否（`Noul`）、多选一（`Choice`）、打几分（`Score`）。每个答案都带概率分布，业务代码拿它当 `if` 的条件：
-
-```java
-if (Decisions.of(ticket).ask(URGENT).yes(0.9)) escalate(ticket);
-```
-
-我们想讨论的是：**大模型进入后台业务，最该接的也许不是一段生成的文字，而是一个带置信度的布尔值。**为什么 yes/no 的答案不单独汇报 confidence，为什么提供方的 key 不离开服务端，为什么 Choice 问题直接返回你的 enum 而不是字符串，下期见。
-
 ---
 
 :::info 参与讨论

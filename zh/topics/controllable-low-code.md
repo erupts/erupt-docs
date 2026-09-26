@@ -288,12 +288,6 @@ public class MyTools {
 
 整个过程**没有任何一步离开 IDE**。
 
-## 八、下一期预告
-
-第 06 期会接着这条"可控 + AI 默认"的线再走一步——讲 `erupt-ai-claw` 这个自治 Admin Agent 里的三件内置工具：`EruptMemoryTools`、`EruptModelTools`、`EruptSystemTools`。它们让 LLM 反过来读 Erupt 元数据、操作 Erupt 模型、甚至调 shell——也讲清楚 `LLMRoleService` 的 RBAC 是怎么把这套自治能力关在笼子里的。
-
-那一篇我们会回答一个被反复问到的问题：**"让 AI 在后台跑得动，又怎么不出事？"**
-
 ---
 
 :::info 参与讨论

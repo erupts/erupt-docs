@@ -239,18 +239,6 @@ That page covers Maven dependencies, application.yml, the first @Erupt entity, t
 
 Once it's running, treat the generated class as one you wrote yourself: the dictionary guessed wrong in Section 4, the rich text that couldn't be inferred in Section 5 — fix them directly in the IDE.
 
-## 8. Next Issue Preview
-
-This issue was about letting a program read the database and take repetitive work off people's hands. The next issue, **#15**, covers another kind of work done on people's behalf: judgment.
-
-On September 22 the main repo added `erupt-ai/erupt-ai-decision`. It doesn't plug into a chat box; it answers only three kinds of questions: yes or no (`Noul`), pick one (`Choice`), and rate it (`Score`). Every answer carries a probability distribution, and business code uses it as the condition of an `if`:
-
-```java
-if (Decisions.of(ticket).ask(URGENT).yes(0.9)) escalate(ticket);
-```
-
-What we want to discuss: **when a large model enters backend business logic, perhaps what it should plug into isn't a generated paragraph of text but a boolean with a confidence attached.** Why yes/no answers don't report confidence separately, why the provider's key never leaves the server, why a Choice question returns your enum directly instead of a string — see you next issue.
-
 ---
 
 :::info Join the discussion

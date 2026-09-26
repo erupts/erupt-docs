@@ -269,14 +269,6 @@ No configuration options, nothing persisted to the database. Once added, a **Mod
 
 The first time you open it, we suggest skipping the overview diagram and going straight to the audit panel — **on a project that's been running for a year or more, odds are good there's something in those four items**.
 
-## 8. Next Issue Preview
-
-This issue was about "the platform knowing what it looks like." Next issue we step back one pace to **the platform knowing how it's being used**:
-
-> **Issue 10 · `@Power` × Menu Tree × Operation Log: Permissions Aren't Configured, They're Used**
-
-The "drift between declaration and reality" that `PowerRow` exposes is only the opening. When you stack `@Power`'s static declarations, the menu tree's actual grants, and the real call records in `EruptOperateLog` (which carries both `@Erupt` and `@EruptCube`, making it an analytical model in its own right), you find that the permission models of most admin systems are over-engineered — **well over half the permissions granted have never been used by anyone.**
-
 ---
 
 :::info Join the discussion

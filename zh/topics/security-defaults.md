@@ -156,10 +156,6 @@ public class Order { /* ... */ }
 
 `OrderPowerHandler` 实现 `PowerHandler`，注入你的 service，按当前登录用户决定 `power.setExport(...)`。密码部分则**不需要你做任何事**——接 erupt-upms 即默认 SHA-512 加盐。
 
-## 八、下一期预告
-
-这一期讲的是"敏感操作的默认值站在哪一侧"。但权限还有更细的一层——**字段级**：同一张表，A 角色看得到手机号，B 角色只看到脱敏后的尾号。Erupt 的字段可见性、脱敏、行级过滤（`FilterHandler`）是怎么和 `@EruptField` 一起声明的？下一期 **#07** 把权限从"操作级"下钻到"字段级与行级"，继续这条"默认安全"的线。
-
 ---
 :::info 参与讨论
 本期专题对应的核心源码：`xyz.erupt.annotation.sub_erupt.Power`、`xyz.erupt.annotation.fun.PowerHandler`、`xyz.erupt.core.util.MD5Util`、`xyz.erupt.upms.service.EruptUserService`。欢迎在 [GitHub Discussions](https://github.com/erupts/erupt/discussions) 留贴讨论你的权限设计踩坑。
