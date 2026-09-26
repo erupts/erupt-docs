@@ -24,6 +24,90 @@ outline: deep
 
 <div class="topic-list">
 
+<a class="topic-card" href="/topics/generator-reads-database">
+  <div class="topic-card__index">#14</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Generator</div>
+    <h3 class="topic-card__title">从数据库反向生成模型</h3>
+    <p class="topic-card__desc">第 05 期我们说 Erupt 没有"生成"这个动词。现在 erupt-generator 能反读一个存量数据库，把列注释里的"0-待支付 1-已支付"读成 @ChoiceType、把外键约束读成按真实列标注的引用。两者不矛盾：若依、JeecgBoot 一张表生成一套分层，Erupt 一张表只生成一个 @Erupt 类，不写源码目录、不留运行时痕迹——生成一次，然后退场。</p>
+    <div class="topic-card__meta">
+      <span>2026-09-23</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/identity-without-security-stack">
+  <div class="topic-card__index">#13</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Identity</div>
+    <h3 class="topic-card__title">不依赖 Spring Security 的登录链</h3>
+    <p class="topic-card__desc">接 SSO 的常规路径是引 spring-security-oauth2-client、写 SecurityFilterChain、再挑一个 JWT 库。Erupt 一个都没引——不是造轮子的偏好，而是登录链一旦拆进 Filter 与外部 starter，"这个账号能不能进来"就再也不是一份判断。这一期讲那条自己走完的七关登录链：SSO Provider 是一张 @Erupt 表不是 yaml、从不读 id_token、token 不进 URL、锁定键是 account+IP 而不是 account。</p>
+    <div class="topic-card__meta">
+      <span>2026-09-21</span>
+      <span>·</span>
+      <span>11 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/remote-sftp-boundary">
+  <div class="topic-card__index">#12</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Remote Access</div>
+    <h3 class="topic-card__title">远程主机的安全边界</h3>
+    <p class="topic-card__desc">浏览器里开一个 SSH 终端，国内只有两条成熟的路——上 JumpServer 这类堡垒机，另起一套账号体系与审计；或者装 1Panel / 宝塔，装上即 root、边界基本不存在。Erupt 押第三条：远程主机就是一个普通的 @Erupt 模型，走同一套菜单权限、同一套 DataProxy、同一套行过滤，不新增账号表也不新增常驻进程。代价是安全边界要一条条自己画——这一期把那几条线逐条摊开，包括两个明确"不做"。</p>
+    <div class="topic-card__meta">
+      <span>2026-09-18</span>
+      <span>·</span>
+      <span>11 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/record-comment-crosscut">
+  <div class="topic-card__index">#11</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Record Comment</div>
+    <h3 class="topic-card__title">记录评论为什么不绑定业务表</h3>
+    <p class="topic-card__desc">所有做后台的人都给某张表加过 remark 字段，然后加 remark_user、remark_time，然后建一张 xxx_comment 子表——下一个实体来了再来一遍。宜搭把评论挂在流程节点上，简道云挂在表单上。Erupt 押反向：一张表不认识任何业务实体，靠 (模型名, 主键字符串) 寻址；而在多节点部署里，记录在节点、评论在中心——这逼出了 @EruptRouter 的 cloudProxy 开关。</p>
+    <div class="topic-card__meta">
+      <span>2026-09-17</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/cell-edit-whole-row">
+  <div class="topic-card__index">#10</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Cell Edit</div>
+    <h3 class="topic-card__title">单元格编辑为什么走整行管线</h3>
+    <p class="topic-card__desc">后台表格集体向多维表格靠拢，双击就地改一个字段。体验好，但它在服务端开了一条只带一个字段的写入路径——跨字段规则跑不了、DataProxy 拿到残缺实体、只读形同虚设、afterFetch 的回显值会被写回。Erupt 押反向：单元格编辑不配拥有自己的路径，把整行捞出来打补丁，再原样走一遍编辑管线。七道关全在服务端。</p>
+    <div class="topic-card__meta">
+      <span>2026-09-16</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/model-atlas-audit">
+  <div class="topic-card__index">#09</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Model Atlas</div>
+    <h3 class="topic-card__title">模型图谱与静态审计</h3>
+    <p class="topic-card__desc">低代码平台画模型关系图，通常是为了"看起来专业"。erupt-atlas 押反向——图只是副产品，真正的输出是对运行时注册表的一次静态审计：循环依赖（Tarjan SCC）、共享物理表、孤儿模型、建了没挂菜单的模型、声明了权限却没长出按钮。三个 REST 端点返回结构化 JSON，能被人看，也能被 CI 断言。</p>
+    <div class="topic-card__meta">
+      <span>2026-09-15</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
 <a class="topic-card" href="/topics/annotation-language-injection">
   <div class="topic-card__index">#08</div>
   <div class="topic-card__body">

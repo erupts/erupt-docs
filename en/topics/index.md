@@ -24,6 +24,90 @@ outline: deep
 
 <div class="topic-list">
 
+<a class="topic-card" href="/topics/generator-reads-database">
+  <div class="topic-card__index">#14</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Generator</div>
+    <h3 class="topic-card__title">Generating Models from an Existing Database</h3>
+    <p class="topic-card__desc">In Issue 05 we said Erupt has no verb called "generate." Now erupt-generator can read an existing database backwards, turning a column comment like "0-unpaid 1-paid" into a @ChoiceType and a foreign-key constraint into a reference annotated on the real column. The two don't conflict: RuoYi and JeecgBoot turn one table into a full stack of layers; Erupt turns one table into exactly one @Erupt class, never writes into your source tree, and leaves no runtime trace. Generate once, then step aside.</p>
+    <div class="topic-card__meta">
+      <span>2026-09-23</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/identity-without-security-stack">
+  <div class="topic-card__index">#13</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Identity</div>
+    <h3 class="topic-card__title">A Login Chain Without Spring Security</h3>
+    <p class="topic-card__desc">The usual way to add SSO is to pull in spring-security-oauth2-client, write a SecurityFilterChain, and pick a JWT library. Erupt pulled in none of them. Not out of a taste for reinventing wheels, but because once the login chain is split across Filters and external starters, "can this account get in?" stops being a single judgment. This issue walks the seven-step login chain Erupt runs on its own: the SSO provider is an @Erupt table rather than YAML, id_token is never read, tokens never enter the URL, and the lockout key is account+IP, not account.</p>
+    <div class="topic-card__meta">
+      <span>2026-09-21</span>
+      <span>·</span>
+      <span>11 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/remote-sftp-boundary">
+  <div class="topic-card__index">#12</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Remote Access</div>
+    <h3 class="topic-card__title">Security Boundaries for Remote Hosts</h3>
+    <p class="topic-card__desc">Opening an SSH terminal in the browser has two mature paths: a bastion like JumpServer, with its own account system and audit trail, or a panel like 1Panel or BT Panel, which is root the moment it is installed and has almost no boundary. Erupt bets on a third: a remote host is an ordinary @Erupt model that goes through the same menu permissions, the same DataProxy, the same row filtering, with no new account table and no resident process. The price is drawing every security line yourself. This issue lays them out one by one, including two things we deliberately do not do.</p>
+    <div class="topic-card__meta">
+      <span>2026-09-18</span>
+      <span>·</span>
+      <span>11 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/record-comment-crosscut">
+  <div class="topic-card__index">#11</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Record Comment</div>
+    <h3 class="topic-card__title">Why Comments Don't Bind to Business Tables</h3>
+    <p class="topic-card__desc">Everyone who builds back offices has added a remark column to some table, then remark_user and remark_time, then an xxx_comment child table, and then done it all again for the next entity. Yida hangs comments on workflow nodes; Jiandaoyun hangs them on forms. Erupt bets the other way: one table that knows no business entity, addressed by (model name, primary key string). And in a multi-node deployment the record lives on the node while the comment lives at the center, which is what forced the cloudProxy switch on @EruptRouter.</p>
+    <div class="topic-card__meta">
+      <span>2026-09-17</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/cell-edit-whole-row">
+  <div class="topic-card__index">#10</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Cell Edit</div>
+    <h3 class="topic-card__title">Why Cell Edits Run the Whole-Row Pipeline</h3>
+    <p class="topic-card__desc">Back-office tables are converging on spreadsheet-style UIs: double-click, edit one field in place. Great experience, but on the server it opens a write path that carries a single field. Cross-field rules never run, DataProxy receives a truncated entity, read-only becomes decorative, and the display values afterFetch filled in get written back. Erupt bets the other way: cell editing does not get a path of its own. It loads the whole row, applies a patch, and runs the full edit pipeline again. All seven gates sit on the server.</p>
+    <div class="topic-card__meta">
+      <span>2026-09-16</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/model-atlas-audit">
+  <div class="topic-card__index">#09</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Model Atlas</div>
+    <h3 class="topic-card__title">Model Atlas as a Static Audit</h3>
+    <p class="topic-card__desc">Low-code platforms draw model relationship diagrams mostly to look professional. erupt-atlas bets the other way: the diagram is a by-product, and the real output is a static audit of the runtime registry: circular dependencies (Tarjan SCC), shared physical tables, orphan models, models with no menu attached, and permissions declared but never grown into a button. Three REST endpoints return structured JSON that a person can read and CI can assert on.</p>
+    <div class="topic-card__meta">
+      <span>2026-09-15</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
 <a class="topic-card" href="/en/topics/annotation-language-injection">
   <div class="topic-card__index">#08</div>
   <div class="topic-card__body">
