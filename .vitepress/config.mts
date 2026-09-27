@@ -100,6 +100,7 @@ export default withMermaid(defineConfig({
                                 {text: 'Framework Introduction', link: '/en/guide/'},
                                 {text: 'Quick Start', link: '/en/guide/quick-start'},
                                 {text: 'First Example', link: '/en/guide/getting-started'},
+                                {text: 'User & Permission Management', link: '/en/modules/erupt-upms/'},
                                 {
                                     text: 'Configuration',
                                     collapsed: true,
@@ -683,6 +684,7 @@ export default withMermaid(defineConfig({
                                 {text: '框架介绍', link: '/zh/guide/'},
                                 {text: '快速部署', link: '/zh/guide/quick-start'},
                                 {text: '入门示例', link: '/zh/guide/getting-started'},
+                                {text: '用户权限管理', link: '/zh/modules/erupt-upms/'},
                                 {
                                     text: '参数配置',
                                     collapsed: true,
