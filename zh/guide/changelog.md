@@ -38,7 +38,7 @@
 
 🌟 [erupt-generator 重写](/zh/modules/erupt-generator#从数据库导入)：从任意已注册数据源读取表结构直接生成实体类，注释成标题、外键成引用、注释里的枚举说明成 `@Choice`，代码编辑器抽屉预览，多选打包 zip 下载
 
-🌟 [S3AttachmentProxy](/zh/modules/erupt-s3#附件上传-s3attachmentproxy)：`erupt-data-s3` 内置附件代理，`erupt.s3.*` 配好即可把全部附件上传到 S3 / MinIO / OSS / COS / R2；附件域名改由后端下发，不用再改 app.js
+🌟 [S3AttachmentProxy](/zh/modules/erupt-s3/upload)：`erupt-data-s3` 内置附件代理，`erupt.s3.*` 配好即可把全部附件上传到 S3 / MinIO / OSS / COS / R2；附件域名改由后端下发，不用再改 app.js
 
 🌟 [erupt-remote SFTP 文件传输](/zh/modules/erupt-remote#sftp-文件传输)：SSH 终端旁新增文件面板，浏览远程目录、拖拽上传、下载、建目录、删文件，可按主机开关，与终端共用凭据与授权
 
@@ -338,7 +338,7 @@ DROP TABLE e_designer_data;
 | [erupt-data-ldap](/zh/modules/erupt-ldap) | LDAP 目录服务数据源 |
 | [erupt-data-feishu](/zh/modules/erupt-feishu) | 飞书多维表格数据源 |
 | [erupt-data-notion](/zh/modules/erupt-notion) | Notion 数据源 |
-| [erupt-data-s3](/zh/modules/erupt-s3) | S3 对象存储数据源 |
+| [erupt-data-s3](/zh/modules/erupt-s3/) | S3 对象存储数据源 |
 
 🌟 [erupt-cube](/zh/modules/pro/erupt-cube/sql) 新增 SQL Port：PostgreSQL 兼容协议端口（基于 Calcite 查询下推），任意 BI 工具可像连接 PostgreSQL 一样直连语义层
 

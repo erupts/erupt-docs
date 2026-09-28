@@ -44,7 +44,7 @@ const groups = [
             {icon: '📇', name: 'Erupt Ldap', artifact: 'erupt-data-ldap', desc: 'LDAP directory service data source', link: '/en/modules/erupt-ldap'},
             {icon: '📊', name: 'Erupt Feishu', artifact: 'erupt-data-feishu', desc: 'Feishu Bitable data source, manage records directly', link: '/en/modules/erupt-feishu'},
             {icon: '📓', name: 'Erupt Notion', artifact: 'erupt-data-notion', desc: 'Notion database data source, pages as rows', link: '/en/modules/erupt-notion'},
-            {icon: '🪣', name: 'Erupt S3', artifact: 'erupt-data-s3', desc: 'S3-compatible object storage data source, searchable & auditable', link: '/en/modules/erupt-s3'},
+            {icon: '🪣', name: 'Erupt S3', artifact: 'erupt-data-s3', desc: 'S3-compatible object storage: attachment upload & object browsing', link: '/en/modules/erupt-s3/'},
             {icon: '📋', name: 'Erupt DingTalk', artifact: 'erupt-data-dingtalk', desc: 'DingTalk Notable data source, manage records directly', link: '/en/modules/erupt-dingtalk'},
             {icon: '🗂️', name: 'Erupt Airtable', artifact: 'erupt-data-airtable', desc: 'Airtable data source, table records as rows', link: '/en/modules/erupt-airtable'},
         ],

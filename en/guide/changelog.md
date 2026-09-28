@@ -38,7 +38,7 @@ Read the [V 2.3.0 Upgrade Guide](/en/guide/upgrade#v-2-3-0-upgrade-guide): the l
 
 🌟 [erupt-generator rewritten](/en/modules/erupt-generator#import-from-database): read the schema of any registered datasource and turn tables into entities: comments become titles, foreign keys become references, documented enum values become `@Choice`; preview in the code editor drawer, download several classes as a zip
 
-🌟 [S3AttachmentProxy](/en/modules/erupt-s3#attachment-upload-s3attachmentproxy): `erupt-data-s3` ships a ready-made attachment proxy; set `erupt.s3.*` and every upload lands in S3 / MinIO / OSS / COS / R2; the attachment domain now comes from the backend, no app.js edit needed
+🌟 [S3AttachmentProxy](/en/modules/erupt-s3/upload): `erupt-data-s3` ships a ready-made attachment proxy; set `erupt.s3.*` and every upload lands in S3 / MinIO / OSS / COS / R2; the attachment domain now comes from the backend, no app.js edit needed
 
 🌟 [erupt-remote SFTP file transfer](/en/modules/erupt-remote#sftp-file-transfer): a file panel next to the SSH terminal browses remote directories, uploads by drag-and-drop, downloads, creates folders and deletes files; switchable per host and sharing the terminal's credentials and authorization
 
@@ -338,7 +338,7 @@ The design config table `e_designer` is still in use — do not drop it.
 | [erupt-data-ldap](/en/modules/erupt-ldap) | LDAP directory service data source |
 | [erupt-data-feishu](/en/modules/erupt-feishu) | Feishu Bitable data source |
 | [erupt-data-notion](/en/modules/erupt-notion) | Notion data source |
-| [erupt-data-s3](/en/modules/erupt-s3) | S3 object storage data source |
+| [erupt-data-s3](/en/modules/erupt-s3/) | S3 object storage data source |
 
 🌟 [erupt-cube](/en/modules/pro/erupt-cube/sql) gains a SQL Port: a PostgreSQL-compatible wire-protocol port (Calcite query pushdown) — any BI tool can connect to the semantic layer as if it were PostgreSQL.
 

@@ -44,7 +44,7 @@ const groups = [
             {icon: '📇', name: 'Erupt Ldap', artifact: 'erupt-data-ldap', desc: 'LDAP 目录服务数据源', link: '/zh/modules/erupt-ldap'},
             {icon: '📊', name: 'Erupt Feishu', artifact: 'erupt-data-feishu', desc: '飞书多维表格数据源，直接管理 Bitable 记录', link: '/zh/modules/erupt-feishu'},
             {icon: '📓', name: 'Erupt Notion', artifact: 'erupt-data-notion', desc: 'Notion 数据库数据源，页面即数据行', link: '/zh/modules/erupt-notion'},
-            {icon: '🪣', name: 'Erupt S3', artifact: 'erupt-data-s3', desc: 'S3 兼容对象存储数据源，可检索可审计', link: '/zh/modules/erupt-s3'},
+            {icon: '🪣', name: 'Erupt S3', artifact: 'erupt-data-s3', desc: 'S3 兼容对象存储，附件上传与对象浏览', link: '/zh/modules/erupt-s3/'},
             {icon: '📋', name: 'Erupt DingTalk', artifact: 'erupt-data-dingtalk', desc: '钉钉多维表数据源，直接管理 Notable 记录', link: '/zh/modules/erupt-dingtalk'},
             {icon: '🗂️', name: 'Erupt Airtable', artifact: 'erupt-data-airtable', desc: 'Airtable 数据源，表格记录即数据行', link: '/zh/modules/erupt-airtable'},
         ],
