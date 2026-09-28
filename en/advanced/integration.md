@@ -1,4 +1,4 @@
-# Integrating Existing Projects
+# Embedding External Systems
 
 ## Embedding a Project
 

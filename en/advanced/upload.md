@@ -1,4 +1,4 @@
-# Custom File Upload (AttachmentProxy)
+# Attachment Storage (AttachmentProxy)
 
 Erupt attachments (`@Edit(type = ATTACHMENT)`, rich-text images, etc.) land on the local disk by default. To move them to object storage you have two options:
 

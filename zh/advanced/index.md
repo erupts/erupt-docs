@@ -35,44 +35,44 @@ const groups = [
         ],
     },
     {
-        title: '数据源与持久化',
+        title: '数据源与存储',
         items: [
             {icon: '🗄️', name: '多数据源', desc: '配置并使用多个数据库数据源', link: '/zh/advanced/datasource'},
             {icon: '🛢️', name: '自定义数据源', desc: '用 Erupt 管理数据库以外的数据', link: '/zh/advanced/custom-datasource'},
             {icon: '🗑️', name: '逻辑删除', desc: '以删除标识字段代替物理删除', link: '/zh/advanced/soft-delete'},
+            {icon: '📤', name: '附件存储', desc: '附件存到 S3 / OSS / MinIO 等对象存储，或自定义 AttachmentProxy', link: '/zh/advanced/upload'},
         ],
     },
     {
-        title: '登录与安全',
+        title: '认证与鉴权',
         items: [
             {icon: '🔑', name: '登录与认证', desc: 'erupt-sso 单点登录、LoginProxy、自定义登录页与自行签发 Token', link: '/zh/advanced/auth'},
-            {icon: '🔓', name: '开放接口', desc: 'appid + secret 获取 token，供外部系统调用', link: '/zh/advanced/open-api'},
+            {icon: '🛡️', name: '接口鉴权与操作日志', desc: '自定义 REST 接口按登录 / 菜单权限鉴权，并记录操作日志', link: '/zh/advanced/rest-api'},
+            {icon: '🔓', name: '开放接口 Open API', desc: 'appid + secret 获取 token，供外部系统免登录调用', link: '/zh/advanced/open-api'},
         ],
     },
     {
-        title: '接口与集成',
+        title: '集成与部署',
         items: [
-            {icon: '🧭', name: '接口开发与操作日志', desc: '自定义 REST 接口与操作日志记录', link: '/zh/advanced/rest-api'},
-            {icon: '🔗', name: '现有项目接入', desc: '将 Erupt 集成进已有 Spring Boot 项目', link: '/zh/advanced/integration'},
+            {icon: '🔗', name: '嵌入外部系统', desc: '把已有系统页面挂进 Erupt 菜单，通过 token 共享登录态', link: '/zh/advanced/integration'},
             {icon: '🖥️', name: '前后端分离部署', desc: '前端独立编译部署，后端只提供 API', link: '/zh/advanced/separation'},
         ],
     },
     {
-        title: '界面与交互',
+        title: '前端定制',
         items: [
-            {icon: '💬', name: '前端消息与弹窗', desc: '由后端触发前端消息提示与弹窗', link: '/zh/advanced/frontend-notify'},
-            {icon: '📤', name: '自定义文件上传', desc: '对接 OSS、本地存储等自定义上传实现', link: '/zh/advanced/upload'},
+            {icon: '💬', name: '消息提示与弹窗', desc: '在 app.js 或模板页中调用 Erupt 的提示、弹窗与通知组件', link: '/zh/advanced/frontend-notify'},
             {icon: '🌐', name: '国际化', desc: '多语言支持与自定义翻译', link: '/zh/advanced/i18n'},
+            {icon: '🧬', name: '扩展 Erupt 注解', desc: '把自定义注解信息透传给前端，供自研界面渲染', link: '/zh/advanced/extend'},
         ],
     },
     {
-        title: '开发与扩展',
+        title: '扩展开发',
         items: [
-            {icon: '📡', name: '事件监听器', desc: '监听框架内部事件，实现解耦扩展', link: '/zh/advanced/event-listener'},
+            {icon: '📡', name: '事件监听', desc: '@EventListener 监听框架内部事件，实现解耦扩展', link: '/zh/advanced/event-listener'},
+            {icon: '🧩', name: '模块与插件开发', desc: '实现 EruptModule 接口，开发可复用的扩展模块', link: '/zh/advanced/plugin'},
+            {icon: '🔧', name: '常用工具类', desc: '登录用户上下文、实体继承、JDBC 操作等内置工具', link: '/zh/advanced/utils'},
             {icon: '🔥', name: '热构建', desc: '修改注解无需重启，刷新页面即可生效', link: '/zh/advanced/hot-build'},
-            {icon: '🔧', name: '工具类', desc: 'Erupt 内置工具类使用说明', link: '/zh/advanced/utils'},
-            {icon: '🧬', name: '扩展 Erupt 注解', desc: '基于 Erupt 注解体系进行二次扩展', link: '/zh/advanced/extend'},
-            {icon: '🧩', name: '插件开发', desc: '开发自定义插件扩展框架能力', link: '/zh/advanced/plugin'},
         ],
     },
 ]

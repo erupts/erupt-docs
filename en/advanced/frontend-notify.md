@@ -1,4 +1,4 @@
-# Frontend Messages & Modals
+# Messages & Dialogs
 
 :::danger
 **Exposes public notification components that can be called from anywhere in the frontend**, for example:

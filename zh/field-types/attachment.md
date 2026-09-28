@@ -17,7 +17,7 @@ private String attachment;
 ```
 
 > 使用前需在 `application.yml` 中配置 `erupt.uploadPath`，指定文件的物理存储路径。  
-> 如需对接 OSS 等云存储，参见 [自定义文件上传](/zh/advanced/upload)。
+> 如需对接 OSS 等云存储，参见 [附件存储](/zh/advanced/upload)。
 
 ## 配置项
 

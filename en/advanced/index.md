@@ -35,44 +35,44 @@ const groups = [
         ],
     },
     {
-        title: 'Data Sources & Persistence',
+        title: 'Data Sources & Storage',
         items: [
             {icon: '🗄️', name: 'Multiple Data Sources', desc: 'Configure and use multiple databases', link: '/en/advanced/datasource'},
             {icon: '🛢️', name: 'Custom Data Source', desc: 'Manage non-database data with Erupt', link: '/en/advanced/custom-datasource'},
             {icon: '🗑️', name: 'Soft Delete', desc: 'Replace physical deletion with a deleted flag field', link: '/en/advanced/soft-delete'},
+            {icon: '📤', name: 'Attachment Storage', desc: 'Store attachments in S3 / OSS / MinIO or any custom AttachmentProxy', link: '/en/advanced/upload'},
         ],
     },
     {
-        title: 'Login & Security',
+        title: 'Authentication & Authorization',
         items: [
             {icon: '🔑', name: 'Login & Authentication', desc: 'erupt-sso single sign-on, LoginProxy, custom login page and issuing tokens yourself', link: '/en/advanced/auth'},
-            {icon: '🔓', name: 'Open API', desc: 'Token via appid + secret for external system calls', link: '/en/advanced/open-api'},
+            {icon: '🛡️', name: 'API Auth & Operation Logs', desc: 'Guard custom REST endpoints by login / menu permission and record operation logs', link: '/en/advanced/rest-api'},
+            {icon: '🔓', name: 'Open API', desc: 'Token via appid + secret so external systems can call without a login', link: '/en/advanced/open-api'},
         ],
     },
     {
-        title: 'API & Integration',
+        title: 'Integration & Deployment',
         items: [
-            {icon: '🧭', name: 'API Development & Logs', desc: 'Custom REST endpoints and operation-log recording', link: '/en/advanced/rest-api'},
-            {icon: '🔗', name: 'Existing Project Integration', desc: 'Plug Erupt into an existing Spring Boot project', link: '/en/advanced/integration'},
+            {icon: '🔗', name: 'Embedding External Systems', desc: 'Mount existing system pages under Erupt menus and share the login via token', link: '/en/advanced/integration'},
             {icon: '🖥️', name: 'Frontend/Backend Separation', desc: 'Build and deploy the frontend independently, backend serves API only', link: '/en/advanced/separation'},
         ],
     },
     {
-        title: 'UI & Interaction',
+        title: 'Frontend Customization',
         items: [
-            {icon: '💬', name: 'Frontend Notifications', desc: 'Trigger frontend messages and dialogs from the backend', link: '/en/advanced/frontend-notify'},
-            {icon: '📤', name: 'Custom File Upload', desc: 'Integrate OSS, local storage, or any custom upload backend', link: '/en/advanced/upload'},
+            {icon: '💬', name: 'Messages & Dialogs', desc: "Call Erupt's message, modal and notification components from app.js or template pages", link: '/en/advanced/frontend-notify'},
             {icon: '🌐', name: 'Internationalization', desc: 'Multilingual support and custom translations', link: '/en/advanced/i18n'},
+            {icon: '🧬', name: 'Extending Erupt Annotations', desc: 'Pass custom annotation metadata to the frontend for your own renderers', link: '/en/advanced/extend'},
         ],
     },
     {
-        title: 'Development & Extension',
+        title: 'Extension Development',
         items: [
-            {icon: '📡', name: 'Event Listeners', desc: 'Listen to internal framework events for decoupled extension', link: '/en/advanced/event-listener'},
+            {icon: '📡', name: 'Event Listeners', desc: '@EventListener hooks into internal framework events for decoupled extension', link: '/en/advanced/event-listener'},
+            {icon: '🧩', name: 'Module & Plugin Development', desc: 'Implement EruptModule to build reusable extension modules', link: '/en/advanced/plugin'},
+            {icon: '🔧', name: 'Utility Classes', desc: 'Login user context, entity inheritance, JDBC helpers and other built-ins', link: '/en/advanced/utils'},
             {icon: '🔥', name: 'Hot Build', desc: 'Annotation changes apply on page refresh, no restart needed', link: '/en/advanced/hot-build'},
-            {icon: '🔧', name: 'Utility Classes', desc: "Erupt's built-in utility classes", link: '/en/advanced/utils'},
-            {icon: '🧬', name: 'Extending Erupt Annotations', desc: 'Build on the Erupt annotation system', link: '/en/advanced/extend'},
-            {icon: '🧩', name: 'Plugin Development', desc: 'Build custom plugins on top of the framework', link: '/en/advanced/plugin'},
         ],
     },
 ]

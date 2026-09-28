@@ -92,4 +92,4 @@ GET {{host}}/erupt-api/your-api
 token: xxxxxxx
 ```
 
-接口权限注解的使用方式参考 [接口开发与操作日志](/zh/advanced/rest-api)。
+接口权限注解的使用方式参考 [接口鉴权与操作日志](/zh/advanced/rest-api)。

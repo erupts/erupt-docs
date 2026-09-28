@@ -1,4 +1,4 @@
-# API Development & Operation Logs (@EruptRouter)
+# API Auth & Operation Logs
 
 > Applies to **version 1.12.x and above**
 
