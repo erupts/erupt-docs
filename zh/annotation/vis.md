@@ -35,9 +35,9 @@ public class Task extends BaseModel { ... }
 | `show` | 动态控制 Tab 是否显示（`ExprBool`） |
 | `cardView` | 卡片视图配置，`type = CARD` 时生效，详见 [卡片视图](/zh/annotation/vis-card) |
 | `ganttView` | 甘特图配置，`type = GANTT` 时生效，详见 [甘特图](/zh/annotation/vis-gantt) |
-| `calendarView` | 日历视图配置，`type = CALENDAR` 时生效（2.0.0+） |
-| `boardView` | 看板视图配置，`type = BOARD` 时生效（2.0.0+） |
-| `tplView` | 自定义模板配置，`type = TPL` 时生效 |
+| `calendarView` | 日历视图配置，`type = CALENDAR` 时生效，详见 [日历视图](/zh/annotation/vis-calendar)（2.0.0+） |
+| `boardView` | 看板视图配置，`type = BOARD` 时生效，详见 [看板视图](/zh/annotation/vis-board)（2.0.0+） |
+| `tplView` | 自定义模板配置，`type = TPL` 时生效，详见 [自定义视图](/zh/annotation/vis-tpl) |
 
 ### Type 枚举
 
@@ -48,7 +48,7 @@ public class Task extends BaseModel { ... }
 | `GANTT` | 甘特图 |
 | `CALENDAR` | 日历视图，配合 `calendarView` 使用（2.0.0+） |
 | `BOARD` | 看板视图，配合 `boardView` 使用（2.0.0+） |
-| `TPL` | 自定义模板视图 |
+| `TPL` | 自定义模板视图，配合 `tplView` 使用，详见 [自定义视图](/zh/annotation/vis-tpl) |
 
 ## visRawTable
 
