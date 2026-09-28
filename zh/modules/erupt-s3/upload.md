@@ -1,6 +1,6 @@
 # 附件上传（S3AttachmentProxy） <Badge type="tip" text="v2.3.0+" />
 
-`S3AttachmentProxy` 是模块内置的 [AttachmentProxy](/zh/advanced/upload) 实现。注册后，Erupt 所有附件上传——`@Edit(type = ATTACHMENT)`、富文本编辑器图片、头像等——都会写入 Bucket，而不是本地磁盘。
+`S3AttachmentProxy` 是模块内置的 [附件存储（AttachmentProxy）](/zh/advanced/upload) 实现。注册后，Erupt 所有附件上传——`@Edit(type = ATTACHMENT)`、富文本编辑器图片、头像等——都会写入 Bucket，而不是本地磁盘。
 
 ## 两步接入
 

@@ -1,6 +1,6 @@
 # Attachment Upload (S3AttachmentProxy) <Badge type="tip" text="v2.3.0+" />
 
-`S3AttachmentProxy` is the module's built-in [AttachmentProxy](/en/advanced/upload) implementation. Once registered, every Erupt attachment upload — `@Edit(type = ATTACHMENT)`, rich-text editor images, avatars — is written to the bucket instead of the local disk.
+`S3AttachmentProxy` is the module's built-in [Attachment Storage (AttachmentProxy)](/en/advanced/upload) implementation. Once registered, every Erupt attachment upload — `@Edit(type = ATTACHMENT)`, rich-text editor images, avatars — is written to the bucket instead of the local disk.
 
 ## Two Steps
 

@@ -1,4 +1,4 @@
-# 自定义文件上传（AttachmentProxy）
+# 附件存储（AttachmentProxy）
 
 Erupt 的附件（`@Edit(type = ATTACHMENT)`、富文本图片等）默认落在本地磁盘。要改存到对象存储，有两条路：
 

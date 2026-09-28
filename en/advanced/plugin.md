@@ -1,4 +1,4 @@
-# Plugin Development
+# Module & Plugin Development
 
 You can implement the `EruptModule` interface to build module extensions on top of Erupt.
 

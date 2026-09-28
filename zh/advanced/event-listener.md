@@ -1,4 +1,4 @@
-# 事件监听器（@EventListener）
+# 事件监听（@EventListener）
 
 > 1.12.17 及以上版本支持
 >

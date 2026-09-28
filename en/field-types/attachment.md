@@ -17,7 +17,7 @@ private String attachment;
 ```
 
 > Before use, configure `erupt.uploadPath` in `application.yml` to specify the physical storage path.  
-> To integrate with OSS or other cloud storage, see [Custom File Upload](/en/advanced/upload).
+> To integrate with OSS or other cloud storage, see [Attachment Storage](/en/advanced/upload).
 
 ## Configuration
 

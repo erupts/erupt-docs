@@ -92,4 +92,4 @@ GET {{host}}/erupt-api/your-api
 token: xxxxxxx
 ```
 
-For information on using endpoint permission annotations, refer to [API Development & Operation Logs](/en/advanced/rest-api).
+For information on using endpoint permission annotations, refer to [API Auth & Operation Logs](/en/advanced/rest-api).
