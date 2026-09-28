@@ -79,10 +79,11 @@ export default {
         const route = useRoute()
         let zoom: Zoom | null = null
         // 单实例：路由切换时先解绑旧图片再绑定新页面的图片，避免重复创建实例
+        // 链接内的图片（如组件总览的卡片缩略图）点击应跳转而非放大，因此排除
         const initZoom = () => {
             if (!zoom) zoom = mediumZoom({background: 'var(--vp-c-bg)', margin: 24})
             zoom.detach()
-            zoom.attach('.main img')
+            zoom.attach(...Array.from(document.querySelectorAll<HTMLImageElement>('.main img')).filter(img => !img.closest('a')))
         }
         onMounted(initZoom)
         watch(() => route.path, () => nextTick(initZoom))

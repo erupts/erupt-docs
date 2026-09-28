@@ -2,6 +2,8 @@
 
 An icon picker over the full Font Awesome catalogue. The value is stored as a class-name string such as `fa fa-house`, optionally followed by a color class such as `icon-red` or `icon-primary`.
 
+![icon](/field-types/icon.png)
+
 The picker searches icon names, labels and aliases, can be filtered by solid / regular / brands, and loads further batches as you scroll. The stored value is a plain class list that renders anywhere without parsing.
 
 ## Basic Usage

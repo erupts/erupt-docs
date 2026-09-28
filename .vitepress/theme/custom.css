@@ -2,14 +2,14 @@
     --vp-sidebar-width: 285px;
 }
 
-/* medium-zoom 图片可点击提示 */
-.main img {
+/* medium-zoom 图片可点击提示（链接内的图片不参与放大，与 theme/index.ts 的选择器保持一致） */
+.main img:not(a img) {
     cursor: zoom-in;
     border-radius: 6px;
     transition: box-shadow 0.2s;
 }
 
-.main img:hover {
+.main img:not(a img):hover {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
