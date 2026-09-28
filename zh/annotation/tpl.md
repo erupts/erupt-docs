@@ -13,7 +13,7 @@
 | `@Edit` | `tplType` | 直接内嵌在**表单**中的 iframe | 无（仅 `request` / `response` / `base`） |
 | `@View` | `tpl` | 表格列变成链接，点击后**弹出层** | `row`（当前行数据） |
 | `@RowOperation` | `tpl` | 行操作按钮，点击后**弹出层** | `rows`（选中行数据数组） |
-| `@Vis` | `tplView` | 多视图页签内**整页内嵌** | 无（仅 `request` / `response` / `base`） |
+| `@Vis` | `tplView` | 多视图页签内**整页内嵌**，详见 [自定义视图](/zh/annotation/vis-tpl) | 服务端无；前端可通过 `window.parent.visTplData` 读取当前页行数据 |
 
 ```java
 // 1. 字段级：表单内嵌模板

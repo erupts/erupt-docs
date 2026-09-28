@@ -13,7 +13,7 @@ Import the [erupt-tpl](/en/modules/erupt-tpl) module first, otherwise no templat
 | `@Edit` | `tplType` | An iframe embedded directly in the **form** | none (only `request` / `response` / `base`) |
 | `@View` | `tpl` | The table column becomes a link that opens a **popup** | `row` (current row data) |
 | `@RowOperation` | `tpl` | A row action button that opens a **popup** | `rows` (array of selected rows) |
-| `@Vis` | `tplView` | A **full-page embed** inside a multi-view tab | none (only `request` / `response` / `base`) |
+| `@Vis` | `tplView` | A **full-page embed** inside a multi-view tab, see [Custom View](/en/annotation/vis-tpl) | none server-side; the frontend exposes the current page's rows via `window.parent.visTplData` |
 
 ```java
 // 1. Field level: template embedded in the form
