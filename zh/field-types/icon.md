@@ -2,6 +2,8 @@
 
 图标选择器，从完整的 Font Awesome 图标库中挑选图标，值以类名字符串（如 `fa fa-house`）存储，可附加一个颜色类（如 `icon-red`、`icon-primary`）。
 
+![icon](/field-types/icon.png)
+
 选择面板支持按名称、标签、别名搜索，可按 solid / regular / brands 过滤，滚动时分批加载；选中后值即为完整的 class 列表，前端可直接渲染，无需解析。
 
 ## 基础用法
