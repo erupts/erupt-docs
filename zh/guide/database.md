@@ -158,7 +158,7 @@ spring:
 | [erupt-ldap](/zh/modules/erupt-ldap) | `erupt-data-ldap` | LDAP / AD 目录服务 |
 | [erupt-feishu](/zh/modules/erupt-feishu) | `erupt-data-feishu` | 飞书多维表格 |
 | [erupt-notion](/zh/modules/erupt-notion) | `erupt-data-notion` | Notion 数据库 |
-| [erupt-s3](/zh/modules/erupt-s3) | `erupt-data-s3` | S3 兼容对象存储 |
+| [erupt-s3](/zh/modules/erupt-s3/) | `erupt-data-s3` | S3 兼容对象存储 |
 
 一个项目里可以同时引入多个数据源模块，不同 `@Erupt` 模型各自归属不同数据源，互不影响。
 

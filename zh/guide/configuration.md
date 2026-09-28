@@ -153,4 +153,4 @@ erupt:
 
 ## 模块自有配置
 
-各扩展模块的配置项（如 `erupt.ai.*`、`erupt.designer.*`、`erupt.remote.*`、`erupt.job.*`、`erupt.s3.*`、`erupt.dingtalk.*`、`erupt.airtable.*`）只在引入对应模块后生效，统一放在各模块文档中说明，不在此处重复：[Erupt AI](/zh/modules/erupt-ai/) · [Erupt AI Claw](/zh/modules/erupt-ai-claw/) · [Erupt Designer](/zh/modules/erupt-designer) · [Erupt Remote](/zh/modules/erupt-remote) · [Erupt Job](/zh/modules/erupt-job) · [erupt-data-s3](/zh/modules/erupt-s3) · [erupt-data-dingtalk](/zh/modules/erupt-dingtalk) · [erupt-data-airtable](/zh/modules/erupt-airtable)。
+各扩展模块的配置项（如 `erupt.ai.*`、`erupt.designer.*`、`erupt.remote.*`、`erupt.job.*`、`erupt.s3.*`、`erupt.dingtalk.*`、`erupt.airtable.*`）只在引入对应模块后生效，统一放在各模块文档中说明，不在此处重复：[Erupt AI](/zh/modules/erupt-ai/) · [Erupt AI Claw](/zh/modules/erupt-ai-claw/) · [Erupt Designer](/zh/modules/erupt-designer) · [Erupt Remote](/zh/modules/erupt-remote) · [Erupt Job](/zh/modules/erupt-job) · [erupt-data-s3](/zh/modules/erupt-s3/config) · [erupt-data-dingtalk](/zh/modules/erupt-dingtalk) · [erupt-data-airtable](/zh/modules/erupt-airtable)。

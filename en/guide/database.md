@@ -160,7 +160,7 @@ Everything beyond relational databases is reached through the **erupt-data** con
 | [erupt-ldap](/en/modules/erupt-ldap) | `erupt-data-ldap` | LDAP / Active Directory entries |
 | [erupt-feishu](/en/modules/erupt-feishu) | `erupt-data-feishu` | Feishu Bitable |
 | [erupt-notion](/en/modules/erupt-notion) | `erupt-data-notion` | Notion databases |
-| [erupt-s3](/en/modules/erupt-s3) | `erupt-data-s3` | S3-compatible object storage |
+| [erupt-s3](/en/modules/erupt-s3/) | `erupt-data-s3` | S3-compatible object storage |
 
 Several connectors can coexist in one project; each `@Erupt` model belongs to its own data source without affecting the others.
 
