@@ -11,6 +11,3 @@ Memories are persisted in the database (`AiMemory` table), isolated per user —
 <img src="/ai-claw/memory-2.png" width="748">
 
 <img src="/ai-claw/memory-3.png" width="769">
-
-<img src="/ai-claw/memory-4.png" width="730">
-

@@ -3,7 +3,7 @@
 When none of the built-in table, card, Gantt, board, or calendar views fit, use `@Vis(type = Vis.Type.TPL)` to mount a **page you write yourself** as a view tab. The backend renders HTML through a template engine, the frontend embeds it full-page in an iframe, and the current query result is handed to the template, so your custom page shares the same search, filter, and pagination as the table.
 
 :::tip
-Add the [erupt-tpl](/en/modules/erupt-tpl) module first, otherwise no template engine is registered. See [@Tpl Custom Template](/en/annotation/tpl) for the full attribute reference.
+Add the [erupt-tpl](/en/modules/erupt-tpl/) module first, otherwise no template engine is registered. See [@Tpl Custom Template](/en/annotation/tpl) for the full attribute reference.
 :::
 
 ## Complete Example

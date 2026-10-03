@@ -193,7 +193,7 @@ public class DialogFormHandler implements OperationHandler<EruptTest, SimpleDial
 将 `type` 设为 `RowOperation.Type.TPL`，点击按钮后会弹出自定义模板页面，适用于复杂展示或交互场景。
 
 :::tip
-使用前需确保导入了 [erupt-tpl](/zh/modules/erupt-tpl) 模块。
+使用前需确保导入了 [erupt-tpl](/zh/modules/erupt-tpl/) 模块。
 :::
 
 ```java

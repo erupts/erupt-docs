@@ -55,7 +55,7 @@ markdown — always download them first with `curl` and reference via `/module-n
 | Group        | Contents                                                                                      |
 |--------------|-----------------------------------------------------------------------------------------------|
 | AI Module    | erupt-ai, erupt-ai-claw, erupt-ai-canvas, erupt-ai-rag, erupt-ai-staff, erupt-ai-skill (external link) |
-| Core Module  | upms, tpl, web, designer                                                                      |
+| Core Module  | upms, erupt-tpl/ (index + subpages), web, designer                                            |
 | Data Connectors | erupt-jpa, erupt-mongodb, erupt-jdbc, erupt-http, erupt-es, erupt-redis, erupt-memory, erupt-file, erupt-k8s, erupt-ldap, erupt-feishu, erupt-notion, erupt-s3/ (index + subpages) (artifactIds are `erupt-data-*`) |
 | Tool Moudle  | websocket, generator, job, notice, monitor, magic-api, print, erupt-report/ (index + subpages), cloud, cloud-server, cloud-node |
 | Pro Module   | pro/erupt-flow/ (index + subpages), pro/erupt-tenant/ (index + subpages), pro/erupt-cube |

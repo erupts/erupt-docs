@@ -3,7 +3,7 @@
 当内置的表格、卡片、甘特图、看板、日历都不满足需求时，可以用 `@Vis(type = Vis.Type.TPL)` 挂载一个**完全由自己编写的页面**作为视图页签：后端用模板引擎渲染 HTML，前端以 iframe 整页内嵌，并把当前查询结果同步给模板，让自定义页面与表格共享同一套搜索、过滤与分页。
 
 :::tip
-使用前需引入 [erupt-tpl](/zh/modules/erupt-tpl) 模块，否则模板引擎不会被注册。`@Tpl` 的完整属性说明见 [@Tpl 自定义模板](/zh/annotation/tpl)。
+使用前需引入 [erupt-tpl](/zh/modules/erupt-tpl/) 模块，否则模板引擎不会被注册。`@Tpl` 的完整属性说明见 [@Tpl 自定义模板](/zh/annotation/tpl)。
 :::
 
 ## 完整示例

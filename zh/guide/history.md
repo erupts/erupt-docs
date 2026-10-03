@@ -389,14 +389,14 @@ create table e_upms_user_org_division (
 
 🌟 增加多选组件 [**MULTI_CHOICE**](/zh/field-types/multi-choice)
 
-🌟 erupt-tpl支持[ path 路径传参](/zh/modules/erupt-tpl#IBWWA)并且通过模板引擎通过变量名称获取。
+🌟 erupt-tpl支持[ path 路径传参](/zh/modules/erupt-tpl/template#路径与参数)并且通过模板引擎通过变量名称获取。
 
 🌟 在线日志支持搜索，链接跳转，优化日志样式  
 🌟 erupt-report 报表增加文本提示组件
 
 🌟 dataProxy 支持 [alert](/zh/advanced/data-proxy#fQSPY) 能力，在渲染数据的同时增加全局提示
 
-🌟 [引入微前端能力](/zh/modules/erupt-tpl#m2B26)，自定义模板支持**微前端**方式嵌入
+🌟 [引入微前端能力](/zh/modules/erupt-tpl/micro-frontend)，自定义模板支持**微前端**方式嵌入
 
 🌟 自定义按钮 @Tpl 注解支持微前端方式渲染
 

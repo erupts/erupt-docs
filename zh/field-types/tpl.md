@@ -39,7 +39,7 @@ private String tplField;
 `width` / `height` / `openWay` / `drawerPlacement` / `embedType` 是为弹出层场景设计的（如 `@RowOperation(tpl = ...)`、`@View(tpl = ...)`）。字段级 `EditType.TPL` 直接内嵌在表单中渲染，后端渲染入口为 `/erupt-api/tpl/html-field/{erupt}/{field}`，只使用 `path` / `engine` / `tplHandler` / `params`。
 :::
 
-> 模板文件放置于资源目录下，`path` 从 classpath 根目录开始解析。详见 [erupt-tpl 模块](/zh/modules/erupt-tpl)。
+> 模板文件放置于资源目录下，`path` 从 classpath 根目录开始解析。详见 [erupt-tpl 模块](/zh/modules/erupt-tpl/)。
 
 ## 自定义任意组件
 
