@@ -3,7 +3,7 @@
 `@Tpl` is the single annotation Erupt uses to describe every kind of "custom template page". It is never placed on a class or field directly — it always appears as the value of another annotation's attribute, declaring **where the template lives, which engine renders it, and how the rendered result is presented**.
 
 :::tip
-Import the [erupt-tpl](/en/modules/erupt-tpl) module first, otherwise no template engine is registered.
+Import the [erupt-tpl](/en/modules/erupt-tpl/) module first, otherwise no template engine is registered.
 :::
 
 ## Four Usage Sites
@@ -68,7 +68,7 @@ Source of truth: `xyz.erupt.annotation.sub_erupt.Tpl`.
 `params`, `tplHandler` and `engine` are marked `@Transient` — they take part in server-side rendering only and are never sent to the frontend.
 
 :::warning What `embedType = MICRO_FRONTEND` requires
-In micro-frontend mode the template must render a **complete HTML document with a `<head>`** — a fragment leaves the popup blank. The micro-frontend sandbox is same-origin with the admin and is not a security boundary, so use it only for content you control; sub-apps with SSR streaming hydration are not supported. See [erupt-tpl micro-frontend integration](/en/modules/erupt-tpl#micro-frontend-integration).
+In micro-frontend mode the template must render a **complete HTML document with a `<head>`** — a fragment leaves the popup blank. The micro-frontend sandbox is same-origin with the admin and is not a security boundary, so use it only for content you control; sub-apps with SSR streaming hydration are not supported. See [erupt-tpl micro-frontend integration](/en/modules/erupt-tpl/micro-frontend).
 :::
 
 ### Engine
@@ -165,4 +165,4 @@ In addition, key/value pairs after `?` in `path` are parsed and placed directly 
 - [@RowOperation](/en/annotation/row-operation) — TPL template popup buttons
 - [@View](/en/annotation/view) — column popup templates
 - [@Vis](/en/annotation/vis) — the TPL view
-- [erupt-tpl module](/en/modules/erupt-tpl) — template directory conventions, hot reload, UI component library
+- [erupt-tpl module](/en/modules/erupt-tpl/) — template directory conventions, hot reload, UI component library

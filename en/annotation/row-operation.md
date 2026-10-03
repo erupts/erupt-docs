@@ -194,7 +194,7 @@ public class DialogFormHandler implements OperationHandler<EruptTest, SimpleDial
 Set `type` to `RowOperation.Type.TPL` to open a custom template page in a dialog when the button is clicked. This is ideal for complex display or interaction scenarios.
 
 :::tip
-Make sure the [erupt-tpl](/en/modules/erupt-tpl) module is imported before using this feature.
+Make sure the [erupt-tpl](/en/modules/erupt-tpl/) module is imported before using this feature.
 :::
 
 ```java

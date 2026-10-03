@@ -11,6 +11,3 @@ erupt-ai-claw 支持通过 Memory 工具实现跨会话的长期记忆持久化�
 <img src="/ai-claw/memory-2.png" width="748">
 
 <img src="/ai-claw/memory-3.png" width="769">
-
-<img src="/ai-claw/memory-4.png" width="730">
-

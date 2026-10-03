@@ -39,7 +39,7 @@ All attributes of `@Tpl` (`xyz.erupt.annotation.sub_erupt.Tpl`):
 `width` / `height` / `openWay` / `drawerPlacement` / `embedType` are designed for popup scenarios such as `@RowOperation(tpl = ...)` and `@View(tpl = ...)`. A field-level `EditType.TPL` is embedded directly in the form; its backend render endpoint is `/erupt-api/tpl/html-field/{erupt}/{field}` and it only uses `path` / `engine` / `tplHandler` / `params`.
 :::
 
-> Template files are placed in the resources directory; `path` is resolved from the classpath root. See [erupt-tpl module](/en/modules/erupt-tpl) for details.
+> Template files are placed in the resources directory; `path` is resolved from the classpath root. See [erupt-tpl module](/en/modules/erupt-tpl/) for details.
 
 ## Building Any Custom Component
 

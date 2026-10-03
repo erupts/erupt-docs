@@ -3,7 +3,7 @@
 `@Tpl` 是 Erupt 中所有「自定义模板页面」的统一描述注解：它本身不能直接标注在类或字段上，而是作为其它注解的属性值出现，用来声明**模板文件在哪里、用什么引擎渲染、渲染结果以什么方式展示**。
 
 :::tip
-使用前需引入 [erupt-tpl](/zh/modules/erupt-tpl) 模块，否则模板引擎不会被注册。
+使用前需引入 [erupt-tpl](/zh/modules/erupt-tpl/) 模块，否则模板引擎不会被注册。
 :::
 
 ## 四个使用位置
@@ -68,7 +68,7 @@ public class TplDemo extends BaseModel {
 其中 `params` / `tplHandler` / `engine` 被标记为 `@Transient`，只在服务端参与渲染，不会下发到前端。
 
 :::warning `embedType = MICRO_FRONTEND` 的前提
-选择微前端方式时，模板渲染出来的必须是**带 `<head>` 的完整 HTML 文档**，片段会导致弹出层空白。微前端沙箱与后台同源，不是安全边界，只用于自己可控的内容；带 SSR 流式注水的子应用不受支持。详见 [erupt-tpl 微前端集成](/zh/modules/erupt-tpl#微前端集成)。
+选择微前端方式时，模板渲染出来的必须是**带 `<head>` 的完整 HTML 文档**，片段会导致弹出层空白。微前端沙箱与后台同源，不是安全边界，只用于自己可控的内容；带 SSR 流式注水的子应用不受支持。详见 [erupt-tpl 微前端集成](/zh/modules/erupt-tpl/micro-frontend)。
 :::
 
 ### Engine 引擎枚举
@@ -165,4 +165,4 @@ public class ReportTplHandler implements Tpl.TplHandler {
 - [@RowOperation 定义按钮](/zh/annotation/row-operation) —— TPL 模板弹出层按钮
 - [@View 列展示配置](/zh/annotation/view) —— 列弹出模板
 - [@Vis 多视图](/zh/annotation/vis) —— TPL 视图
-- [erupt-tpl 模块](/zh/modules/erupt-tpl) —— 模板目录约定、热更新、UI 组件库
+- [erupt-tpl 模块](/zh/modules/erupt-tpl/) —— 模板目录约定、热更新、UI 组件库
