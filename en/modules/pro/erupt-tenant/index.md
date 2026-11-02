@@ -48,29 +48,51 @@ Manage tenant information via the super-admin account. Supports one-click jump t
 
 <img src="/tenant/tenant-manage.png" width="900">
 
-### Tenant Menus
-
-Configure the feature menus for each tenant independently. The configuration format is consistent with the Menu Management in system settings:
-
-<img src="/tenant/tenant-menu.png" width="900">
-
 ### Tenant Packages
 
-Configure which menu capabilities a tenant has. Menu data is completely isolated between different tenants:
+A package picks a set of menus from the platform's Menu Management and is granted to tenants. Every session of a tenant (administrators included) only sees the menus of its enabled packages, and a tenant's role editor can only hand out those menus:
 
 <img src="/tenant/tenant-package.png" width="900">
+
+:::info
+Since 2.4.0 there is no separate "tenant menu" any more: packages reference the platform menu table `e_upms_menu` directly, so menus are maintained once, in Menu Management.
+:::
 
 ### Tenant Login
 
 <img src="/tenant/tenant-login.png" width="900">
 
+With [erupt-sso](/en/modules/erupt-sso) installed, the tenant login page lists the tenant's own SSO providers (`GET /erupt-api/sso/providers?tenant=<enterprise ID>`); a single sign-on still opens a tenant session, and a locked or expired tenant is refused just the same.
+
 ### User / Role / Organization Management
+
+The tenant-side user, role and organization pages are the native erupt-upms pages. Their data shares the platform's `e_upms_user` / `e_upms_role` / `e_upms_org` tables and is isolated by Hibernate through the `tenant_id` column:
 
 <img src="/tenant/user-manage.png" width="900">
 
 <img src="/tenant/role-manage.png" width="900">
 
 <img src="/tenant/org-manage.png" width="900">
+
+## Subscription and Trial
+
+A tenant's subscription is a single date: its **expire date** (`expireDate`); empty means no end.
+
+- **Trial**: when a tenant is created without an expire date, it gets the longest "Trial Days" (`EruptTenantPackage.trialDays`) of its enabled packages as its expire date; if no package has trial days, there is no end.
+- **Status**: `Active` / `Grace` / `Expired` is derived from the expire date and the grace days on every read and never stored. Past the expire date but still within `erupt.tenant.subscription.grace-days` the tenant is `Grace` and keeps working; past the grace days it is `Expired`.
+- **Locking**: the "Status" switch in Tenant Config is independent of the expire date; a locked tenant is refused whatever its date.
+- **Live sessions**: when a tenant expires or is locked while its users are logged in, their sessions are logged out with `401` on the next request and the client returns to the tenant login page, which says why. The status is cached for `erupt.tenant.subscription.status-cache-seconds` (default 30) and evicted as soon as the tenant is edited on the platform side.
+- **Extending**: erupt does not bill anyone. The application's own payment integration calls `TenantSubscriptionService#extend(tenantConfigId, Period, now)` once a payment went through; the period is added to the current expire date, or to now when that date is already behind.
+
+```yaml
+erupt:
+  tenant:
+    subscription:
+      grace-days: 7            # days a tenant keeps working after its expire date, default 0
+      status-cache-seconds: 30 # seconds the subscription status is cached, default 30
+```
+
+A tenant session can read its own tenant id, name, subscription status, expire date and enabled packages from `GET /erupt-api/tenant/info`.
 
 ## Data Isolation Principle
 

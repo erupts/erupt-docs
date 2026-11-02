@@ -195,6 +195,8 @@ Response:
 
 - By default the password is Base64-encoded three times before transmission: `btoa(btoa(btoa(pwd)))`, and the backend decodes it automatically; `erupt-app.pwd-transfer-encrypt: false` disables this
 - After `erupt-app.verify-code-count` (default 2) consecutive failures from the same account + IP a captcha is required; after `erupt.upms.login-lock.max-failures` (default 10) the account is locked for 10 minutes
+- That IP is the client address: `X-Forwarded-For` is believed only when the request comes from a trusted proxy listed in `erupt.upms.trusted-proxies` (loopback and the RFC 1918 private ranges by default); otherwise the peer address is used. The IP whitelist and the login log use the same address. A proxy on a public address must be added to that setting, see [Configuration](/en/guide/configuration#erupt-framework-core) <Badge type="tip" text="v2.4.0+" />
+- Unlocking the lock screen goes through `POST /erupt-api/verify-pwd` (body `{"pwd": "<encoded like the login API>"}`, with the `token` header): it reuses the sign-in check, so the failure counter and the lock apply, but no new session is issued
 - Logout: `GET /erupt-api/logout` with the `token` request header
 
 ### Second Step for Two-Factor Accounts <Badge type="tip" text="v2.3.0+" />

@@ -11,7 +11,7 @@
        name = "Erupt",
        power = @Power(add = true, delete = true, 
                       edit = true, query = true, 
-                      importable = false, export = false)
+                      importable = false, export = true)
 )
 public class EruptTest extends BaseModel {
     
@@ -27,13 +27,15 @@ public class EruptTest extends BaseModel {
 | `edit` | boolean | true | 是否允许编辑数据 |
 | `query` | boolean | true | 输入查询功能 |
 | `viewDetails` | boolean | true | 是否允许查看详情 |
-| `export` | boolean | false | 是否允许导出数据 |
+| `export` | boolean | true | 是否允许导出数据（2.4.0 起默认开启） |
 | `importable` | boolean | false | 是否允许导入数据 |
 | `print` | boolean | true | 是否允许打印行数据（1.14.1+） |
 | `copy` | boolean | true | 是否允许一键复制行数据（2.0.0+） |
 | `cellEdit` | boolean | true | 是否允许在表格中直接编辑单元格（2.2.0+） |
+| `batchEdit` | boolean | true | 是否允许批量编辑：一次把多行的同一字段改为同一值（2.4.0+） |
 | `ai` | boolean | true | AI 工具是否可以检视和操作该模型（2.1.0+） |
 | `comment` | boolean | true | 是否允许该模型的记录携带评论流，需引入 erupt-comment（2.3.0+） |
+| `revision` | boolean | true | 是否记录该模型的字段级变更历史并支持回滚，需引入 erupt-revision（2.4.0+） |
 | `powerHandler` | Class | - | 实现此接口动态控制权限 |
 
 ## 配置项注解定义
@@ -50,7 +52,8 @@ public @interface Power {
 
     boolean viewDetails() default true; // 数据查看功能
 
-    boolean export() default false; // 数据导出功能
+    // 数据导出功能，2.4.0 起默认开启；谁能导出由角色的 EXPORT 按钮决定，列可用 @View(export = false) 排除
+    boolean export() default true;
 
     boolean importable() default false; // 数据导入功能
 
@@ -61,11 +64,17 @@ public @interface Power {
     // 表格内单元格编辑（2.2.0+）
     boolean cellEdit() default true;
 
+    // 批量编辑：把多行的同一字段一次改为同一值，每行都走单元格编辑链路（2.4.0+）
+    boolean batchEdit() default true;
+
     // AI 工具是否可以检视和操作该模型（2.1.0+）
     boolean ai() default true;
 
     // 记录是否携带评论流，需引入 erupt-comment 模块（2.3.0+）
     boolean comment() default true;
+
+    // 是否保留字段级变更历史并支持回滚，需引入 erupt-revision 模块（2.4.0+）
+    boolean revision() default true;
 
     // 实现此接口动态控制权限
     Class<? extends PowerHandler> powerHandler() default PowerHandler.class;
@@ -84,12 +93,60 @@ public interface PowerHandler {
 }
 ```
 
+## export 导出默认开启 <Badge type="tip" text="v2.4.0+" />
+
+2.4.0 起 `export` **默认为 `true`**，与 `add` / `edit` / `delete` / `viewDetails` 一样不再需要逐个模型打开，**谁能导出由角色菜单上的 EXPORT 按钮决定**。
+
+- 要让某一列不进入导出文件，用 `@View(export = false)`，模型级 `export` 仍然开着
+- `importable` 仍是选择性开启，导入入口需要显式 `@Power(importable = true)`
+- 此后新建的菜单自动带上 EXPORT 按钮；**已有菜单保持原样**，没有授权过导出的角色需要手动勾选
+
+```java
+// 敏感数据不允许整表导出
+@Erupt(name = "薪资", power = @Power(export = false))
+```
+
 ## print 打印权限 <Badge type="tip" text="v1.14.1+" />
 
 `print` 控制表格行的**打印**入口是否可用，默认开启。若模型不需要打印能力，可显式关闭：
 
 ```java
 @Erupt(name = "示例", power = @Power(print = false))
+```
+
+:::info print 只是模型开关，不是读取记录的授权
+`print` 不单独授予读取某条记录的权限：详情接口要求 `edit` 或 `viewDetails` 之一；模板打印要求 `print && (edit || viewDetails)`，并且记录必须落在当前用户的行数据范围内。
+:::
+
+## batchEdit 批量编辑 <Badge type="tip" text="v2.4.0+" />
+
+`batchEdit` 控制表格工具栏是否提供**批量编辑**按钮，默认 `true`。勾选多行后点击它，可把这些行的**同一个字段**一次设为同一个值，写入走 `POST /erupt-api/data/modify/{erupt}/update-cells`。
+
+它建立在单元格编辑之上，**每一行都完整跑一遍单元格编辑链路**：
+
+- 字段是否允许单元格编辑（`@Edit(cellEdit = false)` 的字段同样不参与批量编辑）
+- 整行校验、行数据权限
+- `DataProxy` 的 `beforeUpdate` / `afterUpdate`
+- 操作日志与编辑事件
+
+**任意一行被拒绝，整批回滚**，不会出现一半行改了、一半行没改的情况。
+
+```java
+// 行只能逐条审阅后修改，关闭批量编辑但保留单元格编辑
+@Erupt(name = "结算单", power = @Power(batchEdit = false))
+```
+
+:::tip
+`batchEdit` 在服务端校验：关闭后即使直接构造多行更新请求也会被拒绝。按钮同时要求 `edit` 权限，任一关闭则不出现。
+:::
+
+## revision 变更历史 <Badge type="tip" text="v2.4.0+" />
+
+`revision` 控制该模型的记录变更是否被记录为**字段级历史**并支持回滚，默认 `true`。只有引入了 [erupt-revision](/zh/modules/erupt-revision) 模块时才有意义。
+
+```java
+// 高频写入的日志类模型没有必要留历史
+@Erupt(name = "访问日志", power = @Power(revision = false))
 ```
 
 ## ai AI 访问开关 <Badge type="tip" text="v2.1.0+" />

@@ -15,3 +15,9 @@ erupt-flow 表结构独立设计，不影响现有 erupt 业务表。
 ER 图：
 
 <img src="/flow/er.png" width="720">
+
+## 租户字段 <Badge type="tip" text="v2.4.0+" />
+
+`e_flow`、`e_flow_group`、`e_flow_instance` 三张表带有 Hibernate `@TenantId` 列 `tenant_id`（`varchar`，非空，平台行为 `'0'`，租户行为 [erupt-tenant](/zh/modules/pro/erupt-tenant/) 的租户 ID）。查询时 Hibernate 自动限定到当前会话的租户、插入时自动填充，因此流程定义、流程分组与流程实例天然按租户分列；节点记录、审批任务、意见、表单历史等子表不单独带租户列，跟随其所属实例。
+
+流程表中对用户的引用（发起人、审批人、创建人等）指向 `e_upms_user`（实体 `EruptUserVo`），租户用户与平台用户同在这张表中，详见 [多租户开发](/zh/modules/pro/erupt-flow/development#多租户支持)。

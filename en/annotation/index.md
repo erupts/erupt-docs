@@ -18,13 +18,23 @@ const trees = [
         note: 'Class',
         children: [
             {attr: 'power', anno: '@Power', desc: 'Permission control for CRUD actions', link: '/en/annotation/power'},
-            {attr: 'rowOperation', anno: '@RowOperation', desc: 'Custom row-action buttons', link: '/en/annotation/row-operation'},
+            {
+                attr: 'rowOperation', anno: '@RowOperation', desc: 'Custom row-action buttons', link: '/en/annotation/row-operation',
+                children: [
+                    {attr: 'tpl', anno: '@Tpl', desc: 'Opens a template page with the selected rows', link: '/en/annotation/tpl'},
+                ],
+            },
             {attr: 'drills', anno: '@Drill', desc: 'Data drilldown, one-to-many without foreign keys', link: '/en/annotation/drill'},
             {attr: 'filter', anno: '@Filter', desc: 'Conditional data filters', link: '/en/annotation/filter'},
             {attr: 'orderBy', anno: '@OrderBy', desc: 'Sort rules', link: '/en/annotation/order-by'},
             {attr: 'tree', anno: '@Tree', desc: 'Tree-based data display', link: '/en/annotation/tree'},
             {attr: 'linkTree', anno: '@LinkTree', desc: 'Tree-on-the-left, table-on-the-right layout', link: '/en/annotation/link-tree'},
-            {attr: 'layout', anno: '@Layout', desc: 'Page layout and pagination', link: '/en/annotation/layout'},
+            {
+                attr: 'layout', anno: '@Layout', desc: 'Page layout and pagination', link: '/en/annotation/layout',
+                children: [
+                    {attr: 'formSteps', anno: 'true', plain: true, desc: 'Step form: fields grouped into steps filled one by one', link: '/en/annotation/form-steps'},
+                ],
+            },
             {attr: 'dragSort', anno: '@DragSort', desc: 'Row drag-sort for tables', link: '/en/annotation/drag-sort'},
             {
                 attr: 'vis', anno: '@Vis', desc: 'Multi-view switching', link: '/en/annotation/vis',
@@ -33,9 +43,21 @@ const trees = [
                     {t: 'GANTT', l: '/en/annotation/vis-gantt'},
                     {t: 'BOARD', l: '/en/annotation/vis-board'},
                     {t: 'CALENDAR', l: '/en/annotation/vis-calendar'},
+                    {t: 'Grouped TABLE', l: '/en/annotation/vis#table-view-grouping'},
+                    {t: 'TIMELINE', l: '/en/annotation/vis-timeline'},
+                    {t: 'MAP', l: '/en/annotation/vis-map'},
+                    {t: 'CUBE', l: '/en/annotation/vis-cube'},
+                    {t: 'Custom TPL', l: '/en/annotation/vis-tpl'},
                 ],
             },
         ],
+    },
+    {
+        anno: '@EruptScope',
+        link: '/en/annotation/erupt-scope',
+        desc: 'Placed on the class next to @Erupt: pick a context once in the header (cluster / project / company) and the model reads and writes within it',
+        note: 'Class · 2.4.0+',
+        children: [],
     },
     {
         anno: '@EruptField',
@@ -43,7 +65,13 @@ const trees = [
         desc: 'Field-level annotation declaring how a field is displayed and edited',
         note: 'Field',
         children: [
-            {attr: 'views', anno: '@View', desc: 'Table-column display configuration', link: '/en/annotation/view'},
+            {
+                attr: 'views', anno: '@View', desc: 'Table-column display configuration', link: '/en/annotation/view',
+                children: [
+                    {attr: 'ifRender', anno: '@ExprBool', desc: 'Decide at runtime whether the column renders', link: '/en/annotation/if-render'},
+                    {attr: 'tpl', anno: '@Tpl', desc: 'Turn the column into a link that opens a template page', link: '/en/annotation/tpl'},
+                ],
+            },
             {
                 attr: 'edit', anno: '@Edit', desc: 'Edit-form configuration', link: '/en/annotation/edit',
                 children: [
@@ -51,6 +79,8 @@ const trees = [
                     {attr: 'search', anno: '@Search', desc: 'Search bar configuration', link: '/en/annotation/search'},
                     {attr: 'onchange', anno: 'OnChange', plain: true, desc: 'Data-change linkage, update other fields in real time', link: '/en/annotation/on-change'},
                     {attr: 'dynamic', anno: '@Dynamic', desc: 'Dynamic component control', link: '/en/annotation/dynamic'},
+                    {attr: 'ifRender', anno: '@ExprBool', desc: 'Decide at runtime whether the form component renders', link: '/en/annotation/if-render'},
+                    {attr: 'tplType', anno: '@Tpl', desc: 'Template page embedded in the form', link: '/en/annotation/tpl'},
                 ],
             },
         ],

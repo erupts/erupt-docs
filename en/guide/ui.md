@@ -12,20 +12,29 @@ The ⚙️ button in the top-right opens the **Page config** drawer; every chang
 
 | Setting | What it does |
 | --- | --- |
-| Theme color | 18 presets plus a color picker, and a reset back to the default `rgb(22, 119, 255)` |
-| Header color | Follow the theme / follow the theme color / a preset / a custom color |
+| Theme color | 18 presets plus a color picker, and a reset back to the default `rgb(22, 119, 255)`. Brutalist and Terminal bring palettes of their own (pastels / phosphors), each remembered separately, and switching skins swaps the palette in <Badge type="tip" text="v2.4.0+" /> |
+| Header color | Follow the theme / follow the theme color / a preset / a custom color; the Brutalist and Terminal skins own their top bar, so the picker is not offered there |
 | Color scheme | Light / Dark / System (System follows the OS live) |
 | Compact mode | Tightens spacing to fit more on screen; combines with dark |
-| Skin | Default / Brutalist / Liquid Glass / Workspace / Classic — mutually exclusive; since 2.3.0 the picker is a tile grid with a miniature of each shell <Badge type="tip" text="v2.3.0+" /> |
+| Skin | Default / Classic / Workspace / Material / Liquid Glass / Brutalist / Terminal — mutually exclusive; since 2.3.0 the picker is a tile grid with a miniature of each shell <Badge type="tip" text="v2.3.0+" /> |
 | Navigation color | Workspace skin only: 32 light / dark frame presets <Badge type="tip" text="v2.3.0+" /> |
+
+Besides the default skin, two arrived earlier:
+
+- **Brutalist**: neo-brutalism — a warm off-white canvas, thick black outlines, hard offset shadows, square corners and candy color blocks, redrawn in the raft.build style since 2.3.0; it brings its own pastel palette, remembered separately, and its header is part of the skin
+- **Liquid Glass**: the sidebar is a translucent glass panel with background blur and a highlighted edge, floating over an ambient color field
 
 Two skins are new in 2.3.0 <Badge type="tip" text="v2.3.0+" />:
 
 - **Workspace**: a Slack / Feishu / DingTalk style shell — header and sidebar share one brand-tinted frame and the content floats on it as a rounded card. The frame comes in 32 light / dark presets (a light frame flips the navigation text to ink); the site default is `theme.workspaceFrame`, and when unset the frame is derived from the primary color. The login page wears the same frame under this skin
 - **Classic**: the Ant Design Pro shell — navy sidebar beside a white header; in the top-menu modes the navy moves into the header
 
+Two more arrive in 2.4.0 <Badge type="tip" text="v2.4.0+" />:
 
-The four skins:
+- **Material**: the Material 3 / Google Workspace (Gmail) shell — header, menu column and gutter form one brand-tinted "surface container", and the page is a bright rounded sheet set into it with no borders or seams; menu rows are pills, and every tone is mixed from the runtime primary color, so picking another theme color re-tints the whole shell
+- **Terminal**: a phosphor console — black canvas, monospace type, square corners, no shadows, surfaces divided by dashed rules. The whole shell uses one color, the theme color, and the skin brings its own CRT phosphor palette (P1 green by default, plus amber, cyan, magenta, white and more) kept in a storage slot of its own so it never leaks into the other skins. The light variant is a paper teletype: a warm paper canvas with the same phosphor darkened to ink; the header color picker is hidden under this skin
+
+The skins:
 
 | Classic | Workspace |
 | --- | --- |
@@ -34,6 +43,10 @@ The four skins:
 | Brutalist | Liquid Glass |
 | --- | --- |
 | ![Brutalist skin](/ui/skin-brutalist.png) | ![Liquid Glass skin](/ui/skin-liquid-glass.png) |
+
+Terminal (dark mode):
+
+![Terminal skin](/ui/skin-terminal.png)
 
 `theme.customizable: false` in `app.js` <Badge type="tip" text="v2.3.0+" /> hides the branding controls — theme color, header color, skin, navigation color and menu mode — in the settings drawer, the sidebar, the login page and the home page alike, purges choices users saved earlier and forces the configured menu mode, so everyone sees one appearance. Light / dark and compact are personal comfort settings and stay switchable.
 
@@ -46,6 +59,7 @@ The four skins:
 | Show labels on the rail | Whether the icon rail of the dual-column mode shows menu names; only offered in that mode <Badge type="tip" text="v2.3.0+" /> |
 | Multiple tabs | Pages are reused as tabs so you can jump back between menus |
 | Breadcrumb nav | The path bar at the top (turned off automatically in the category and top menu modes) |
+| Menu section titles | Section titles by module group in the sidebar (business / AI / developer tools / operations / data sources), see [Resizable Layout](#resizable-layout); off joins the sections into one list. The site default is `theme.menuGroups` <Badge type="tip" text="v2.4.0+" /> |
 
 ### Table
 
@@ -61,7 +75,7 @@ The four skins:
 Color-weak mode, grayscale mode, RTL layout, and a button to clear the local cache.
 
 :::tip Defaults vs. personal choice
-`theme` (`primaryColor`, `headerColor`, `dark`, `compact`, `skin`, `workspaceFrame`, `menuMode`, `formPanelMode`, `loginLayout`) and `tabReuse` in `app.js` are the **system defaults** — see [Frontend Configuration](/en/guide/config-frontend). What a user picks in this drawer is stored in their browser's localStorage and wins. Clearing the cache returns them to the defaults; with `theme.customizable: false` the branding items stop accepting user choices at all.
+`theme` (`primaryColor`, `headerColor`, `dark`, `compact`, `skin`, `workspaceFrame`, `menuMode`, `menuGroups`, `formPanelMode`, `loginLayout`) and `tabReuse` in `app.js` are the **system defaults** — see [Frontend Configuration](/en/guide/config-frontend). What a user picks in this drawer is stored in their browser's localStorage and wins. Clearing the cache returns them to the defaults; with `theme.customizable: false` the branding items stop accepting user choices at all.
 :::
 
 ## Login Page Layouts <Badge type="tip" text="v2.3.0+" />
@@ -100,6 +114,14 @@ The `center` and `cover` layouts, both with a custom `theme.loginBackground` pic
 
 The sidebar footer carries a small toolbar: refresh the menu, **locate current menu** (expands and scrolls to the item you are on), **recently visited** (the same list the home page shows) and an in-place **keyword filter** of the tree <Badge type="tip" text="v2.3.0+" />. Since 2.3.0 the whole tree can no longer be reordered by drag (the menu follows the server order; favorites still drag), and the menu-mode switch has moved into the settings drawer. The search box at the top **searches menus**, showing matches with their full path — press Enter to jump straight there.
 
+### Menu Section Titles <Badge type="tip" text="v2.4.0+" />
+
+The sidebar titles its sections by **module group**: the root menus are cut into sections in their sort order, a run of root menus from one module group becomes a section, and the section is headed by the group's name — **Business** (reports, workflow, notices, printing, files…), **AI**, **Developer tools**, **Operations**, **Data sources**. Platform modules (users, permissions, security, templates) and the menus you create yourself carry no title; one of yours sorted inside a group's run stays in that section. Sort remains the only order there is: an admin moves a whole section, or a menu into one, by changing sort.
+
+The group comes from the `ModuleGroup` each module declares when it registers; the installed modules are listed under the same groups on the new **Module center** page under System, see [Menu Management](/en/modules/erupt-upms/menu). To drop the titles, switch off "Menu section titles" in the settings drawer, or set `theme.menuGroups: false` in `app.js` as the site default.
+
+In the category / dual-column / two-row top modes, expanding a submenu of another category no longer jumps the selection back to the current route's category.
+
 ## Table Capabilities
 
 ![Table column control](/ui/table-columns.png)
@@ -123,8 +145,9 @@ All of it is saved locally **per model**, so pages never interfere with each oth
 | Fullscreen | Expand the table area to the full screen |
 | Query | Show or hide the search area; conditions and operators are remembered per model |
 | Sort | Multi-field sort configuration |
-| Print layout | Print the current row, or render it through a template |
-| Import / Export | Excel import, export and template download (subject to `@Power`) |
+| Batch edit | Appears once several rows are selected: pick a field and a value, written to every selected row — see [Batch Edit](#batch-edit) <Badge type="tip" text="v2.4.0+" /> |
+| Print / Print layout | With one row selected, print that record (built-in layout or a template); "Print layout" manages the model's print templates. Shown only to users who may read a record's details, see [Print Settings](#print-settings) |
+| Import / Export | Excel import and template download (subject to `@Power`); the export button writes Excel and the dropdown beside it offers the other server formats, see [Export Formats and Totals](#export-formats-and-totals) <Badge type="tip" text="v2.4.0+" /> |
 | Duplicate row | Copy the selected row into a new-record form with the primary key cleared — handy for near-identical entries |
 | Reset | Clear the search conditions and start over |
 | AI | Opens the AI assistant panel on the right, scoped to the current model |
@@ -156,6 +179,20 @@ Double-click a cell (or its edit icon) to change one field in place, without ope
 - **Two switches**: `@Power(cellEdit)` on the model and `@Edit(cellEdit)` on the field — accounts, role codes, secrets and the like are opted out by the framework already
 
 See [@Power → cellEdit](/en/annotation/power#celledit-in-table-cell-editing) for details.
+
+### Batch Edit <Badge type="tip" text="v2.4.0+" />
+
+Select several rows and a **Batch edit** button appears in the toolbar: pick one field in the dialog, enter a value, and on confirm that field is set to the same value on every selected row.
+
+- **The same control**: the editor is the row form's own component for that field, so dates, choices, reference pickers and value conversion behave as in the form; it opens empty, and the value you enter replaces whatever each row holds
+- **Which fields**: the cell-edit rules — fields visible and editable in the form that are not opted out with `@Edit(cellEdit = false)`; dividers, buttons, sub-tables, multi-forms, tab trees and other layout or collection types are not listed, nor are reference pickers that depend on another field
+- **Validated per row**: the write goes through the batch cell endpoint, so each row passes the same validation, `DataProxy` and operate log as a cell edit; rows whose row-level `__power__` withdrew editing are skipped, and when none may be edited you are told so
+- **Switch**: on whenever the model is editable, withdrawn with `@Power(batchEdit = false)` — see [@Power → batchEdit](/en/annotation/power#batchedit-batch-editing)
+
+### Export Formats and Totals <Badge type="tip" text="v2.4.0+" />
+
+- **Export formats**: the export button writes Excel; the `…` dropdown beside it lists every format the server registers — Excel, CSV, JSON, JSON Lines, Markdown — one entry each, and with rows selected only those rows are exported. The import template is always Excel (it carries the validations and hints). To customize the exported content see [DataProxy → excelExport](/en/advanced/data-proxy-excel)
+- **Totals bar**: when the model has [@View(statistic)](/en/annotation/view) columns, a totals bar appears under the table with one "column · total" chip per column. The totals are computed on the server for the current query and arrive on a request of their own, so the rows never wait or re-render for them
 
 ### In-row interaction
 
@@ -208,10 +245,27 @@ The title bar gathers the actions on the current record:
 - **Copy link**: copies a deep link with `?id=<pk>`; opening the table route with it pops up that record's panel (also when tab reuse reattaches an already open tab)
 - **Delete**: after a popconfirm, removes the record and moves the panel to its neighbour or closes it
 - **AI assistant**: opens the chat primed with the module context and the record's current values (needs [erupt-ai](/en/modules/erupt-ai/))
-- **More**: print (needs [erupt-print](/en/modules/erupt-print) and a model that has not set `@Power(print = false)`)
+- **History**: every change of the record in a drawer, with rollback (needs [erupt-revision](/en/modules/erupt-revision) and a model that has not set `@Power(revision = false)`; table rows carry no such entry) <Badge type="tip" text="v2.4.0+" />
+- **More**: print (needs [erupt-print](/en/modules/erupt-print), a model that has not set `@Power(print = false)`, and the `edit` or `viewDetails` permission), see [Print Settings](#print-settings) below
 - **Comments**: the record's comment stream (needs [erupt-comment](/en/modules/erupt-comment))
 
 Closing the panel, stepping to another record or leaving edit mode asks before discarding unsaved changes. **Click row to view details** is off by default — a whole row is a large target that also carries links, buttons and editable cells. Turn it on in the settings drawer and clicking a row opens that record's detail panel; rows then show a pointer cursor while links, buttons and editable cells keep their own behavior.
+
+### Print Settings <Badge type="tip" text="v2.4.0+" />
+
+With [erupt-print](/en/modules/erupt-print) installed, a record can be printed from the table toolbar and from the record panel's "More" menu. A model without print templates opens the **built-in print preview**, headed by a settings bar; every change shows in the preview at once and is remembered in the browser, so the next print of any model starts from it, and the default print of a flow approval shares the same settings:
+
+| Setting | Notes |
+| --- | --- |
+| Form style | Label above / label left |
+| Columns | 1 – 4; a full-line model (`FormSize.FULL_LINE`) defaults to 1, every other to 3 |
+| Border / border color | Cell borders on or off, and their color |
+| Font size | 10 – 24 px |
+| Title | Whether a title is printed above the form (the current menu name by default) |
+| Paper size / orientation | A4 / A3 / A5 / Letter / auto, portrait or landscape |
+| Margin | 0 – 50 mm |
+
+In the preview, one-to-many, many-to-many and multi-form fields print as a sub-table built from their table columns, a tab tree prints the names of its checked nodes, and a combine field is a titled section. Printing writes the page into a hidden iframe that carries the site styles minus the dark / compact theme, so the layout reflows to the paper width instead of keeping the on-screen pixels. When print templates exist a "Select print layout" list comes first: "Default layout" is the built-in preview, the rest render through a template.
 
 ## Drawers <Badge type="tip" text="v2.3.0+" />
 
@@ -222,6 +276,8 @@ Every drawer in the app now shares one 44px header (the page header's height): t
 The avatar menu in the header gains three entries: **Profile** (change your own avatar and display name; the header updates in place), **Two-factor auth** (enrol a TOTP authenticator) and **Lock screen** (a full-window cover over the running page — tabs stay put, your password unlocks it, and a refresh keeps it locked). Profile and Lock screen are shown for platform accounts only, not for tenant sessions. See [User Management → Profile and Lock Screen](/en/modules/erupt-upms/user#profile-and-lock-screen).
 
 ![Lock screen](/ui/lock-screen.png)
+
+The corner of the lock cover carries a set of **appearance controls** <Badge type="tip" text="v2.4.0+" />: a light / dark toggle, a skin picker and the theme color (preset swatches, a custom color and a reset). They share the saved choices with the settings drawer, so the appearance stays after unlocking; skin and theme color are branding and hide under `theme.customizable: false`, leaving only the light / dark toggle.
 
 ## Install as a Desktop App (PWA) <Badge type="tip" text="v2.3.0+" />
 
@@ -236,4 +292,5 @@ Erupt installs as a progressive web app: the manifest is generated from the site
 | Help entry | The question mark can point at your own docs site, via `erupt-app.show-help-entry` / `help-doc-url` |
 | Languages | 12 built in, switchable from the login page and the header |
 | Fullscreen | One click to take the browser fullscreen |
+| Copy | Every copy button also works on a plain http deployment: `navigator.clipboard` exists only in a secure context, so the shell falls back to selection copy when it is missing <Badge type="tip" text="v2.4.0+" /> |
 | Mobile | The layout adapts; the tab bar and some toolbar buttons hide on narrow screens |

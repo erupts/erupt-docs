@@ -55,21 +55,21 @@ const dict = {
               chips: [gd('启动 2s ~ 5s', 'quick-start'), ad('热构建', 'hot-build'), gd('5 分钟跑起来', 'quick-start')] },
             { icon: '🍃', color: 'green', title: 'Spring Boot 原生', key: '3.x · JDK 17+', sub: '标准 Spring Boot 工程，现有项目直接接入',
               chips: [gd('Spring Boot 3.x', 'getting-started'), gd('JDK 17+', 'getting-started'), ad('接入现有项目', 'integration'), gd('start.erupt.xyz 脚手架', 'quick-start')] },
-            { icon: '🤖', color: 'pink', title: 'AI Native', key: '19 LLM · MCP', sub: 'AI 不是插件，而是内核能力',
-              chips: [md('19 个 LLM 适配器', 'erupt-ai/'), md('MCP Server 内置', 'erupt-ai/'), md('对话操作数据', 'erupt-ai-claw/'), md('一句话生成页面', 'erupt-ai-canvas'), an('@Power(ai) 模型级开关', 'power')] },
+            { icon: '🤖', color: 'pink', title: 'AI Native', key: '17 LLM · MCP', sub: 'AI 不是插件，而是内核能力',
+              chips: [md('17 个 LLM 适配器', 'erupt-ai/'), md('MCP Server 内置', 'erupt-ai/'), md('对话操作数据', 'erupt-ai-claw/'), md('一句话生成页面', 'erupt-ai-canvas'), an('@Power(ai) 模型级开关', 'power')] },
             { icon: '📦', color: 'cyan', title: '轻量体积', key: '首屏 0.8 MB gzip', sub: '按需引入，核心极小',
               chips: [md('首屏 ≈ 0.8 MB gzip', 'erupt-web'), md('erupt-core ≈ 300 KB', 'index'), md('前端 Jar ≈ 13 MB', 'erupt-web'), md('模块化按需引入', 'index')] },
             { icon: '🧩', color: 'purple', title: '随处可扩展', key: '组件 · 页面 · 注解 · 插件', sub: '组件、页面、注解、插件，全部可自定义',
               chips: [{ t: 'TPL 自定义组件', l: '/field-types/tpl' }, md('自定义页面 Freemarker / 微前端', 'erupt-tpl'), ad('扩展注解', 'extend'), ad('插件开发', 'plugin'), md('PF4J 动态插件', 'third-party/erupt-pf4j'), ad('事件监听', 'event-listener')] },
             { icon: '🔑', color: 'amber', title: '登录方式多样', key: 'SSO · MFA · LDAP · 扫码', sub: '内置即用，也可完全自定义',
-              chips: [md('SSO 单点登录 17 种预设', 'erupt-sso'), md('双因素认证 MFA', 'erupt-upms/user#双因素认证-mfa'), ad('账号密码 + 验证码 + 登录锁定', 'auth#登录接口'), md('IP 白名单 CIDR', 'erupt-upms/user'), ad('LDAP / 短信 LoginProxy', 'auth#自定义登录逻辑-loginproxy'), ad('扫码 / 自行签发 Token', 'auth#自行签发-token'), ad('自定义登录页', 'auth#自定义登录页'), ad('Open API 应用凭证', 'open-api')] },
+              chips: [md('SSO OAuth2 / SAML 20 种预设', 'erupt-sso'), md('双因素认证 MFA', 'erupt-upms/user#双因素认证-mfa'), ad('账号密码 + 验证码 + 登录锁定', 'auth#登录接口'), md('IP 白名单 CIDR', 'erupt-upms/user'), ad('LDAP / 短信 LoginProxy', 'auth#自定义登录逻辑-loginproxy'), ad('扫码 / 自行签发 Token', 'auth#自行签发-token'), ad('自定义登录页', 'auth#自定义登录页'), ad('Open API 应用凭证', 'open-api')] },
             { icon: '🔓', color: 'green', title: '真开源', key: 'Apache-2.0', sub: 'Apache-2.0，永不追溯变更',
               chips: [gd('Apache-2.0', 'governance'), gd('开源优先原则', 'governance'), gd('GitHub 开放治理', 'governance'), gd('贡献指南', 'contributing')] },
             { icon: '🔁', color: 'pink', title: '稳定迭代', key: '2019 起 · 60+ 版本', sub: '2019 年至今持续演进',
               chips: [gd('60+ 正式版本', 'history'), gd('1.x / 2.x 双版本线', 'upgrade'), gd('升级指南', 'upgrade'), gd('更新日志', 'changelog')] },
         ],
         railTitle: '扩展模块',
-        railSub: '50 个官方与社区模块，按需引入，版本与核心一致',
+        railSub: '64 个官方与社区模块，按需引入，版本与核心一致',
         railMore: '查看全部模块 →',
         layers: [
             {
@@ -81,28 +81,28 @@ const dict = {
                     },
                     {
                         title: '系统', sub: '接口与消息', link: '/advanced/open-api',
-                        chips: [ad('REST 接口', 'rest-api'), ad('Open API appid + secret', 'open-api'), md('Magic-API 在线接口', 'erupt-magic-api'), md('WebSocket 实时推送', 'erupt-websocket'), md('通知渠道 站内信 / 飞书 / 钉钉 / 企业微信 / Slack', 'erupt-notice#认证源推送渠道'), ad('Excel 导入导出', 'data-proxy-excel')],
+                        chips: [ad('REST 接口', 'rest-api'), ad('Open API appid + secret', 'open-api'), md('Magic-API 在线接口', 'erupt-magic-api'), md('WebSocket 实时推送', 'erupt-websocket'), md('通知渠道 站内信 / 飞书 / 钉钉 / 企业微信 / Slack', 'erupt-notice#认证源推送渠道'), md('Webhook 数据事件推送', 'erupt-webhook'), md('公开链接 表单 / 页面', 'erupt-share'), ad('Excel / CSV / JSON / Markdown 导出', 'data-proxy-excel'), ad('OpenAPI 3.1 规范', 'rest-api')],
                     },
                     {
                         title: 'AI', sub: '模型与智能体直连', link: '/modules/erupt-ai',
-                        chips: [md('MCP Server → Cursor / Claude Code', 'erupt-ai'), md('A2A 智能体互联', 'erupt-ai'), md('AI Claw 对话操作数据', 'erupt-ai-claw'), md('AI Staff 渠道推送', 'erupt-ai-staff'), md('AI Decision 决策接口', 'erupt-ai-decision#http-接口'), { t: 'erupt-skill Claude 技能包', l: 'https://github.com/plinian/erupt-skill' }],
+                        chips: [md('MCP Server → Cursor / Claude Code', 'erupt-ai'), md('A2A 智能体互联', 'erupt-ai'), md('AI Claw 对话操作数据', 'erupt-ai-claw'), md('AI Staff 渠道推送', 'erupt-ai-staff'), md('AI Decision 决策模型', 'erupt-ai-decision'), md('AI Dev 需求池 → 编码 CLI', 'erupt-ai-dev'), { t: 'erupt-skill Claude 技能包', l: 'https://github.com/plinian/erupt-skill' }],
                     },
                 ],
             },
             {
                 num: 'L8', color: 'purple', title: 'UI 体验层', sub: 'Angular 前端 · 开箱即用 · 零前端代码',
                 groups: [
-                    { title: '外观', chips: [gd('5 套皮肤 默认 / Brutalist / Liquid Glass / Workspace / Classic', 'ui#外观'), gd('浅色 / 深色 / 跟随系统', 'ui'), gd('16 色主题 + 自定义取色', 'ui'), gd('紧凑模式', 'ui'), gd('登录页 5 种布局', 'ui#登录页布局'), gd('外观锁定 customizable', 'ui#外观'), md('1992 个图标', 'erupt-web'), gd('色弱 / 灰度模式', 'ui')] },
-                    { title: '导航', chips: [gd('菜单模式 6 种 单列 / 分组 / 双列 / 分栏 / 顶部', 'ui#导航'), gd('多标签页', 'ui'), gd('面包屑', 'ui'), gd('菜单搜索', 'ui'), gd('侧栏 / 树面板拖拽伸缩', 'ui'), gd('帮助入口', 'ui')] },
-                    { title: '交互', chips: [gd('表单面板 居中 / 侧栏 / 全屏', 'ui#表单面板'), gd('可拖拽弹窗 / 可调宽抽屉', 'ui'), ad('后端触发前端消息 / 弹窗', 'frontend-notify'), md('通知中心', 'erupt-notice'), md('记录评论 @提及', 'erupt-comment'), gd('锁屏 / 个人资料', 'ui#锁屏与个人资料'), gd('全屏水印', 'configuration'), gd('全屏模式', 'ui')] },
+                    { title: '外观', chips: [gd('7 套皮肤 默认 / Brutalist / Liquid Glass / Workspace / Classic / Material / Terminal', 'ui#外观'), gd('浅色 / 深色 / 跟随系统', 'ui'), gd('16 色主题 + 自定义取色', 'ui'), gd('紧凑模式', 'ui'), gd('登录页 5 种布局', 'ui#登录页布局'), gd('外观锁定 customizable', 'ui#外观'), md('1992 个图标', 'erupt-web'), gd('色弱 / 灰度模式', 'ui')] },
+                    { title: '导航', chips: [gd('菜单模式 6 种 单列 / 分组 / 双列 / 分栏 / 顶部', 'ui#导航'), gd('多标签页', 'ui'), gd('面包屑', 'ui'), gd('菜单搜索', 'ui'), gd('侧栏按模块分组', 'ui'), md('模块中心', 'erupt-upms/menu'), gd('侧栏 / 树面板拖拽伸缩', 'ui'), gd('帮助入口', 'ui')] },
+                    { title: '交互', chips: [gd('表单面板 居中 / 侧栏 / 全屏', 'ui#表单面板'), gd('可拖拽弹窗 / 可调宽抽屉', 'ui'), ad('后端触发前端消息 / 弹窗', 'frontend-notify'), md('通知中心', 'erupt-notice'), md('记录评论 @提及', 'erupt-comment'), md('记录历史 / 回收站', 'erupt-revision'), md('文件中心', 'erupt-file-center'), gd('锁屏 / 个人资料', 'ui#锁屏与个人资料'), gd('全屏水印', 'configuration'), gd('全屏模式', 'ui')] },
                     { title: '终端与接入', chips: [gd('移动端自适应', 'ui'), ad('12 种语言', 'i18n'), gd('RTL 布局', 'ui'), gd('桌面应用 PWA', 'pwa'), ad('自定义登录页', 'auth#自定义登录页'), md('微前端容器', 'erupt-upms'), ad('前后端分离', 'separation')] },
                 ],
             },
             {
                 num: 'L7', color: 'cyan', title: '视图层', sub: '同一模型 · 多种视图 · 顶部一键切换',
                 groups: [
-                    { title: '视图类型', chips: [an('表格', 'view'), an('树', 'tree'), an('左树右表', 'link-tree'), an('看板', 'vis-board'), an('日历', 'vis-calendar'), an('卡片', 'vis-card'), an('甘特图', 'vis-gantt'), an('数据钻取', 'drill')] },
-                    { title: '表格能力', chips: [an('单元格编辑', 'power'), an('拖拽排序', 'drag-sort'), an('自定义行操作', 'row-operation'), an('多级表头 @View(group)', 'view#group-多级表头'), gd('列显隐 / 固定 / 拖拽排序', 'ui'), gd('多字段排序', 'ui'), an('搜索操作符切换', 'search'), ad('合计行', 'extra-row'), gd('自动刷新', 'ui'), gd('一键复制行', 'ui'), gd('按模型记忆偏好', 'ui')] },
+                    { title: '视图类型', chips: [an('表格', 'view'), an('树', 'tree'), an('左树右表', 'link-tree'), an('看板', 'vis-board'), an('日历', 'vis-calendar'), an('卡片', 'vis-card'), an('甘特图', 'vis-gantt'), an('时间线', 'vis-timeline'), an('地图', 'vis-map'), an('指标图表', 'vis-cube'), an('分组表格', 'vis'), an('数据钻取', 'drill')] },
+                    { title: '表格能力', chips: [an('单元格编辑 / 批量编辑', 'power'), an('列统计 @View(statistic)', 'view'), an('拖拽排序', 'drag-sort'), an('自定义行操作', 'row-operation'), an('多级表头 @View(group)', 'view#group-多级表头'), gd('列显隐 / 固定 / 拖拽排序', 'ui'), gd('多字段排序', 'ui'), an('搜索操作符切换', 'search'), ad('合计行', 'extra-row'), gd('自动刷新', 'ui'), gd('一键复制行', 'ui'), gd('按模型记忆偏好', 'ui')] },
                     { title: '表单', chips: [an('分步表单', 'form-steps'), ad('表单视图 FormView', 'form-view'), gd('表单面板 翻页 / 深链', 'ui#表单面板'), an('字段联动 OnChange', 'on-change'), an('动态显隐 @IfRender', 'if-render')] },
                     { title: '输出与页面', chips: [ad('Excel 导入导出', 'data-proxy-excel'), md('打印布局', 'erupt-print'), md('SQL 报表图表', 'erupt-report/'), md('TPL 自定义页面', 'erupt-tpl'), md('AI Canvas 一句话生成页面', 'erupt-ai-canvas')] },
                 ],
@@ -120,7 +120,7 @@ const dict = {
             {
                 num: 'L5', color: 'pink', title: '模型层', sub: '注解驱动 · 一个 Java 类声明即生成',
                 groups: [
-                    { title: '类级注解', chips: [an('@Erupt', 'erupt'), an('@Power', 'power'), an('@RowOperation', 'row-operation'), an('@Drill', 'drill'), an('@Filter', 'filter'), an('@OrderBy', 'order-by'), an('@Tree maxLevel', 'tree'), an('@LinkTree', 'link-tree'), an('@Layout', 'layout'), an('@DragSort', 'drag-sort'), an('@Vis', 'vis'), an('@FormSteps', 'form-steps'), an('@Tpl', 'tpl')] },
+                    { title: '类级注解', chips: [an('@Erupt', 'erupt'), an('@Power', 'power'), an('@RowOperation', 'row-operation'), an('@Drill', 'drill'), an('@Filter', 'filter'), an('@OrderBy', 'order-by'), an('@Tree maxLevel', 'tree'), an('@LinkTree', 'link-tree'), an('@Layout', 'layout'), an('@DragSort', 'drag-sort'), an('@Vis', 'vis'), an('@EruptScope', 'erupt-scope'), an('@FormSteps', 'form-steps'), an('@Tpl', 'tpl')] },
                     { title: '字段级注解', chips: [an('@EruptField', 'erupt-field'), an('@View', 'view'), an('@Edit', 'edit'), an('@Search', 'search'), an('@Dynamic', 'dynamic'), an('@IfRender', 'if-render'), an('@OnChange', 'on-change')] },
                     { title: '入口与扩展', chips: [an('@EruptScan', 'erupt-scan'), ad('注解二次扩展', 'extend'), ad('虚拟字段', 'virtual-field'), ad('逻辑删除', 'soft-delete'), ad('热构建 无需重启', 'hot-build'), md('SaaS 多租户 PRO', 'pro/erupt-tenant/')] },
                     { title: '建模工具', chips: [md('Designer 运行时拖拽建模', 'erupt-designer'), md('Generator 从数据库导入生成实体', 'erupt-generator#从数据库导入'), md('Atlas 模型图谱 / 血缘 / 使用方', 'erupt-atlas'), md('EZDML 建模', 'third-party/ezdml')] },
@@ -129,10 +129,10 @@ const dict = {
             {
                 num: 'L4', color: 'coral', title: '智能层', sub: 'AI 是内核能力：模型即工具，注解即提示词',
                 groups: [
-                    { title: '模型与知识', chips: [md('19 个 LLM 适配器', 'erupt-ai'), md('Embedding 嵌入模型', 'erupt-ai-rag'), md('向量存储', 'erupt-ai-rag'), md('RAG / Agentic RAG', 'erupt-ai-rag'), md('多模态图片输入', 'erupt-ai'), md('thinking 思考模式', 'erupt-ai')] },
+                    { title: '模型与知识', chips: [md('17 个 LLM 适配器', 'erupt-ai'), md('Embedding 嵌入模型', 'erupt-ai-rag'), md('向量存储', 'erupt-ai-rag'), md('RAG / Agentic RAG', 'erupt-ai-rag'), md('多模态图片输入', 'erupt-ai'), md('thinking 思考模式', 'erupt-ai')] },
                     { title: '智能体与工具', chips: [md('Expert 智能体', 'erupt-ai'), md('AI Role 角色', 'erupt-ai'), md('@AiToolbox / @Tool 工具注册', 'erupt-ai'), md('EruptModelTools 模型增删改查', 'erupt-ai-claw'), an('@Power(ai) 模型级开关', 'power'), md('AI 调用审计', 'erupt-ai')] },
-                    { title: '开放协议', chips: [md('MCP Server', 'erupt-ai'), md('A2A', 'erupt-ai'), md('OpenAI 兼容接口', 'erupt-ai')] },
-                    { title: 'AI 应用', chips: [md('AI 写作助手 @Edit(prompt)', 'erupt-ai'), md('AI Canvas 一句话生成页面', 'erupt-ai-canvas'), md('AI Claw 对话操作数据', 'erupt-ai-claw'), md('AI Staff 数字员工', 'erupt-ai-staff'), md('AI Decision 带概率的类型化判断', 'erupt-ai-decision'), md('Mermaid / 公式 / 代码高亮渲染', 'erupt-ai')] },
+                    { title: '开放协议', chips: [md('MCP Server', 'erupt-ai'), md('MCP 模块级授权', 'erupt-ai/mcp-server'), md('A2A', 'erupt-ai'), md('OpenAI 兼容接口', 'erupt-ai')] },
+                    { title: 'AI 应用', chips: [md('AI 写作助手 @Edit(prompt)', 'erupt-ai'), md('AI Canvas 一句话生成页面', 'erupt-ai-canvas'), md('AI Claw 对话操作数据', 'erupt-ai-claw'), md('AI Staff 数字员工', 'erupt-ai-staff'), md('AI Decision 带概率的类型化判断', 'erupt-ai-decision'), md('AI Dev AI 软件交付', 'erupt-ai-dev'), md('Mermaid / 公式 / 代码高亮渲染', 'erupt-ai')] },
                 ],
             },
             {
@@ -160,10 +160,10 @@ const dict = {
                             an('导入 / 导出 / 打印 / 复制 开关', 'power'), an('单元格编辑 / AI / 评论 开关', 'power'),
                             an('PowerHandler 动态权限', 'power'), md('按钮 & 接口权限串', 'erupt-upms'),
                             ad('行级数据权限 beforeFetch', 'data-proxy-query'), ad('自定义登录 LoginProxy', 'auth'),
-                            md('SSO 单点登录 OAuth2 / OIDC', 'erupt-sso'), md('双因素认证 TOTP', 'erupt-upms/user#双因素认证-mfa'), md('登录锁定', 'erupt-upms/user#登录锁定'), ad('验证码 / IP 白名单 CIDR', 'auth#登录接口'), md('SHA-512 加盐密码存储', 'erupt-upms'), ad('扫码 / 自行签发 Token', 'auth#自行签发-token'), ad('LDAP / 短信 LoginProxy', 'auth#自定义登录逻辑-loginproxy'),
+                            md('SSO 单点登录 OAuth2 / OIDC / SAML', 'erupt-sso'), an('@EruptScope 全局上下文', 'erupt-scope'), ad('服务端强制校验声明的限制', 'data-proxy-validate'), md('公开链接 受限会话', 'erupt-share'), md('双因素认证 TOTP', 'erupt-upms/user#双因素认证-mfa'), md('登录锁定', 'erupt-upms/user#登录锁定'), ad('验证码 / IP 白名单 CIDR', 'auth#登录接口'), md('SHA-512 加盐密码存储', 'erupt-upms'), ad('扫码 / 自行签发 Token', 'auth#自行签发-token'), ad('LDAP / 短信 LoginProxy', 'auth#自定义登录逻辑-loginproxy'),
                             md('登录日志 / 操作日志', 'erupt-upms'), ad('Open API appid + secret', 'open-api'),
                             md('MCP Bearer 鉴权', 'erupt-ai/'), md('AI 调用审计', 'erupt-ai/'), gd('全屏水印防截图', 'configuration'),
-                            md('多租户数据隔离 PRO', 'pro/erupt-tenant/'),
+                            md('多租户 @TenantId 共享表', 'erupt-upms'), md('多租户数据隔离 PRO', 'pro/erupt-tenant/'),
                         ],
                     },
                 ],
@@ -181,9 +181,9 @@ const dict = {
             {
                 num: 'L1', color: 'slate', title: '运行与运维层', sub: '标准 Spring Boot 工程，单机到分布式',
                 groups: [
-                    { title: '运行环境', chips: [gd('Spring Boot 3.x', 'getting-started'), gd('JDK 17+', 'getting-started'), ad('接入现有项目', 'integration'), ad('多数据源', 'datasource'), gd('参数配置', 'configuration'), ad('热构建', 'hot-build')] },
+                    { title: '运行环境', chips: [gd('Spring Boot 3.x', 'getting-started'), gd('JDK 17+', 'getting-started'), ad('接入现有项目', 'integration'), ad('多数据源', 'datasource'), gd('参数配置', 'configuration'), md('运行时配置 erupt-config', 'erupt-config'), ad('热构建', 'hot-build')] },
                     { title: '部署', chips: [gd('单体 Jar 部署', 'quick-start'), ad('前后端分离部署', 'separation'), md('Docker 部署', 'cloud-server'), ad('Redis Session', 'separation'), gd('升级指南', 'upgrade')] },
-                    { title: '分布式', chips: [md('erupt-cloud 分布式配置中心', 'erupt-cloud'), md('Cloud Server 注册调度', 'cloud-server'), md('Cloud Node 微节点', 'cloud-node'), md('Job 定时任务 集群去重', 'erupt-job')] },
+                    { title: '分布式', chips: [md('erupt-cloud 分布式配置中心', 'erupt-cloud'), md('Cloud Server 注册调度', 'cloud-server'), md('Cloud Node 微节点', 'cloud-node'), md('Node Lite 无 Spring 节点', 'cloud-node-lite'), md('多语言节点 SDK', 'erupt-sdk/'), md('Job 定时任务 集群去重', 'erupt-job')] },
                     { title: '运维监控', chips: [md('Monitor 服务 / 诊断 / 缓存监控', 'erupt-monitor'), md('Erupt 类注册表', 'erupt-atlas#类注册表'), md('Terminal 浏览器终端', 'erupt-terminal'), md('Remote VNC / SSH / SFTP', 'erupt-remote'), md('登录日志 / 操作日志', 'erupt-upms'), gd('匿名遥测 可关闭', 'telemetry')] },
                 ],
             },
@@ -191,8 +191,8 @@ const dict = {
         joins: ['承载', '渲染', '组合', '注解驱动 · 自动生成', 'Schema 即工具 · 注解即提示词', '工具调用 · 权限校验 · 审计', '统一读写', '部署 · 调度 · 监控'],
         rail: [
             {
-                title: 'AI', count: 7, color: 'pink',
-                chips: [md('AI Harness', 'erupt-ai'), md('AI Claw', 'erupt-ai-claw'), md('AI Canvas', 'erupt-ai-canvas'), md('AI RAG', 'erupt-ai-rag'), md('AI Staff', 'erupt-ai-staff'), md('AI Decision', 'erupt-ai-decision'), { t: 'AI Skills ↗', l: 'https://github.com/plinian/erupt-skill' }],
+                title: 'AI', count: 8, color: 'pink',
+                chips: [md('AI Harness', 'erupt-ai'), md('AI Claw', 'erupt-ai-claw'), md('AI Canvas', 'erupt-ai-canvas'), md('AI RAG', 'erupt-ai-rag'), md('AI Staff', 'erupt-ai-staff'), md('AI Decision', 'erupt-ai-decision'), md('AI Dev', 'erupt-ai-dev'), { t: 'AI Skills ↗', l: 'https://github.com/plinian/erupt-skill' }],
             },
             {
                 title: '核心', count: 4, color: 'purple',
@@ -203,12 +203,16 @@ const dict = {
                 chips: [md('Jpa', 'erupt-jpa'), md('MongoDB', 'erupt-mongodb'), md('Jdbc', 'erupt-jdbc'), md('Http', 'erupt-http'), md('Es', 'erupt-es'), md('Redis', 'erupt-redis'), md('Memory', 'erupt-memory'), md('File', 'erupt-file'), md('K8s', 'erupt-k8s'), md('Ldap', 'erupt-ldap'), md('飞书', 'erupt-feishu'), md('Notion', 'erupt-notion'), md('S3', 'erupt-s3'), md('钉钉', 'erupt-dingtalk'), md('Airtable', 'erupt-airtable')],
             },
             {
-                title: '工具', count: 16, color: 'green',
-                chips: [md('SSO', 'erupt-sso'), md('Comment', 'erupt-comment'), md('Terminal', 'erupt-terminal'), md('Remote', 'erupt-remote'), md('Atlas', 'erupt-atlas'), md('WebSocket', 'erupt-websocket'), md('Generator', 'erupt-generator'), md('Job', 'erupt-job'), md('Notice', 'erupt-notice'), md('Monitor', 'erupt-monitor'), md('Magic-API', 'erupt-magic-api'), md('Print', 'erupt-print'), md('Report', 'erupt-report/'), md('Cloud', 'erupt-cloud'), md('Cloud Server', 'cloud-server'), md('Cloud Node', 'cloud-node')],
+                title: '工具', count: 23, color: 'green',
+                chips: [md('SSO', 'erupt-sso'), md('Comment', 'erupt-comment'), md('Share', 'erupt-share'), md('Webhook', 'erupt-webhook'), md('Config', 'erupt-config'), md('Revision', 'erupt-revision'), md('File Center', 'erupt-file-center'), md('Node Lite', 'cloud-node-lite'), md('SDK', 'erupt-sdk/'), md('Terminal', 'erupt-terminal'), md('Remote', 'erupt-remote'), md('Atlas', 'erupt-atlas'), md('WebSocket', 'erupt-websocket'), md('Generator', 'erupt-generator'), md('Job', 'erupt-job'), md('Notice', 'erupt-notice'), md('Monitor', 'erupt-monitor'), md('Magic-API', 'erupt-magic-api'), md('Print', 'erupt-print'), md('Report', 'erupt-report/'), md('Cloud', 'erupt-cloud'), md('Cloud Server', 'cloud-server'), md('Cloud Node', 'cloud-node')],
             },
             {
                 title: 'PRO', count: 3, color: 'amber',
                 chips: [md('Flow 流程引擎', 'pro/erupt-flow/'), md('Tenant 多租户', 'pro/erupt-tenant/'), md('Cube 指标平台', 'pro/erupt-cube')],
+            },
+            {
+                title: '开源应用', count: 6, color: 'coral',
+                chips: [md('K8s Dashboard', 'apps/erupt-k8s-dashboard'), md('PM', 'apps/erupt-pm'), md('Talent', 'apps/erupt-talent'), md('SMS', 'apps/erupt-sms'), md('WeChat', 'apps/erupt-wechat'), md('MiniApp', 'apps/erupt-miniapp')],
             },
             {
                 title: '社区', count: 5, color: 'mint',
@@ -227,21 +231,21 @@ const dict = {
               chips: [gd('Boot in 2s ~ 5s', 'quick-start'), ad('Hot build', 'hot-build'), gd('Running in 5 minutes', 'quick-start')] },
             { icon: '🍃', color: 'green', title: 'Spring Boot native', key: '3.x · JDK 17+', sub: 'A standard Spring Boot project; drop into existing apps',
               chips: [gd('Spring Boot 3.x', 'getting-started'), gd('JDK 17+', 'getting-started'), ad('Integrate into existing projects', 'integration'), gd('start.erupt.xyz scaffold', 'quick-start')] },
-            { icon: '🤖', color: 'pink', title: 'AI Native', key: '19 LLM · MCP', sub: 'AI is a kernel capability, not a plugin',
-              chips: [md('19 LLM adapters', 'erupt-ai/'), md('Built-in MCP Server', 'erupt-ai/'), md('Chat with your data', 'erupt-ai-claw/'), md('One-line page generation', 'erupt-ai-canvas'), an('@Power(ai) per-model switch', 'power')] },
+            { icon: '🤖', color: 'pink', title: 'AI Native', key: '17 LLM · MCP', sub: 'AI is a kernel capability, not a plugin',
+              chips: [md('17 LLM adapters', 'erupt-ai/'), md('Built-in MCP Server', 'erupt-ai/'), md('Chat with your data', 'erupt-ai-claw/'), md('One-line page generation', 'erupt-ai-canvas'), an('@Power(ai) per-model switch', 'power')] },
             { icon: '📦', color: 'cyan', title: 'Lightweight', key: '0.8 MB gzip first screen', sub: 'Opt-in modules, tiny core',
               chips: [md('First screen ≈ 0.8 MB gzip', 'erupt-web'), md('erupt-core ≈ 300 KB', 'index'), md('Frontend Jar ≈ 13 MB', 'erupt-web'), md('Modular, opt-in', 'index')] },
             { icon: '🧩', color: 'purple', title: 'Extensible everywhere', key: 'Components · pages · annotations · plugins', sub: 'Components, pages, annotations, plugins: all customizable',
               chips: [{ t: 'TPL custom components', l: '/field-types/tpl' }, md('Custom pages Freemarker / micro-frontend', 'erupt-tpl'), ad('Extend annotations', 'extend'), ad('Plugin development', 'plugin'), md('PF4J dynamic plugins', 'third-party/erupt-pf4j'), ad('Event listeners', 'event-listener')] },
             { icon: '🔑', color: 'amber', title: 'Flexible login', key: 'SSO · MFA · LDAP · QR', sub: 'Ready out of the box, fully customizable',
-              chips: [md('SSO with 17 provider presets', 'erupt-sso'), md('Two-factor auth (MFA)', 'erupt-upms/user#two-factor-authentication-mfa'), ad('Password + captcha + login lock', 'auth#login-api'), md('IP whitelist with CIDR', 'erupt-upms/user'), ad('LDAP / SMS via LoginProxy', 'auth#custom-login-logic-loginproxy'), ad('QR / self-issued tokens', 'auth#issuing-tokens-yourself'), ad('Custom login page', 'auth#custom-login-page'), ad('Open API app credentials', 'open-api')] },
+              chips: [md('SSO: OAuth2 / SAML, 20 presets', 'erupt-sso'), md('Two-factor auth (MFA)', 'erupt-upms/user#two-factor-authentication-mfa'), ad('Password + captcha + login lock', 'auth#login-api'), md('IP whitelist with CIDR', 'erupt-upms/user'), ad('LDAP / SMS via LoginProxy', 'auth#custom-login-logic-loginproxy'), ad('QR / self-issued tokens', 'auth#issuing-tokens-yourself'), ad('Custom login page', 'auth#custom-login-page'), ad('Open API app credentials', 'open-api')] },
             { icon: '🔓', color: 'green', title: 'Truly open source', key: 'Apache-2.0', sub: 'Apache-2.0, never relicensed retroactively',
               chips: [gd('Apache-2.0', 'governance'), gd('Open-source-first principle', 'governance'), gd('Open governance on GitHub', 'governance'), gd('Contributing guide', 'contributing')] },
             { icon: '🔁', color: 'pink', title: 'Steady iteration', key: 'Since 2019 · 60+ releases', sub: 'Evolving continuously since 2019',
               chips: [gd('60+ releases', 'history'), gd('1.x / 2.x release lines', 'upgrade'), gd('Upgrade guide', 'upgrade'), gd('Changelog', 'changelog')] },
         ],
         railTitle: 'Modules',
-        railSub: '50 official and community modules, opt-in, versioned with the core',
+        railSub: '64 official and community modules, opt-in, versioned with the core',
         railMore: 'Browse all modules →',
         layers: [
             {
@@ -253,28 +257,28 @@ const dict = {
                     },
                     {
                         title: 'Systems', sub: 'APIs and messaging', link: '/advanced/open-api',
-                        chips: [ad('REST APIs', 'rest-api'), ad('Open API appid + secret', 'open-api'), md('Magic-API online APIs', 'erupt-magic-api'), md('WebSocket real-time push', 'erupt-websocket'), md('Notification channels: in-app / Feishu / DingTalk / WeCom / Slack', 'erupt-notice#provider-backed-channels'), ad('Excel import / export', 'data-proxy-excel')],
+                        chips: [ad('REST APIs', 'rest-api'), ad('Open API appid + secret', 'open-api'), md('Magic-API online APIs', 'erupt-magic-api'), md('WebSocket real-time push', 'erupt-websocket'), md('Notification channels: in-app / Feishu / DingTalk / WeCom / Slack', 'erupt-notice#provider-backed-channels'), md('Outbound webhooks', 'erupt-webhook'), md('Public links: forms / pages', 'erupt-share'), ad('Excel / CSV / JSON / Markdown export', 'data-proxy-excel'), ad('OpenAPI 3.1 spec', 'rest-api')],
                     },
                     {
                         title: 'AI', sub: 'Direct access for models and agents', link: '/modules/erupt-ai',
-                        chips: [md('MCP Server → Cursor / Claude Code', 'erupt-ai'), md('A2A agent interop', 'erupt-ai'), md('AI Claw: chat with your data', 'erupt-ai-claw'), md('AI Staff channel push', 'erupt-ai-staff'), md('AI Decision API', 'erupt-ai-decision#http-api'), { t: 'erupt-skill Claude skills', l: 'https://github.com/plinian/erupt-skill' }],
+                        chips: [md('MCP Server → Cursor / Claude Code', 'erupt-ai'), md('A2A agent interop', 'erupt-ai'), md('AI Claw: chat with your data', 'erupt-ai-claw'), md('AI Staff channel push', 'erupt-ai-staff'), md('AI Decision models', 'erupt-ai-decision'), md('AI Dev: requirement pool → coding CLIs', 'erupt-ai-dev'), { t: 'erupt-skill Claude skills', l: 'https://github.com/plinian/erupt-skill' }],
                     },
                 ],
             },
             {
                 num: 'L8', color: 'purple', title: 'UI Layer', sub: 'Angular frontend · zero frontend code',
                 groups: [
-                    { title: 'Appearance', chips: [gd('5 skins: Default / Brutalist / Liquid Glass / Workspace / Classic', 'ui#appearance'), gd('Light / Dark / System', 'ui'), gd('16 theme colors + custom picker', 'ui'), gd('Compact mode', 'ui'), gd('5 login page layouts', 'ui#login-page-layouts'), gd('Lockable appearance', 'ui#appearance'), md('1,992 icons', 'erupt-web'), gd('Color-weak / grayscale mode', 'ui')] },
-                    { title: 'Navigation', chips: [gd('6 menu modes: sidebar / group / dual / split / top', 'ui#navigation'), gd('Multi-tab pages', 'ui'), gd('Breadcrumb', 'ui'), gd('Menu search', 'ui'), gd('Resizable sidebar / tree panel', 'ui'), gd('Help entry', 'ui')] },
-                    { title: 'Interaction', chips: [gd('Form panel: center / side / fullscreen', 'ui#form-panel'), gd('Draggable modals / resizable drawers', 'ui'), ad('Backend-triggered messages / modals', 'frontend-notify'), md('Notification center', 'erupt-notice'), md('Record comments with @mentions', 'erupt-comment'), gd('Lock screen / profile', 'ui#lock-screen-and-profile'), gd('Full-screen watermark', 'configuration'), gd('Full-screen mode', 'ui')] },
+                    { title: 'Appearance', chips: [gd('7 skins: Default / Brutalist / Liquid Glass / Workspace / Classic / Material / Terminal', 'ui#appearance'), gd('Light / Dark / System', 'ui'), gd('16 theme colors + custom picker', 'ui'), gd('Compact mode', 'ui'), gd('5 login page layouts', 'ui#login-page-layouts'), gd('Lockable appearance', 'ui#appearance'), md('1,992 icons', 'erupt-web'), gd('Color-weak / grayscale mode', 'ui')] },
+                    { title: 'Navigation', chips: [gd('6 menu modes: sidebar / group / dual / split / top', 'ui#navigation'), gd('Multi-tab pages', 'ui'), gd('Breadcrumb', 'ui'), gd('Menu search', 'ui'), gd('Sidebar sections by module', 'ui'), md('Module center', 'erupt-upms/menu'), gd('Resizable sidebar / tree panel', 'ui'), gd('Help entry', 'ui')] },
+                    { title: 'Interaction', chips: [gd('Form panel: center / side / fullscreen', 'ui#form-panel'), gd('Draggable modals / resizable drawers', 'ui'), ad('Backend-triggered messages / modals', 'frontend-notify'), md('Notification center', 'erupt-notice'), md('Record comments with @mentions', 'erupt-comment'), md('Record history / recycle bin', 'erupt-revision'), md('File center', 'erupt-file-center'), gd('Lock screen / profile', 'ui#lock-screen-and-profile'), gd('Full-screen watermark', 'configuration'), gd('Full-screen mode', 'ui')] },
                     { title: 'Devices & access', chips: [gd('Mobile responsive', 'ui'), ad('12 languages', 'i18n'), gd('RTL layout', 'ui'), gd('Desktop app (PWA)', 'pwa'), ad('Custom login page', 'auth#custom-login-page'), md('Micro-frontend container', 'erupt-upms'), ad('Frontend / backend separation', 'separation')] },
                 ],
             },
             {
                 num: 'L7', color: 'cyan', title: 'View Layer', sub: 'One model · many views · switch at the top',
                 groups: [
-                    { title: 'View types', chips: [an('Table', 'view'), an('Tree', 'tree'), an('Tree + Table', 'link-tree'), an('Board', 'vis-board'), an('Calendar', 'vis-calendar'), an('Card', 'vis-card'), an('Gantt', 'vis-gantt'), an('Drill-down', 'drill')] },
-                    { title: 'Table features', chips: [an('Cell editing', 'power'), an('Drag sort', 'drag-sort'), an('Custom row operations', 'row-operation'), an('Multi-level headers @View(group)', 'view#group-multi-level-headers'), gd('Column show / pin / reorder', 'ui'), gd('Multi-field sort', 'ui'), an('Switchable search operators', 'search'), ad('Summary rows', 'extra-row'), gd('Auto refresh', 'ui'), gd('Copy row', 'ui'), gd('Per-model remembered prefs', 'ui')] },
+                    { title: 'View types', chips: [an('Table', 'view'), an('Tree', 'tree'), an('Tree + Table', 'link-tree'), an('Board', 'vis-board'), an('Calendar', 'vis-calendar'), an('Card', 'vis-card'), an('Gantt', 'vis-gantt'), an('Timeline', 'vis-timeline'), an('Map', 'vis-map'), an('Cube charts', 'vis-cube'), an('Grouped table', 'vis'), an('Drill-down', 'drill')] },
+                    { title: 'Table features', chips: [an('Cell / batch editing', 'power'), an('Column statistics @View(statistic)', 'view'), an('Drag sort', 'drag-sort'), an('Custom row operations', 'row-operation'), an('Multi-level headers @View(group)', 'view#group-multi-level-headers'), gd('Column show / pin / reorder', 'ui'), gd('Multi-field sort', 'ui'), an('Switchable search operators', 'search'), ad('Summary rows', 'extra-row'), gd('Auto refresh', 'ui'), gd('Copy row', 'ui'), gd('Per-model remembered prefs', 'ui')] },
                     { title: 'Forms', chips: [an('Step form', 'form-steps'), ad('FormView', 'form-view'), gd('Form panel: paging / deep links', 'ui#form-panel'), an('Field linkage OnChange', 'on-change'), an('Conditional render @IfRender', 'if-render')] },
                     { title: 'Output & pages', chips: [ad('Excel import / export', 'data-proxy-excel'), md('Print layouts', 'erupt-print'), md('SQL reports & charts', 'erupt-report/'), md('TPL custom pages', 'erupt-tpl'), md('AI Canvas one-line pages', 'erupt-ai-canvas')] },
                 ],
@@ -292,7 +296,7 @@ const dict = {
             {
                 num: 'L5', color: 'pink', title: 'Model Layer', sub: 'Annotation-driven · one Java class declares it all',
                 groups: [
-                    { title: 'Class-level', chips: [an('@Erupt', 'erupt'), an('@Power', 'power'), an('@RowOperation', 'row-operation'), an('@Drill', 'drill'), an('@Filter', 'filter'), an('@OrderBy', 'order-by'), an('@Tree maxLevel', 'tree'), an('@LinkTree', 'link-tree'), an('@Layout', 'layout'), an('@DragSort', 'drag-sort'), an('@Vis', 'vis'), an('@FormSteps', 'form-steps'), an('@Tpl', 'tpl')] },
+                    { title: 'Class-level', chips: [an('@Erupt', 'erupt'), an('@Power', 'power'), an('@RowOperation', 'row-operation'), an('@Drill', 'drill'), an('@Filter', 'filter'), an('@OrderBy', 'order-by'), an('@Tree maxLevel', 'tree'), an('@LinkTree', 'link-tree'), an('@Layout', 'layout'), an('@DragSort', 'drag-sort'), an('@Vis', 'vis'), an('@EruptScope', 'erupt-scope'), an('@FormSteps', 'form-steps'), an('@Tpl', 'tpl')] },
                     { title: 'Field-level', chips: [an('@EruptField', 'erupt-field'), an('@View', 'view'), an('@Edit', 'edit'), an('@Search', 'search'), an('@Dynamic', 'dynamic'), an('@IfRender', 'if-render'), an('@OnChange', 'on-change')] },
                     { title: 'Entry & extension', chips: [an('@EruptScan', 'erupt-scan'), ad('Extend annotations', 'extend'), ad('Virtual fields', 'virtual-field'), ad('Soft delete', 'soft-delete'), ad('Hot build, no restart', 'hot-build'), md('SaaS multi-tenant PRO', 'pro/erupt-tenant/')] },
                     { title: 'Modeling tools', chips: [md('Designer: drag-and-drop modeling at runtime', 'erupt-designer'), md('Generator: entities from a database', 'erupt-generator#import-from-database'), md('Atlas: model graph / lineage / used-by', 'erupt-atlas'), md('EZDML modeling', 'third-party/ezdml')] },
@@ -301,10 +305,10 @@ const dict = {
             {
                 num: 'L4', color: 'coral', title: 'Intelligence Layer', sub: 'AI as a kernel capability: models are tools, annotations are prompts',
                 groups: [
-                    { title: 'Models & knowledge', chips: [md('19 LLM adapters', 'erupt-ai'), md('Embedding models', 'erupt-ai-rag'), md('Vector stores', 'erupt-ai-rag'), md('RAG / Agentic RAG', 'erupt-ai-rag'), md('Multimodal image input', 'erupt-ai'), md('Thinking mode', 'erupt-ai')] },
+                    { title: 'Models & knowledge', chips: [md('17 LLM adapters', 'erupt-ai'), md('Embedding models', 'erupt-ai-rag'), md('Vector stores', 'erupt-ai-rag'), md('RAG / Agentic RAG', 'erupt-ai-rag'), md('Multimodal image input', 'erupt-ai'), md('Thinking mode', 'erupt-ai')] },
                     { title: 'Agents & tools', chips: [md('Expert agents', 'erupt-ai'), md('AI Roles', 'erupt-ai'), md('@AiToolbox / @Tool registration', 'erupt-ai'), md('EruptModelTools model CRUD', 'erupt-ai-claw'), an('@Power(ai) per-model switch', 'power'), md('AI call audit', 'erupt-ai')] },
-                    { title: 'Open protocols', chips: [md('MCP Server', 'erupt-ai'), md('A2A', 'erupt-ai'), md('OpenAI-compatible endpoints', 'erupt-ai')] },
-                    { title: 'AI apps', chips: [md('AI writing assistant @Edit(prompt)', 'erupt-ai'), md('AI Canvas one-line pages', 'erupt-ai-canvas'), md('AI Claw: chat with your data', 'erupt-ai-claw'), md('AI Staff digital workers', 'erupt-ai-staff'), md('AI Decision: typed, probability-backed judgements', 'erupt-ai-decision'), md('Mermaid / math / code rendering', 'erupt-ai')] },
+                    { title: 'Open protocols', chips: [md('MCP Server', 'erupt-ai'), md('Module-level MCP grants', 'erupt-ai/mcp-server'), md('A2A', 'erupt-ai'), md('OpenAI-compatible endpoints', 'erupt-ai')] },
+                    { title: 'AI apps', chips: [md('AI writing assistant @Edit(prompt)', 'erupt-ai'), md('AI Canvas one-line pages', 'erupt-ai-canvas'), md('AI Claw: chat with your data', 'erupt-ai-claw'), md('AI Staff digital workers', 'erupt-ai-staff'), md('AI Decision: typed, probability-backed judgements', 'erupt-ai-decision'), md('AI Dev: AI software delivery', 'erupt-ai-dev'), md('Mermaid / math / code rendering', 'erupt-ai')] },
                 ],
             },
             {
@@ -332,10 +336,10 @@ const dict = {
                             an('Import / export / print / copy toggles', 'power'), an('Cell-edit / AI / comment toggles', 'power'),
                             an('PowerHandler dynamic permissions', 'power'), md('Button & API permission strings', 'erupt-upms'),
                             ad('Row-level data permission via beforeFetch', 'data-proxy-query'), ad('Custom login via LoginProxy', 'auth'),
-                            md('SSO: OAuth2 / OIDC', 'erupt-sso'), md('Two-factor auth (TOTP)', 'erupt-upms/user#two-factor-authentication-mfa'), md('Login lock', 'erupt-upms/user#login-lock'), ad('Captcha / IP whitelist with CIDR', 'auth#login-api'), md('Salted SHA-512 password storage', 'erupt-upms'), ad('QR / self-issued tokens', 'auth#issuing-tokens-yourself'), ad('LDAP / SMS via LoginProxy', 'auth#custom-login-logic-loginproxy'),
+                            md('SSO: OAuth2 / OIDC / SAML', 'erupt-sso'), an('@EruptScope global context', 'erupt-scope'), ad('Server-side enforcement of declared limits', 'data-proxy-validate'), md('Public links with narrowed sessions', 'erupt-share'), md('Two-factor auth (TOTP)', 'erupt-upms/user#two-factor-authentication-mfa'), md('Login lock', 'erupt-upms/user#login-lock'), ad('Captcha / IP whitelist with CIDR', 'auth#login-api'), md('Salted SHA-512 password storage', 'erupt-upms'), ad('QR / self-issued tokens', 'auth#issuing-tokens-yourself'), ad('LDAP / SMS via LoginProxy', 'auth#custom-login-logic-loginproxy'),
                             md('Login log / operation log', 'erupt-upms'), ad('Open API appid + secret', 'open-api'),
                             md('MCP Bearer auth', 'erupt-ai/'), md('AI call audit', 'erupt-ai/'), gd('Watermark against screenshots', 'configuration'),
-                            md('Tenant data isolation PRO', 'pro/erupt-tenant/'),
+                            md('Multi-tenant @TenantId shared tables', 'erupt-upms'), md('Tenant data isolation PRO', 'pro/erupt-tenant/'),
                         ],
                     },
                 ],
@@ -353,9 +357,9 @@ const dict = {
             {
                 num: 'L1', color: 'slate', title: 'Runtime & Ops Layer', sub: 'A standard Spring Boot project, from single node to distributed',
                 groups: [
-                    { title: 'Runtime', chips: [gd('Spring Boot 3.x', 'getting-started'), gd('JDK 17+', 'getting-started'), ad('Integrate into existing projects', 'integration'), ad('Multiple data sources', 'datasource'), gd('Configuration', 'configuration'), ad('Hot build', 'hot-build')] },
+                    { title: 'Runtime', chips: [gd('Spring Boot 3.x', 'getting-started'), gd('JDK 17+', 'getting-started'), ad('Integrate into existing projects', 'integration'), ad('Multiple data sources', 'datasource'), gd('Configuration', 'configuration'), md('Runtime settings erupt-config', 'erupt-config'), ad('Hot build', 'hot-build')] },
                     { title: 'Deployment', chips: [gd('Single Jar deployment', 'quick-start'), ad('Frontend / backend separation', 'separation'), md('Docker deployment', 'cloud-server'), ad('Redis Session', 'separation'), gd('Upgrade guide', 'upgrade')] },
-                    { title: 'Distributed', chips: [md('erupt-cloud distributed config center', 'erupt-cloud'), md('Cloud Server registration & dispatch', 'cloud-server'), md('Cloud Node micro-nodes', 'cloud-node'), md('Job scheduler, cluster-deduplicated', 'erupt-job')] },
+                    { title: 'Distributed', chips: [md('erupt-cloud distributed config center', 'erupt-cloud'), md('Cloud Server registration & dispatch', 'cloud-server'), md('Cloud Node micro-nodes', 'cloud-node'), md('Node Lite: nodes without Spring', 'cloud-node-lite'), md('Node SDKs for any language', 'erupt-sdk/'), md('Job scheduler, cluster-deduplicated', 'erupt-job')] },
                     { title: 'Ops & monitoring', chips: [md('Monitor: service / diagnostics / cache', 'erupt-monitor'), md('Erupt class registry', 'erupt-atlas#class-registry'), md('Terminal in the browser', 'erupt-terminal'), md('Remote VNC / SSH / SFTP', 'erupt-remote'), md('Login log / operation log', 'erupt-upms'), gd('Anonymous telemetry, opt-out', 'telemetry')] },
                 ],
             },
@@ -363,8 +367,8 @@ const dict = {
         joins: ['serve', 'render', 'compose', 'annotation-driven · auto-generated', 'schema as tools · annotations as prompts', 'tool calls · authorization · audit', 'unified read / write', 'deploy · dispatch · monitor'],
         rail: [
             {
-                title: 'AI', count: 7, color: 'pink',
-                chips: [md('AI Harness', 'erupt-ai'), md('AI Claw', 'erupt-ai-claw'), md('AI Canvas', 'erupt-ai-canvas'), md('AI RAG', 'erupt-ai-rag'), md('AI Staff', 'erupt-ai-staff'), md('AI Decision', 'erupt-ai-decision'), { t: 'AI Skills ↗', l: 'https://github.com/plinian/erupt-skill' }],
+                title: 'AI', count: 8, color: 'pink',
+                chips: [md('AI Harness', 'erupt-ai'), md('AI Claw', 'erupt-ai-claw'), md('AI Canvas', 'erupt-ai-canvas'), md('AI RAG', 'erupt-ai-rag'), md('AI Staff', 'erupt-ai-staff'), md('AI Decision', 'erupt-ai-decision'), md('AI Dev', 'erupt-ai-dev'), { t: 'AI Skills ↗', l: 'https://github.com/plinian/erupt-skill' }],
             },
             {
                 title: 'Core', count: 4, color: 'purple',
@@ -375,12 +379,16 @@ const dict = {
                 chips: [md('Jpa', 'erupt-jpa'), md('MongoDB', 'erupt-mongodb'), md('Jdbc', 'erupt-jdbc'), md('Http', 'erupt-http'), md('Es', 'erupt-es'), md('Redis', 'erupt-redis'), md('Memory', 'erupt-memory'), md('File', 'erupt-file'), md('K8s', 'erupt-k8s'), md('Ldap', 'erupt-ldap'), md('Feishu', 'erupt-feishu'), md('Notion', 'erupt-notion'), md('S3', 'erupt-s3'), md('DingTalk', 'erupt-dingtalk'), md('Airtable', 'erupt-airtable')],
             },
             {
-                title: 'Tools', count: 16, color: 'green',
-                chips: [md('SSO', 'erupt-sso'), md('Comment', 'erupt-comment'), md('Terminal', 'erupt-terminal'), md('Remote', 'erupt-remote'), md('Atlas', 'erupt-atlas'), md('WebSocket', 'erupt-websocket'), md('Generator', 'erupt-generator'), md('Job', 'erupt-job'), md('Notice', 'erupt-notice'), md('Monitor', 'erupt-monitor'), md('Magic-API', 'erupt-magic-api'), md('Print', 'erupt-print'), md('Report', 'erupt-report/'), md('Cloud', 'erupt-cloud'), md('Cloud Server', 'cloud-server'), md('Cloud Node', 'cloud-node')],
+                title: 'Tools', count: 23, color: 'green',
+                chips: [md('SSO', 'erupt-sso'), md('Comment', 'erupt-comment'), md('Share', 'erupt-share'), md('Webhook', 'erupt-webhook'), md('Config', 'erupt-config'), md('Revision', 'erupt-revision'), md('File Center', 'erupt-file-center'), md('Node Lite', 'cloud-node-lite'), md('SDK', 'erupt-sdk/'), md('Terminal', 'erupt-terminal'), md('Remote', 'erupt-remote'), md('Atlas', 'erupt-atlas'), md('WebSocket', 'erupt-websocket'), md('Generator', 'erupt-generator'), md('Job', 'erupt-job'), md('Notice', 'erupt-notice'), md('Monitor', 'erupt-monitor'), md('Magic-API', 'erupt-magic-api'), md('Print', 'erupt-print'), md('Report', 'erupt-report/'), md('Cloud', 'erupt-cloud'), md('Cloud Server', 'cloud-server'), md('Cloud Node', 'cloud-node')],
             },
             {
                 title: 'PRO', count: 3, color: 'amber',
                 chips: [md('Flow engine', 'pro/erupt-flow/'), md('Tenant multi-tenancy', 'pro/erupt-tenant/'), md('Cube metrics', 'pro/erupt-cube')],
+            },
+            {
+                title: 'Apps', count: 6, color: 'coral',
+                chips: [md('K8s Dashboard', 'apps/erupt-k8s-dashboard'), md('PM', 'apps/erupt-pm'), md('Talent', 'apps/erupt-talent'), md('SMS', 'apps/erupt-sms'), md('WeChat', 'apps/erupt-wechat'), md('MiniApp', 'apps/erupt-miniapp')],
             },
             {
                 title: 'Community', count: 5, color: 'mint',
@@ -671,7 +679,7 @@ const href = (l) => (l ? (l.startsWith('http') ? l : '/' + props.lang + l) : und
 /* ---- grid: stack + rail ---- */
 .ea-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 236px;
+    grid-template-columns: minmax(0, 1fr) 200px;
     gap: 20px;
     align-items: stretch;
 }
@@ -936,6 +944,7 @@ a.ea-chip:hover {
 .ea-rail-tag.ea-c-amber { background: var(--ea-amber); }
 .ea-rail-tag.ea-c-purple { background: var(--ea-purple); }
 .ea-rail-tag.ea-c-mint { background: var(--ea-mint); }
+.ea-rail-tag.ea-c-coral { background: var(--ea-coral); }
 
 .ea-rail-tag i {
     font-style: normal;
@@ -960,14 +969,18 @@ a.ea-chip:hover {
     color: var(--ea-black);
 }
 
+/* 每个模块独占一整行 */
 .ea-rail .ea-chips {
+    flex-direction: column;
+    flex-wrap: nowrap;
     padding: 8px 14px 10px;
     gap: 5px;
 }
 
 .ea-rail .ea-chip {
+    display: block;
     font-size: 11px;
-    padding: 3px 7px;
+    padding: 4px 8px;
 }
 
 .ea-rail a.ea-chip:hover {
@@ -985,6 +998,7 @@ a.ea-chip:hover {
     .ea-rail { margin-top: 8px; }
     .ea-rail-group { display: grid; grid-template-columns: auto 1fr; align-items: start; padding: 10px 0; }
     .ea-rail-tag { margin-top: 12px; }
+    .ea-rail .ea-chips { flex-direction: row; flex-wrap: wrap; }
 }
 
 @container (max-width: 760px) {
@@ -996,14 +1010,14 @@ a.ea-chip:hover {
     .ea-trait:nth-child(n+5) { border-bottom: 2px solid var(--ea-line); }
     .ea-trait:nth-child(n+7) { border-bottom: 0; }
     .ea-layer { grid-template-columns: 1fr; }
+    .ea-rail-group { grid-template-columns: 1fr; }
+    .ea-rail-tag { margin-top: 0; }
     .ea-label { border-right: 0; border-bottom: 2px solid var(--ea-line); padding: 12px 14px; }
     .ea-panels { grid-auto-flow: row; grid-auto-columns: auto; }
     .ea-group { grid-template-columns: 1fr; }
     .ea-group-tag { padding: 10px 14px 0; }
     .ea-group .ea-chips { padding: 6px 14px 10px; }
     .ea-panel + .ea-panel { border-left: 0; border-top: 2px solid var(--ea-line); }
-    .ea-rail-group { grid-template-columns: 1fr; }
-    .ea-rail-tag { margin-top: 0; }
     .ea-join { padding: 0 8px; }
 }
 

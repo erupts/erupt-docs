@@ -37,18 +37,29 @@ public class Task extends BaseModel { ... }
 | `ganttView` | 甘特图配置，`type = GANTT` 时生效，详见 [甘特图](/zh/annotation/vis-gantt) |
 | `calendarView` | 日历视图配置，`type = CALENDAR` 时生效，详见 [日历视图](/zh/annotation/vis-calendar)（2.0.0+） |
 | `boardView` | 看板视图配置，`type = BOARD` 时生效，详见 [看板视图](/zh/annotation/vis-board)（2.0.0+） |
+| `tableView` | 表格分组配置，`type = TABLE` 时生效，见下方 [TABLE 视图：分组](#table-视图分组)（2.4.0+） |
+| `timelineView` | 时间线配置，`type = TIMELINE` 时生效，详见 [时间线视图](/zh/annotation/vis-timeline)（2.4.0+） |
+| `mapView` | 地图配置，`type = MAP` 时生效，详见 [地图视图](/zh/annotation/vis-map)（2.4.0+） |
+| `cubeView` | 指标图表配置，`type = CUBE` 时生效，详见 [指标图表视图](/zh/annotation/vis-cube)（2.4.0+） |
 | `tplView` | 自定义模板配置，`type = TPL` 时生效，详见 [自定义视图](/zh/annotation/vis-tpl) |
 
 ### Type 枚举
 
 | 值 | 描述 |
 |----|------|
-| `TABLE` | 表格视图（可配合字段过滤） |
-| `CARD` | 卡片/网格视图 |
-| `GANTT` | 甘特图 |
-| `CALENDAR` | 日历视图，配合 `calendarView` 使用（2.0.0+） |
-| `BOARD` | 看板视图，配合 `boardView` 使用（2.0.0+） |
+| `TABLE` | 表格视图（可配合字段过滤与 `tableView` 分组） |
+| `CARD` | 卡片/网格视图，详见 [卡片视图](/zh/annotation/vis-card) |
+| `GANTT` | 甘特图，详见 [甘特图](/zh/annotation/vis-gantt) |
+| `CALENDAR` | 日历视图，配合 `calendarView` 使用，详见 [日历视图](/zh/annotation/vis-calendar)（2.0.0+） |
+| `BOARD` | 看板视图，配合 `boardView` 使用，详见 [看板视图](/zh/annotation/vis-board)（2.0.0+） |
+| `TIMELINE` | 时间线视图，按日期字段排列的垂直信息流，配合 `timelineView` 使用，详见 [时间线视图](/zh/annotation/vis-timeline)（2.4.0+） |
+| `MAP` | 地图视图，把记录渲染为地图标记，配合 `mapView` 使用，详见 [地图视图](/zh/annotation/vis-map)（2.4.0+） |
+| `CUBE` | 指标图表视图，基于 `@EruptCube` 的图表网格，配合 `cubeView` 使用，详见 [指标图表视图](/zh/annotation/vis-cube)（2.4.0+，需 erupt-cube） |
 | `TPL` | 自定义模板视图，配合 `tplView` 使用，详见 [自定义视图](/zh/annotation/vis-tpl) |
+
+:::info
+`BOARD`、`CALENDAR`、`MAP`、`CUBE` 四种视图会一次性加载查询结果的全部记录并隐藏分页器；其余视图沿用列表分页。
+:::
 
 ## visRawTable
 
@@ -85,3 +96,58 @@ public class Task extends BaseModel { ... }
     }
 )
 ```
+
+## TABLE 视图：分组 <Badge type="tip" text="v2.4.0+" />
+
+`type = TABLE` 时还可以通过 `tableView` 按某个字段把行拆成可折叠的分组：每组有一个带条数的组头，组头与表格底部分别显示小计与合计。
+
+![分组表格：组头条数、小计与合计](/annotation/vis-table-group.png)
+
+```java
+@Erupt(
+    name = "订单",
+    vis = {
+        @Vis(
+            code = "byChannel", title = "按渠道",
+            type = Vis.Type.TABLE,
+            tableView = @TableView(groupField = "channel", collapsed = true)
+        )
+    }
+)
+public class Order extends BaseModel {
+
+    @EruptField(
+        views = @View(title = "渠道"),
+        edit = @Edit(title = "渠道", type = EditType.CHOICE, choiceType = @ChoiceType(vl = {
+            @VL(value = "online",  label = "线上"),
+            @VL(value = "offline", label = "线下")
+        }))
+    )
+    private String channel;
+
+    @EruptField(
+        views = @View(title = "金额", statistic = View.Statistic.SUM),
+        edit = @Edit(title = "金额")
+    )
+    private BigDecimal amount;
+
+}
+```
+
+```java
+public @interface TableView {
+
+    String groupField() default "";    // 分组字段；为空时渲染普通表格
+
+    boolean collapsed() default false; // 初始时是否折叠所有分组
+
+}
+```
+
+| 属性名 | 描述 |
+|--------|------|
+| `groupField` | 分组字段名。相邻且该字段值相同的行归为一组，组头显示该值与组内条数；`CHOICE`、`REFERENCE_TREE` / `REFERENCE_TABLE` 等字段按展示值分组 |
+| `collapsed` | 初始是否把所有分组折叠起来，默认 `false`；点击组头可展开 / 折叠 |
+
+- 声明了 `@View(statistic = ...)` 的列在每个组头显示该组的小计，表格底部显示整个查询结果的合计，详见 [@View statistic 列统计](/zh/annotation/view#statistic-列统计)
+- 分组视图仍按列表分页，分组只作用于当前页的行；配合 `orderBy` 按分组字段排序可避免同一个值被分页拆开

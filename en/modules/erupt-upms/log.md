@@ -58,6 +58,12 @@ erupt:
     record-operate-log-max-body-size: 1048576  # bodies over 1MB are not buffered
 ```
 
+## Tenant Isolation
+
+> 2.4.0+
+
+Both log tables (and the online-users view, which maps the login log table) carry a `tenant_id` column, `"0"` for the platform, restricted automatically by Hibernate's `@TenantId`: a tenant administrator opening the logs sees only that tenant's rows, and the platform sees its own. A login happens before the request has a tenant, so the login log row is written explicitly under the **user's own tenant** rather than the platform's. Without [erupt-tenant](/en/modules/pro/erupt-tenant/) every log row belongs to the platform and nothing changes; see [Multi-tenancy and @TenantId](/en/modules/erupt-upms/#multi-tenancy-and-tenantid) for how it works.
+
 ## As an Analytics Source
 
-`EruptLoginLog` and `EruptOperateLog` both carry `@EruptCube`, with account, IP region, function name and duration already declared as dimensions and measures. With [erupt-cube](/en/modules/pro/erupt-cube) you can drag-and-drop straight away: which function fails most, when logins peak, which operations are slowest.
+`EruptLoginLog` and `EruptOperateLog` both carry `@EruptCube`, with account, IP region, function name and duration already declared as dimensions and measures. With [erupt-cube](/en/modules/pro/erupt-cube) you can drag-and-drop straight away: which function fails most, when logins peak, which operations are slowest. The dataset SQL filters by the session's tenant as well, so a tenant analyses its own logs only.

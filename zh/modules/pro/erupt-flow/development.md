@@ -225,6 +225,31 @@ curl -X POST "https://your-host/erupt-api/flow/callback/FL20260814001" \
   -d '{"result": "success", "score": 98}'
 ```
 
+## 网关条件与多值字段 <Badge type="tip" text="v2.4.0+" />
+
+网关分支的条件是对表单模型执行一次查询来判定的。`MULTI_CHOICE`、`TAGS`、`CHECKBOX`、`TRANSFER` 这类**多值字段**在库里分别存为 JSON 数组、拼接字符串或多对多关联，无法用 SQL 的 `in` 比较，因此它们的条件在 Java 中按集合语义判定，其余单值条件仍合并成一条 SQL 执行：
+
+| 操作符 | 命中条件 |
+| --- | --- |
+| 等于（EQ） | 记录持有配置值中的**任意一个** |
+| 不等于（NEQ） | 记录**不持有**任何一个配置值 |
+| 为空（NULL） | 记录的该字段为空集合 |
+| 不为空（NOT_NULL） | 记录的该字段至少有一个值 |
+
+流程设计器的条件选择器会列出这些字段，可直接作为分支条件使用。
+
+## 审批人解析校验 <Badge type="tip" text="v2.4.0+" />
+
+审批节点配置的审批人（指定用户留空、预设审批人为空等）如果解析不到任何用户，流程会在写入任何审批任务之前直接失败，错误信息为 i18n 键 `flow.reviewer_resolves_to_nobody`（「审批人配置无法解析到用户，请检查节点的指定用户」）并附带实例 ID，不再在事务提交时抛出难以定位的异常。
+
+## 多租户支持 <Badge type="tip" text="v2.4.0+" />
+
+与 [erupt-tenant](/zh/modules/pro/erupt-tenant/) 配合时，erupt-flow 无需任何额外配置：
+
+- **按租户分列**：`EruptFlowConfig`（流程定义）、`EruptFlowConfigGroup`（流程分组）、`EruptFlowInstance`（流程实例）带有 Hibernate `@TenantId` 列，平台行为 `'0'`。租户会话只能看到并发起自己租户的流程，实例列表、审批中心同样按租户隔离；子表（节点记录、审批任务、意见、表单历史）跟随实例。
+- **用户引用**：流程表通过 `EruptUserVo` 引用 `e_upms_user`，租户用户与平台用户同在一张表，审批人、抄送人、组织负责人等解析都由 Hibernate 限定在实例所属租户内。
+- **定时调度**：`FlowScheduler` 没有自己的会话，它用 `allTenants()` 扫描所有租户的等待节点，再对每个实例调用 `UpmsTenantSessions.runBound(instance.getTenantId(), ...)`，在该实例所属租户的会话中推进流程，审批人与通知都落在正确的租户里。
+
 ---
 
 需要自定义节点类型或全局流程行为？请继续阅读 [自定义扩展](/zh/modules/pro/erupt-flow/custom-node)。

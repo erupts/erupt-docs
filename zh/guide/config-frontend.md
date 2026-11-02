@@ -31,10 +31,21 @@ window.eruptSiteConfig = {
     copyrightTxt: function() {
       return "版权信息xxxx"
     },
-    // 高德地图 api key，使用地图组件须指定此属性
-    amapKey: "xxxx",
-    // 高德地图 SecurityJsCode
-    amapSecurityJsCode: "xxxxx",
+    // 地图厂商，供 EditType.MAP 字段与地图视图使用，v2.4.0+
+    // provider："amap"（高德）| "baidu" | "tencent" | "tianditu"（天地图）| "google" | "osm"（OpenStreetMap，无需 key）
+    // 厂商 SDK 在运行时按需从其 CDN 加载，前端不打包任何地图代码
+    map: {
+        provider: "amap",
+        key: "xxxx",                       // 厂商 key；osm 不需要
+        securityJsCode: "xxxxx",           // 仅 amap：与 key 配对的安全密钥
+        // mapId: "DEMO_MAP_ID",           // 仅 google：高级标记所需的 map ID
+        // darkStyleId: "",                // baidu / tencent：厂商控制台的自定义样式 id，深色模式下使用
+        // tileUrl: "",                    // 仅 osm：替换 OpenStreetMap 的 XYZ 瓦片地址模板
+        // center: {lng: 116.4, lat: 39.9}, // 空地图打开时的中心点，各厂商各有默认值
+    },
+    // 旧写法：顶层 amapKey / amapSecurityJsCode 仍然有效，等价于 map.provider = "amap"；map 中显式写的键优先
+    // amapKey: "xxxx",
+    // amapSecurityJsCode: "xxxxx",
     // Logo：不写该键则使用默认（内置 erupt 标志），设为 null 或 '' 则该位置不显示任何 logo，v2.3.0+ 起三个键规则一致
     // logoPath: "erupt.svg",      // 展开状态顶栏 logo（默认：内置 erupt 标志）
     // logoFoldPath: null,         // 菜单折叠后的 logo，1.12.21+（默认：跟随 logoPath；未配置 logo 时显示站点名首字母方块）
@@ -66,6 +77,7 @@ window.eruptSiteConfig = {
         compact: false,
         // 主题风格："default" | "brutalist" | "liquid-glass"
         //   | "workspace"（工作台外壳：品牌色框架 + 圆角内容卡片，v2.3.0+）| "classic"（Ant Design Pro：深蓝侧栏 + 白色顶栏，v2.3.0+）
+        //   | "material"（Material 3 / Gmail：品牌色调的容器面 + 圆角纸面 + 胶囊菜单行，v2.4.0+）| "terminal"（荧光控制台：黑色画布、等宽字体、单一荧光色，v2.4.0+）
         skin: "default",
         // 仅 workspace 皮肤：导航框架配色预设，不设则从主题色推导，v2.3.0+
         //   浅色："mist" | "sky" | "azure" | "salt" | "gray" | "mint" | "mint-chip" | "lime" | "citrus" | "banana" | "brass" | "almond" | "peach"
@@ -75,6 +87,8 @@ window.eruptSiteConfig = {
         // 菜单模式："normal" 侧栏 | "group" 一级分类作为分组标题（v2.3.0+）| "dual" 双栏侧栏 | "split" 一级分类放到顶栏
         //   | "top" 全部菜单放到顶栏，无侧栏 | "top-split" 一级分类在顶栏、子菜单在第二行，无侧栏（v2.3.0+）
         menuMode: "normal",
+        // 侧边栏按模块分组显示分节标题（业务 / AI / 开发工具 / 运维 / 数据源），false 隐藏，v2.4.0+
+        menuGroups: true,
         // 记录表单的打开形态："center" 中间弹窗 | "side" 侧边面板 | "full" 全屏，v2.3.0+
         // formPanelMode: "center",
         // 登录页布局："center" 居中卡片 | "cover" 侧边面板 | "wide" 宽卡分栏 | "wallpaper" 壁纸玻璃 | "poster" 品牌满屏，v2.3.0+

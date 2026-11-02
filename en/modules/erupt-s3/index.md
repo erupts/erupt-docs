@@ -1,6 +1,6 @@
 # Erupt S3 Object Storage
 
-erupt-data-s3 connects any **S3-compatible object storage** to Erupt — AWS S3, MinIO, Alibaba Cloud OSS, Tencent Cloud COS, Cloudflare R2 and more — built on AWS SDK v2. The module offers two independent capabilities that share one set of configuration:
+erupt-data-s3 connects any **S3-compatible object storage** to Erupt — AWS S3, MinIO, Alibaba Cloud OSS, Tencent Cloud COS, Cloudflare R2 and more — built on AWS SDK v2 (2.55). The module offers two independent capabilities that share one set of configuration:
 
 | Capability | What it does | Page |
 | --- | --- | --- |
@@ -37,7 +37,15 @@ erupt:
 ```
 
 - The attachment proxy `S3AttachmentProxy` reads this configuration directly.
-- Connection attributes left empty on the `@EruptS3` data source annotation fall back to it too, so a model carrying nothing but `@EruptS3` browses the attachment bucket; override only the attributes that differ to reach another bucket or provider.
+- Connection attributes left empty on the `@EruptS3` data source annotation fall back to it too — `bucket` and `region` included — so a bare `@EruptS3` with no attributes at all browses the attachment bucket; override only the attributes that differ to reach another bucket or provider.
+
+```java
+@Erupt(name = "Attachment Objects", power = @Power(add = false, edit = false))
+@EruptS3
+@EruptDataProcessor(EruptS3DataService.DATA_PROCESSOR)
+public class AttachmentObject extends S3ObjectModel {
+}
+```
 
 Keep credentials in configuration or environment variables, never in the annotation — annotation values are compile-time constants and end up in the class file. See the [Configuration Reference](./config) for every property.
 

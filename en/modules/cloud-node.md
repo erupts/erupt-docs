@@ -40,6 +40,8 @@ erupt:
     enable-register: true
     # Optional: heartbeat interval in milliseconds, default 15000
     heartbeat-time: 15000
+    # Optional: refuse server calls without a valid Erupt-Signature, default false (2.4.0+)
+    require-signature: false
 ```
 
 Manually add the node on the Server side:
@@ -148,6 +150,19 @@ Do not introduce dependencies not listed below — they may cause unexpected iss
 | erupt-excel | Excel import/export capability |
 | erupt-toolkit | Utilities (e.g., SQL query capability for choice components) |
 | erupt-tenant-core | Multi-tenant capability (not open-source) |
+
+## Registered Address and Signature Verification <Badge type="tip" text="v2.4.0+" />
+
+- **Registered address**: without `host-address`, the node registers the port it **actually bound** (not the configured `server.port`, so a random port works too) together with `server.servlet.context-path`, and the server calls back on exactly that address. The Solon / Quarkus / Micronaut lite nodes register their context paths the same way
+- **Signature verification**: every server call carries an HMAC-SHA256 signature; `NodeSignatureFilter` verifies it on `/erupt-api/**` and answers 403 when it is invalid. With `erupt.cloud-node.require-signature: true`, a call carrying only the plain access token is refused as well; switch `erupt.cloud-server.plain-access-token` off on the server to match
+- **Skipped power callback**: when the server has already checked the user's rights before forwarding, it says so inside the signature with `Erupt-Enforced: power`, and the node no longer calls the server back for them; the model's own `@Power` is still applied by the node. See [What the Server Does for a Node](/en/modules/cloud-server#what-the-server-does-for-a-node)
+
+## Non-Spring Stacks and Language SDKs
+
+`erupt-cloud-node` on this page is a Spring Boot module. For other stacks use:
+
+- **[Node Lite](/en/modules/cloud-node-lite)**: plain Java / Kotlin, Solon, Quarkus, Micronaut, Vert.x, Ktor or any servlet container, with `erupt-annotation`, `erupt-cloud-common` and `linq.j` as the only runtime dependencies and the very same model annotations as this page
+- **[erupt-sdk](/en/modules/erupt-sdk/)**: node SDKs for Python, Go, TypeScript, PHP, .NET, Rust, Ruby and Swift, built on the [node protocol spec](https://github.com/erupts/erupt/blob/develop/erupt-cloud/PROTOCOL.md) and the JSON Schema generated with erupt (`schema/erupt-annotations.schema.json` describes the annotation structure, `schema/erupt-node-defaults.json` gives the default field JSON of every edit type)
 
 ## Pulling Configuration from the Server Side (Replacing yml Config Center)
 

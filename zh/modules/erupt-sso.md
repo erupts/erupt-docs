@@ -1,10 +1,10 @@
 # Erupt SSO 单点登录
 
-erupt-sso 让 erupt 把登录委托给外部认证源：Keycloak、Authing、Okta 这类 OIDC 服务，以及 GitHub、Gitee、飞书这类只提供 OAuth 2.0 的平台。认证源在后台**系统管理 → 单点登录**菜单里以数据行的形式配置：选一个供应商预设、粘贴客户端凭据即可，不写代码、不改配置文件、不重启，保存后登录页立刻出现对应按钮。
+erupt-sso 让 erupt 把登录委托给外部认证源：Keycloak、Authing、Okta 这类 OIDC 服务，GitHub、Gitee、飞书这类只提供 OAuth 2.0 的平台，以及 AD FS、Microsoft Entra ID 这类 SAML 2.0 身份提供者（2.4.0+）。认证源在后台**系统管理 → 单点登录**菜单里以数据行的形式配置：选一个供应商预设、粘贴客户端凭据即可，不写代码、不改配置文件、不重启，保存后登录页立刻出现对应按钮。
 
-> 最低版本要求：**2.3.0**
+> 最低版本要求：**2.3.0**；SAML 2.0 与租户专属认证源需 **2.4.0**
 
-模块走 OAuth 2.0 授权码流程并强制 PKCE；授权码在服务端换取访问令牌，令牌只用来调用一次用户信息接口，全程不解析 `id_token`，也不引入任何 JWT 库。
+模块走 OAuth 2.0 授权码流程并强制 PKCE；授权码在服务端换取访问令牌，令牌只用来调用一次用户信息接口，全程不解析 `id_token`，也不引入任何 JWT 库。SAML 行走的是另一条协议：浏览器把 IdP 签名的断言 POST 回来，用 JDK 自带的 XML 签名 API 验签，同样不引入第三方库，见 [SAML 2.0 单点登录](#saml-2-0-单点登录)。
 
 ## 引入方式
 
@@ -55,7 +55,7 @@ sequenceDiagram
 
 ### 四种交换方式
 
-上图画的是标准 OAuth 2.0 的情况。浏览器带着 `code` 回来之后怎么交换，由认证源的**供应商类型**决定，共四种（`SsoProviderType.Flow`）：
+上图画的是标准 OAuth 2.0 的情况。浏览器带着 `code` 回来之后怎么交换，由认证源的**供应商类型**决定，OAuth 2.0 一侧共四种（`SsoProviderType.Flow`）；第五种 `SAML` 不交换授权码而是验签断言，单独见 [SAML 2.0 单点登录](#saml-2-0-单点登录)：
 
 | 方式 | 适用的供应商类型 | 交换过程 |
 | --- | --- | --- |
@@ -76,7 +76,7 @@ sequenceDiagram
 
 | 字段 | 说明 | 默认值 |
 | --- | --- | --- |
-| 供应商类型 Provider Type | 18 种预设（Keycloak、Authing、Casdoor、Okta、Auth0、Microsoft Entra ID、Google、GitLab、Atlassian、Slack、Zoom、GitHub、Gitee、飞书、钉钉、企业微信、微信开放平台）加「自定义」，见[供应商预设](#供应商预设)。选中预设后自动填入图标、签发者或三个地址、授权范围、账号 / 姓名 / 邮箱 / 手机 / 头像声明与 Open ID 字段；编码（预设名小写，如 `keycloak`）和名称只在为空时建议填入，已填的不覆盖；客户端 ID / 密钥下方的提示文字改为该供应商控制台的叫法（如 Entra 的「Application (client) ID」、飞书的「App ID」）。地址里预设留下的 `<placeholder>` 必须替换，否则保存被拒绝。类型还决定登录时的交换方式，见[四种交换方式](#四种交换方式) | 自定义 |
+| 供应商类型 Provider Type | 20 种预设（Keycloak、Authing、Casdoor、Okta、Auth0、Microsoft Entra ID、Google、GitLab、Atlassian、Slack、Zoom、GitHub、Gitee、飞书、钉钉、企业微信、微信开放平台，以及 SAML 2.0、AD FS、Microsoft Entra ID (SAML) 三个 SAML 预设）加「自定义」，见[供应商预设](#供应商预设)。选中预设后自动填入图标、签发者或三个地址、授权范围、账号 / 姓名 / 邮箱 / 手机 / 头像声明与 Open ID 字段；编码（预设名小写，如 `keycloak`）和名称只在为空时建议填入，已填的不覆盖；客户端 ID / 密钥下方的提示文字改为该供应商控制台的叫法（如 Entra 的「Application (client) ID」、飞书的「App ID」）。地址里预设留下的 `<placeholder>` 必须替换，否则保存被拒绝。类型还决定登录时的交换方式，见[四种交换方式](#四种交换方式) | 自定义 |
 | 编码 Code | 2~32 位字母、数字、`-`、`_`，唯一。**出现在回调地址中**，保存后不可修改——改了会静默打断认证源侧已登记的回调 | — |
 | 名称 Name | 登录页按钮上的文字，支持 i18n 词条 | — |
 | 图标 Icon | Font Awesome 图标选择器，按钮上显示 | — |
@@ -91,7 +91,7 @@ sequenceDiagram
 | 授权地址 Authorize URL | authorization endpoint | 由 Issuer 发现 |
 | 令牌地址 Token URL | token endpoint | 由 Issuer 发现 |
 | 用户信息地址 User Info URL | userinfo endpoint | 由 Issuer 发现 |
-| 回调地址 Redirect URI | 认证源把浏览器送回的地址，必须与认证源侧登记的**完全一致**。留空时按当前请求推算为 `http(s)://<本机地址>/erupt-api/sso/callback/<编码>`；只有在反向代理之后、或对外域名与后端不一致时才需要手填 | 留空自动推算 |
+| 回调地址 Redirect URI | 认证源把浏览器送回的地址，必须与认证源侧登记的**完全一致**。留空时按当前请求推算为 `http(s)://<本机地址>/erupt-api/sso/callback/<编码>`（租户的 SAML 行为 `/erupt-api/sso/tenant/<租户编码>/callback/<编码>`，见[租户专属认证源](#租户专属认证源)）；只有在反向代理之后、或对外域名与后端不一致时才需要手填 | 留空自动推算 |
 
 保存时校验：要么三个地址填全，要么填 Issuer 且它能返回发现文档。Issuer 没有发现文档（GitHub、Gitee、飞书都属于这一类）时保存被拒绝并提示「该 Issuer 没有 OpenID 发现文档，请手动填写授权、令牌和用户信息三个地址」，而不是等到有人登录时才失败。三个地址也可以只填部分，填了的覆盖发现结果。
 
@@ -153,10 +153,13 @@ sequenceDiagram
 
 ## 供应商预设
 
-「供应商类型」里的 18 个预设各自填好接入地址（OIDC 服务填签发者，其余填三个地址）、授权范围、声明映射和 Open ID 字段，留给你的只有供应商控制台里的客户端凭据，以及自建服务地址里的 `<placeholder>`。取值以发版时各供应商文档为准，登录失败时请对照其最新文档核对一遍。
+「供应商类型」里的 20 个预设各自填好接入地址（OIDC 服务填签发者，SAML 填单点登录地址与 IdP Entity ID，其余填三个地址）、授权范围、声明映射和 Open ID 字段，留给你的只有供应商控制台里的客户端凭据，以及自建服务地址里的 `<placeholder>`。取值以发版时各供应商文档为准，登录失败时请对照其最新文档核对一遍。
 
 | 类型 | 协议 | 需替换的占位符 | 账号声明 | Open ID 字段 | 备注 |
 | --- | --- | --- | --- | --- | --- |
+| SAML 2.0 | SAML | `<idp-host>`（单点登录地址） | `nameId` | — | 通用预设，姓名声明 `displayName`、邮箱声明 `email`，按 IdP 实际发出的属性名改 |
+| AD FS | SAML | `<adfs-host>`（单点登录地址与 Entity ID） | `nameId` | — | 单点登录地址 `https://<adfs-host>/adfs/ls/`，Entity ID `http://<adfs-host>/adfs/services/trust`；姓名 / 邮箱声明为 `.../ws/2005/05/identity/claims/name` 与 `.../emailaddress` 全名；客户端 ID 提示为「Relying party identifier」 |
+| Microsoft Entra ID (SAML) | SAML | `<tenant-id>` | `nameId` | `http://schemas.microsoft.com/identity/claims/objectidentifier` | 单点登录地址 `https://login.microsoftonline.com/<tenant-id>/saml2`，Entity ID `https://sts.windows.net/<tenant-id>/`；姓名声明 `.../identity/claims/displayname`；客户端 ID 提示为「Identifier (Entity ID)」 |
 | Keycloak | OIDC 发现 | `<host>`、`<realm>` | `preferred_username` | — | 签发者 `https://<host>/realms/<realm>` |
 | Authing | OIDC 发现 | `<app>` | `preferred_username` | — | 签发者 `https://<app>.authing.cn/oidc`，范围含 `phone` |
 | Casdoor | OIDC 发现 | `<host>` | `preferred_username` | — | 姓名声明 `displayName`，手机声明 `phone` |
@@ -192,6 +195,63 @@ Authing、Casdoor、Okta、Auth0、Entra ID 等其他 OIDC 预设同理：替换
 - **开通权限**：按预设填入的授权范围为应用开通对应权限——飞书的 `contact:user.*:readonly` 四项、企业微信的 `snsapi_privateinfo`（成员敏感信息）、钉钉的 `openid` 登录权限。
 
 另外几点：企业微信要把授权地址里的 `<agentid>` 换成自建应用的 AgentId（若这行还要推送消息，「消息推送凭据」也填它）；飞书的用户信息接口返回 `{ "code": 0, "msg": "success", "data": { ... } }` 的信封结构，模块自动取 `data` 作为声明，`code` 非 0 时报「认证源响应异常 (code: msg)」，企业微信、钉钉的同类响应亦如此处理；Lark 国际版只需把三个地址的域名改为 Lark 的即可。
+
+## SAML 2.0 单点登录
+
+> 2.4.0+
+
+供应商类型选 **SAML 2.0**、**AD FS** 或 **Microsoft Entra ID (SAML)** 时，这一行走 SAML 2.0 Web Browser SSO（SP 发起）：erupt 作为 SP 生成 `AuthnRequest`，经 **HTTP-Redirect** 绑定（deflate + base64，不签名）把浏览器送到 IdP 的单点登录地址；IdP 认证后让浏览器把签名的 `Response` 以 **HTTP-POST** 绑定提交到 erupt 的断言消费地址（ACS）。服务端的 `state` 同时充当 `AuthnRequest` 的 `ID`（`_<state>`）与 `RelayState`，回来时据此校验 `InResponseTo`。从取出声明开始，后续与 OAuth 2.0 行完全相同：按 subject 找绑定、按账号声明匹配、自动建号、一次性票据换 token。
+
+### 字段映射
+
+SAML 行复用同一张表单，字段按 SAML 的叫法理解；令牌地址、用户信息地址、客户端密钥、授权范围在 SAML 行上隐藏：
+
+| 表单字段 | SAML 含义 | 说明 |
+| --- | --- | --- |
+| 签发者 Issuer | **IdP Entity ID** | 填了则校验响应与断言中的 `Issuer` 必须一致；留空不校验 |
+| 授权地址 Authorize URL | **IdP 单点登录地址**（SSO URL，HTTP-Redirect 绑定） | 必填 |
+| 客户端 ID Client ID | **SP Entity ID** | 你在 IdP 上为 erupt 登记的标识，同时作为 `AuthnRequest` 的 `Issuer` 与断言的 `Audience` 校验值 |
+| 回调地址 Redirect URI | **断言消费地址 ACS** | 留空按当前请求推算为 `http(s)://<本机地址>/erupt-api/sso/callback/<编码>`；响应的 `Destination` 与 `Recipient` 必须与之一致 |
+| IdP 证书 IdP Certificate | **IdP 签名证书** | 从 IdP 元数据中取出的 X.509 证书，PEM 或裸 base64 均可；保存时即解析，无法解析则拒绝保存。这是 SAML 登录**唯一的信任锚** |
+| 账号 / 姓名 / 邮箱 / 手机 / 头像 / Open ID 声明 | 断言属性名 | 见下文「声明」 |
+
+### 声明
+
+断言中的每个 `Attribute` 以其 `Name` 作为声明名；带 `FriendlyName` 的再以友好名复制一份，所以 AD FS 的邮箱既可以用全名 `http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress` 映射，也可以直接写 `emailaddress`。多值属性映射为数组。`Subject/NameID` 以 `nameId` 暴露（格式在 `nameIdFormat`），并作为 subject 的首选来源——绑定表里的主体标识就是它。预设默认账号声明为 `nameId`，IdP 发的 NameID 不是账号名时改成实际属性即可。
+
+### 接入步骤
+
+1. **系统管理 → 单点登录** 新增一行，供应商类型选对应的 SAML 预设，替换单点登录地址与 Entity ID 里的 `<placeholder>`。
+2. 「客户端 ID」填你打算给 erupt 起的 SP Entity ID（如 `https://admin.example.com/erupt`），「回调地址」通常留空。
+3. 从 IdP 的元数据（AD FS 为 `FederationMetadata.xml`，Entra 为企业应用的「SAML 签名证书」）取出签名证书，粘进「IdP 证书」，保存。
+4. 在 IdP 上登记 erupt 为 SP：导入 `GET https://<erupt 域名>/erupt-api/sso/saml/<编码>/metadata` 返回的 SP 元数据，或手工填写 SP Entity ID 与 ACS 地址 `https://<erupt 域名>/erupt-api/sso/callback/<编码>`。元数据声明 `AuthnRequestsSigned="false"`、`WantAssertionsSigned="true"`，NameID 格式 `unspecified`。
+5. 让 IdP 发送**签名的明文断言**（断言签名或整个响应签名均可），不要开启断言加密。
+6. 登录页点按钮测试；失败提示见[接口](#接口)一节的错误表。
+
+### 校验与限制
+
+一个响应被接受要依次通过：禁止 DTD 的 XML 解析、`Status` 为 Success、`InResponseTo` 等于本次请求 ID、`Destination` 等于 ACS、`Issuer` 与配置一致、断言（或响应）带 enveloped 签名且签名引用的正是它所在元素（只允许 enveloped 与 c14n 变换，启用 secureValidation，签名包裹攻击无法得手）并能用 IdP 证书验证、`NotBefore` / `NotOnOrAfter` 在有效期内（容忍 3 分钟时钟偏差）、`Audience` 包含 SP Entity ID、`SubjectConfirmation` 为 bearer 且其 `Recipient` / `InResponseTo` / 时间都对得上。
+
+- 只依赖 JDK 的 `javax.xml.crypto.dsig`，不引入 OpenSAML 等库。
+- **不支持加密断言**：收到 `EncryptedAssertion` 直接拒绝，请把 IdP 配置为发送签名明文断言（解密需要 SP 密钥对，主流 IdP 都能明文发送）。
+- `AuthnRequest` 不签名，IdP 若默认要求签名请求需关掉该要求。
+- 一行只信任一张证书，IdP 轮换证书时更新该行即可，证书过期前后的切换需要手动配合。
+- 不支持单点登出（SLO）；响应体上限 1 MB。
+- 已用 [mocksaml.com](https://mocksaml.com) 做过端到端验证，适合先拿它跑通再接真实 IdP。
+
+## 租户专属认证源
+
+> 2.4.0+，需引入 [erupt-tenant](/zh/modules/pro/erupt-tenant/)
+
+`e_upms_sso` 与 `e_upms_sso_bind` 都带 `tenant_id` 列（平台为 `"0"`），由 Hibernate `@TenantId` 自动限定与打标：租户管理员在自己的后台里打开「单点登录」新增的行，天然属于该租户，平台与其他租户都看不到。认证源编码在**租户内**唯一，不同租户可以都叫 `feishu`。
+
+租户登录页的流程与平台一致，只是多带一个租户编码：
+
+- 登录页请求 `GET /erupt-api/sso/providers?tenant=<租户编码>` 取按钮列表，点击跳转 `GET /erupt-api/sso/authorize/<编码>?tenant=<租户编码>`。租户编码不存在时 providers 返回空列表（与没有配认证源的租户无法区分，页面不会泄露哪些编码存在），authorize 报「企业不存在」。
+- 租户编码由 `UpmsTenantLogin` SPI（erupt-tenant 实现）解析为租户 id，之后**租户只保存在服务端 state 里**，浏览器回来的内容不携带、也改不了租户；认证源行、绑定与用户都在该租户的会话里读写。
+- **回调地址**：OAuth 2.0 行的租户默认回调仍是平台的 `/erupt-api/sso/callback/<编码>`——租户在 state 里，所以**一个飞书 / 企业微信应用可以服务所有租户**，供应商侧只需登记一个回调地址。SAML 的 IdP 靠 ACS 地址区分 SP，租户的 SAML 行默认回调为 `/erupt-api/sso/tenant/<租户编码>/callback/<编码>`，SP 元数据相应在 `/erupt-api/sso/tenant/<租户编码>/saml/<编码>/metadata`。走租户路径回来的回调会核对路径中的租户与 state 中的一致。
+- 认证完成后由 `UpmsTenantLogin.login` 收尾：租户被锁定或过期则拒绝，否则签发**租户 token**，并把浏览器送回该租户的登录页换票。
+- 不带 `tenant` 参数、或未引入 erupt-tenant 时，一切行为与平台相同。
 
 ## 单点登录绑定管理
 
@@ -236,13 +296,16 @@ public void reachOnFeishu(Long userId) {
 
 ## 接口
 
-四个接口都**无需登录**即可访问——它们服务的正是尚未登录的用户，各自以 state、票据或「没有可保护的内容」为凭：
+所有接口都**无需登录**即可访问——它们服务的正是尚未登录的用户，各自以 state、票据、签名断言或「没有可保护的内容」为凭：
 
 | 接口 | 说明 |
 | --- | --- |
-| `GET /erupt-api/sso/providers` | 启用中的认证源列表（编码、名称、图标），登录页渲染按钮用 |
-| `GET /erupt-api/sso/authorize/{provider}` | 生成 state 与 PKCE 后 302 到认证源授权地址 |
-| `GET /erupt-api/sso/callback/{provider}` | 认证源回调地址；成功则 302 到登录页并带 `ssoTicket`，失败带 `ssoError` |
+| `GET /erupt-api/sso/providers` | 启用中的认证源列表（编码、名称、图标），登录页渲染按钮用；`?tenant=<租户编码>` 取租户的列表 |
+| `GET /erupt-api/sso/authorize/{provider}` | 生成 state 与 PKCE 后 302 到认证源授权地址（SAML：带 `SAMLRequest` 的单点登录地址）；`?tenant=<租户编码>` 以租户身份发起 |
+| `GET /erupt-api/sso/callback/{provider}` | OAuth 2.0 回调地址；成功则 302 到登录页并带 `ssoTicket`，失败带 `ssoError` |
+| `POST /erupt-api/sso/callback/{provider}` | SAML 断言消费地址（ACS），接收 `SAMLResponse` 与 `RelayState`，结果与 GET 回调相同 |
+| `GET /erupt-api/sso/saml/{provider}/metadata` | SP 元数据（`application/samlmetadata+xml`），给 IdP 导入；只对 SAML 行开放 |
+| `.../sso/tenant/{tenant}/callback/{provider}`、`.../sso/tenant/{tenant}/saml/{provider}/metadata` | 以上回调与元数据的租户路径，租户 SAML 行默认使用 |
 | `POST /erupt-api/sso/exchange` | 请求体 `{ "ssoTicket": "..." }`，返回与密码登录相同的 `LoginModel`（含 token）；票据一次性、60 秒有效，过期返回「登录凭证已失效，请重新登录」 |
 
 常见错误提示与含义：
@@ -260,14 +323,21 @@ public void reachOnFeishu(Long userId) {
 | 请先替换地址中的占位符 (…) | 保存时地址里还留着预设的 `<host>`、`<realm>`、`<agentid>` 之类占位符，括号内是那条地址 |
 | 该账号不是企业成员 | 企业微信：扫码的账号不在该企业的通讯录里 |
 | 该供应商类型不支持以应用身份调用接口 | 对不是飞书 / 钉钉 / 企业微信的行调用了 `SsoProviderApi.appAccessToken` |
+| 请填写 IdP 单点登录地址和证书 | 保存 SAML 行时单点登录地址或 IdP 证书为空 |
+| 无法解析 IdP 证书，请粘贴 PEM 或 base64 格式的 X.509 证书 | 保存时证书内容不是合法的 X.509 |
+| SAML 响应无效 (…) | 响应没通过某项校验，括号内说明是哪项：`InResponseTo is …`、`Destination is …`、`audience is not …`、`expired, NotOnOrAfter …`、`signature verification failed` 等 |
+| SAML 响应未携带可用配置证书验证的签名 | 断言和响应都没有签名；有签名但验不过属于上一条 |
+| 不支持加密断言，请将 IdP 配置为发送签名的明文断言 | 响应里是 `EncryptedAssertion` |
+| 认证源拒绝了本次登录 (…) | IdP 返回的 `Status` 不是 Success，括号内是其状态码与消息 |
+| 企业不存在 | `tenant` 参数对应的租户编码不存在，或未引入 erupt-tenant |
 
 ## 数据表
 
 | 表 | 说明 |
 | --- | --- |
-| `e_upms_sso` | 认证源，继承 `MetaModelUpdateVo`；字段与表单一致：`type` VARCHAR(32)（供应商类型枚举名，2.3.0 前建的行为空，按自定义处理）、`code`（唯一）、`name`、`icon`、`status`、`sort`、`issuer`、`authorize_url`、`token_url`、`user_info_url`、`redirect_uri`（均 VARCHAR(512)）、`client_id`、`client_secret` VARCHAR(512)、`messaging_key` VARCHAR(255)、`scopes` VARCHAR(255)、`account_claim` / `name_claim` / `email_claim` / `phone_claim` / `avatar_claim` / `open_id_claim` VARCHAR(64)、`sync_profile`、`auto_create`、`grant_roles_on_login`、`remark` |
+| `e_upms_sso` | 认证源，继承 `MetaModelUpdateVo`；字段与表单一致：`tenant_id` VARCHAR(64) NOT NULL 默认 `'0'`（2.4.0+）、`type` VARCHAR(32)（供应商类型枚举名，2.3.0 前建的行为空，按自定义处理）、`code`、`name`、`icon`、`status`、`sort`、`issuer`、`authorize_url`、`token_url`、`user_info_url`、`redirect_uri`（均 VARCHAR(512)）、`client_id`、`client_secret` VARCHAR(512)、`idp_certificate` LONGTEXT（2.4.0+，SAML 行用）、`messaging_key` VARCHAR(255)、`scopes` VARCHAR(255)、`account_claim` / `name_claim` / `email_claim` / `phone_claim` / `avatar_claim` / `open_id_claim` VARCHAR(64)、`sync_profile`、`auto_create`、`grant_roles_on_login`、`remark`；唯一约束 `uk_upms_sso_code (tenant_id, code)`，2.4.0 前 `code` 上的单列唯一索引需手工删除 |
 | `e_upms_sso_role` | 认证源默认角色，`sso_id` + `role_id` |
-| `e_upms_sso_bind` | 绑定，继承 `MetaModelUpdateVo`：`sso_id`、`erupt_user_id`、`subject` VARCHAR(255) NOT NULL、`open_id` VARCHAR(255)、`last_login_time` DATETIME(6)、`claims` VARCHAR(10485760)（`AnnotationConst.CONFIG_LENGTH`，MySQL 上映射为 LONGTEXT）；唯一约束 `(sso_id, subject)` |
+| `e_upms_sso_bind` | 绑定，继承 `MetaModelUpdateVo`：`tenant_id`（2.4.0+）、`sso_id`、`erupt_user_id`、`subject` VARCHAR(255) NOT NULL、`open_id` VARCHAR(255)、`last_login_time` DATETIME(6)、`claims` VARCHAR(10485760)（`AnnotationConst.CONFIG_LENGTH`，MySQL 上映射为 LONGTEXT）；唯一约束 `(sso_id, subject)` |
 
 开启 JPA 自动建表的项目升级后自动创建；手工维护表结构的项目请按上表建表。
 

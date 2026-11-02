@@ -225,6 +225,31 @@ curl -X POST "https://your-host/erupt-api/flow/callback/FL20260814001" \
   -d '{"result": "success", "score": 98}'
 ```
 
+## Gateway Conditions on Multi-valued Fields <Badge type="tip" text="v2.4.0+" />
+
+A gateway branch is decided by running one query against the form model. **Multi-valued fields** — `MULTI_CHOICE`, `TAGS`, `CHECKBOX`, `TRANSFER` — are stored as a JSON array, a joined string or a many-to-many relation, which an SQL `in` cannot compare, so their conditions are evaluated in Java with set semantics while the remaining single-valued conditions still run as one SQL query:
+
+| Operator | Matches when |
+| --- | --- |
+| Equals (EQ) | the record holds **any** of the configured values |
+| Not equals (NEQ) | the record holds **none** of the configured values |
+| Is null (NULL) | the stored set is empty |
+| Not null (NOT_NULL) | the stored set has at least one value |
+
+The condition picker in the flow designer lists these fields, so they can be used as branch conditions directly.
+
+## Reviewer Resolution Check <Badge type="tip" text="v2.4.0+" />
+
+When the reviewers configured on an approval node resolve to no user (a specified user left empty, a null predefined user), the flow now fails before any approval task is written. The error carries the i18n key `flow.reviewer_resolves_to_nobody` ("A reviewer resolves to no user; check the node's specified user") plus the instance ID, instead of an unreadable exception at transaction flush.
+
+## Multi-tenant Support <Badge type="tip" text="v2.4.0+" />
+
+Together with [erupt-tenant](/en/modules/pro/erupt-tenant/), erupt-flow needs no extra configuration:
+
+- **Per-tenant rows**: `EruptFlowConfig` (definitions), `EruptFlowConfigGroup` (groups) and `EruptFlowInstance` (instances) carry a Hibernate `@TenantId` column, `'0'` for platform rows. A tenant session only sees and launches its own tenant's flows, and the instance lists and approval center are isolated the same way; the child tables (node records, approval tasks, comments, form histories) follow their instance.
+- **User references**: the flow tables reference `e_upms_user` through `EruptUserVo`; tenant and platform users share that table, so approvers, CC users and organization heads all resolve within the instance's tenant, enforced by Hibernate.
+- **Scheduler**: `FlowScheduler` has no session of its own. It scans every tenant's waiting nodes with `allTenants()`, then processes each instance with `UpmsTenantSessions.runBound(instance.getTenantId(), ...)`, inside a session of the instance's tenant, so approvers and notices land in the right tenant.
+
 ---
 
 Need custom node types or global flow behavior? Continue with [Custom Extensions](/en/modules/pro/erupt-flow/custom-node).

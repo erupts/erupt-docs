@@ -24,6 +24,22 @@ A dropdown single-select field, supporting both static enum values and dynamical
 private String choice;
 ```
 
+## Enum Fields Are Dropdowns <Badge type="tip" text="v2.4.0+" />
+
+When the field type is a Java enum, Erupt infers `CHOICE` with no `type` and no `vl` written: the options are the enum constants, the stored value is the constant name and the label is that name translated through i18n.
+
+```java
+public enum OrderStatus { PENDING, PAID, SHIPPED }
+
+@EruptField(
+    views = @View(title = "Status"),
+    edit = @Edit(title = "Status") // inferred as CHOICE with PENDING / PAID / SHIPPED
+)
+private OrderStatus status;
+```
+
+Once `@ChoiceType` declares `vl` or `fetchHandler`, those win and the constants are not used. The other inference rules are in [Auto Inference AUTO](/en/field-types/auto#inference-from-the-java-type).
+
 ## Dynamic List <Badge type="tip" text="MyModel 2.0.0+" />
 
 Implement `ChoiceFetchHandler<T>` to generate options dynamically. The generic `T` is the current Erupt entity class (conventionally named `MyModel`) — override `fetchFilter` to read other form fields and drive linked selections:
@@ -109,6 +125,8 @@ public @interface ChoiceType {
 
     String dependField() default ""; // Linked field name (in the same entity)
 
+    boolean validate() default true; // Server-side check that the submitted value is one of the options (2.4.0+)
+
     enum Type {
         SELECT, // Dropdown select (default)
         RADIO,  // Radio button group
@@ -116,6 +134,29 @@ public @interface ChoiceType {
 
 }
 ```
+
+## Server-side Option Check <Badge type="tip" text="v2.4.0+" />
+
+`erupt.choice-validate` is **on by default**: on add, edit, cell edit and Excel import the server compares every `CHOICE` / `MULTI_CHOICE` value with **the options the user is actually offered** and refuses anything else, naming the field and the offending value. The offered options are `vl`, the enum constants, what `fetchHandler.fetch` returns, and, under `dependField` linkage, what `fetchFilter` returns for the submitted form.
+
+- On an edit a value equal to the stored one passes, so a retired option in an old record never blocks editing its other fields
+- An option with `disable = true` is refused as a new value
+- A field that declares no options at all (no `vl`, no `fetchHandler`, not an enum) is not checked
+
+Opt a field out when it legitimately stores values outside its options:
+
+```java
+@EruptField(
+    edit = @Edit(title = "Source", type = EditType.CHOICE,
+                 choiceType = @ChoiceType(validate = false, vl = {
+                     @VL(value = "web", label = "Web"),
+                     @VL(value = "app", label = "App"),
+                 }))
+)
+private String source; // other source codes are also written through the API
+```
+
+Turn it off globally with `erupt.choice-validate=false` in `application.yml`, see [Configuration](/en/guide/configuration).
 
 ## @VL Option Attributes
 

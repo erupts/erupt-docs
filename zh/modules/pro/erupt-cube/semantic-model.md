@@ -286,6 +286,86 @@ public class EruptOperateLog extends BaseModel {
 }
 ```
 
+## 用 YAML / JSON 文件定义 Cube <Badge type="tip" text="v2.4.0+" />
+
+除 Java 注解外，Cube 也可以写成 YAML 或 JSON 文件，不用编译即可增加或调整分析模型。启动时在注解扫描之后加载 classpath 下 `cube/**/*.yml`、`*.yaml`、`*.json` 的全部文件，路径可通过配置修改（Spring 资源表达式，支持 `classpath*:` 与 `file:`）：
+
+```yaml
+erupt:
+  cube:
+    models:
+      - classpath*:cube/**/*.yml
+      - classpath*:cube/**/*.yaml
+      - classpath*:cube/**/*.json
+      - file:/opt/app/cubes/*.yml
+```
+
+**一个文件就是一个 Cube**，结构与注解一一对应：顶层是 `@EruptCube` 的属性，外加 `code`（注册编码，省略时取文件名）与 `dimensions` / `measures` / `parameters` 三个以字段名为键的映射，每个值是对应注解（`@Dimension` / `@Measure` / `@Parameter`）的属性。
+
+`src/main/resources/cube/ProductCube.yml`：
+
+```yaml
+# yaml-language-server: $schema=https://docs.erupt.xyz/schema/erupt-cube.schema.json
+name: 产品库存
+datasource: test            # 省略则使用主数据源
+sql: |
+  SELECT * FROM (
+      SELECT 'AS' AS region_code, 'Phone' AS product, 3 AS qty UNION ALL
+      SELECT 'EU',                'Laptop',           2        UNION ALL
+      SELECT 'NA',                'Phone',            5
+  ) t_stock
+  #if($query.parameter && $query.parameter.min_qty)
+  WHERE qty >= $query.parameter.min_qty
+  #end
+explores:
+  - code: overview
+    name: 总览
+  - code: with_region
+    name: 按地区
+    joins:
+      - cube: RegionCube    # 关联目标写 Cube 编码，注解 Cube 或文件 Cube 均可
+        type: left join
+        on: ProductCube.region_code = RegionCube.region_code
+        dimensions: [ continent ]
+dimensions:
+  region_code: { title: 地区编码 }
+  product: { title: 产品 }
+measures:
+  qty: { title: 数量, sql: sum(qty) }
+parameters:
+  min_qty: { title: 最小数量, type: NUMBER }
+```
+
+同样的 Cube 用 JSON 写（`$schema` 键仅供 IDE 使用，加载时忽略）：
+
+```json
+{
+  "$schema": "https://docs.erupt.xyz/schema/erupt-cube.schema.json",
+  "code": "ChannelCube",
+  "name": "渠道流量",
+  "sql": "SELECT 'web' AS channel, 120 AS visits UNION ALL SELECT 'app', 80",
+  "dimensions": {
+    "channel": { "title": "渠道" }
+  },
+  "measures": {
+    "visits": { "title": "访问量", "sql": "sum(visits)" }
+  }
+}
+```
+
+**IDE 补全与校验**：JSON Schema 发布在 [https://docs.erupt.xyz/schema/erupt-cube.schema.json](https://docs.erupt.xyz/schema/erupt-cube.schema.json)，由 Cube 注解自动生成。YAML 文件首行加 `# yaml-language-server: $schema=...` 注释，JSON 文件加 `"$schema"` 键，VS Code（YAML 插件）与 IntelliJ 即可提供属性补全、枚举提示与必填校验。
+
+**书写规则**：文件在启动时解析并校验，任何错误都会让启动失败并指出文件与原因：
+
+- 属性名与注解属性完全一致，`name` 与 `sql` 必填，`@Measure.sql`、`@Explore.code` / `name`、`@Join.cube` / `on` 同样必填；出现注解中不存在的属性会报 `Unknown attribute`。
+- 枚举（`sqlType`、`type` 等）写枚举名，不区分大小写，如 `TABLE_NAME` / `table_name`。
+- `code` 与维度 / 指标 / 参数名必须是标识符（字母、数字、下划线，不能以数字开头），它们会成为 SQL 别名与模板变量名；编码在注解 Cube 与文件 Cube 之间不能重复。
+- 维度与参数未声明 `type` 时为 `STRING`，指标未声明时为 `NUMBER`（文件里没有 Java 字段可供推断）。
+- `joins` 中的 `cube` 写目标 Cube 的编码（注解 Cube 即类名），大小写必须一致，在全部 Cube 注册完成后统一校验。
+- `dataProxy` 写实现 `CubeProxy` 的全限定类名。
+- YAML 按 1.2 规则解析：只有 `true` / `false` 是布尔值，`on:`（关联条件）仍是普通键；纯量一律当作字符串，`010`、`12:30`、`2026-01-05` 不会被改写；重复的键会被拒绝。
+- `expose: false` 的文件会被跳过。
+
 ## 常见问题
 
 ### Q：字段名和 SQL 列名不一致时怎么处理？

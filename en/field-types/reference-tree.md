@@ -64,5 +64,22 @@ public @interface ReferenceTreeType {
 
     String dependColumn() default "id"; // The column in the dependency field used for matching
 
+    boolean leafOnly() default false; // Only leaf nodes can be selected (2.4.0+)
+
 }
+```
+
+## Leaf Nodes Only: leafOnly <Badge type="tip" text="v2.4.0+" />
+
+With `leafOnly = true` a node that has children can be expanded but not picked, so the user always lands on the last level. Use it where parents such as departments or categories only group and should never be the owner:
+
+```java
+@ManyToOne
+@JoinColumn(name = "dept_id")
+@EruptField(
+    views = @View(title = "Department", column = "name"),
+    edit = @Edit(title = "Department", type = EditType.REFERENCE_TREE,
+                 referenceTreeType = @ReferenceTreeType(pid = "parent.id", leafOnly = true))
+)
+private Dept dept;
 ```

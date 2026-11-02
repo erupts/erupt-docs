@@ -58,6 +58,12 @@ erupt:
     record-operate-log-max-body-size: 1048576  # 请求体超过 1MB 不缓存记录
 ```
 
+## 租户隔离
+
+> 2.4.0+
+
+两张日志表（以及共用登录日志表的在线用户）都带 `tenant_id` 列，平台为 `"0"`，由 Hibernate `@TenantId` 自动限定：租户管理员打开日志只看到本租户的行，平台看到的是平台自己的行。登录发生在请求还没有租户的时候，因此登录日志会显式写在**用户所属的租户**下，而不是平台。不引入 [erupt-tenant](/zh/modules/pro/erupt-tenant/) 时所有日志都属于平台，行为不变；原理见 [多租户与 @TenantId](/zh/modules/erupt-upms/#多租户与-tenantid)。
+
 ## 用作分析数据源
 
-`EruptLoginLog` 与 `EruptOperateLog` 都带有 `@EruptCube` 注解，账号、IP 归属、功能名称、耗时等字段已声明为维度与度量。引入 [erupt-cube](/zh/modules/pro/erupt-cube) 后可直接拖拽分析：哪个功能报错最多、哪个时段登录最集中、哪类操作最慢。
+`EruptLoginLog` 与 `EruptOperateLog` 都带有 `@EruptCube` 注解，账号、IP 归属、功能名称、耗时等字段已声明为维度与度量。引入 [erupt-cube](/zh/modules/pro/erupt-cube) 后可直接拖拽分析：哪个功能报错最多、哪个时段登录最集中、哪类操作最慢。数据集的 SQL 同样按当前会话的租户过滤，租户分析的只是自己的日志。

@@ -18,7 +18,7 @@ erupt-tenant consists of two Maven modules:
 | Module | Description | Depends On |
 | --- | --- | --- |
 | **erupt-tenant-core** | Multi-tenancy core: the `@EruptTenant` annotation, data-isolation DataProxy, tenant context `EruptTenantContext`, inheritable tenant base classes | erupt-jpa |
-| **erupt-tenant** | Full tenant management: tenant config / tenant menus / tenant packages, tenant-side users / roles / organizations, tenant login API | erupt-upms + erupt-tenant-core |
+| **erupt-tenant** | Full tenant management: tenant config / tenant packages, tenant login and the subscription lifecycle; tenant-side users / roles / organizations reuse erupt-upms directly | erupt-upms + erupt-tenant-core |
 
 ## 1. Build the Source and Publish to Local Repository
 
@@ -62,10 +62,10 @@ You must complete the previous step (publishing to your local repository) before
 
 On startup, the module initializes all menus automatically — no SQL scripts required:
 
-- **Super-admin side**: registers a "Tenant Management" root menu containing **Tenant Config**, **Tenant Menu**, and **Tenant Package**
-- **Tenant side**: initializes a "System Management" menu containing **Org Management**, **Role Management**, and **User Management**, and auto-generates button-level permission menus based on each erupt class's `power` configuration
+- **Super-admin side**: registers a "Tenant Management" root menu containing **Tenant Config** and **Tenant Package**
+- **Tenant side**: there is no separate menu table. The menus a tenant sees are the platform's own Menu Management entries, picked into a package and granted to the tenant; to let a tenant maintain its own users / roles / organizations, put the erupt-upms **User**, **Role** and **Organization** menus into the package
 
-After creating a tenant in Tenant Config (enterprise ID, tenant name, admin account/password, assigned package), tenants can sign in via the tenant login page:
+After creating a tenant in Tenant Config (enterprise ID, tenant name, admin account/password, assigned packages; leave the expire date empty to start with the packages' trial days), tenants can sign in via the tenant login page:
 
 ```
 http://your-host/#/passport/tenant

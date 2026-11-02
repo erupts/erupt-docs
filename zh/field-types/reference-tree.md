@@ -77,7 +77,24 @@ public @interface ReferenceTreeType {
      */
     String dependColumn() default "id";
 
+    boolean leafOnly() default false; // 只允许选择叶子节点（2.4.0+）
+
 }
+```
+
+## 只选叶子节点 leafOnly <Badge type="tip" text="v2.4.0+" />
+
+`leafOnly = true` 时，树中有子节点的节点只能展开、不能被选中，用户只能落到最末一级。适合「部门」「分类」这类上级节点仅作分组、不应作为归属的场景：
+
+```java
+@ManyToOne
+@JoinColumn(name = "dept_id")
+@EruptField(
+    views = @View(title = "所属部门", column = "name"),
+    edit = @Edit(title = "所属部门", type = EditType.REFERENCE_TREE,
+                 referenceTreeType = @ReferenceTreeType(pid = "parent.id", leafOnly = true))
+)
+private Dept dept;
 ```
 
 ## 示例：省市区联动

@@ -24,6 +24,22 @@
 private String choice;
 ```
 
+## 枚举字段即下拉框 <Badge type="tip" text="v2.4.0+" />
+
+字段类型是 Java 枚举时，不写 `type` 也不写 `vl`，Erupt 直接把它推断为 `CHOICE`，选项为枚举常量：存储值是常量名，显示文本是常量名经 i18n 翻译后的结果。
+
+```java
+public enum OrderStatus { PENDING, PAID, SHIPPED }
+
+@EruptField(
+    views = @View(title = "状态"),
+    edit = @Edit(title = "状态") // 推断为 CHOICE，选项 PENDING / PAID / SHIPPED
+)
+private OrderStatus status;
+```
+
+`@ChoiceType` 声明了 `vl` 或 `fetchHandler` 时以声明为准，枚举常量不再参与。其他类型的推断规则见 [自动推测 AUTO](/zh/field-types/auto#按-java-类型推断)。
+
 ## 动态列表 <Badge type="tip" text="MyModel 2.0.0+" />
 
 实现 `ChoiceFetchHandler<T>` 接口，从数据库或任意来源动态生成选项。泛型 `T` 为当前 Erupt 实体类（约定命名为 `MyModel`），可在 `fetchFilter` 方法中读取同表单其他字段的值实现联动：
@@ -109,6 +125,8 @@ public @interface ChoiceType {
 
     String dependField() default ""; // 联动字段名（本表字段）
 
+    boolean validate() default true; // 服务端校验提交值是否在选项内（2.4.0+）
+
     enum Type {
         SELECT, // 下拉选择（默认）
         RADIO,  // 单选按钮组
@@ -116,6 +134,29 @@ public @interface ChoiceType {
 
 }
 ```
+
+## 服务端选项校验 <Badge type="tip" text="v2.4.0+" />
+
+`erupt.choice-validate` **默认开启**：新增、修改、单元格编辑与 Excel 导入时，服务端会把每个 `CHOICE` / `MULTI_CHOICE` 字段的提交值与**用户实际能看到的选项**比对，不在其中的值被拒绝，并提示字段名与非法值。所谓能看到的选项，即 `vl`、枚举常量、`fetchHandler.fetch` 的返回，以及 `dependField` 联动时用提交表单调用 `fetchFilter` 的返回。
+
+- 修改时，与库中已存值相同的值直接通过：旧记录里已下线的选项不会卡住其他字段的修改
+- `disable = true` 的选项不能作为新值提交
+- 没有声明任何选项（无 `vl`、无 `fetchHandler`、也不是枚举）的字段不做校验
+
+个别字段确实会存选项之外的值时，按字段关闭：
+
+```java
+@EruptField(
+    edit = @Edit(title = "来源", type = EditType.CHOICE,
+                 choiceType = @ChoiceType(validate = false, vl = {
+                     @VL(value = "web", label = "网页"),
+                     @VL(value = "app", label = "App"),
+                 }))
+)
+private String source; // 还会由接口写入其他来源码
+```
+
+全局关闭在 `application.yml` 中设置 `erupt.choice-validate=false`，见 [配置项](/zh/guide/configuration)。
 
 ## @VL 选项属性
 

@@ -29,6 +29,23 @@ private Set<String> multiChoice;
 `@JdbcTypeCode(SqlTypes.JSON)` instructs Hibernate to serialize `Set<String>` as a JSON array stored in a single database column, for example `["A","C"]`. The column must be wide enough (recommended `length = 2000` or larger).
 :::
 
+## Enum Collections Are Multi-selects <Badge type="tip" text="v2.4.0+" />
+
+When the field type is `Set<enum>` / `List<enum>`, Erupt infers `MULTI_CHOICE` with no `type` and no `vl` written: the options are the enum constants (the constant name is stored, the label is that name translated through i18n).
+
+```java
+public enum Channel { WEB, APP, STORE }
+
+@JdbcTypeCode(SqlTypes.JSON)
+@EruptField(
+    views = @View(title = "Channels"),
+    edit = @Edit(title = "Channels") // inferred as MULTI_CHOICE with WEB / APP / STORE
+)
+private Set<Channel> channels;
+```
+
+Once `@MultiChoiceType` declares `vl` or `fetchHandler`, those win. The other inference rules are in [Auto Inference AUTO](/en/field-types/auto#inference-from-the-java-type).
+
 ## Dynamic List
 
 Implement `ChoiceFetchHandler<T>` <Badge type="tip" text="MyModel 2.0.0+" />. The field declaration must use `@JdbcTypeCode(SqlTypes.JSON)` + `Set<String>`:
@@ -82,6 +99,8 @@ public @interface MultiChoiceType {
 
     String dependField() default ""; // Linked field name (in the same entity)
 
+    boolean validate() default true; // Server-side check that every submitted value is one of the options (2.4.0+)
+
     enum Type {
         SELECT,   // Dropdown multi-select
         CHECKBOX, // Checkbox group (default)
@@ -90,6 +109,21 @@ public @interface MultiChoiceType {
 
 }
 ```
+
+## Server-side Option Check <Badge type="tip" text="v2.4.0+" />
+
+`erupt.choice-validate` is **on by default**: on add, edit, cell edit and Excel import the server checks each submitted value against the options the user is actually offered (`vl`, the enum constants, what `fetchHandler` / `fetchFilter` return) and refuses the write when any one is missing. A value equal to the stored one passes, an option with `disable = true` cannot be newly picked, and a field that declares no options is not checked.
+
+```java
+@JdbcTypeCode(SqlTypes.JSON)
+@EruptField(
+    edit = @Edit(title = "Tags", type = EditType.MULTI_CHOICE,
+                 multiChoiceType = @MultiChoiceType(validate = false, fetchHandler = TagFetchHandler.class))
+)
+private Set<String> tags; // may hold values outside the options
+```
+
+Turn it off globally with `erupt.choice-validate=false` in `application.yml`, see [Configuration](/en/guide/configuration); the full rules are described under [Single Select CHOICE](/en/field-types/choice#server-side-option-check).
 
 ## Transfer List <Badge type="tip" text="v2.3.0+" />
 

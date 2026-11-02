@@ -86,8 +86,12 @@ erupt:
   upload-path: D:/erupt/pictures
   # 是否保留上传文件原始名称
   keep-upload-file-name: false
-  # 项目初始化方式：NONE 不执行初始化代码、EVERY 每次启动都初始化、FILE 通过标识文件判断是否需要初始化
-  init-method-enum: file
+  # 新增、修改、单元格编辑与导入时，校验 CHOICE / MULTI_CHOICE 的值是否在当前用户可见的选项内，默认 true，v2.4.0+
+  # 确需存储选项之外的值的字段，用 @ChoiceType(validate = false) 单独关闭
+  choice-validate: true
+  # 启动时写入各模块声明的菜单，默认 true；模块的 initFun 随首次写入一起执行，v2.4.0+（替代已移除的 init-method-enum）
+  # 数据库账号只读、菜单由脚本维护、或多个应用共用一个库时只给其中一个开启
+  init-modules-menu: true
   # 默认语言，控制初始化场景中各类文本的数据，v1.12.3+
   default-locales: zh-CN
   # 是否开启日志采集，开启后可在【系统日志】中查看实时日志，v1.12.14+
@@ -116,7 +120,14 @@ erupt:
       enable: true
       max-failures: 10
       lock-minutes: 10
+    # 可信反向代理（IP 或 CIDR，逗号分隔）：只有来自可信代理的 X-Forwarded-For 才被采信，其他对端一律以其自身地址为准，
+    # 伪造的请求头无法冒充客户端地址。该地址用于登录锁定、验证码计数、IP 白名单与日志。留空表示不信任任何代理，v2.4.0+
+    trusted-proxies: 127.0.0.0/8,::1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
 ```
+
+:::tip `trusted-proxies` 默认值
+默认信任回环地址与 RFC 1918 内网段，Nginx / Ingress 与应用同在内网时无需配置。代理部署在公网地址（例如云厂商的负载均衡）时，把它的出口地址加进来，否则登录锁定与 IP 白名单看到的会是代理的地址。
+:::
 
 ## erupt.redis-session 分布式会话
 
@@ -136,6 +147,8 @@ spring:
       timeout: 10000
       host: 127.0.0.1
 ```
+
+开启后多实例之间也借同一个 Redis 协同：[erupt-config](/zh/modules/erupt-config) 的配置变更会广播给其他实例（否则需要 `erupt.config.refresh-seconds` 轮询），[erupt-job](/zh/modules/erupt-job) 的定时任务通过 Redis 锁保证集群中只跑一份。
 
 ## erupt.telemetry 匿名遥测
 

@@ -2,6 +2,175 @@
 
 本文档按版本说明 Erupt 升级时需要注意的事项，请按版本顺序依次阅读。
 
+## V 2.4.0 升级指南
+
+本节说明从 2.3.x 升级到 2.4.0 时需要注意的事项。
+
+### 升级要求
+
+| 项目 | 要求 |
+| --- | --- |
+| Erupt | 全部依赖统一升级至 `2.4.0` |
+| Spring Boot | **3.5.16**，与 2.3.x 相同，无需调整 |
+| JDK | 最低 **JDK 17**，无变化；已验证可在 JDK 27 上构建 |
+| 数据库 | 无最低版本变化；表结构变更见下文 |
+| erupt-cloud | Server 与所有 [Node](/zh/modules/cloud-node) **必须同步升级至 2.4.0**：权限、载荷校验、引用、Excel、上传等改由 Server 完成，旧节点与新 Server 的协议不一致 |
+| erupt-flow / erupt-tenant / erupt-cube | 同步升级至 2.4.0 对应版本 |
+
+### 第一步：修改依赖版本
+
+```xml
+<properties>
+    <erupt.version>2.4.0</erupt.version>
+</properties>
+```
+
+本次升级**没有** artifactId 重命名，2.3.x 的依赖坐标可直接沿用。唯一的模块迁移是 Kubernetes 管理台：Web 终端已从 `erupt-data-k8s` 移入独立仓库的 [erupt-k8s-dashboard](https://github.com/erupt-io/erupt-k8s-dashboard)，用到终端的项目需改为引入它。
+
+### 第二步：按需引入新模块（可选）
+
+2.4.0 新开源以下模块，不引入不会有任何影响；引入后首次启动自动初始化菜单与表结构。`erupt-spring-boot-starter-all` 已包含前六个。
+
+| 模块 | artifactId | 用途 |
+| --- | --- | --- |
+| [公开链接](/zh/modules/erupt-share) | `erupt-share` | 一条链接对外开放表单或任意菜单页面 |
+| [数据事件推送](/zh/modules/erupt-webhook) | `erupt-webhook` | 新增 / 修改 / 删除事件推送到外部 URL |
+| [运行时配置](/zh/modules/erupt-config) | `erupt-config` | 按 Spring Profile 分层的配置项，保存即生效 |
+| [记录历史](/zh/modules/erupt-revision) | `erupt-revision` | 字段级历史、回滚与回收站 |
+| [文件中心](/zh/modules/erupt-file-center) | `erupt-file-center` | 浏览上传目录、本地文件夹、S3 与 SFTP |
+| [AI 软件交付](/zh/modules/erupt-ai-dev) | `erupt-ai-dev` | 需求池 + 编码 CLI；服务器上未安装 CLI 时不会执行任何任务 |
+| [轻量节点](/zh/modules/cloud-node-lite) | `erupt-cloud-node-lite` 及 `-solon` / `-quarkus` / `-micronaut` / `-vertx` / `-ktor` / `-servlet` | 无 Spring 的 erupt-cloud 节点 |
+
+:::warning 引入 erupt-revision 前
+所有模型默认记录历史。存有敏感数据但不是 PASSWORD 类型的字段，或写入频繁的模型，请先加 `@Power(revision = false)`。
+:::
+
+### 破坏性变更与行为变化
+
+#### 1. 导出默认开启 <Badge type="warning" text="默认值变化" />
+
+`@Power(export)` 默认值由 `false` 改为 `true`，与增删改查一样由角色的菜单按钮决定谁能导出。**新建菜单**会自动带上「导出」按钮，已有菜单不受影响。不希望被导出的模型请显式写 `@Power(export = false)`，不希望被导出的列写 `@View(export = false)`。详见 [@Power](/zh/annotation/power#export-导出默认开启)。
+
+#### 2. 选项值与表单限制改为服务端强制校验 <Badge type="warning" text="默认值变化" />
+
+- `erupt.choice-validate` 默认开启：新增、编辑、单元格编辑与 Excel 导入时，CHOICE / MULTI_CHOICE 的值必须在当前用户可见的选项之内。与已存值相同的值放行，旧数据不影响编辑。单个字段可用 `@ChoiceType(validate = false)` 关闭，全局可用 `erupt.choice-validate: false` 关闭。详见 [CHOICE](/zh/field-types/choice#服务端选项校验)。
+- INPUT 长度、NUMBER / SLIDER 区间、RATE 范围、TAGS 数量与可选值、DATE 的 FUTURE / HISTORY 与区间，以及子表每一行的规则，都在服务端执行。直接调用接口写入越界数据的客户端会被拒绝。详见 [服务端强制校验](/zh/advanced/data-proxy-validate#服务端强制校验声明的限制)。
+
+#### 3. `erupt.init-method-enum` 改为 `erupt.init-modules-menu` <Badge type="warning" text="配置改名" />
+
+模块菜单不再依赖 `.erupt/<module>.loaded` 标记文件，而是把指纹存入新表 `e_upms_module`，每次启动对账：模块的新菜单与按钮自动补齐，管理员改过的字段保留，模块不再声明的菜单改为禁用而非删除。默认管理员账号按数据库只创建一次。
+
+```yaml
+erupt:
+  init-modules-menu: true   # 替代 init-method-enum；false 时不写入菜单，initFun 也不执行
+```
+
+配置了 `init-method-enum: none` 的项目，请改为 `init-modules-menu: false`。详见 [菜单管理](/zh/modules/erupt-upms/menu#模块菜单的自动维护)。
+
+#### 4. `X-Forwarded-For` 仅在来自可信代理时采信 <Badge type="warning" text="反向代理需检查" />
+
+客户端 IP 用于登录锁定与 IP 白名单。2.4.0 起只有当直连方是可信代理时才读取 `X-Forwarded-For`，默认可信范围是回环与内网网段；`Proxy-Client-IP` 与 `WL-Proxy-Client-IP` 不再读取。反向代理位于公网地址时，需要把它加进来，否则所有用户会被识别为代理的 IP，登录锁定会误伤全员：
+
+```yaml
+erupt:
+  upms:
+    trusted-proxies: 127.0.0.0/8,::1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,203.0.113.10
+```
+
+#### 5. upms 表新增租户列，唯一约束按租户 <Badge type="warning" text="表结构变化" />
+
+`e_upms_user` / `e_upms_role` / `e_upms_org` / `e_upms_post` 及登录日志、操作日志、评论表新增 `tenant_id` 列（平台为 `'0'`），由 Hibernate `@TenantId` 自动过滤。未使用多租户的项目无感知；自定义 SQL 直接读写这些表时，新增行需带上 `tenant_id = '0'`（列有默认值，不写也可）。SQL 见下文[数据库变更](#数据库变更)。
+
+#### 6. erupt-tenant 重构：租户用户迁入 upms 表 <Badge type="danger" text="需手动迁移" />
+
+erupt-tenant 不再维护一套独立的租户用户体系：租户的用户、角色、组织改为与平台共用 `e_upms_user` / `e_upms_role` / `e_upms_org`，以 Hibernate `@TenantId` 列 `tenant_id` 区分；租户菜单也不再单独建表，套餐直接引用平台菜单。
+
+**移除的表**（2.4.0 不再创建，也不再读取）：
+
+| 表 | 原用途 | 2.4.0 改为 |
+| --- | --- | --- |
+| `e_tenant_menu` | 租户菜单 | 套餐从平台 `e_upms_menu` 勾选 |
+| `t_e_upms_user`、`t_e_upms_user_role` | 租户用户及其角色 | `e_upms_user`、`e_upms_user_role` |
+| `t_e_upms_role`、`t_e_upms_role_menu` | 租户角色及其菜单 | `e_upms_role`、`e_upms_role_menu` |
+| `t_e_upms_org` | 租户组织 | `e_upms_org` |
+
+**移除的类**：`TenantUpmsUser`、`TenantUpmsUserSimple`、`TenantUpmsRole`、`TenantUpmsOrg`（及其 DataProxy、handler）、`EruptTenantMenu`，直接使用 erupt-upms 的 `EruptUser` / `EruptRole` / `EruptOrg`。
+
+**升级不会自动迁移旧数据**，请在启动新版本前完成：
+
+1. 删除 `e_upms_user.account`、`e_upms_role.code`、`e_upms_org.code`、`e_upms_post.code`、`e_upms_sso.code` 上原有的单列唯一索引（索引名先用 `SHOW INDEX FROM 表名 WHERE Non_unique = 0;` 查出）。
+2. 把每个租户的用户 / 角色 / 组织从 `t_e_upms_*` 写入对应的 `e_upms_*` 表，`tenant_id` 取该租户 `e_tenant_config.tenant_id`；或在租户后台重新创建。
+3. 租户套餐的菜单改为从平台 `e_upms_menu` 选择，原 `e_tenant_menu` 不再使用，需重新勾选。
+
+`/tenant/change-pwd`、`/tenant/menu`、`/tenant/userinfo` 已移除，租户会话直接使用平台的 `/change-pwd`、`/menu`、`/userinfo`；`/tenant/subscription` 更名为 `/tenant/info`。详见 [多租户开发](/zh/modules/pro/erupt-tenant/development)。
+
+重构后，凡是基于 erupt-upms 的模块都自动按租户隔离，不需要额外适配：
+
+- **erupt-flow**：流程定义、分组与实例按租户分列，审批人解析限定在实例所属租户，定时调度在实例所属租户的会话中推进，见 [erupt-flow 多租户支持](/zh/modules/pro/erupt-flow/development#多租户支持)
+- **erupt-sso**：租户可配置自己的认证源，租户登录页列出这些认证源，单点登录后开启的是租户会话
+- **登录日志 / 操作日志 / 在线用户 / 记录评论 / 记录历史**：租户只看到自己的数据
+- **订阅与试用**：套餐试用天数、到期宽限与锁定，见 [订阅与试用](/zh/modules/pro/erupt-tenant/#订阅与试用)
+
+#### 7. 打印不再等同于读取记录 <Badge type="tip" text="权限收紧" />
+
+`@Power(print)` 只是模型开关。打印与按 id 读取详情都要求 `edit` 或 `viewDetails`，并校验记录的行级范围；`viewDetails = false` 的模型不再显示打印按钮。模板打印改为 `?config=<id>` 指定已保存的模板，不再接受请求体中的模板内容，自行调用打印接口的客户端需调整。详见 [打印模块](/zh/modules/erupt-print#打印权限)。
+
+#### 8. 组件按 Java 类型推断
+
+`EditType.AUTO` 现在按字段类型推断：枚举字段成 CHOICE、`Collection<Enum>` 成 MULTI_CHOICE、`Map` 成 KEY_VALUE、`@Erupt` 类型成引用、集合成子表；`DateType.Type` 默认 `AUTO`，`LocalDateTime` 推断为日期时间、`LocalTime` 推断为时间。此前依赖默认 DATE 显示 `LocalDateTime` 字段的项目，显示会变为日期时间。详见 [AUTO](/zh/field-types/auto#按-java-类型推断)。
+
+#### 9. 移除的能力
+
+- LLM 适配器 Requesty 与 OrcaRouter 已移除，使用它们的模型请改用 OpenRouter 或 Open AI Adapter
+- erupt-ai-decision 的 HTTP 接口已移除，Java API 不变
+- erupt-ai-dev 没有 `executor.enabled` 开关，服务器上安装了编码 CLI 即会执行
+
+### 需要留意的默认值变化
+
+| 项目 | 2.3.x | 2.4.0 |
+| --- | --- | --- |
+| `@Power(export)` | `false` | `true` |
+| `@Power(batchEdit)` | —— | `true`，表格出现「批量编辑」按钮 |
+| `@Power(revision)` | —— | `true`，引入 erupt-revision 后生效 |
+| `erupt.choice-validate` | —— | `true` |
+| `erupt.init-modules-menu` | `init-method-enum: file` | `true` |
+| `erupt.upms.trusted-proxies` | 任意来源的 `X-Forwarded-For` | 回环与内网网段 |
+| `DateType.Type` | `DATE` | `AUTO`，按 Java 类型推断 |
+| 枚举字段的 `EditType.AUTO` | INPUT | CHOICE，选项取自枚举常量 |
+| erupt-config `refresh-seconds` | —— | `0`，多实例经 Redis 广播或自行开启轮询 |
+
+### 数据库变更
+
+::: details 展开表结构变更清单
+> 表结构变更由 JPA / Hibernate 在启动时自动执行，仅当项目禁用了自动 DDL（`spring.jpa.hibernate.ddl-auto=none` 或 `validate`）时才需手动执行。
+
+完整 SQL 见 [2.4.0 更新日志 → 数据库变更](/zh/guide/changelog#数据库变更)，涉及：
+
+- `e_upms_user`、`e_upms_role`、`e_upms_org`、`e_upms_post`：新增 `tenant_id`，唯一约束改为「租户 + 账号 / 编码」
+- `e_upms_login_log`、`e_upms_operate_log`：新增 `tenant_id`
+- `e_upms_sso`：新增 `tenant_id`、`idp_certificate`；`e_upms_sso_bind`：新增 `tenant_id`（引入 erupt-sso 时）
+- `e_record_comment`：新增 `tenant_id`（引入 erupt-comment 时）
+- `e_flow`、`e_flow_group`、`e_flow_instance`：新增 `tenant_id`（引入 erupt-flow 时）
+- `e_tenant_package`：新增 `trial_days`（引入 erupt-tenant 时）
+- 不再使用（迁移完成后可手动删除）：`e_tenant_menu`、`t_e_upms_user`、`t_e_upms_user_role`、`t_e_upms_role`、`t_e_upms_role_menu`、`t_e_upms_org`（引入 erupt-tenant 时）
+- 新表由 Hibernate 自动创建：`e_upms_module`；以及新模块的 `e_share_link`、`e_webhook`、`e_webhook_log`、`e_config_profile`、`e_config_item`、`e_record_revision`、`e_ai_dev_*`
+
+:::
+
+### 升级后核查清单
+
+重启后请依次确认：
+
+1. **导出权限** —— 不应被导出的模型已加 `@Power(export = false)`（见行为变化 1）
+2. **接口写入** —— 直接调用 `/erupt-api/data` 写入的集成方，选项值与字段限制是否符合声明（见行为变化 2）
+3. **配置项改名** —— `application.yml` 中的 `init-method-enum` 已改为 `init-modules-menu`（见行为变化 3）
+4. **客户端 IP** —— 反向代理之后登录日志中的 IP 是否为真实用户 IP，公网代理已加入 `trusted-proxies`（见行为变化 4）
+5. **erupt-tenant 项目** —— 旧唯一索引已删除，租户用户 / 角色 / 组织已迁入 `e_upms_*`，套餐菜单已重新勾选（见行为变化 6）
+6. **erupt-cloud 项目** —— Server 与全部 Node 已升级至 2.4.0
+7. **日期字段显示** —— 抽查 `LocalDateTime` / `LocalTime` 字段的表单控件是否符合预期（见行为变化 8）
+8. **禁用了自动 DDL 的项目** —— 确认上述 SQL 已执行
+9. **前端资源缓存** —— 翻译表已改按版本失效，页面异常时强制刷新浏览器缓存
+
 ## V 2.3.0 升级指南
 
 本节说明从 2.2.x 升级到 2.3.0 时需要注意的事项。
@@ -104,7 +273,7 @@ erupt:
 表结构变更由 JPA / Hibernate 在启动时自动执行，仅当项目禁用了自动 DDL（`spring.jpa.hibernate.ddl-auto=none` 或 `validate`）时才需手动执行。
 :::
 
-完整 SQL 见 [2.3.0 更新日志 → 数据库变更](/zh/guide/changelog#数据库变更)，涉及：
+完整 SQL 见 [2.3.0 更新日志 → 数据库变更](/zh/guide/changelog#数据库变更-1)，涉及：
 
 - `e_upms_user`：新增 `mfa_enabled`、`mfa_secret`、`mfa_recovery_codes` 三列
 - `e_generator_class`、`e_generator_field`：新增列（引入 erupt-generator 时）
@@ -249,7 +418,7 @@ erupt:
 表结构变更由 JPA / Hibernate 在启动时自动执行，仅当项目禁用了自动 DDL（`spring.jpa.hibernate.ddl-auto=none` 或 `validate`）时才需手动执行。
 :::
 
-完整 SQL 见 [2.2.0 更新日志 → 数据库变更](/zh/guide/changelog#数据库变更-1)，涉及：
+完整 SQL 见 [2.2.0 更新日志 → 数据库变更](/zh/guide/changelog#数据库变更-2)，涉及：
 
 - `e_remote_host`：引入 [erupt-remote](/zh/modules/erupt-remote) 时新建，由 Hibernate 自动创建
 - `e_ai_canvas_model`：新增表；`e_ai_canvas` 的 `data_type`、`target_model` 两列迁移后删除（引入 erupt-ai-canvas 时）

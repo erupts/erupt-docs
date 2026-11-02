@@ -361,8 +361,8 @@ rect.c-bg-rect { fill: var(--bg); }
         <text x="210" y="254" class="t-muted" font-size="9" text-anchor="middle">INPUT · DATE · CHOICE · ICON 等 38 种</text>
         </g>
 
-        <g id="node-ui" data-node-id="ui" data-node-label="多样化 UI" tabindex="0" role="button" aria-label="Focus 多样化 UI, 表格 · 树 · 看板 · 日历 · 甘特 · 5 套皮肤, 建模与界面" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="表格 · 树 · 看板 · 日历 · 甘特 · 5 套皮肤" data-node-context="建模与界面">
-          <title>多样化 UI · 表格 · 树 · 看板 · 日历 · 甘特 · 5 套皮肤 · 建模与界面</title>
+        <g id="node-ui" data-node-id="ui" data-node-label="多样化 UI" tabindex="0" role="button" aria-label="Focus 多样化 UI, 表格 · 树 · 看板 · 日历 · 甘特 · 7 套皮肤, 建模与界面" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="表格 · 树 · 看板 · 日历 · 甘特 · 7 套皮肤" data-node-context="建模与界面">
+          <title>多样化 UI · 表格 · 树 · 看板 · 日历 · 甘特 · 7 套皮肤 · 建模与界面</title>
           <rect x="60" y="350" width="300" height="60" rx="6" class="c-mask"/>
           <rect x="60" y="350" width="300" height="60" rx="6" class="c-frontend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(66 356) scale(0.6875)">
@@ -372,7 +372,7 @@ rect.c-bg-rect { fill: var(--bg); }
             <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
           </g>
           <text x="210" y="378" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">多样化 UI</text>
-        <text x="210" y="394" class="t-muted" font-size="9" text-anchor="middle">表格 · 树 · 看板 · 日历 · 甘特 · 5 套皮肤</text>
+        <text x="210" y="394" class="t-muted" font-size="9" text-anchor="middle">表格 · 树 · 看板 · 日历 · 甘特 · 7 套皮肤</text>
         </g>
 
         <g id="node-custom" data-node-id="custom" data-node-label="自定义能力" tabindex="0" role="button" aria-label="Focus 自定义能力, 登录 / SSO · 页面 · S3 上传 · 数据源, 建模与界面" aria-pressed="false" data-node-kind="backend" data-node-sublabel="登录 / SSO · 页面 · S3 上传 · 数据源" data-node-context="建模与界面">
@@ -421,26 +421,26 @@ rect.c-bg-rect { fill: var(--bg); }
         <text x="1170" y="254" class="t-muted" font-size="9" text-anchor="middle">MySQL · Oracle · MongoDB · ES · 飞书 · 钉钉 等 15 种</text>
         </g>
 
-        <g id="node-ai" data-node-id="ai" data-node-label="AI 能力" tabindex="0" role="button" aria-label="Focus AI 能力, Harness · Claw · RAG · Canvas · Staff · Decision, 数据与生态" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="Harness · Claw · RAG · Canvas · Staff · Decision" data-node-context="数据与生态">
-          <title>AI 能力 · Harness · Claw · RAG · Canvas · Staff · Decision · 数据与生态</title>
+        <g id="node-ai" data-node-id="ai" data-node-label="AI 能力" tabindex="0" role="button" aria-label="Focus AI 能力, Harness · Claw · RAG · Canvas · Staff · Decision · Dev, 数据与生态" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="Harness · Claw · RAG · Canvas · Staff · Decision · Dev" data-node-context="数据与生态">
+          <title>AI 能力 · Harness · Claw · RAG · Canvas · Staff · Decision · Dev · 数据与生态</title>
           <rect x="1020" y="350" width="300" height="60" rx="6" class="c-mask"/>
           <rect x="1020" y="350" width="300" height="60" rx="6" class="c-cloud" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(1026 356) scale(0.6875)">
             <path d="M4.3 12.5h7.3a2.4 2.4 0 0 0 .2-4.8 4 4 0 0 0-7.5-1.3A3.1 3.1 0 0 0 4.3 12.5Z"/>
           </g>
           <text x="1170" y="378" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">AI 能力</text>
-        <text x="1170" y="394" class="t-muted" font-size="9" text-anchor="middle">Harness · Claw · RAG · Canvas · Staff · Decision</text>
+        <text x="1170" y="394" class="t-muted" font-size="9" text-anchor="middle">Claw · RAG · Canvas · Staff · Decision · Dev</text>
         </g>
 
-        <g id="node-ext" data-node-id="ext" data-node-label="扩展模块" tabindex="0" role="button" aria-label="Focus 扩展模块, job · flow · cube · sso · comment · atlas 等, 数据与生态" aria-pressed="false" data-node-kind="backend" data-node-sublabel="job · flow · cube · sso · comment · atlas 等" data-node-context="数据与生态">
-          <title>扩展模块 · job · flow · cube · sso · comment · atlas 等 · 数据与生态</title>
+        <g id="node-ext" data-node-id="ext" data-node-label="扩展模块" tabindex="0" role="button" aria-label="Focus 扩展模块, job · flow · cube · sso · share · webhook 等, 数据与生态" aria-pressed="false" data-node-kind="backend" data-node-sublabel="job · flow · cube · sso · share · webhook 等" data-node-context="数据与生态">
+          <title>扩展模块 · job · flow · cube · sso · share · webhook 等 · 数据与生态</title>
           <rect x="1020" y="490" width="300" height="60" rx="6" class="c-mask"/>
           <rect x="1020" y="490" width="300" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1026 496) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text x="1170" y="518" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">扩展模块</text>
-        <text x="1170" y="534" class="t-muted" font-size="9" text-anchor="middle">job · flow · cube · sso · comment · atlas 等</text>
+        <text x="1170" y="534" class="t-muted" font-size="9" text-anchor="middle">job · flow · cube · sso · share · webhook 等</text>
         </g>
 
         <g id="node-deploy" data-node-id="deploy" data-node-label="部署形态" tabindex="0" role="button" aria-label="Focus 部署形态, 热构建 · 集群 · 分布式 Cloud · PWA, 数据与生态" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="热构建 · 集群 · 分布式 Cloud · PWA" data-node-context="数据与生态">

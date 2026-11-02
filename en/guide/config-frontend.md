@@ -31,10 +31,21 @@ window.eruptSiteConfig = {
     copyrightTxt: function() {
       return "Copyright xxxx"
     },
-    // AMap (高德) API key — required when using the map component
-    amapKey: "xxxx",
-    // AMap SecurityJsCode
-    amapSecurityJsCode: "xxxxx",
+    // Map vendor for EditType.MAP fields and the map view, v2.4.0+
+    // provider: "amap" (AMap) | "baidu" | "tencent" | "tianditu" | "google" | "osm" (OpenStreetMap, no key)
+    // The vendor SDK is fetched from its CDN at runtime; nothing is bundled
+    map: {
+        provider: "amap",
+        key: "xxxx",                       // vendor key; osm needs none
+        securityJsCode: "xxxxx",           // amap only: the web security code paired with the key
+        // mapId: "DEMO_MAP_ID",           // google only: the map ID advanced markers require
+        // darkStyleId: "",                // baidu / tencent: a custom style id from the vendor console, used in dark mode
+        // tileUrl: "",                    // osm only: an XYZ tile url template replacing OpenStreetMap's
+        // center: {lng: 116.4, lat: 39.9}, // where an empty map opens; each vendor has its own default
+    },
+    // Legacy: the top-level amapKey / amapSecurityJsCode still configure the amap vendor; keys set inside map win
+    // amapKey: "xxxx",
+    // amapSecurityJsCode: "xxxxx",
     // Logos: leave a key out to use the default (the bundled erupt mark); set it to null or '' to show nothing in that slot. All three keys follow this rule since v2.3.0
     // logoPath: "erupt.svg",      // expanded header logo (default: the bundled erupt mark)
     // logoFoldPath: null,         // logo once the sidebar is collapsed, v1.12.21+ (default: follows logoPath; with no logo at all the site's initial is drawn in a framed square)
@@ -67,6 +78,7 @@ window.eruptSiteConfig = {
         compact: false,
         // Skin: "default" | "brutalist" | "liquid-glass"
         //   | "workspace" (chat-app frame: brand-tinted sidebar + header, content as a rounded card, v2.3.0+) | "classic" (Ant Design Pro: navy sidebar, white header, v2.3.0+)
+        //   | "material" (Material 3 / Gmail: brand-tinted surface container, rounded sheet, pill menu rows, v2.4.0+) | "terminal" (phosphor console: black canvas, monospace, one glowing accent, v2.4.0+)
         skin: "default",
         // workspace skin only: navigation frame preset, derived from primaryColor when unset (v2.3.0+)
         //   light: "mist" | "sky" | "azure" | "salt" | "gray" | "mint" | "mint-chip" | "lime" | "citrus" | "banana" | "brass" | "almond" | "peach"
@@ -76,6 +88,8 @@ window.eruptSiteConfig = {
         // Menu mode: "normal" sidebar | "group" categories as flat group titles (v2.3.0+) | "dual" two-column sidebar | "split" categories in the header
         //   | "top" whole menu in the header, no sidebar | "top-split" categories in the header, their children in a second row, no sidebar (v2.3.0+)
         menuMode: "normal",
+        // Section titles by module group in the sidebar (business / AI / developer tools / operations / data sources); false hides them, v2.4.0+
+        menuGroups: true,
         // How record forms open: "center" floating dialog | "side" right panel | "full" fullscreen (v2.3.0+)
         // formPanelMode: "center",
         // Login page layout: "center" card on the artwork | "cover" form docked right | "wide" one wide card, brand left | "wallpaper" full-screen picture, frosted card | "poster" headline brand, small card (v2.3.0+)

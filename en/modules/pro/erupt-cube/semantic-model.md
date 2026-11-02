@@ -286,6 +286,86 @@ public class EruptOperateLog extends BaseModel {
 }
 ```
 
+## Defining Cubes in YAML / JSON Files <Badge type="tip" text="v2.4.0+" />
+
+Besides Java annotations, a cube can be written as a YAML or JSON file, so analysis models can be added or adjusted without compiling. On startup, after the annotation scan, every file matching `cube/**/*.yml`, `*.yaml` and `*.json` on the classpath is loaded; the locations are configurable (Spring resource patterns, `classpath*:` and `file:` both work):
+
+```yaml
+erupt:
+  cube:
+    models:
+      - classpath*:cube/**/*.yml
+      - classpath*:cube/**/*.yaml
+      - classpath*:cube/**/*.json
+      - file:/opt/app/cubes/*.yml
+```
+
+**One file is one cube**, and the structure mirrors the annotations: the `@EruptCube` attributes at the top level, plus `code` (the registry code, defaults to the file name) and three maps keyed by field name — `dimensions` / `measures` / `parameters` — whose values are the attributes of the matching annotation (`@Dimension` / `@Measure` / `@Parameter`).
+
+`src/main/resources/cube/ProductCube.yml`:
+
+```yaml
+# yaml-language-server: $schema=https://docs.erupt.xyz/schema/erupt-cube.schema.json
+name: Product Stock
+datasource: test            # omit to use the primary datasource
+sql: |
+  SELECT * FROM (
+      SELECT 'AS' AS region_code, 'Phone' AS product, 3 AS qty UNION ALL
+      SELECT 'EU',                'Laptop',           2        UNION ALL
+      SELECT 'NA',                'Phone',            5
+  ) t_stock
+  #if($query.parameter && $query.parameter.min_qty)
+  WHERE qty >= $query.parameter.min_qty
+  #end
+explores:
+  - code: overview
+    name: Overview
+  - code: with_region
+    name: With Region
+    joins:
+      - cube: RegionCube    # the join target is a cube code, annotated or file-defined
+        type: left join
+        on: ProductCube.region_code = RegionCube.region_code
+        dimensions: [ continent ]
+dimensions:
+  region_code: { title: Region Code }
+  product: { title: Product }
+measures:
+  qty: { title: Quantity, sql: sum(qty) }
+parameters:
+  min_qty: { title: Min Quantity, type: NUMBER }
+```
+
+The same kind of cube in JSON (the `$schema` key is for the IDE only and ignored by the loader):
+
+```json
+{
+  "$schema": "https://docs.erupt.xyz/schema/erupt-cube.schema.json",
+  "code": "ChannelCube",
+  "name": "Channel Traffic",
+  "sql": "SELECT 'web' AS channel, 120 AS visits UNION ALL SELECT 'app', 80",
+  "dimensions": {
+    "channel": { "title": "Channel" }
+  },
+  "measures": {
+    "visits": { "title": "Visits", "sql": "sum(visits)" }
+  }
+}
+```
+
+**IDE completion and validation**: a JSON Schema generated from the cube annotations is published at [https://docs.erupt.xyz/schema/erupt-cube.schema.json](https://docs.erupt.xyz/schema/erupt-cube.schema.json). Add the `# yaml-language-server: $schema=...` comment as the first line of a YAML file or a `"$schema"` key to a JSON file, and VS Code (YAML extension) or IntelliJ provide attribute completion, enum hints and required-attribute checks.
+
+**Rules**: files are parsed and validated at startup; any error fails the startup and names the file and the reason:
+
+- Attribute names are exactly the annotation attributes. `name` and `sql` are required, as are `@Measure.sql`, `@Explore.code` / `name` and `@Join.cube` / `on`; an attribute the annotation does not have is reported as `Unknown attribute`.
+- Enums (`sqlType`, `type`, ...) take the enum name, case-insensitively: `TABLE_NAME` or `table_name`.
+- `code` and the dimension / measure / parameter names must be identifiers (letters, digits, underscore, not starting with a digit): they become SQL aliases and template variable names. A code may not be duplicated between annotated and file-defined cubes.
+- A dimension or parameter without `type` is `STRING`, a measure without `type` is `NUMBER` (there is no Java field to infer from).
+- `cube` in `joins` is the target cube's code (the class name for an annotated cube), spelled exactly; join targets are verified once every cube is registered.
+- `dataProxy` takes fully qualified class names implementing `CubeProxy`.
+- YAML is read with 1.2 rules: only `true` / `false` are booleans, so `on:` (the join condition) stays an ordinary key; plain scalars are always strings, so `010`, `12:30` and `2026-01-05` are not rewritten; duplicate keys are rejected.
+- A file with `expose: false` is skipped.
+
 ## FAQ
 
 ### Q: What if the field name differs from the SQL column name?

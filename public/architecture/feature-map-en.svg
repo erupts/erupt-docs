@@ -361,8 +361,8 @@ rect.c-bg-rect { fill: var(--bg); }
         <text x="210" y="254" class="t-muted" font-size="9" text-anchor="middle">INPUT · DATE · CHOICE · ICON … 38 types</text>
         </g>
 
-        <g id="node-ui" data-node-id="ui" data-node-label="Rich UI" tabindex="0" role="button" aria-label="Focus Rich UI, table · tree · board · calendar · gantt · 5 skins, Modeling &amp; UI" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="table · tree · board · calendar · gantt · 5 skins" data-node-context="Modeling &amp; UI">
-          <title>Rich UI · table · tree · board · calendar · gantt · 5 skins · Modeling &amp; UI</title>
+        <g id="node-ui" data-node-id="ui" data-node-label="Rich UI" tabindex="0" role="button" aria-label="Focus Rich UI, table · tree · board · calendar · gantt · 7 skins, Modeling &amp; UI" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="table · tree · board · calendar · gantt · 7 skins" data-node-context="Modeling &amp; UI">
+          <title>Rich UI · table · tree · board · calendar · gantt · 7 skins · Modeling &amp; UI</title>
           <rect x="60" y="350" width="300" height="60" rx="6" class="c-mask"/>
           <rect x="60" y="350" width="300" height="60" rx="6" class="c-frontend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(66 356) scale(0.6875)">
@@ -372,7 +372,7 @@ rect.c-bg-rect { fill: var(--bg); }
             <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
           </g>
           <text x="210" y="378" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Rich UI</text>
-        <text x="210" y="394" class="t-muted" font-size="9" text-anchor="middle">table · tree · board · calendar · gantt · 5 skins</text>
+        <text x="210" y="394" class="t-muted" font-size="9" text-anchor="middle">table · tree · board · calendar · gantt · 7 skins</text>
         </g>
 
         <g id="node-custom" data-node-id="custom" data-node-label="Customization" tabindex="0" role="button" aria-label="Focus Customization, login / SSO · pages · S3 upload · data sources, Modeling &amp; UI" aria-pressed="false" data-node-kind="backend" data-node-sublabel="login / SSO · pages · S3 upload · data sources" data-node-context="Modeling &amp; UI">
@@ -421,26 +421,26 @@ rect.c-bg-rect { fill: var(--bg); }
         <text x="1170" y="254" class="t-muted" font-size="9" text-anchor="middle">MySQL · Oracle · MongoDB · ES · Feishu · DingTalk …</text>
         </g>
 
-        <g id="node-ai" data-node-id="ai" data-node-label="AI" tabindex="0" role="button" aria-label="Focus AI, Harness · Claw · RAG · Canvas · Staff · Decision, Data &amp; ecosystem" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="Harness · Claw · RAG · Canvas · Staff · Decision" data-node-context="Data &amp; ecosystem">
-          <title>AI · Harness · Claw · RAG · Canvas · Staff · Decision · Data &amp; ecosystem</title>
+        <g id="node-ai" data-node-id="ai" data-node-label="AI" tabindex="0" role="button" aria-label="Focus AI, Harness · Claw · RAG · Canvas · Staff · Decision · Dev, Data &amp; ecosystem" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="Harness · Claw · RAG · Canvas · Staff · Decision · Dev" data-node-context="Data &amp; ecosystem">
+          <title>AI · Harness · Claw · RAG · Canvas · Staff · Decision · Dev · Data &amp; ecosystem</title>
           <rect x="1020" y="350" width="300" height="60" rx="6" class="c-mask"/>
           <rect x="1020" y="350" width="300" height="60" rx="6" class="c-cloud" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(1026 356) scale(0.6875)">
             <path d="M4.3 12.5h7.3a2.4 2.4 0 0 0 .2-4.8 4 4 0 0 0-7.5-1.3A3.1 3.1 0 0 0 4.3 12.5Z"/>
           </g>
           <text x="1170" y="378" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">AI</text>
-        <text x="1170" y="394" class="t-muted" font-size="9" text-anchor="middle">Harness · Claw · RAG · Canvas · Staff · Decision</text>
+        <text x="1170" y="394" class="t-muted" font-size="9" text-anchor="middle">Claw · RAG · Canvas · Staff · Decision · Dev</text>
         </g>
 
-        <g id="node-ext" data-node-id="ext" data-node-label="Extension Modules" tabindex="0" role="button" aria-label="Focus Extension Modules, job · flow · cube · sso · comment · atlas …, Data &amp; ecosystem" aria-pressed="false" data-node-kind="backend" data-node-sublabel="job · flow · cube · sso · comment · atlas …" data-node-context="Data &amp; ecosystem">
-          <title>Extension Modules · job · flow · cube · sso · comment · atlas … · Data &amp; ecosystem</title>
+        <g id="node-ext" data-node-id="ext" data-node-label="Extension Modules" tabindex="0" role="button" aria-label="Focus Extension Modules, job · flow · cube · sso · share · webhook …, Data &amp; ecosystem" aria-pressed="false" data-node-kind="backend" data-node-sublabel="job · flow · cube · sso · share · webhook …" data-node-context="Data &amp; ecosystem">
+          <title>Extension Modules · job · flow · cube · sso · share · webhook … · Data &amp; ecosystem</title>
           <rect x="1020" y="490" width="300" height="60" rx="6" class="c-mask"/>
           <rect x="1020" y="490" width="300" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1026 496) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text x="1170" y="518" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Extension Modules</text>
-        <text x="1170" y="534" class="t-muted" font-size="9" text-anchor="middle">job · flow · cube · sso · comment · atlas …</text>
+        <text x="1170" y="534" class="t-muted" font-size="9" text-anchor="middle">job · flow · cube · sso · share · webhook …</text>
         </g>
 
         <g id="node-deploy" data-node-id="deploy" data-node-label="Deployment" tabindex="0" role="button" aria-label="Focus Deployment, hot build · cluster · distributed Cloud · PWA, Data &amp; ecosystem" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="hot build · cluster · distributed Cloud · PWA" data-node-context="Data &amp; ecosystem">

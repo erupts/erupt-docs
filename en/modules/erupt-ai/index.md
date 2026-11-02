@@ -11,7 +11,7 @@ Deep integration with today's popular large language models for low-code AI appl
 
 | **Capability** | **Description** |
 |---|---|
-| **LLM** | 19 built-in adapters: ChatGPT, Claude, Gemini, Ollama, Qwen, Doubao, GLM, DeepSeek, Moonshot, MiniMax, Mistral, Grok, Mimo, Fireworks, Together, OpenRouter, OrcaRouter, Requesty, plus an Open AI Adapter for any OpenAI-compatible endpoint |
+| **LLM** | 17 built-in adapters: ChatGPT, Claude, Gemini, Ollama, Qwen, Doubao, GLM, DeepSeek, Moonshot, MiniMax, Mistral, Grok, Mimo, Fireworks, Together, OpenRouter, plus an Open AI Adapter for any OpenAI-compatible endpoint |
 | **Chat** | Session management (AiChat), message history (AiChatMessage), SSE streaming output, configurable context rounds (maxContext) |
 | **Agent** | Customizable visual control of prompts; dynamically controllable agent prompt words |
 | **Tools** | Register tools via `@AiToolbox` + `@Tool` and call them during conversations; erupt-ai ships `EruptUserTools` (current user info, roles and menu permissions, server time), and erupt-ai-claw adds `EruptModelTools` (module list, model list, model schema, plus CRUD over model data driven by structured filter / sort / page parameters) |
@@ -65,7 +65,7 @@ erupt:
 
 | Page | Contents |
 |---|---|
-| [Configure LLMs](/en/modules/erupt-ai/llm) | Add and test models, 19 built-in adapters |
+| [Configure LLMs](/en/modules/erupt-ai/llm) | Add and test models, 17 built-in adapters |
 | [Chat Workbench](/en/modules/erupt-ai/chat) | Immersive conversation, multimodal image input, model picker |
 | [Experts (Preset AI Roles)](/en/modules/erupt-ai/agent) | Freeze a prompt, model and parameters into a selectable identity; rewrite prompts with `EruptPromptHandler` |
 | [Build Custom Tools](/en/modules/erupt-ai/tools) | Register any Spring Bean method as an AI tool with `@AiToolbox` + `@Tool` |

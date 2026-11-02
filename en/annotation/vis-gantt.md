@@ -1,6 +1,8 @@
 # Gantt Chart GANTT
 
-Displays time-axis data as a Gantt chart, with support for grouping, hierarchy, progress, and color configuration. Used with `@Vis(type = Vis.Type.GANTT)`.
+Displays time-axis data as a Gantt chart, with support for grouping, hierarchy, progress, color, predecessor links and milestones. Used with `@Vis(type = Vis.Type.GANTT)`.
+
+![GANTT view: progress, dependency links and a milestone](/annotation/vis-gantt.png)
 
 ## Complete Example
 
@@ -22,7 +24,9 @@ Displays time-axis data as a Gantt chart, with support for grouping, hierarchy, 
                 pidField       = "parent.id",
                 colorField     = "color",
                 progressField  = "progress",
-                groupField     = "type"
+                groupField     = "type",
+                dependencyField = "predecessors",
+                milestoneField  = "milestone"
             )
         )
     }
@@ -81,6 +85,23 @@ public class GanttDemo extends BaseModel {
     )
     private GanttDemo parent;
 
+    // predecessors: a many-to-many collection of the same model, or a single @ManyToOne reference
+    @ManyToMany
+    @JoinTable(name = "t_gantt_dep",
+        joinColumns = @JoinColumn(name = "task_id"),
+        inverseJoinColumns = @JoinColumn(name = "predecessor_id"))
+    @EruptField(
+        views = @View(title = "Predecessors", column = "name"),
+        edit = @Edit(title = "Predecessors", type = EditType.TAB_TABLE_REFER)
+    )
+    private Set<GanttDemo> predecessors;
+
+    @EruptField(
+        views = @View(title = "Milestone"),
+        edit = @Edit(title = "Milestone", type = EditType.BOOLEAN)
+    )
+    private Boolean milestone;
+
 }
 ```
 
@@ -93,13 +114,17 @@ public @interface GanttView {
 
     String endDateField();   // end date field (required)
 
-    String groupField() default "";    // grouping field
+    String groupField() default "";      // grouping field
 
-    String pidField() default "";      // parent node field, used for hierarchical Gantt charts
+    String pidField() default "";        // parent node field, used for hierarchical Gantt charts
 
-    String progressField() default ""; // progress field, value range 0 ~ 100
+    String progressField() default "";   // progress field, value range 0 ~ 100
 
-    String colorField() default "";    // bar color field, value is a hex color code
+    String colorField() default "";      // bar color field, value is a hex color code
+
+    String dependencyField() default ""; // predecessor field, drawn as dependency links (2.4.0+)
+
+    String milestoneField() default "";  // boolean field; rows holding true are drawn as milestones (2.4.0+)
 
 }
 ```
@@ -112,6 +137,28 @@ public @interface GanttView {
 | `pidField` | Parent node field name; when set, renders a hierarchical tree-style Gantt chart |
 | `progressField` | Progress field name; value range `0 ~ 100` |
 | `colorField` | Bar color field name; value should be a hex color code (e.g. `#FF5733`) |
+| `dependencyField` | Predecessor field name: a `@ManyToOne` reference to the same model, or a `@ManyToMany` collection of it. Each predecessor is drawn as a finish-to-start link to the task |
+| `milestoneField` | Boolean field name; a row holding `true` is drawn as a diamond on its start date instead of a bar |
+
+## Dependency Links <Badge type="tip" text="v2.4.0+" />
+
+With `dependencyField` set, the chart draws every task's predecessors as finish-to-start links:
+
+- With edit power, a link can be created by dragging from one bar to another and removed by clicking it; the change is written back to `dependencyField` through `DataProxy.beforeUpdate` / `afterUpdate`
+- A self link, and any link that would form a cycle (the new predecessor already depends on the task, directly or through others), is rejected
+- With a `@ManyToOne` field a task has a single predecessor and a new link replaces the old one; with a collection it can have several
+
+The endpoints involved:
+
+| Endpoint | Description |
+|----------|-------------|
+| `POST /erupt-api/data/modify/gantt/{erupt}/links` | Predecessors of the given tasks; body `{visCode, pks}`, returns task primary key to the primary keys of its predecessors; empty when `dependencyField` is not configured |
+| `POST /erupt-api/data/modify/gantt/{erupt}/link` | Adds or removes one link; body `{visCode, pk, predecessorPk, remove}`, requires edit power |
+| `POST /erupt-api/data/modify/gantt/{erupt}/update_date` | Saves the new start and end after a bar is moved or resized; body `{visCode, pk, startDate, endDate}`, requires edit power |
+
+:::info
+Drags on the chart (date changes and link changes) publish `EruptEditEvent` with the pre-change copy, exactly like a form edit, so the operation log, `erupt-revision` and other modules see them.
+:::
 
 ## Notes
 

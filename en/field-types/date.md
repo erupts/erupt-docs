@@ -18,7 +18,7 @@ private LocalDate date;
 ```java
 public @interface DateType {
 
-    Type type() default Type.DATE; // Display mode
+    Type type() default Type.AUTO; // Display mode, inferred from the Java type by default (2.4.0+)
 
     PickerMode pickerMode() default PickerMode.ALL; // Selectable time range
 
@@ -27,6 +27,7 @@ public @interface DateType {
     String max() default ""; // Latest selectable date (inclusive), format yyyy-MM-dd; empty means unbounded (2.1.1+)
 
     enum Type {
+        AUTO,       // Inferred from the field's Java type (2.4.0+, default)
         DATE,       // Date
         TIME,       // Time
         DATE_TIME,  // Date and time
@@ -44,6 +45,38 @@ public @interface DateType {
 
 }
 ```
+
+## Date Sub-type Inferred from the Java Type <Badge type="tip" text="v2.4.0+" />
+
+`DateType.Type` gains `AUTO`, now the default: with no `type` written, the field's Java type decides between date, date-time and time.
+
+| Java type | Resolved to |
+|---|---|
+| `LocalDate` | `DATE` |
+| `LocalDateTime` | `DATE_TIME` |
+| `LocalTime` | `TIME` |
+| `java.util.Date` | by JPA `@Temporal`: `TemporalType.DATE` → `DATE`, `TemporalType.TIME` → `TIME`, absent → `DATE_TIME` |
+| `String` | keeps `DATE` |
+
+```java
+@EruptField(edit = @Edit(title = "Created"))
+private LocalDateTime created;   // DATE_TIME
+
+@EruptField(edit = @Edit(title = "Effective Day"))
+private LocalDate day;           // DATE
+
+@EruptField(edit = @Edit(title = "Clock-in"))
+private LocalTime clock;         // TIME
+
+@Temporal(TemporalType.DATE)
+@EruptField(edit = @Edit(title = "Birthday"))
+private Date birthday;           // DATE
+
+@EruptField(edit = @Edit(title = "Timestamp"))
+private Date stamp;              // DATE_TIME
+```
+
+Month, week, quarter and year cannot be read from a type and still need an explicit `type`.
 
 ## Examples
 

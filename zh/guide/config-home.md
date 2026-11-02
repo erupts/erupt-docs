@@ -15,10 +15,34 @@
 
 ![默认首页](/ui/skin-classic.png)
 
-- 按时段问候当前用户，显示可访问菜单数、数据模型数、未读通知数、常用菜单数
+- 按时段问候当前用户，下方一排磁贴：可访问菜单数、**账号安全**、未读通知数（需 erupt-notice）、常用菜单数（安装 erupt-ai 后换成 **AI 提问框**），见下文 [首页磁贴](#首页磁贴)
 - **常用**：在左侧菜单点击图钉即可钉在首页；未钉任何菜单时按访问次数展示常去的菜单
 - **最近打开**：按今天 / 昨天 / 更早分组，点击直接跳转
 - 右上角可切换浅色 / 深色与皮肤，与设置抽屉共用同一份保存的选择
+
+### 首页磁贴 <Badge type="tip" text="v2.4.0+" />
+
+2.4.0 起两块磁贴换了内容：
+
+- **账号安全**（原「数据模型」）：大字显示密码距上次修改的天数（从 `/erupt-api/userinfo` 的 `pwdChangedTime` 计算），标签行写明「密码更新」以及 MFA 已开启 / 未开启（`mfaBound`）。密码超过 90 天未改、从未改过，或站点开启了 MFA（`/erupt-api/erupt-app` 的 `mfa.enable`）而账号未绑定时，磁贴变为橙色提醒；租户会话没有平台 MFA，不显示 MFA 状态
+- **AI 提问框**（原「常用菜单」）：当 `/erupt-api/erupt-app` 的 `properties["erupt-ai"]` 为真且当前账号拥有 AI 对话菜单（编码 `ai-chat` 的路由菜单）时，磁贴变成一个输入框，输入问题后回车打开 `/ai/chat?q=<问题>`，问题作为新会话的第一条消息发出；不满足条件时仍显示常用菜单数
+
+### 文案与多语言 <Badge type="tip" text="v2.4.0+" />
+
+默认首页的文案不再写死在页面里，而是从工作台共用的 `erupt.i18n.csv` 读取（按 iframe 地址上的 `_lang` 取列，缺失的语言回退到 `en-US`），因此覆盖翻译表即可改首页文案。用到的键均以 `home.` 开头：
+
+| 键 | 用途 |
+| --- | --- |
+| `home.morning` / `home.noon` / `home.afternoon` / `home.evening` / `home.night` | 按时段的问候语 |
+| `home.menus` | 「可访问菜单」磁贴 |
+| `home.security` / `home.days_ago` / `home.pwd_changed` / `home.pwd_unchanged` / `home.mfa_on` / `home.mfa_off` | 「账号安全」磁贴：标题、「天前」单位、密码更新 / 未修改、MFA 状态 |
+| `home.unread` | 「未读通知」磁贴 |
+| `home.pinned` / `home.ai` / `home.ask` | 「常用菜单」磁贴，以及 AI 提问框的标签与占位文字 |
+| `home.quick` / `home.frequent` / `home.recent` / `home.none` | 快捷入口区的标题（常用 / 常去 / 快捷入口）与空状态提示 |
+| `home.opened` / `home.opened_none` / `home.today` / `home.yesterday` / `home.earlier` | 「最近打开」区的标题、空状态与分组 |
+| `home.dark` / `home.light` / `home.skin` / `home.skin_default` | 右上角外观控件的提示 |
+
+自建首页同样可以请求 `erupt.i18n.csv?v=<构建版本>` 复用这份翻译表。
 
 ## 替换首页
 
@@ -77,10 +101,10 @@ fetch(api + "/userinfo", {headers: {token: token, lang: lang}})
 
 | 接口 | 用途 |
 | --- | --- |
-| `GET /erupt-api/userinfo` | 当前用户的账号、昵称、头像 |
+| `GET /erupt-api/userinfo` | 当前用户的账号、昵称、头像，以及 `pwdChangedTime`（密码最后修改时间，从未改过为 null）与 `mfaBound`（是否已绑定动态口令）<Badge type="tip" text="v2.4.0+" /> |
 | `GET /erupt-api/menu` | 当前用户可访问的菜单树，可据此渲染自己的导航 |
 | `GET /erupt-api/notice/unread-count` | 未读通知数（需引入 erupt-notice） |
-| `GET /erupt-api/erupt-app` | 站点信息、版本号、已启用的模块 |
+| `GET /erupt-api/erupt-app` | 站点信息、版本号、已启用的模块（`properties`），以及 MFA 是否开启（`mfa.enable`） |
 
 其他数据直接调用 [erupt 的数据接口](/zh/advanced/rest-api)或自定义接口即可，权限校验与在工作台内一致。
 
@@ -112,7 +136,7 @@ new MutationObserver(syncTheme).observe(root, {attributes: true, attributeFilter
 window.parent.location.hash = "#/build/table/EruptUser";
 ```
 
-**切换皮肤**：宿主暴露了 `window.eruptApplySkin(skin)`，可传 `default` / `brutalist` / `liquid-glass` / `workspace` / `classic`；默认首页右上角的皮肤切换就是这样实现的。
+**切换皮肤**：宿主暴露了 `window.eruptApplySkin(skin)`，可传 `default` / `classic` / `workspace` / `material` / `liquid-glass` / `brutalist` / `terminal`（`material` 与 `terminal` 为 2.4.0 新增）；默认首页右上角的皮肤切换就是这样实现的。
 
 :::warning 注意
 - `_token` 出现在 iframe 地址中，首页必须与工作台同域部署，不要把它放到第三方站点

@@ -48,11 +48,15 @@ erupt:
 
 - `endpoint` 与 `pathStyle` 是一组：注解写了 `endpoint`，就用注解的 `pathStyle`；注解没写 `endpoint`，两者一起取 `erupt.s3.*`。
 - `accessKey` 与 `secretKey` 是一组：注解写了 `accessKey`，才读注解的 `secretKey`。
-- `bucket`、`region` 各自独立回退。
+- `bucket`、`region` 各自独立回退，两者都不是注解的必填项：不带任何属性的 `@EruptS3` 就是完整使用 `erupt.s3.*`。只有注解与配置里的 `bucket` 都为空时，访问列表才会报「未配置 Bucket」。
 
 ## endpoint 填服务地址，不是 Bucket 地址
 
 `endpoint` 应当是服务商的服务域名（如 `https://oss-cn-hangzhou.aliyuncs.com`）。控制台里常见的是 Bucket 专属域名（`https://mybucket.oss-cn-hangzhou.aliyuncs.com`），虚拟主机寻址下 SDK 会再往前拼一次 Bucket 名，请求会落到一个不存在的 Bucket 上。模块识别这种情况并自动去掉开头的 `mybucket.`，但仍建议直接填服务域名。
+
+## 自定义 endpoint 下的请求校验和
+
+AWS SDK 自 2.30 起，每次上传默认都以 `aws-chunked` 编码附带 CRC32 校验和，不少 S3 兼容服务（阿里云 OSS、旧版 MinIO 等）会拒绝这种请求体。因此只要设置了 `endpoint`，模块就把请求校验和与响应校验都改为「仅在操作要求时计算」（`WHEN_REQUIRED`）；不设 `endpoint` 直连 AWS 时保持 SDK 默认行为。无需额外配置，这里只是说明为什么同一份代码在 AWS 与兼容服务上的请求形态不同。
 
 ## 凭证建议
 

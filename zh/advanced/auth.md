@@ -195,6 +195,8 @@ Content-Type: application/json
 
 - 密码默认三次 Base64 编码后传输：`btoa(btoa(btoa(pwd)))`，后端自动解码；`erupt-app.pwd-transfer-encrypt: false` 可关闭
 - 同一账号 + IP 连续失败达到 `erupt-app.verify-code-count`（默认 2）次后要求验证码；达到 `erupt.upms.login-lock.max-failures`（默认 10）次后锁定 10 分钟
+- 这里的 IP 是客户端地址：`X-Forwarded-For` 只在请求来自 `erupt.upms.trusted-proxies`（默认回环与 RFC 1918 内网段）中的可信代理时才被采信，否则以对端地址为准，IP 白名单与登录日志同理。代理在公网地址上时需把它加进该配置，见[参数配置](/zh/guide/configuration#erupt-框架核心) <Badge type="tip" text="v2.4.0+" />
+- 锁屏解锁走 `POST /erupt-api/verify-pwd`（请求体 `{"pwd": "<同登录接口的编码方式>"}`，需携带 `token`）：复用登录校验，失败计数与锁定同样生效，但不签发新 Session
 - 注销：`GET /erupt-api/logout`，携带 `token` 请求头
 
 ### 双因素认证的第二步 <Badge type="tip" text="v2.3.0+" />
