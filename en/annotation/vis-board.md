@@ -4,6 +4,8 @@ Displays data as a Kanban board — each distinct value of the group field becom
 
 > **Supported in 2.0.0+**
 
+![BOARD view: columns by status, swimlanes by priority](/annotation/vis-board-swimlane.png)
+
 ## Complete Example
 
 ```java
@@ -17,7 +19,12 @@ Displays data as a Kanban board — each distinct value of the group field becom
             code = "board",
             title = "Board",
             type = Vis.Type.BOARD,
-            boardView = @BoardView(groupField = "status")
+            boardView = @BoardView(
+                groupField    = "status",
+                swimlaneField = "priority",
+                sumField      = "points",
+                wipLimit      = 5
+            )
         )
     }
 )
@@ -41,6 +48,22 @@ public class Task extends BaseModel {
     private String status;
 
     @EruptField(
+        views = @View(title = "Priority"),
+        edit = @Edit(title = "Priority", type = EditType.CHOICE,
+            choiceType = @ChoiceType(vl = {
+                @VL(value = "high", label = "High"),
+                @VL(value = "low",  label = "Low")
+            }))
+    )
+    private String priority;
+
+    @EruptField(
+        views = @View(title = "Story Points"),
+        edit = @Edit(title = "Story Points")
+    )
+    private Integer points;
+
+    @EruptField(
         views = @View(title = "Assignee"),
         edit = @Edit(title = "Assignee")
     )
@@ -54,7 +77,13 @@ public class Task extends BaseModel {
 ```java
 public @interface BoardView {
 
-    String groupField(); // grouping field (required)
+    String groupField();                 // grouping field (required), one column per value
+
+    String swimlaneField() default "";   // second grouping, one horizontal lane per value (2.4.0+)
+
+    String sumField() default "";        // numeric field summed in every column header (2.4.0+)
+
+    int wipLimit() default 0;            // work-in-progress limit per column, 0 disables (2.4.0+)
 
 }
 ```
@@ -62,9 +91,15 @@ public @interface BoardView {
 | Attribute | Description |
 |-----------|-------------|
 | `groupField` | The field name used to split cards into columns (required). Each distinct value of this field becomes one board column. Supports `CHOICE`, `REFERENCE_TREE`, and `REFERENCE_TABLE` field types. |
+| `swimlaneField` | Optional. A second grouping field: each distinct value becomes a horizontal swimlane, and cards can be dragged between lanes as well as between columns. Same field types as `groupField`. |
+| `sumField` | Optional. A numeric field name; every column header shows the sum of this field over its cards next to the card count. |
+| `wipLimit` | Optional. Maximum number of cards per column (WIP limit); a column holding more cards is highlighted. `0` disables the limit. |
 
 ## Notes
 
 - Dragging a card to a different column automatically calls `DataProxy.beforeUpdate` / `afterUpdate` and persists the new `groupField` value.
-- When `groupField` is a reference type (`REFERENCE_TREE` / `REFERENCE_TABLE`), the board column headings are the display names of the referenced objects.
+- With `swimlaneField` set, the board is split into horizontal lanes and vertical columns; dropping a card into another lane writes back both `groupField` and `swimlaneField`.
+- When `groupField` / `swimlaneField` is a reference type (`REFERENCE_TREE` / `REFERENCE_TABLE`), the column and lane headings are the display names of the referenced objects.
+- Column counts and `sumField` sums update as cards are dragged, without a reload.
+- The board loads the full result set at once and hides the pager.
 - Use `visRawTable = true` to keep the default table view alongside the board view.

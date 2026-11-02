@@ -15,10 +15,34 @@ Without any configuration the framework's own home page is used:
 
 ![Default home page](/ui/skin-classic.png)
 
-- Greets the current user by time of day and counts reachable menus, data models, unread notices and pinned menus
+- Greets the current user by time of day, above a row of tiles: reachable menus, **account security**, unread notices (needs erupt-notice) and pinned menus (an **AI prompt box** once erupt-ai is installed) — see [Home Page Tiles](#home-page-tiles) below
 - **Pinned**: click the pin on a sidebar item to keep it on the home page; with nothing pinned, the most visited menus are shown instead
 - **Recently opened**: grouped into today / yesterday / earlier, one click to jump back
 - The top-right controls switch light / dark and the skin, sharing the saved choices with the settings drawer
+
+### Home Page Tiles <Badge type="tip" text="v2.4.0+" />
+
+Two tiles changed in 2.4.0:
+
+- **Account security** (formerly "Data models"): the big number is the days since the password was last changed (from `pwdChangedTime` in `/erupt-api/userinfo`), and the label reads "Password changed" plus MFA on / off (`mfaBound`). The tile turns orange when the password is older than 90 days, was never changed, or the site offers MFA (`mfa.enable` in `/erupt-api/erupt-app`) and the account has not bound it; a tenant session has no platform MFA, so no MFA state is shown
+- **AI prompt box** (formerly "Pinned menus"): when `properties["erupt-ai"]` in `/erupt-api/erupt-app` is true and the account has the AI chat menu (the router menu with code `ai-chat`), the tile becomes an input; type a question and press Enter to open `/ai/chat?q=<question>`, which sends it as the first message of a new conversation. Otherwise the tile keeps counting pinned menus
+
+### Strings and Languages <Badge type="tip" text="v2.4.0+" />
+
+The default page no longer hard-codes its texts: it reads the shell's shared `erupt.i18n.csv` (the column named by `_lang` on the iframe URL, falling back to `en-US`), so overriding the translation sheet changes the home page too. Every key starts with `home.`:
+
+| Key | Used for |
+| --- | --- |
+| `home.morning` / `home.noon` / `home.afternoon` / `home.evening` / `home.night` | The greeting by time of day |
+| `home.menus` | The "Menus" tile |
+| `home.security` / `home.days_ago` / `home.pwd_changed` / `home.pwd_unchanged` / `home.mfa_on` / `home.mfa_off` | The "Account security" tile: title, "days ago" unit, password changed / unchanged, MFA state |
+| `home.unread` | The "Unread notices" tile |
+| `home.pinned` / `home.ai` / `home.ask` | The "Pinned menus" tile, and the AI prompt box's label and placeholder |
+| `home.quick` / `home.frequent` / `home.recent` / `home.none` | Headings of the quick-access area (Pinned / Frequent / Quick access) and its empty state |
+| `home.opened` / `home.opened_none` / `home.today` / `home.yesterday` / `home.earlier` | Heading, empty state and groups of "Recently opened" |
+| `home.dark` / `home.light` / `home.skin` / `home.skin_default` | Tooltips of the appearance controls |
+
+Your own home page can fetch `erupt.i18n.csv?v=<build version>` and reuse the same sheet.
 
 ## Replacing it
 
@@ -77,10 +101,10 @@ The endpoints the default page uses are available to yours as well:
 
 | Endpoint | Purpose |
 | --- | --- |
-| `GET /erupt-api/userinfo` | Account, display name and avatar of the current user |
+| `GET /erupt-api/userinfo` | Account, display name and avatar of the current user, plus `pwdChangedTime` (when the password was last changed, null if never) and `mfaBound` (whether an authenticator is bound) <Badge type="tip" text="v2.4.0+" /> |
 | `GET /erupt-api/menu` | The menu tree the user may reach, handy for rendering your own navigation |
 | `GET /erupt-api/notice/unread-count` | Unread notice count (needs erupt-notice) |
-| `GET /erupt-api/erupt-app` | Site info, version and enabled modules |
+| `GET /erupt-api/erupt-app` | Site info, version, enabled modules (`properties`) and whether MFA is offered (`mfa.enable`) |
 
 Any other data comes from the [erupt data endpoints](/en/advanced/rest-api) or your own APIs, with the same permission checks as inside the workspace.
 
@@ -112,7 +136,7 @@ new MutationObserver(syncTheme).observe(root, {attributes: true, attributeFilter
 window.parent.location.hash = "#/build/table/EruptUser";
 ```
 
-**Switching the skin**: the host exposes `window.eruptApplySkin(skin)` with `default` / `brutalist` / `liquid-glass` / `workspace` / `classic`; the default page's skin switcher is built on it.
+**Switching the skin**: the host exposes `window.eruptApplySkin(skin)` with `default` / `classic` / `workspace` / `material` / `liquid-glass` / `brutalist` / `terminal` (`material` and `terminal` are new in 2.4.0); the default page's skin switcher is built on it.
 
 :::warning Notes
 - `_token` travels in the iframe URL, so the home page must be served from the same origin as the workspace; never host it on a third-party site

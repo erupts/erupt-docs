@@ -19,7 +19,7 @@
 演示：[https://demo.erupt.xyz](https://demo.erupt.xyz) &nbsp; 账号：`cube` 密码：`cube`
 
 :::info 使用文档
-[快速开始](/zh/modules/pro/erupt-cube/quick-start) · [数据源](/zh/modules/pro/erupt-cube/datasource) · [语义建模](/zh/modules/pro/erupt-cube/semantic-model) · [Cube 语法（ML）](/zh/modules/pro/erupt-cube/cube-ml) · [可视化建模](/zh/modules/pro/erupt-cube/visual-modeling) · [可视化分析](/zh/modules/pro/erupt-cube/visual-analysis) · [SQL 查询端口](/zh/modules/pro/erupt-cube/sql)
+[快速开始](/zh/modules/pro/erupt-cube/quick-start) · [数据源](/zh/modules/pro/erupt-cube/datasource) · [语义建模](/zh/modules/pro/erupt-cube/semantic-model) · [Cube 语法（ML）](/zh/modules/pro/erupt-cube/cube-ml) · [可视化建模](/zh/modules/pro/erupt-cube/visual-modeling) · [可视化分析](/zh/modules/pro/erupt-cube/visual-analysis) · [模型视图图表](/zh/modules/pro/erupt-cube/vis-view) · [SQL 查询端口](/zh/modules/pro/erupt-cube/sql)
 :::
 
 ---
@@ -55,6 +55,14 @@ erupt-cube 同时支持两种语义模型定义方式，覆盖团队内不同角
 > 推荐工作流：**注解定义核心模型 → 可视化界面用于业务自助探索 → 探索后稳定下来的模型回流为注解**。
 
 <img src="/cube/modeling-flow-zh.svg" width="900" alt="两种建模方式互补">
+
+## 在模型页面嵌入指标图表 <Badge type="tip" text="v2.4.0+" />
+
+除了独立的看板与探索页，cube 的图表也可以直接放进任意 Erupt 模型的视图 Tab：`@Vis(type = Vis.Type.CUBE)` 用代码声明一组图表，列表的搜索条件自动转为 cube 过滤，图表始终描述屏幕上正在筛选的那批数据。
+
+![模型页面中的指标图表视图](/annotation/vis-cube.png)
+
+详见 [模型视图图表](/zh/modules/pro/erupt-cube/vis-view)。
 
 ## 注解建模速查（API 参考）
 

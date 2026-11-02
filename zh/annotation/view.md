@@ -72,6 +72,7 @@ const viewTypes = [
 | `tpl` | 弹出自定义模板，模板中可用 `row` 变量获取当前行数据 |
 | `ifRender` | 动态控制列是否渲染（`ExprBool`），详见 [ifRender 动态渲染](/zh/annotation/if-render) |
 | `template` | 列值格式化模板（前端 `eval` 执行的 JS 表达式），可用变量：`value`（当前值）、`item`（整行数据）、`item.xxx`（某列值） |
+| `statistic` | 列统计：`COUNT` / `DISTINCT_COUNT` / `SUM` / `AVG` / `MAX` / `MIN`，在表格底部显示该列在整个查询结果上的统计值，默认 `NONE`，详见 [statistic 列统计](#statistic-列统计)（2.4.0+） |
 
 ## 展示类型（ViewType）
 
@@ -107,6 +108,44 @@ private BigDecimal total;
 ```
 
 `group` 文本与 `title` 一样会经过多语言翻译；固定列（`fixed`）以及组内只有一列的「孤立成员」不会被分组；列设置面板仍按平铺的列列表操作，不受分组影响。
+
+## statistic 列统计 <Badge type="tip" text="v2.4.0+" />
+
+给列声明 `statistic` 后，表格底部出现一行统计栏，显示该列的统计值。统计的范围是**列表查询命中的全部记录**，而不是当前页：搜索条件、`@Filter`、链接树筛选都会影响统计结果，翻页不会。
+
+```java
+@EruptField(views = @View(title = "金额", statistic = View.Statistic.SUM))
+private BigDecimal amount;
+
+@EruptField(views = @View(title = "数量", statistic = View.Statistic.AVG))
+private Integer quantity;
+
+@EruptField(views = @View(title = "客户", statistic = View.Statistic.DISTINCT_COUNT))
+private String customer;
+```
+
+| 值 | 描述 |
+|----|------|
+| `NONE` | 不统计（默认） |
+| `COUNT` | 非空值的个数 |
+| `DISTINCT_COUNT` | 去重后的非空值个数 |
+| `SUM` | 求和，适用于数值列 |
+| `AVG` | 平均值，适用于数值列 |
+| `MAX` | 最大值 |
+| `MIN` | 最小值 |
+
+### 工作方式
+
+- 前端在加载列表的同时调用 `POST /erupt-api/data/aggregate/{erupt}`，入参与列表接口相同（`TableQuery`：搜索条件、链接树值、视图编码），返回「列名 -> 统计值」
+- JPA 数据源把所有统计列合并为一条聚合查询；JDBC、SQLite（设计器）、MongoDB 数据源分别执行各自的原生聚合
+- 数据源无法聚合的列（如 `@Transient` 字段、由 `DataProxy.afterFetch` 填充的计算列）退化为在内存中统计：最多拉取 **2000** 条记录计算，超过这个数量时该列显示为未知（`null`），不会用部分数据给出错误结果；持久化列不受此限制
+- 远程节点（erupt-cloud）托管的模型不参与统计
+- `column` 指向关联对象属性的列（如 `@View(column = "name")`）同样可以统计
+- 在 [TABLE 视图分组](/zh/annotation/vis#table-视图分组) 中，声明了 `statistic` 的列还会在每个组头显示该组的小计
+
+:::tip
+统计栏中的数值按本地化格式显示（千分位分隔，最多保留 2 位小数）；统计值未知时显示 `-`。
+:::
 
 <style scoped>
 .vt-group {

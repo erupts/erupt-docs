@@ -86,8 +86,12 @@ erupt:
   upload-path: D:/erupt/pictures
   # Keep the original file name when uploading
   keep-upload-file-name: false
-  # Initialization mode: NONE - never run init code, EVERY - run on every startup, FILE - use a marker file
-  init-method-enum: file
+  # On add, edit, cell edit and import, check that CHOICE / MULTI_CHOICE values are among the options the user is offered; default true (v2.4.0+)
+  # A field that legitimately stores other values opts out with @ChoiceType(validate = false)
+  choice-validate: true
+  # Seed the menus each module declares on start; default true. A module's initFun runs with its first seeding (v2.4.0+, replaces the removed init-method-enum)
+  # Turn off for a read-only database user, menus managed by scripts, or all but one of several applications sharing a database
+  init-modules-menu: true
   # Default language used during initialization for text values (v1.12.3+)
   default-locales: zh-CN
   # Enable log collection — viewable under System Logs in real time (v1.12.14+)
@@ -118,7 +122,15 @@ erupt:
       enable: true
       max-failures: 10
       lock-minutes: 10
+    # Trusted reverse proxies (IPs or CIDRs, comma separated): X-Forwarded-For is believed only when it comes from one of them;
+    # any other peer is taken as the client itself, so a forged header cannot pick the address. That address keys the login lock,
+    # the captcha counter, the IP white list and the logs. Empty trusts no proxy (v2.4.0+)
+    trusted-proxies: 127.0.0.0/8,::1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
 ```
+
+:::tip The `trusted-proxies` default
+Loopback and the RFC 1918 private ranges are trusted out of the box, so an Nginx or Ingress on the same private network needs no configuration. When the proxy sits on a public address (a cloud load balancer, say), add its egress address, otherwise the login lock and the IP white list see the proxy's address instead of the client's.
+:::
 
 ## erupt.redis-session — distributed sessions
 
@@ -138,6 +150,8 @@ spring:
       timeout: 10000
       host: 127.0.0.1
 ```
+
+With it on, several instances also coordinate through the same Redis: [erupt-config](/en/modules/erupt-config) broadcasts configuration changes to the other instances (without it, `erupt.config.refresh-seconds` polls instead), and [erupt-job](/en/modules/erupt-job) takes a Redis lock so a scheduled job runs on one node of the cluster only.
 
 ## erupt.telemetry — anonymous telemetry
 

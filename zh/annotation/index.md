@@ -18,13 +18,23 @@ const trees = [
         note: '类级',
         children: [
             {attr: 'power', anno: '@Power', desc: '增删改查等操作权限控制', link: '/zh/annotation/power'},
-            {attr: 'rowOperation', anno: '@RowOperation', desc: '自定义行操作按钮', link: '/zh/annotation/row-operation'},
+            {
+                attr: 'rowOperation', anno: '@RowOperation', desc: '自定义行操作按钮', link: '/zh/annotation/row-operation',
+                children: [
+                    {attr: 'tpl', anno: '@Tpl', desc: '弹出模板页面，可用选中行 rows', link: '/zh/annotation/tpl'},
+                ],
+            },
             {attr: 'drills', anno: '@Drill', desc: '数据钻取，无需外键的一对多关联', link: '/zh/annotation/drill'},
             {attr: 'filter', anno: '@Filter', desc: '数据展示过滤条件', link: '/zh/annotation/filter'},
             {attr: 'orderBy', anno: '@OrderBy', desc: '数据排序规则配置', link: '/zh/annotation/order-by'},
             {attr: 'tree', anno: '@Tree', desc: '树形数据展示', link: '/zh/annotation/tree'},
             {attr: 'linkTree', anno: '@LinkTree', desc: '左树右表布局', link: '/zh/annotation/link-tree'},
-            {attr: 'layout', anno: '@Layout', desc: '页面布局与分页配置', link: '/zh/annotation/layout'},
+            {
+                attr: 'layout', anno: '@Layout', desc: '页面布局与分页配置', link: '/zh/annotation/layout',
+                children: [
+                    {attr: 'formSteps', anno: 'true', plain: true, desc: '分步表单，字段按步骤分组逐步填写', link: '/zh/annotation/form-steps'},
+                ],
+            },
             {attr: 'dragSort', anno: '@DragSort', desc: '表格行拖拽排序', link: '/zh/annotation/drag-sort'},
             {
                 attr: 'vis', anno: '@Vis', desc: '多视图切换', link: '/zh/annotation/vis',
@@ -33,9 +43,21 @@ const trees = [
                     {t: '甘特图 GANTT', l: '/zh/annotation/vis-gantt'},
                     {t: '看板 BOARD', l: '/zh/annotation/vis-board'},
                     {t: '日历 CALENDAR', l: '/zh/annotation/vis-calendar'},
+                    {t: '分组表格 TABLE', l: '/zh/annotation/vis#table-视图-分组'},
+                    {t: '时间线 TIMELINE', l: '/zh/annotation/vis-timeline'},
+                    {t: '地图 MAP', l: '/zh/annotation/vis-map'},
+                    {t: '指标图表 CUBE', l: '/zh/annotation/vis-cube'},
+                    {t: '自定义视图 TPL', l: '/zh/annotation/vis-tpl'},
                 ],
             },
         ],
+    },
+    {
+        anno: '@EruptScope',
+        link: '/zh/annotation/erupt-scope',
+        desc: '与 @Erupt 并列标注在类上，页头选一次上下文（集群 / 项目 / 公司），模型的查询与新增都随之限定',
+        note: '类级 · 2.4.0+',
+        children: [],
     },
     {
         anno: '@EruptField',
@@ -43,7 +65,13 @@ const trees = [
         desc: '字段注解，声明字段的展示与编辑行为',
         note: '字段级',
         children: [
-            {attr: 'views', anno: '@View', desc: '表格列展示配置', link: '/zh/annotation/view'},
+            {
+                attr: 'views', anno: '@View', desc: '表格列展示配置', link: '/zh/annotation/view',
+                children: [
+                    {attr: 'ifRender', anno: '@ExprBool', desc: '运行时决定该列是否渲染', link: '/zh/annotation/if-render'},
+                    {attr: 'tpl', anno: '@Tpl', desc: '列变为链接，点击弹出模板页面', link: '/zh/annotation/tpl'},
+                ],
+            },
             {
                 attr: 'edit', anno: '@Edit', desc: '编辑表单配置', link: '/zh/annotation/edit',
                 children: [
@@ -51,6 +79,8 @@ const trees = [
                     {attr: 'search', anno: '@Search', desc: '搜索栏配置', link: '/zh/annotation/search'},
                     {attr: 'onchange', anno: 'OnChange', plain: true, desc: '字段联动，值变更时实时联动其他字段', link: '/zh/annotation/on-change'},
                     {attr: 'dynamic', anno: '@Dynamic', desc: '动态组件控制', link: '/zh/annotation/dynamic'},
+                    {attr: 'ifRender', anno: '@ExprBool', desc: '运行时决定该表单组件是否渲染', link: '/zh/annotation/if-render'},
+                    {attr: 'tplType', anno: '@Tpl', desc: '表单内嵌模板页面', link: '/zh/annotation/tpl'},
                 ],
             },
         ],

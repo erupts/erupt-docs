@@ -1,9 +1,174 @@
 # 更新日志
 
+## 2.4.0（2026-11-01） <Badge type="tip" text="Spring Boot 3.5.16" />
+
+:::warning 升级须知
+升级前请阅读 [V 2.4.0 升级指南](/zh/guide/upgrade#v-2-4-0-升级指南)：导出按钮默认开启、选项值与表单限制改为服务端强制校验、`erupt.init-method-enum` 改名为 `erupt.init-modules-menu`、反向代理后需配置 `erupt.upms.trusted-proxies`、用户 / 角色 / 组织 / 岗位等表新增 `tenant_id` 列，erupt-cloud 节点需同步升级，并有[数据库变更](#数据库变更)。
+:::
+
+🦞 开源 [erupt-share](/zh/modules/erupt-share) 公开链接模块：登录用户为一个表单或自己持有的任意菜单页面签发链接，访问者无需账号即可填表、查看报表 / 仪表盘 / 画布；链接可设有效期、访问次数与密码，随时关闭；访问会话只拿到目标所需的最小权限，其余接口一律 403
+
+🦞 开源 [erupt-webhook](/zh/modules/erupt-webhook) 数据事件推送模块：订阅模型的新增 / 修改 / 删除事件，变更提交后以 JSON 推送到外部 URL，HMAC-SHA256 签名、自定义请求头、三次重试与逐条推送日志，可一键重发
+
+🦞 开源 [erupt-config](/zh/modules/erupt-config) 运行时配置模块：按 Spring Profile 分层的键值配置项，作为属性源供 `@Value` / `Environment` / `@ConfigurationProperties` 读取，保存后无需重启即生效，多实例经 Redis 广播刷新；17 种配置项类型，密钥自动脱敏
+
+🦞 开源 [erupt-revision](/zh/modules/erupt-revision) 记录历史模块：每次新增 / 修改 / 单元格编辑 / 删除都留下字段级差异版本，记录面板可查看历史并回滚；版本表兼作回收站，删除的记录可一键恢复；`@Power(revision = false)` 可按模型关闭
+
+🦞 开源 [erupt-file-center](/zh/modules/erupt-file-center) 文件中心模块：Finder 式分栏浏览上传目录、本地文件夹、S3 桶与 SFTP 目录，图片 / 视频 / 音频 / PDF / 文本在线预览；上传、建目录、重命名、删除由独立的「写入」按钮授权
+
+🦞 开源 [erupt-ai-dev](/zh/modules/erupt-ai-dev) AI 软件交付模块：项目挂多个 Git 仓库，需求池里的需求经评审后交给服务器上安装的编码 CLI（Claude Code、Codex、OpenCode、Kimi Code、Cursor CLI、Qwen Code 或任意 CLI）在独立工作区自动开发，进度与 QA 结论经 MCP 回传，人工验收后 rebase 推送；配套新增 erupt-git 支持模块
+
+🦞 开源 [erupt-cloud-node-lite](/zh/modules/cloud-node-lite) 无 Spring 的轻量节点：用 erupt 注解在纯 Java / Kotlin、Solon、Quarkus、Micronaut、Vert.x、Ktor 或任意 Servlet 容器中声明模型，由 erupt 服务端渲染界面与鉴权
+
+🦞 开源 [erupt-sdk](/zh/modules/erupt-sdk/) 多语言节点 SDK：[Python](/zh/modules/erupt-sdk/python)、[Go](/zh/modules/erupt-sdk/go)、[TypeScript](/zh/modules/erupt-sdk/typescript)、[PHP](/zh/modules/erupt-sdk/php)、[.NET](/zh/modules/erupt-sdk/dotnet)、[Rust](/zh/modules/erupt-sdk/rust)、[Ruby](/zh/modules/erupt-sdk/ruby)、[Swift](/zh/modules/erupt-sdk/swift) 写的服务都能作为 erupt-cloud 节点，把自己的模型变成管理页面；各语言零依赖或仅标准库，基于同一份[节点协议](https://github.com/erupts/erupt/blob/develop/erupt-cloud/PROTOCOL.md)与注解 JSON Schema 生成，并通过同一套一致性测试
+
+🦞 开源 [erupt-k8s-dashboard](https://github.com/erupt-io/erupt-k8s-dashboard) 开箱即用的 Kubernetes 管理台：引入依赖即得 Pod / Deployment / StatefulSet / DaemonSet / Service / ConfigMap / Event / Namespace / Node 管理，日志、Web 终端、扩缩容、重启与 YAML 编辑，按集群 + 命名空间切换工作区（见 [erupt-data-k8s](/zh/modules/erupt-k8s)）
+
+🌟 [SAML 2.0 单点登录](/zh/modules/erupt-sso#saml-2-0-单点登录)：erupt-sso 在 OAuth2 之外支持 SAML（SAML / ADFS / Microsoft Entra ID 预设），SP 元数据可导出给 IdP，仅用 JDK XML-DSig 校验不引入新依赖；租户也可配置[自己的认证源](/zh/modules/erupt-sso#租户专属认证源)
+
+🌟 [@EruptScope 全局上下文](/zh/annotation/erupt-scope)：在页头选一次「集群 / 项目 / 公司」，声明了该作用域的所有模型自动按它过滤、新增时自动带入；选择值每次请求都对照用户可见的选项校验，改请求头也越不过权限
+
+🌟 [多租户共用 upms 表](/zh/modules/erupt-upms/#多租户与-tenantid)：用户 / 角色 / 组织 / 岗位以及登录日志、操作日志、评论、历史版本表增加 Hibernate `@TenantId` 列，租户用户与平台共用一套表、互不可见，账号与编码按租户唯一；erupt-tenant 不再维护独立的租户用户表，erupt-flow 的流程定义与实例按租户隔离
+
+🌟 @Vis 新增三种视图：[时间线 TIMELINE](/zh/annotation/vis-timeline)、[地图 MAP](/zh/annotation/vis-map)（高德 / 百度 / 腾讯 / 天地图 / Google / OSM，按厂商自动转换坐标系）、[指标图表 CUBE](/zh/annotation/vis-cube)（把 erupt-cube 探索的图表网格嵌进模型页面，列表搜索条件即图表筛选）
+
+🌟 [看板](/zh/annotation/vis-board)新增泳道 `swimlaneField`、列合计 `sumField` 与 WIP 上限；[日历](/zh/annotation/vis-calendar)新增 `mode` 初始视图（月 / 周 / 年）与拖拽改期；[甘特图](/zh/annotation/vis-gantt)新增任务依赖 `dependencyField` 与里程碑 `milestoneField`；[表格分组](/zh/annotation/vis) `@TableView(groupField)` 按字段折叠分组并显示小计
+
+🌟 [列统计](/zh/annotation/view#statistic-列统计) `@View(statistic = SUM | AVG | COUNT | ...)`：对列表查询命中的全部行而非当前页做聚合，JPA / JDBC / Mongo 原生执行，计算列回退内存统计
+
+🌟 [批量编辑](/zh/annotation/power#batchedit-批量编辑)：表格工具栏新增「批量编辑」，选中多行后一次设置某个字段，每一行都走完整的单元格编辑管线，任一行被拒绝则整批回滚；`@Power(batchEdit = false)` 可关闭
+
+🌟 [多格式导出](/zh/advanced/data-proxy-excel#多格式导出)：导出按钮可选 Excel / CSV / JSON / JSON Lines / Markdown，实现 `TableCodec` 即可增加格式；Excel 导出结果可原样导入回去
+
+🌟 [按 Java 类型推断组件](/zh/field-types/auto#按-java-类型推断)：`@Erupt` 类型字段自动成引用表 / 引用树，`Collection<@Erupt>` 成子表，`Collection<Enum>` 成多选，`Map` 成键值对，[枚举字段自动成下拉](/zh/field-types/choice#枚举字段即下拉框)且选项取自枚举常量；[`DateType.Type.AUTO`](/zh/field-types/date#按-java-类型推断日期子类型) 按 `LocalDate` / `LocalDateTime` / `LocalTime` 推断日期类型
+
+🌟 [服务端强制校验声明的限制](/zh/advanced/data-proxy-validate#服务端强制校验声明的限制)：INPUT 长度、NUMBER / SLIDER 区间、RATE 范围、TAGS 数量与可选值、DATE 的 FUTURE / HISTORY 与区间、子表每一行的规则都在服务端执行，直接调接口也绕不过；[`erupt.choice-validate`](/zh/field-types/choice#服务端选项校验) 默认开启，CHOICE / MULTI_CHOICE 的值必须在用户可见的选项之内
+
+🌟 [模块中心](/zh/modules/erupt-upms/menu#模块中心)：系统管理下按分组列出已安装模块及其文档，可一键关闭某个模块的菜单；侧栏按模块分组显示小标题，根菜单按用途重新排序；[模块菜单按指纹自动对账](/zh/modules/erupt-upms/menu#模块菜单的自动维护)，模块升级后新菜单与按钮自动补齐、管理员的改动保留，不再依赖 `.erupt/*.loaded` 标记文件
+
+🌟 [erupt-cloud 服务端代节点完成](/zh/modules/cloud-server#服务端代节点完成的工作)权限校验、载荷校验、HMAC 请求签名、引用解析、Excel、上传、静态选项、单元格 / 批量编辑、拖拽排序与看板 / 日历 / 甘特写回，节点协议缩减到九个端点；注册 `invoke` 能力的节点把 fetch 选项、onchange、按钮与行操作统一走 `/erupt-api/invoke`
+
+🌟 [Material 与 Terminal 皮肤](/zh/guide/ui#外观)：Material 3 / Google Workspace 风格与磷光终端风格各一套，锁屏页也可切换明暗、皮肤与主题色
+
+🌟 [内置打印](/zh/modules/erupt-print)：打印前可设置标签位置、列数、边框、字号、标题、纸张与页边距；一对多 / 多对多 / 多表单字段以表格打印，经隐藏 iframe 打印使页面按纸张重排
+
+🌟 [erupt-cube 支持 YAML / JSON 定义 Cube](/zh/modules/pro/erupt-cube/semantic-model#用-yaml-json-文件定义-cube)：`cube/**/*.yml|json` 一文件一 Cube，与注解 Cube 可互相 join，发布 [JSON Schema](https://docs.erupt.xyz/schema/erupt-cube.schema.json) 供 IDE 补全
+
+🌟 [erupt-tenant 订阅生命周期](/zh/modules/pro/erupt-tenant/#订阅与试用)：套餐可设试用天数，到期状态（生效 / 宽限 / 过期）按到期日实时推导，过期或锁定的租户会话下一次请求即下线；`TenantSubscriptionService#extend` 供自有支付接入续期；租户登录页可用租户自己的 SSO 认证源
+
+🌟 [erupt-data-http 适配器钩子](/zh/modules/erupt-http#适配器钩子-erupthttpadapter)：`EruptHttpAdapter` 覆盖 url / 请求 / 响应各阶段，请求模板支持 `${}` 属性与 `#{}` SpEL（可取当前用户与 Bean），内置三种分页方式与响应信封解包
+
+🌟 [OpenAPI 3.1 规范](/zh/advanced/rest-api#openapi-规范)：仓库内提供由控制器 Javadoc 生成的 `openapi/erupt.json`，覆盖 core / upms / tpl / excel 全部接口
+
+🌟 首页新增[账号安全](/zh/guide/config-home)磁贴（密码修改天数、MFA 状态）与 AI 提问框；MCP 端点支持[模块级授权](/zh/modules/erupt-ai/mcp-server#模块级授权-mcpauthenticator) `McpAuthenticator`，工具输入 Schema 改用 langchain4j 的类型化定义，代用户调用在该用户的租户与权限下执行
+
+🧩 [`@Power(export)` 默认开启](/zh/annotation/power#export-导出默认开启)，与增删改查一致由角色的菜单按钮决定；`@View(export = false)` 保留列不导出；`importable` 仍需显式开启
+
+🧩 [`@ReferenceTreeType(leafOnly = true)`](/zh/field-types/reference-tree#只选叶子节点-leafonly) 只允许选择叶子节点，感谢 [chenxiaolong8023](https://github.com/chenxiaolong8023) 贡献的代码
+
+🧩 [卡片视图支持瀑布流布局](/zh/annotation/vis-card#瀑布流布局)：`@CardView(layout = CardView.Layout.MASONRY)` 保留封面原始比例，按列错落排布
+
+🧩 `EditType.MAP` 字段可用类型化的 [`Location`](/zh/field-types/map#location-类型) 值对象（经纬度、名称、地址、坐标系），String 字段可无迁移切换
+
+🌟 [地图支持多厂商](/zh/field-types/map#多厂商地图)：`EditType.MAP` 字段与地图视图共用 `eruptSiteConfig.map` 配置，可选高德、百度、腾讯、天地图、Google、OpenStreetMap（无需 key），前端按 `Location.crs` 自动换算坐标系，换厂商无需迁移数据
+
+🧩 [支持 `spring.jpa.open-in-view: false`](/zh/modules/erupt-jpa#finddatabyid-预加载集合字段)：`findDataById` 在查询内部初始化集合字段，详情、打印、模板、记录历史不再依赖 open-in-view 保持 EntityManager 打开；`@EruptDataSource` 多数据源模型同样适用
+
+🧩 erupt-data-s3：`S3ObjectModel` 类型化基类，`@EruptS3` 留空的属性回退到 `erupt.s3.*`；自定义 endpoint 时按需计算校验和以兼容 MinIO / OSS 等 S3 兼容存储
+
+🧩 [`X-Forwarded-For` 仅在来自可信代理时采信](/zh/guide/configuration)（`erupt.upms.trusted-proxies`，默认回环与内网段），登录锁定与 IP 白名单不再能被伪造的请求头绕过
+
+🧩 性能：DataProxy 调用链按模型缓存、`@Match` SpEL 缓存、LambdaQuery 参数占位符固定以命中 Hibernate 查询缓存、批量校验行权限只发一条 count 语句、`EruptRole.users` 改为懒加载、各模块引用用户改用精简的 `EruptUserVo`
+
+🧩 构建支持 JDK 27；依赖更新：gson 2.14、guava 33.7、commons-lang3 3.21、POI 5.5.1、AWS SDK 2.55、ShedLock 7.10、JSch 2.28.7 等；移除 Requesty 与 OrcaRouter 两个 LLM 适配器；移除 erupt-ai-decision 的 HTTP 接口（Java API 不变）
+
+🧩 所有复制按钮在 http 部署下也可用；`theme.menuGroups` 可隐藏侧栏分组标题；erupt-start 脚手架已更新至 2.4.0 模块清单
+
+🐞 修复应用列注释时公式字段报错的问题，感谢 [AryanGupta833](https://github.com/AryanGupta833) 贡献的代码
+
+🐞 erupt-flow 修复：网关条件对多选 / 标签 / 多对多字段始终不命中；审批人解析为空时事务刷新报错难以排查；无表单行的实例查询 NPE；独立打开的审批详情缺少任务上下文导致催办 / 撤回不显示
+
+### 数据库变更
+
+::: details 展开表结构变更与 SQL（MySQL 语法，其他数据库请自行转换）
+> 表结构变更由 JPA / Hibernate 在启动时自动执行，仅当项目禁用了自动 DDL（`spring.jpa.hibernate.ddl-auto=none` 或 `validate`）时才需手动执行。
+
+本版本涉及：
+
+- `e_upms_user`、`e_upms_role`、`e_upms_org`、`e_upms_post` 新增 `tenant_id` 列，账号 / 编码的唯一约束改为「租户 + 账号 / 编码」
+- `e_upms_login_log`、`e_upms_operate_log` 新增 `tenant_id` 列
+- `e_upms_sso` 新增 `tenant_id`、`idp_certificate` 列，`e_upms_sso_bind` 新增 `tenant_id` 列（引入 erupt-sso 时）
+- `e_record_comment` 新增 `tenant_id` 列（引入 erupt-comment 时）
+- `e_flow`、`e_flow_group`、`e_flow_instance` 新增 `tenant_id` 列（引入 erupt-flow 时）
+- `e_tenant_package` 新增 `trial_days` 列（引入 erupt-tenant 时）；租户侧用户 / 角色 / 组织表不再使用，见[升级指南](/zh/guide/upgrade#v-2-4-0-升级指南)
+
+新引入的模块建表由 Hibernate 自动完成，无需手动执行：
+
+- erupt-upms：`e_upms_module`（模块菜单指纹与开关、默认管理员与遥测实例状态）
+- erupt-share：`e_share_link`
+- erupt-webhook：`e_webhook`、`e_webhook_log`
+- erupt-config：`e_config_profile`、`e_config_item`
+- erupt-revision：`e_record_revision`
+- erupt-ai-dev：`e_ai_dev_project`、`e_ai_dev_project_repo`、`e_ai_dev_project_member`、`e_ai_dev_requirement`、`e_ai_dev_requirement_review`、`e_ai_dev_requirement_delivery`、`e_ai_dev_agent_session`、`e_ai_dev_agent_event`
+
+**`e_upms_user` / `e_upms_role` / `e_upms_org` / `e_upms_post` 新增字段（erupt-upms）**
+
+```sql
+ALTER TABLE e_upms_user ADD COLUMN tenant_id VARCHAR(64) NOT NULL DEFAULT '0' COMMENT '租户，平台为 0';
+ALTER TABLE e_upms_role ADD COLUMN tenant_id VARCHAR(64) NOT NULL DEFAULT '0' COMMENT '租户，平台为 0';
+ALTER TABLE e_upms_org  ADD COLUMN tenant_id VARCHAR(64) NOT NULL DEFAULT '0' COMMENT '租户，平台为 0';
+ALTER TABLE e_upms_post ADD COLUMN tenant_id VARCHAR(64) NOT NULL DEFAULT '0' COMMENT '租户，平台为 0';
+
+ALTER TABLE e_upms_user ADD CONSTRAINT uk_upms_user_account UNIQUE (tenant_id, account);
+ALTER TABLE e_upms_role ADD CONSTRAINT uk_upms_role_code    UNIQUE (tenant_id, code);
+ALTER TABLE e_upms_org  ADD CONSTRAINT uk_upms_org_code     UNIQUE (tenant_id, code);
+ALTER TABLE e_upms_post ADD CONSTRAINT uk_upms_post_code    UNIQUE (tenant_id, code);
+```
+
+未使用 erupt-tenant 的项目可以保留 `account` / `code` 列上原有的单列唯一索引；使用 erupt-tenant 的项目必须删除它们，否则不同租户无法使用相同账号（索引名因数据库而异，先 `SHOW INDEX FROM e_upms_user WHERE Non_unique = 0;` 查出再删除）。
+
+**`e_upms_login_log` / `e_upms_operate_log` 新增字段（erupt-upms）**
+
+```sql
+ALTER TABLE e_upms_login_log   ADD COLUMN tenant_id VARCHAR(64) NOT NULL DEFAULT '0' COMMENT '租户';
+ALTER TABLE e_upms_operate_log ADD COLUMN tenant_id VARCHAR(64) NOT NULL DEFAULT '0' COMMENT '租户';
+```
+
+**`e_upms_sso` / `e_upms_sso_bind` 新增字段（erupt-sso）**
+
+```sql
+ALTER TABLE e_upms_sso      ADD COLUMN tenant_id       VARCHAR(64) NOT NULL DEFAULT '0' COMMENT '租户';
+ALTER TABLE e_upms_sso      ADD COLUMN idp_certificate LONGTEXT    COMMENT 'SAML IdP 签名证书';
+ALTER TABLE e_upms_sso_bind ADD COLUMN tenant_id       VARCHAR(64) NOT NULL DEFAULT '0' COMMENT '租户';
+ALTER TABLE e_upms_sso      ADD CONSTRAINT uk_upms_sso_code UNIQUE (tenant_id, code);
+```
+
+**`e_record_comment` 新增字段（erupt-comment）**
+
+```sql
+ALTER TABLE e_record_comment ADD COLUMN tenant_id VARCHAR(64) NOT NULL DEFAULT '0' COMMENT '租户';
+```
+
+**`e_flow` / `e_flow_group` / `e_flow_instance` 新增字段（erupt-flow）**
+
+```sql
+ALTER TABLE e_flow          ADD COLUMN tenant_id VARCHAR(64) NOT NULL DEFAULT '0' COMMENT '租户';
+ALTER TABLE e_flow_group    ADD COLUMN tenant_id VARCHAR(64) NOT NULL DEFAULT '0' COMMENT '租户';
+ALTER TABLE e_flow_instance ADD COLUMN tenant_id VARCHAR(64) NOT NULL DEFAULT '0' COMMENT '租户';
+```
+
+**`e_tenant_package` 新增字段（erupt-tenant）**
+
+```sql
+ALTER TABLE e_tenant_package ADD COLUMN trial_days INT COMMENT '试用天数';
+```
+
+:::
+
 ## 2.3.0（2026-09-24） <Badge type="tip" text="Spring Boot 3.5.16" />
 
 :::warning 升级须知
-升级前请阅读 [V 2.3.0 升级指南](/zh/guide/upgrade#v-2-3-0-升级指南)：登录锁定默认开启、改密后其他会话下线、`app.js` 中 `logoPath: null` 改为不显示 Logo，并有[数据库变更](#数据库变更)。
+升级前请阅读 [V 2.3.0 升级指南](/zh/guide/upgrade#v-2-3-0-升级指南)：登录锁定默认开启、改密后其他会话下线、`app.js` 中 `logoPath: null` 改为不显示 Logo，并有[数据库变更](#数据库变更-1)。
 :::
 
 🦞 开源 [erupt-sso](/zh/modules/erupt-sso) 单点登录模块：OAuth2 授权码 + PKCE，内置 Keycloak、Okta、Auth0、Entra ID、GitHub、飞书、钉钉、企业微信、微信等 17 种[供应商预设](/zh/modules/erupt-sso#供应商预设)，选好类型贴上凭据即可；认证源在后台配置、不用重启，授权码在服务端交换，token 不经 URL 传递
@@ -133,7 +298,7 @@ ALTER TABLE e_remote_host ADD COLUMN file_transfer BIT(1) DEFAULT b'1' COMMENT '
 
 **erupt-designer 数据迁移到内嵌 SQLite**：业务数据不再存放于主库 `e_designer_data` 表，**不会自动迁移**，该文件需单独纳入备份与持久化卷。
 
-另有数据库表结构变更，见本版本末尾的[数据库变更](#数据库变更-1)。
+另有数据库表结构变更，见本版本末尾的[数据库变更](#数据库变更-2)。
 :::
 
 🦞 开源 [erupt-atlas](/zh/modules/erupt-atlas) 模型图谱模块：注解里已有的关系直接画成图，含血缘追溯、依赖分层、模块耦合矩阵、影响面分析，以及循环引用 / 共享表 / 孤岛模型的结构体检
@@ -209,7 +374,6 @@ ALTER TABLE e_remote_host ADD COLUMN file_transfer BIT(1) DEFAULT b'1' COMMENT '
 🐞 修复拖拽排序时占位行与测量行也带出拖拽手柄的问题
 
 🐞 修复设计器复制字段时沿用原字段 id 的问题
-
 
 ### 数据库变更
 

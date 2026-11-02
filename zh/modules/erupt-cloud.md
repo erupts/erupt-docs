@@ -90,6 +90,8 @@
 - **erupt-cloud-server**：主服务端，负责调度和管理所有 node 节点
 - **erupt-cloud-node**：微节点，可部署在不同的服务器上，被 server 统一管理
 
+节点不限于 Spring Boot <Badge type="tip" text="v2.4.0+" />：[轻量节点 Node Lite](/zh/modules/cloud-node-lite) 让纯 Java / Kotlin、Solon、Quarkus、Micronaut、Vert.x、Ktor 或任意 Servlet 容器用同一套注解托管模型，运行期只依赖三个无传递依赖的 jar；Python、Go、TypeScript、PHP、.NET 则有基于 [节点协议规范](https://github.com/erupts/erupt/blob/develop/erupt-cloud/PROTOCOL.md) 实现的 [erupt-sdk](https://github.com/erupt-io/erupt-sdk)。无论节点用什么语言，权限、签名、引用、Excel、附件等都由 [Server 端代为完成](/zh/modules/cloud-server#服务端代节点完成的工作)。
+
 ## 引入方式
 
 Server 端：

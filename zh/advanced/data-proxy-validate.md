@@ -44,3 +44,30 @@ public void beforeAdd(EruptTest model) {
     model.setCreateBy(getCurrentUser());
 }
 ```
+
+## 服务端强制校验声明的限制 <Badge type="tip" text="v2.4.0+" />
+
+2.4.0 起，编辑表单在注解里声明的限制**在服务端同样生效**（`EruptValueValidator`），不再只依赖页面控件：直接调用接口、单元格编辑、批量编辑、Excel 导入提交的值，都按同一套规则检查，不通过时提示字段名与非法值。
+
+| 组件 | 校验内容 |
+|---|---|
+| `INPUT` | 长度不超过 `@InputType(length)` |
+| `NUMBER` | `@NumberType(min / max)`，只在显式声明时才限制 |
+| `SLIDER` | `@SliderType(min / max)` |
+| `RATE` | `0 ~ count`，只有 `allowHalf = true` 才允许半星 |
+| `TAGS` | 数量不超过 `maxTagCount`；`allowExtension = false` 时每个标签必须来自 `tags` 或 `fetchHandler` |
+| `DATE` | `pickerMode` 为 `FUTURE` / `HISTORY` 的方向限制，以及 `min` / `max` 区间 |
+| `CHOICE` / `MULTI_CHOICE` | 值必须在选项内，见 [服务端选项校验](/zh/field-types/choice#服务端选项校验) |
+| `TAB_TABLE_ADD` | 每一行按子模型自身的规则检查：必填、正则、XSS、子模型的 `DataProxy.validate`，再套用上表 |
+
+- 只检查**本次提交中出现**的字段，因此单元格编辑只检查那一个字段
+- 修改时，与库中已存值相同的值直接通过：规则收紧（选项下线、上限调低）之前存的老数据不会阻塞该记录其他字段的修改
+- 这层校验在 `DataProxy.validate` 之前执行，业务规则仍写在 `validate` 中
+
+```java
+@EruptField(
+    edit = @Edit(title = "折扣", type = EditType.NUMBER,
+                 numberType = @NumberType(min = 0, max = 100))
+)
+private Integer discount; // 接口提交 120 同样被拒绝
+```

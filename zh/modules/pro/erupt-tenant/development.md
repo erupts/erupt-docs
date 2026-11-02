@@ -100,6 +100,54 @@ public class TextService {
 
 同时 `TenantInterceptor` 拦截器会将 `tenantId` 注册为 `erupt-api` 请求的上下文变量，动态 SQL 等场景可直接引用。
 
+## 租户用户与共享的 UPMS 表 <Badge type="tip" text="v2.4.0+" />
+
+租户的用户、角色、组织不再有一套独立的实体，而是与平台共用 erupt-upms 的 `e_upms_user` / `e_upms_role` / `e_upms_org` 表：这些实体带有 Hibernate 的 `@TenantId` 列，平台行的值为 `'0'`，租户行的值为其 `tenantId`。每个 JPA 会话被绑定到一个租户，查询自动限定到该租户、插入自动盖上租户 ID，业务代码中不需要任何过滤条件。
+
+由此带来的变化：
+
+| 2.3.x | 2.4.0 |
+| --- | --- |
+| `TenantUpmsUser` / `TenantUpmsUserSimple` / `TenantUpmsRole` / `TenantUpmsOrg` 及其 DataProxy、handler | 已删除，直接使用 `EruptUser` / `EruptRole` / `EruptOrg` |
+| `EruptTenantMenu`（独立的租户菜单表） | 已删除，套餐从平台的 `e_upms_menu` 中勾选 |
+| 租户端自带「系统管理」菜单 | 由套餐授权 erupt-upms 的用户 / 角色 / 组织菜单 |
+| 新建租户时写入 `t_e_upms_user` 的管理员 | 在该租户的会话中写入一条 `EruptUser`（`isAdmin = true`） |
+
+**菜单范围**：`TenantMenuScope` 实现 erupt-upms 的 `UpmsMenuScope` SPI，把租户会话（含租户管理员）的菜单树以及角色编辑器可分配的菜单，收窄到该租户已启用套餐内的菜单；平台用户不受影响。
+
+**在指定租户下执行代码**：会话与租户一一绑定，登录（尚无会话）、超管端重置租户管理员密码、定时任务遍历租户等场景需要以另一个租户的身份访问数据，注入 erupt-upms 的 `UpmsTenantSessions` 即可：
+
+```java
+@Resource
+private UpmsTenantSessions sessions;
+
+// callAs / runAs：拿到该租户的 EntityManager 做直接的 JPA 操作，自动提交
+EruptUser admin = sessions.callAs(tenantId, em ->
+        eruptDao.lambdaQuery(em, EruptUser.class).eq(EruptUser::getAccount, "admin").one());
+
+// callBound / runBound：把该租户的会话绑定到当前线程，期间所有基于 EruptDao 的 service
+// （含 @Transactional 方法）都在该租户内运行，适合没有会话的调度线程
+sessions.runBound(tenantId, () -> flowService.processFlow(instance, nodeId));
+```
+
+`tenantId` 传 `null` 代表平台。`runBound` 只能在没有会话的线程上切换租户；请求线程已绑定了自己的租户，试图以其他租户执行会抛出 `IllegalStateException`。需要跨所有租户扫描数据时，可在 `EruptDao.lambdaQuery` 上调用 `.allTenants()` 解除限定。
+
+**登录与会话接口**：租户用户登录后就是一个普通的 erupt-upms 会话，只是数据被限定在其租户内，因此修改密码、菜单、用户信息都走平台接口，只有与租户本身有关的接口留在 `/erupt-api/tenant` 下：
+
+| 接口 | 说明 |
+| --- | --- |
+| `GET /erupt-api/tenant/domain-info?host=` | 按域名返回租户的企业 ID、名称、logo、JS、CSS，见 [域名与租户定制](/zh/modules/pro/erupt-tenant/domain) |
+| `POST /erupt-api/tenant/login` | 租户登录：企业 ID + 账号 + 密码（+ 验证码），锁定或到期的租户被拒绝 |
+| `GET /erupt-api/tenant/info` | 当前会话的租户 ID、名称、订阅状态、到期时间、已启用套餐 |
+| ~~`/tenant/change-pwd`、`/tenant/menu`、`/tenant/userinfo`~~ | 已删除，租户会话直接使用平台的 `/change-pwd`、`/menu`、`/userinfo` |
+| ~~`/tenant/subscription`~~ | 更名为 `/tenant/info` |
+
+租户用户的登录会写入该租户自己的登录日志（`e_upms_login_log` 同样带租户列），erupt-notice 的通知在租户会话中同样可用。单点登录由 `EruptTenantLoginService` 实现 erupt-upms 的 `UpmsTenantLogin` SPI：erupt-sso 通过它把企业 ID 解析成租户、拒绝锁定或到期的租户、打开租户会话。
+
+:::warning 升级自 2.3.x
+用户 / 角色 / 组织的唯一约束已变为 `(tenant_id, account)` 与 `(tenant_id, code)`。旧的单列唯一索引不再在启动时自动删除，需要手工执行 SQL 删除，否则两个租户无法使用相同的账号或编码，见 [升级指南](/zh/guide/upgrade)。
+:::
+
 ## 结合 erupt-bi
 
 :::info

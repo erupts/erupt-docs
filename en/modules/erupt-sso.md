@@ -1,10 +1,10 @@
 # Erupt SSO Single Sign-On
 
-erupt-sso lets erupt delegate login to an external identity provider: OIDC services such as Keycloak, Authing and Okta, as well as platforms that only offer OAuth 2.0 such as GitHub, Gitee and Feishu. Providers are configured as rows in the admin UI under **System Management → SSO Provider** — pick a provider preset, paste the client credentials, and that is it: no code, no config file, no restart; the login page shows the button as soon as the row is saved.
+erupt-sso lets erupt delegate login to an external identity provider: OIDC services such as Keycloak, Authing and Okta, platforms that only offer OAuth 2.0 such as GitHub, Gitee and Feishu, and SAML 2.0 identity providers such as AD FS and Microsoft Entra ID (2.4.0+). Providers are configured as rows in the admin UI under **System Management → SSO Provider** — pick a provider preset, paste the client credentials, and that is it: no code, no config file, no restart; the login page shows the button as soon as the row is saved.
 
-> Minimum version: **2.3.0**
+> Minimum version: **2.3.0**; SAML 2.0 and tenant providers need **2.4.0**
 
-The module runs the OAuth 2.0 authorization code flow with PKCE enforced. The code is exchanged on the server, the resulting access token is spent on exactly one user-info call, the `id_token` is never parsed, and no JWT library is pulled in.
+The module runs the OAuth 2.0 authorization code flow with PKCE enforced. The code is exchanged on the server, the resulting access token is spent on exactly one user-info call, the `id_token` is never parsed, and no JWT library is pulled in. A SAML row speaks a different protocol: the browser posts back an assertion signed by the IdP, which is verified with the JDK's own XML signature API, again without a third-party library, see [SAML 2.0 Single Sign-On](#saml-2-0-single-sign-on).
 
 ## Setup
 
@@ -55,7 +55,7 @@ Design points worth knowing:
 
 ### Four exchange flows
 
-The diagram shows the plain OAuth 2.0 case. What happens once the browser comes back with the `code` is decided by the row's **Provider Type**; there are four flows (`SsoProviderType.Flow`):
+The diagram shows the plain OAuth 2.0 case. What happens once the browser comes back with the `code` is decided by the row's **Provider Type**; there are four OAuth 2.0 flows (`SsoProviderType.Flow`), and a fifth, `SAML`, that verifies an assertion instead of exchanging a code, covered in [SAML 2.0 Single Sign-On](#saml-2-0-single-sign-on):
 
 | Flow | Provider types | Exchange |
 | --- | --- | --- |
@@ -76,7 +76,7 @@ Rows created before 2.3.0 have an empty `type` column and behave as `OAUTH2`, un
 
 | Field | Description | Default |
 | --- | --- | --- |
-| Provider Type | 18 presets (Keycloak, Authing, Casdoor, Okta, Auth0, Microsoft Entra ID, Google, GitLab, Atlassian, Slack, Zoom, GitHub, Gitee, Feishu, DingTalk, WeCom, WeChat) plus **Custom**, see [Provider Presets](#provider-presets). Picking a preset fills in the icon, the issuer or the three URLs, the scopes, the account / name / email / phone / avatar claims and the Open ID Claim; the Code (the preset name in lower case, e.g. `keycloak`) and Name are only suggested into blank fields, never overwritten; the hints under Client ID / Client Secret switch to the provider console's own wording (Entra's "Application (client) ID", Feishu's "App ID"). Any `<placeholder>` a preset leaves in a URL must be replaced, otherwise the save is refused. The type also selects the login exchange, see [Four exchange flows](#four-exchange-flows) | Custom |
+| Provider Type | 20 presets (Keycloak, Authing, Casdoor, Okta, Auth0, Microsoft Entra ID, Google, GitLab, Atlassian, Slack, Zoom, GitHub, Gitee, Feishu, DingTalk, WeCom, WeChat, plus the three SAML presets SAML 2.0, AD FS and Microsoft Entra ID (SAML)) plus **Custom**, see [Provider Presets](#provider-presets). Picking a preset fills in the icon, the issuer or the three URLs, the scopes, the account / name / email / phone / avatar claims and the Open ID Claim; the Code (the preset name in lower case, e.g. `keycloak`) and Name are only suggested into blank fields, never overwritten; the hints under Client ID / Client Secret switch to the provider console's own wording (Entra's "Application (client) ID", Feishu's "App ID"). Any `<placeholder>` a preset leaves in a URL must be replaced, otherwise the save is refused. The type also selects the login exchange, see [Four exchange flows](#four-exchange-flows) | Custom |
 | Code | 2–32 letters, digits, `-` or `_`, unique. **Part of the callback URL**, so it cannot be edited after creation — changing it would silently break the callback registered at the provider | — |
 | Name | Label of the button on the login page; i18n keys are translated | — |
 | Icon | Font Awesome icon picker, shown on the button | — |
@@ -91,7 +91,7 @@ Rows created before 2.3.0 have an empty `type` column and behave as `OAUTH2`, un
 | Authorize URL | authorization endpoint | discovered from Issuer |
 | Token URL | token endpoint | discovered from Issuer |
 | User Info URL | userinfo endpoint | discovered from Issuer |
-| Redirect URI | Where the provider sends the browser back; must match what is registered at the provider **verbatim**. When empty it is derived from the incoming request as `http(s)://<this host>/erupt-api/sso/callback/<code>`; fill it in only behind a reverse proxy or when the public domain differs from the backend's | empty, derived |
+| Redirect URI | Where the provider sends the browser back; must match what is registered at the provider **verbatim**. When empty it is derived from the incoming request as `http(s)://<this host>/erupt-api/sso/callback/<code>` (for a tenant's SAML row `/erupt-api/sso/tenant/<tenant code>/callback/<code>`, see [Tenant Providers](#tenant-providers)); fill it in only behind a reverse proxy or when the public domain differs from the backend's | empty, derived |
 
 Validation on save: either all three URLs are filled in, or an Issuer is given and it serves a discovery document. An issuer without one (GitHub, Gitee and Feishu all fall in this group) is refused on save with "The issuer publishes no OpenID discovery document, fill in the Authorize, Token and User Info URLs" rather than failing at the first login. The URLs may also be filled in partially; whatever is filled overrides the discovered value.
 
@@ -153,10 +153,13 @@ The buttons adapt to all five login layouts (`theme.loginLayout`) and the worksp
 
 ## Provider Presets
 
-Each of the 18 presets in **Provider Type** fills in the endpoints (an issuer for OIDC services, the three URLs otherwise), the scopes, the claim mapping and the Open ID Claim; what is left for you is the client credentials from the provider's console and the `<placeholder>` parts in a self-hosted service's URLs. The values follow each provider's documentation as of the release — when a login fails, check the row against the provider's current docs first.
+Each of the 20 presets in **Provider Type** fills in the endpoints (an issuer for OIDC services, the single sign-on URL and IdP entity id for SAML, the three URLs otherwise), the scopes, the claim mapping and the Open ID Claim; what is left for you is the client credentials from the provider's console and the `<placeholder>` parts in a self-hosted service's URLs. The values follow each provider's documentation as of the release — when a login fails, check the row against the provider's current docs first.
 
 | Type | Protocol | Placeholders to replace | Account Claim | Open ID Claim | Notes |
 | --- | --- | --- | --- | --- | --- |
+| SAML 2.0 | SAML | `<idp-host>` (single sign-on URL) | `nameId` | — | Generic preset; Name Claim `displayName`, Email Claim `email`, adjust to the attribute names your IdP sends |
+| AD FS | SAML | `<adfs-host>` (single sign-on URL and entity id) | `nameId` | — | SSO URL `https://<adfs-host>/adfs/ls/`, entity id `http://<adfs-host>/adfs/services/trust`; name / email claims are the full `.../ws/2005/05/identity/claims/name` and `.../emailaddress` URIs; Client ID hint "Relying party identifier" |
+| Microsoft Entra ID (SAML) | SAML | `<tenant-id>` | `nameId` | `http://schemas.microsoft.com/identity/claims/objectidentifier` | SSO URL `https://login.microsoftonline.com/<tenant-id>/saml2`, entity id `https://sts.windows.net/<tenant-id>/`; Name Claim `.../identity/claims/displayname`; Client ID hint "Identifier (Entity ID)" |
 | Keycloak | OIDC discovery | `<host>`, `<realm>` | `preferred_username` | — | Issuer `https://<host>/realms/<realm>` |
 | Authing | OIDC discovery | `<app>` | `preferred_username` | — | Issuer `https://<app>.authing.cn/oidc`; scopes include `phone` |
 | Casdoor | OIDC discovery | `<host>` | `preferred_username` | — | Name Claim `displayName`, Phone Claim `phone` |
@@ -192,6 +195,63 @@ Besides pasting the credentials, these three need two things done in their own c
 - **Enable the scopes**: grant the app the permissions matching the scopes the preset filled in — Feishu's four `contact:user.*:readonly` scopes, WeCom's `snsapi_privateinfo` (members' sensitive fields), DingTalk's `openid` login scope.
 
 A few more notes: WeCom needs the `<agentid>` in the Authorize URL replaced with the AgentId of the self-built app (put the same value in Messaging Key if the row will also push notifications); Feishu's user-info endpoint answers with an envelope, `{ "code": 0, "msg": "success", "data": { ... } }`, which the module opens — `data` becomes the claims and a non-zero `code` fails with "The identity provider could not be reached (code: msg)", WeCom and DingTalk envelopes being handled the same way; Lark, the international edition, only needs the domain of the three URLs changed to Lark's.
+
+## SAML 2.0 Single Sign-On
+
+> 2.4.0+
+
+With the Provider Type set to **SAML 2.0**, **AD FS** or **Microsoft Entra ID (SAML)** the row runs SAML 2.0 Web Browser SSO, SP-initiated: erupt, as the SP, builds an `AuthnRequest` and sends the browser to the IdP's single sign-on URL over the **HTTP-Redirect** binding (deflated, base64, unsigned); after authentication the IdP has the browser submit the signed `Response` to erupt's assertion consumer service (ACS) over the **HTTP-POST** binding. The server-side `state` doubles as the `AuthnRequest` `ID` (`_<state>`) and as the `RelayState`, and `InResponseTo` is checked against it on the way back. From the claims on, a SAML row behaves exactly like an OAuth 2.0 one: binding by subject, match by account claim, auto create, one-time ticket exchanged for a token.
+
+### Field mapping
+
+A SAML row reuses the same form, with the fields read under their SAML names; Token URL, User Info URL, Client Secret and Scopes are hidden on a SAML row:
+
+| Form field | SAML meaning | Notes |
+| --- | --- | --- |
+| Issuer | **IdP entity id** | When set, the `Issuer` of the response and of the assertion must equal it; empty skips the check |
+| Authorize URL | **IdP single sign-on URL** (HTTP-Redirect binding) | Required |
+| Client ID | **SP entity id** | The identifier you register erupt under at the IdP; also the `Issuer` of the `AuthnRequest` and the expected `Audience` of the assertion |
+| Redirect URI | **Assertion consumer service (ACS)** | Empty derives `http(s)://<this host>/erupt-api/sso/callback/<code>` from the request; the response's `Destination` and `Recipient` must match it |
+| IdP Certificate | **IdP signing certificate** | The X.509 certificate from the IdP metadata, PEM or bare base64; parsed on save and refused when unreadable. It is the **only trust anchor** of a SAML login |
+| Account / Name / Email / Phone / Avatar / Open ID Claim | Assertion attribute names | See "Claims" below |
+
+### Claims
+
+Every `Attribute` in the assertion becomes a claim under its `Name`; one with a `FriendlyName` is copied under that name as well, so an AD FS email can be mapped either by the full `http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress` or simply as `emailaddress`. A multi-valued attribute maps to an array. The `Subject/NameID` is published as `nameId` (its format as `nameIdFormat`) and is the first choice for the subject — it is what the binding's Subject column holds. The presets default the Account Claim to `nameId`; when the IdP's NameID is not the account name, point it at the right attribute.
+
+### Setup steps
+
+1. Under **System Management → SSO Provider** add a row, pick the matching SAML preset, and replace the `<placeholder>` in the single sign-on URL and entity id.
+2. Put the SP entity id you intend to give erupt (such as `https://admin.example.com/erupt`) in **Client ID**; **Redirect URI** usually stays empty.
+3. Take the signing certificate from the IdP metadata (`FederationMetadata.xml` for AD FS, the "SAML Signing Certificate" of the enterprise application for Entra), paste it into **IdP Certificate**, save.
+4. Register erupt as an SP at the IdP: import the SP metadata served at `GET https://<erupt host>/erupt-api/sso/saml/<code>/metadata`, or enter the SP entity id and the ACS URL `https://<erupt host>/erupt-api/sso/callback/<code>` by hand. The metadata declares `AuthnRequestsSigned="false"`, `WantAssertionsSigned="true"` and the `unspecified` NameID format.
+5. Have the IdP send a **signed, unencrypted assertion** (either the assertion or the whole response may carry the signature); leave assertion encryption off.
+6. Press the button on the login page to test; failures are listed in the error table under [Endpoints](#endpoints).
+
+### Verification and limits
+
+A response is accepted only after, in order: XML parsing with DTDs disallowed, a `Status` of Success, `InResponseTo` equal to the request id, `Destination` equal to the ACS, `Issuer` matching the row, an enveloped signature on the assertion (or the response) that references the very element it sits in (only the enveloped and canonicalisation transforms are allowed and secureValidation is on, so signature wrapping cannot get through) and verifies with the IdP certificate, `NotBefore` / `NotOnOrAfter` within the validity window (3 minutes of clock skew tolerated), an `Audience` containing the SP entity id, and a bearer `SubjectConfirmation` whose `Recipient`, `InResponseTo` and times all agree.
+
+- Only the JDK's `javax.xml.crypto.dsig` is used; no OpenSAML or similar library is pulled in.
+- **Encrypted assertions are not supported**: an `EncryptedAssertion` is refused outright, so configure the IdP to send a signed assertion in clear (decrypting would need an SP key pair, and every mainstream IdP can send clear assertions).
+- The `AuthnRequest` is not signed; an IdP that requires signed requests by default needs that requirement switched off.
+- A row trusts one certificate; on certificate rotation update the row, and plan the switch around the old certificate's expiry.
+- No single logout (SLO); responses are capped at 1 MB.
+- Verified end to end against [mocksaml.com](https://mocksaml.com), a convenient first stop before wiring up a real IdP.
+
+## Tenant Providers
+
+> 2.4.0+, requires [erupt-tenant](/en/modules/pro/erupt-tenant/)
+
+`e_upms_sso` and `e_upms_sso_bind` both carry a `tenant_id` column (`"0"` for the platform), restricted and stamped automatically by Hibernate's `@TenantId`: a row a tenant administrator adds under "SSO Provider" in their own back office belongs to that tenant, invisible to the platform and to other tenants. The provider code is unique **per tenant**, so several tenants may each have a `feishu`.
+
+The tenant login page runs the same flow as the platform's with one extra tenant code:
+
+- The page calls `GET /erupt-api/sso/providers?tenant=<tenant code>` for its buttons, and a click goes to `GET /erupt-api/sso/authorize/<code>?tenant=<tenant code>`. An unknown tenant code gets an empty provider list (indistinguishable from a tenant with no providers, so the page tells nobody which codes exist), and authorize fails with "Company not found".
+- The tenant code is resolved to a tenant id through the `UpmsTenantLogin` SPI (implemented by erupt-tenant); from then on **the tenant lives only in the server-side state**, nothing the browser sends back carries or can change it. Provider rows, bindings and users are read and written in a session of that tenant.
+- **Callback address**: an OAuth 2.0 row of a tenant still defaults its callback to the platform's `/erupt-api/sso/callback/<code>` — the tenant is in the state, so **one Feishu / WeCom app can serve every tenant** with a single callback registered at the provider. A SAML IdP tells service providers apart by the ACS URL, so a tenant's SAML row defaults to `/erupt-api/sso/tenant/<tenant code>/callback/<code>`, with the SP metadata at `/erupt-api/sso/tenant/<tenant code>/saml/<code>/metadata`. A callback arriving on a tenant path is checked against the tenant in the state.
+- Once authenticated, `UpmsTenantLogin.login` finishes the job: a locked or expired tenant is refused, otherwise a **tenant token** is issued and the browser returns to that tenant's login page to exchange the ticket.
+- Without a `tenant` parameter, or without erupt-tenant, everything behaves as for the platform.
 
 ## Managing SSO bindings
 
@@ -236,13 +296,16 @@ A module that needs to call the provider **as the application** rather than as t
 
 ## Endpoints
 
-All four endpoints are reachable **without a session** — they serve users who are not signed in yet, and each carries its own proof: a state, a ticket, or nothing worth protecting:
+All endpoints are reachable **without a session** — they serve users who are not signed in yet, and each carries its own proof: a state, a ticket, a signed assertion, or nothing worth protecting:
 
 | Endpoint | Description |
 | --- | --- |
-| `GET /erupt-api/sso/providers` | Enabled providers (code, name, icon) for the login page buttons |
-| `GET /erupt-api/sso/authorize/{provider}` | Generates state and PKCE, then 302 to the provider's authorize URL |
-| `GET /erupt-api/sso/callback/{provider}` | The provider's callback; on success 302 to the login page with `ssoTicket`, on failure with `ssoError` |
+| `GET /erupt-api/sso/providers` | Enabled providers (code, name, icon) for the login page buttons; `?tenant=<tenant code>` lists a tenant's |
+| `GET /erupt-api/sso/authorize/{provider}` | Generates state and PKCE, then 302 to the provider's authorize URL (SAML: the single sign-on URL with a `SAMLRequest`); `?tenant=<tenant code>` starts the flow as a tenant |
+| `GET /erupt-api/sso/callback/{provider}` | The OAuth 2.0 callback; on success 302 to the login page with `ssoTicket`, on failure with `ssoError` |
+| `POST /erupt-api/sso/callback/{provider}` | The SAML assertion consumer service (ACS), taking `SAMLResponse` and `RelayState`; same outcome as the GET callback |
+| `GET /erupt-api/sso/saml/{provider}/metadata` | SP metadata (`application/samlmetadata+xml`) for the IdP to import; SAML rows only |
+| `.../sso/tenant/{tenant}/callback/{provider}`, `.../sso/tenant/{tenant}/saml/{provider}/metadata` | Tenant paths of the callback and metadata endpoints, used by a tenant's SAML rows by default |
 | `POST /erupt-api/sso/exchange` | Body `{ "ssoTicket": "..." }`; returns the same `LoginModel` (with token) as password login. The ticket is single-use and valid for 60 seconds; expired tickets get "Sign-in ticket expired, please sign in again" |
 
 Common messages and what they mean:
@@ -260,14 +323,21 @@ Common messages and what they mean:
 | Replace the `<placeholder>` in the URL before saving (…) | On save a URL still contains a preset placeholder such as `<host>`, `<realm>` or `<agentid>`; the brackets show that URL |
 | The account is not a member of the enterprise | WeCom: the account that scanned the code is not in the corp's contact book |
 | This provider type has no application level API access | `SsoProviderApi.appAccessToken` was called on a row whose type is not Feishu / DingTalk / WeCom |
+| Fill in the IdP single sign-on URL and certificate | A SAML row was saved without a single sign-on URL or an IdP certificate |
+| The IdP certificate could not be read… | On save the certificate is not a valid X.509 certificate |
+| Invalid SAML response (…) | One of the checks failed; the brackets say which: `InResponseTo is …`, `Destination is …`, `audience is not …`, `expired, NotOnOrAfter …`, `signature verification failed` and so on |
+| The SAML response carries no signature verifiable with the configured IdP certificate | Neither the assertion nor the response is signed; a signature that fails to verify falls under the previous row |
+| Encrypted assertions are not supported… | The response carries an `EncryptedAssertion` |
+| The identity provider rejected the sign-in (…) | The IdP returned a `Status` other than Success; the brackets carry its status code and message |
+| Company not found | The `tenant` parameter names no tenant, or erupt-tenant is not installed |
 
 ## Database tables
 
 | Table | Description |
 | --- | --- |
-| `e_upms_sso` | Providers, extends `MetaModelUpdateVo`; columns mirror the form: `type` VARCHAR(32) (the Provider Type enum name; empty on rows created before 2.3.0, treated as Custom), `code` (unique), `name`, `icon`, `status`, `sort`, `issuer`, `authorize_url`, `token_url`, `user_info_url`, `redirect_uri` (all VARCHAR(512)), `client_id`, `client_secret` VARCHAR(512), `messaging_key` VARCHAR(255), `scopes` VARCHAR(255), `account_claim` / `name_claim` / `email_claim` / `phone_claim` / `avatar_claim` / `open_id_claim` VARCHAR(64), `sync_profile`, `auto_create`, `grant_roles_on_login`, `remark` |
+| `e_upms_sso` | Providers, extends `MetaModelUpdateVo`; columns mirror the form: `tenant_id` VARCHAR(64) NOT NULL default `'0'` (2.4.0+), `type` VARCHAR(32) (the Provider Type enum name; empty on rows created before 2.3.0, treated as Custom), `code`, `name`, `icon`, `status`, `sort`, `issuer`, `authorize_url`, `token_url`, `user_info_url`, `redirect_uri` (all VARCHAR(512)), `client_id`, `client_secret` VARCHAR(512), `idp_certificate` LONGTEXT (2.4.0+, SAML rows), `messaging_key` VARCHAR(255), `scopes` VARCHAR(255), `account_claim` / `name_claim` / `email_claim` / `phone_claim` / `avatar_claim` / `open_id_claim` VARCHAR(64), `sync_profile`, `auto_create`, `grant_roles_on_login`, `remark`; unique constraint `uk_upms_sso_code (tenant_id, code)` — the pre-2.4.0 single-column unique index on `code` has to be dropped by hand |
 | `e_upms_sso_role` | Default roles of a provider, `sso_id` + `role_id` |
-| `e_upms_sso_bind` | Bindings, extends `MetaModelUpdateVo`: `sso_id`, `erupt_user_id`, `subject` VARCHAR(255) NOT NULL, `open_id` VARCHAR(255), `last_login_time` DATETIME(6), `claims` VARCHAR(10485760) (`AnnotationConst.CONFIG_LENGTH`, mapped to LONGTEXT on MySQL); unique constraint `(sso_id, subject)` |
+| `e_upms_sso_bind` | Bindings, extends `MetaModelUpdateVo`: `tenant_id` (2.4.0+), `sso_id`, `erupt_user_id`, `subject` VARCHAR(255) NOT NULL, `open_id` VARCHAR(255), `last_login_time` DATETIME(6), `claims` VARCHAR(10485760) (`AnnotationConst.CONFIG_LENGTH`, mapped to LONGTEXT on MySQL); unique constraint `(sso_id, subject)` |
 
 Projects with JPA schema generation enabled get the tables on upgrade; projects that maintain their schema by hand should create them from the table above.
 

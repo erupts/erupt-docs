@@ -40,6 +40,8 @@ erupt:
     enable-register: true
     # 可选：心跳时间（毫秒），默认 15000
     heartbeat-time: 15000
+    # 可选：拒绝没有有效 Erupt-Signature 的服务端调用，默认 false（2.4.0+）
+    require-signature: false
 ```
 
 在 Server 端手动添加节点：
@@ -148,6 +150,19 @@ spring:
 | erupt-excel | Excel 导入导出能力 |
 | erupt-toolkit | 工具类（如 choice 组件的 SQL 查询能力） |
 | erupt-tenant-core | 多租户能力（未开源） |
+
+## 注册地址与签名校验 <Badge type="tip" text="v2.4.0+" />
+
+- **注册地址**：未配置 `host-address` 时，节点以**实际绑定的端口**（而非 `server.port` 的配置值，随机端口同样适用）和 `server.servlet.context-path` 向 Server 注册，Server 直接按该地址回调。Solon / Quarkus / Micronaut 的轻量节点同样会注册各自的上下文路径
+- **签名校验**：Server 的每次调用都带有 HMAC-SHA256 签名，`NodeSignatureFilter` 对 `/erupt-api/**` 逐一校验，签名无效返回 403。`erupt.cloud-node.require-signature: true` 后，仅携带明文 access-token 的调用也会被拒绝；Server 端对应关闭 `erupt.cloud-server.plain-access-token`
+- **跳过权限回调**：Server 已在转发前校验用户权限时会在签名内声明 `Erupt-Enforced: power`，节点不再回调 Server 查询权限；模型自身声明的 `@Power` 仍由节点执行。详见 [服务端代节点完成的工作](/zh/modules/cloud-server#服务端代节点完成的工作)
+
+## 非 Spring 技术栈与多语言 SDK
+
+本页的 `erupt-cloud-node` 是 Spring Boot 模块。其他技术栈请使用：
+
+- **[轻量节点 Node Lite](/zh/modules/cloud-node-lite)**：纯 Java / Kotlin、Solon、Quarkus、Micronaut、Vert.x、Ktor 或任意 Servlet 容器，运行期只依赖 `erupt-annotation`、`erupt-cloud-common`、`linq.j`，模型注解与本页完全一致
+- **[erupt-sdk](/zh/modules/erupt-sdk/)**：Python、Go、TypeScript、PHP、.NET、Rust、Ruby、Swift 的节点 SDK，基于 [节点协议规范](https://github.com/erupts/erupt/blob/develop/erupt-cloud/PROTOCOL.md) 与随 erupt 生成的 JSON Schema（`schema/erupt-annotations.schema.json` 描述注解结构，`schema/erupt-node-defaults.json` 给出每种编辑类型的默认字段 JSON）实现
 
 ## 从 Server 端拉取配置（替代 yml 配置中心）
 

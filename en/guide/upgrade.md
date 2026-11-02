@@ -2,6 +2,175 @@
 
 This document lists the notable changes for each Erupt release. Read the sections in version order.
 
+## V 2.4.0 Upgrade Guide
+
+This section covers what to watch for when upgrading from 2.3.x to 2.4.0.
+
+### Requirements
+
+| Item | Requirement |
+| --- | --- |
+| Erupt | Upgrade every dependency to `2.4.0` |
+| Spring Boot | **3.5.16**, same as 2.3.x, no change needed |
+| JDK | **JDK 17** minimum, unchanged; builds on JDK 27 are verified |
+| Database | No new minimum version; schema changes below |
+| erupt-cloud | The server and every [node](/en/modules/cloud-node) **must move to 2.4.0 together**: power and payload checks, references, Excel and uploads now happen on the server, so old nodes no longer match its protocol |
+| erupt-flow / erupt-tenant / erupt-cube | Upgrade to their 2.4.0 releases |
+
+### Step 1: Change the Dependency Version
+
+```xml
+<properties>
+    <erupt.version>2.4.0</erupt.version>
+</properties>
+```
+
+**No** artifactId was renamed, so 2.3.x coordinates keep working. The one module move is the Kubernetes admin: the web terminal left `erupt-data-k8s` for the standalone [erupt-k8s-dashboard](https://github.com/erupt-io/erupt-k8s-dashboard), so projects that use the terminal add that dependency instead.
+
+### Step 2: Add New Modules (Optional)
+
+2.4.0 open-sources the modules below. Leaving them out changes nothing; adding one seeds its menus and tables on first start. `erupt-spring-boot-starter-all` already includes the first six.
+
+| Module | artifactId | Purpose |
+| --- | --- | --- |
+| [Public links](/en/modules/erupt-share) | `erupt-share` | One link opens a form or any menu page to the public |
+| [Outbound webhooks](/en/modules/erupt-webhook) | `erupt-webhook` | Add / update / delete events POSTed to external URLs |
+| [Runtime settings](/en/modules/erupt-config) | `erupt-config` | Settings layered by Spring profile, applied on save |
+| [Record history](/en/modules/erupt-revision) | `erupt-revision` | Field-level history, rollback and a recycle bin |
+| [File center](/en/modules/erupt-file-center) | `erupt-file-center` | Browse the upload directory, local folders, S3 and SFTP |
+| [AI software delivery](/en/modules/erupt-ai-dev) | `erupt-ai-dev` | Requirement pool plus coding CLIs; nothing runs while no CLI is installed on the server |
+| [Node Lite](/en/modules/cloud-node-lite) | `erupt-cloud-node-lite` and `-solon` / `-quarkus` / `-micronaut` / `-vertx` / `-ktor` / `-servlet` | erupt-cloud nodes without Spring |
+
+:::warning Before adding erupt-revision
+Every model records history by default. Add `@Power(revision = false)` first to models with sensitive fields that are not PASSWORD fields, or with very frequent writes.
+:::
+
+### Breaking and Behavior Changes
+
+#### 1. Export Is On by Default <Badge type="warning" text="Default changed" />
+
+`@Power(export)` now defaults to `true`, and the role's menu buttons decide who may export, as they do for add / edit / delete. **Menus created from now on** carry the Export button; existing menus are left as they are. Write `@Power(export = false)` on models that must not be exported and `@View(export = false)` on columns that must stay in. See [@Power](/en/annotation/power#export-on-by-default).
+
+#### 2. Choice Values and Declared Limits Are Enforced on the Server <Badge type="warning" text="Default changed" />
+
+- `erupt.choice-validate` is on: add, edit, cell edit and Excel import refuse CHOICE / MULTI_CHOICE values outside the options the user is offered. A value equal to the stored one passes, so old data does not block editing. Opt a field out with `@ChoiceType(validate = false)`, or everything with `erupt.choice-validate: false`. See [CHOICE](/en/field-types/choice#server-side-option-check).
+- INPUT length, NUMBER / SLIDER ranges, RATE bounds, TAGS count and allowed values, DATE FUTURE / HISTORY and ranges, and every sub-table row's rules run on the server. Clients that write out-of-range values straight through the API are refused. See [server-side enforcement](/en/advanced/data-proxy-validate#server-side-enforcement-of-declared-limits).
+
+#### 3. `erupt.init-method-enum` Becomes `erupt.init-modules-menu` <Badge type="warning" text="Property renamed" />
+
+Module menus no longer rely on `.erupt/<module>.loaded` marker files. A fingerprint is stored in the new `e_upms_module` table and reconciled on every start: new menus and buttons of a module arrive, fields an admin edited are kept, and menus a module stops declaring are disabled rather than deleted. The default admin account is created once per database.
+
+```yaml
+erupt:
+  init-modules-menu: true   # replaces init-method-enum; false seeds no menus and runs no initFun
+```
+
+Projects that set `init-method-enum: none` switch to `init-modules-menu: false`. See [Menu Management](/en/modules/erupt-upms/menu#automatic-module-menu-maintenance).
+
+#### 4. `X-Forwarded-For` Is Believed Only from a Trusted Proxy <Badge type="warning" text="Check reverse proxies" />
+
+The client IP keys the login lock and the IP whitelist. From 2.4.0 `X-Forwarded-For` is read only when the direct peer is a trusted proxy, loopback and private ranges by default; `Proxy-Client-IP` and `WL-Proxy-Client-IP` are no longer read. A reverse proxy on a public address must be added, otherwise every user shows up as the proxy's IP and the login lock hits everyone at once:
+
+```yaml
+erupt:
+  upms:
+    trusted-proxies: 127.0.0.0/8,::1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,203.0.113.10
+```
+
+#### 5. upms Tables Gain a Tenant Column and Per-tenant Uniqueness <Badge type="warning" text="Schema change" />
+
+`e_upms_user` / `e_upms_role` / `e_upms_org` / `e_upms_post` and the login log, operation log and comment tables gain a `tenant_id` column (`'0'` for the platform), filtered by Hibernate `@TenantId`. Projects without multi-tenancy notice nothing; custom SQL inserting into these tables may set `tenant_id = '0'`, though the column has that default. SQL in [Database Changes](#database-changes) below.
+
+#### 6. erupt-tenant Refactor: Tenant Users Move into the upms Tables <Badge type="danger" text="Manual migration" />
+
+erupt-tenant no longer keeps a user directory of its own: tenant users, roles and orgs share `e_upms_user` / `e_upms_role` / `e_upms_org` with the platform, told apart by the Hibernate `@TenantId` column `tenant_id`. Tenant menus no longer have a table either; packages point at the platform menus directly.
+
+**Removed tables** (2.4.0 neither creates nor reads them):
+
+| Table | Was | In 2.4.0 |
+| --- | --- | --- |
+| `e_tenant_menu` | Tenant menus | Packages pick from the platform's `e_upms_menu` |
+| `t_e_upms_user`, `t_e_upms_user_role` | Tenant users and their roles | `e_upms_user`, `e_upms_user_role` |
+| `t_e_upms_role`, `t_e_upms_role_menu` | Tenant roles and their menus | `e_upms_role`, `e_upms_role_menu` |
+| `t_e_upms_org` | Tenant orgs | `e_upms_org` |
+
+**Removed classes**: `TenantUpmsUser`, `TenantUpmsUserSimple`, `TenantUpmsRole`, `TenantUpmsOrg` (with their DataProxies and handlers) and `EruptTenantMenu`; use erupt-upms's `EruptUser` / `EruptRole` / `EruptOrg` instead.
+
+ **The upgrade does not migrate old rows.** Before starting 2.4.0:
+
+1. Drop the old single-column unique indexes on `e_upms_user.account`, `e_upms_role.code`, `e_upms_org.code`, `e_upms_post.code` and `e_upms_sso.code` (find their names with `SHOW INDEX FROM <table> WHERE Non_unique = 0;`).
+2. Copy each tenant's users / roles / orgs from `t_e_upms_*` into the matching `e_upms_*` table with `tenant_id` set to that tenant's `e_tenant_config.tenant_id`, or re-create them in the tenant admin.
+3. Package menus are now picked from the platform's `e_upms_menu`; `e_tenant_menu` is no longer used, so tick the menus again.
+
+`/tenant/change-pwd`, `/tenant/menu` and `/tenant/userinfo` are removed; a tenant session uses the platform's `/change-pwd`, `/menu` and `/userinfo`. `/tenant/subscription` is now `/tenant/info`. See [Multi-tenant Development](/en/modules/pro/erupt-tenant/development).
+
+After the refactor, every module built on erupt-upms is tenant-isolated with no extra work:
+
+- **erupt-flow**: flow definitions, groups and instances are kept per tenant, approvers resolve within the instance's tenant, and the scheduler advances each instance in its own tenant's session; see [erupt-flow multi-tenancy](/en/modules/pro/erupt-flow/development#multi-tenant-support)
+- **erupt-sso**: a tenant can configure its own identity providers, listed on the tenant login page, and single sign-on opens a tenant session
+- **Login log / operation log / online users / record comments / record history**: a tenant sees only its own rows
+- **Subscription and trial**: package trial days, a grace period after expiry, and locking; see [Subscription and Trial](/en/modules/pro/erupt-tenant/#subscription-and-trial)
+
+#### 7. Printing No Longer Grants Reading a Record <Badge type="tip" text="Permission tightened" />
+
+`@Power(print)` is a model switch only. Printing and reading a record by id both require `edit` or `viewDetails` and check the record's row scope, so models with `viewDetails = false` no longer show print buttons. Template print names a saved template with `?config=<id>` and no longer accepts template content in the request body; clients calling the print endpoint themselves must adapt. See [Print](/en/modules/erupt-print#print-permission).
+
+#### 8. Components Are Inferred from the Java Type
+
+`EditType.AUTO` now follows the field type: an enum becomes CHOICE, `Collection<Enum>` MULTI_CHOICE, `Map` KEY_VALUE, an `@Erupt` type a reference, a collection a sub-table. `DateType.Type` defaults to `AUTO`, so `LocalDateTime` shows as date-time and `LocalTime` as time. Projects that relied on the old DATE default for `LocalDateTime` fields will see date-time pickers. See [AUTO](/en/field-types/auto#inference-from-the-java-type).
+
+#### 9. Removed Capabilities
+
+- The Requesty and OrcaRouter LLM adapters are gone; move those models to OpenRouter or the Open AI Adapter
+- erupt-ai-decision's HTTP endpoints are removed; the Java API is unchanged
+- erupt-ai-dev has no `executor.enabled` switch: an installed coding CLI is the switch
+
+### Default Value Changes to Watch
+
+| Item | 2.3.x | 2.4.0 |
+| --- | --- | --- |
+| `@Power(export)` | `false` | `true` |
+| `@Power(batchEdit)` | — | `true`, tables show a Batch edit button |
+| `@Power(revision)` | — | `true`, effective with erupt-revision |
+| `erupt.choice-validate` | — | `true` |
+| `erupt.init-modules-menu` | `init-method-enum: file` | `true` |
+| `erupt.upms.trusted-proxies` | `X-Forwarded-For` from anyone | Loopback and private ranges |
+| `DateType.Type` | `DATE` | `AUTO`, inferred from the Java type |
+| `EditType.AUTO` on an enum field | INPUT | CHOICE with the enum constants |
+| erupt-config `refresh-seconds` | — | `0`; instances refresh over Redis or poll if you enable it |
+
+### Database Changes
+
+::: details Show the schema changes
+> Schema changes are applied by JPA / Hibernate at startup. Run them by hand only when automatic DDL is disabled (`spring.jpa.hibernate.ddl-auto=none` or `validate`).
+
+The full SQL is in [2.4.0 changelog → Database Changes](/en/guide/changelog#database-changes):
+
+- `e_upms_user`, `e_upms_role`, `e_upms_org`, `e_upms_post`: new `tenant_id`, unique constraints become tenant + account / code
+- `e_upms_login_log`, `e_upms_operate_log`: new `tenant_id`
+- `e_upms_sso`: new `tenant_id`, `idp_certificate`; `e_upms_sso_bind`: new `tenant_id` (with erupt-sso)
+- `e_record_comment`: new `tenant_id` (with erupt-comment)
+- `e_flow`, `e_flow_group`, `e_flow_instance`: new `tenant_id` (with erupt-flow)
+- `e_tenant_package`: new `trial_days` (with erupt-tenant)
+- No longer used (drop by hand once migrated): `e_tenant_menu`, `t_e_upms_user`, `t_e_upms_user_role`, `t_e_upms_role`, `t_e_upms_role_menu`, `t_e_upms_org` (with erupt-tenant)
+- New tables created by Hibernate: `e_upms_module`, plus the new modules' `e_share_link`, `e_webhook`, `e_webhook_log`, `e_config_profile`, `e_config_item`, `e_record_revision` and `e_ai_dev_*`
+
+:::
+
+### Post-upgrade Checklist
+
+After restarting, confirm in order:
+
+1. **Export rights**: models that must not be exported carry `@Power(export = false)` (change 1)
+2. **API writers**: integrations writing through `/erupt-api/data` send option values and field values within the declared limits (change 2)
+3. **Renamed property**: `init-method-enum` in `application.yml` is now `init-modules-menu` (change 3)
+4. **Client IP**: behind a reverse proxy the login log shows real user IPs, and public proxies are in `trusted-proxies` (change 4)
+5. **erupt-tenant projects**: old unique indexes dropped, tenant users / roles / orgs moved into `e_upms_*`, package menus ticked again (change 6)
+6. **erupt-cloud projects**: the server and every node run 2.4.0
+7. **Date fields**: spot-check the pickers of `LocalDateTime` / `LocalTime` fields (change 8)
+8. **Automatic DDL disabled**: the SQL above has been run
+9. **Frontend cache**: the translation sheet is now versioned; force-refresh the browser if a page looks wrong
+
 ## V 2.3.0 Upgrade Guide
 
 This section covers what to watch for when upgrading from 2.2.x to 2.3.0.
@@ -104,7 +273,7 @@ The four `DIVIDE` step markers (`accountStep` / `orgStep` / `pwdStep` / `securit
 Hibernate applies these changes automatically at startup; run them by hand only when automatic DDL is disabled (`spring.jpa.hibernate.ddl-auto=none` or `validate`).
 :::
 
-The full SQL is in [2.3.0 Changelog → Database Changes](/en/guide/changelog#database-changes). It covers:
+The full SQL is in [2.3.0 Changelog → Database Changes](/en/guide/changelog#database-changes-1). It covers:
 
 - `e_upms_user`: new columns `mfa_enabled`, `mfa_secret`, `mfa_recovery_codes`
 - `e_generator_class`, `e_generator_field`: new columns (with erupt-generator)
@@ -249,7 +418,7 @@ Menu initialization **only adds, never moves**, so the existing `EruptClassInfo`
 Schema changes are applied automatically by JPA / Hibernate at startup. Run them manually only if automatic DDL is disabled (`spring.jpa.hibernate.ddl-auto=none` or `validate`).
 :::
 
-The full SQL is in [2.2.0 Changelog → Database Changes](/en/guide/changelog#database-changes-1). It covers:
+The full SQL is in [2.2.0 Changelog → Database Changes](/en/guide/changelog#database-changes-2). It covers:
 
 - `e_remote_host`: created when [erupt-remote](/en/modules/erupt-remote) is added; Hibernate builds it on its own
 - `e_ai_canvas_model`: new table; `data_type` and `target_model` on `e_ai_canvas` are migrated and then dropped (when erupt-ai-canvas is used)

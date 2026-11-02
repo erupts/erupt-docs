@@ -19,7 +19,7 @@ Officially produced and maintained by the open-source Erupt framework team ([Git
 Demo: [https://demo.erupt.xyz](https://demo.erupt.xyz) &nbsp; Username: `cube` Password: `cube`
 
 :::info Documentation
-[Quick Start](/en/modules/pro/erupt-cube/quick-start) · [Data Sources](/en/modules/pro/erupt-cube/datasource) · [Semantic Modeling](/en/modules/pro/erupt-cube/semantic-model) · [Cube ML Syntax](/en/modules/pro/erupt-cube/cube-ml) · [Visual Modeling](/en/modules/pro/erupt-cube/visual-modeling) · [Visual Analysis](/en/modules/pro/erupt-cube/visual-analysis) · [SQL Port](/en/modules/pro/erupt-cube/sql)
+[Quick Start](/en/modules/pro/erupt-cube/quick-start) · [Data Sources](/en/modules/pro/erupt-cube/datasource) · [Semantic Modeling](/en/modules/pro/erupt-cube/semantic-model) · [Cube ML Syntax](/en/modules/pro/erupt-cube/cube-ml) · [Visual Modeling](/en/modules/pro/erupt-cube/visual-modeling) · [Visual Analysis](/en/modules/pro/erupt-cube/visual-analysis) · [Charts in Model Views](/en/modules/pro/erupt-cube/vis-view) · [SQL Port](/en/modules/pro/erupt-cube/sql)
 :::
 
 ---
@@ -55,6 +55,14 @@ Both approaches can coexist in the same project: define core complex models with
 > Recommended workflow: **Define core models with annotations → Use the visual interface for business self-service exploration → Stable models from exploration are converted back to annotations**.
 
 <img src="/cube/modeling-flow-en.svg" width="900" alt="Two complementary modeling approaches">
+
+## Charts inside the Model Page <Badge type="tip" text="v2.4.0+" />
+
+Besides standalone dashboards and explores, cube charts can sit right in any Erupt model's view tabs: `@Vis(type = Vis.Type.CUBE)` declares a grid of charts in code, the list's search conditions are forwarded as cube filters, and the charts always describe the rows being filtered on screen.
+
+![CUBE view inside a model page](/annotation/vis-cube.png)
+
+See [Charts in Model Views](/en/modules/pro/erupt-cube/vis-view).
 
 ## Annotation Modeling Reference (API)
 

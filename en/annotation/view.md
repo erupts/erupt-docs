@@ -72,6 +72,7 @@ Configures how a field is displayed as a column in the list table, including the
 | `tpl` | Opens a custom template in a popup; the `row` variable is available inside the template to access current row data |
 | `ifRender` | Dynamically controls whether the column is rendered (`ExprBool`), see [ifRender Dynamic Rendering](/en/annotation/if-render) |
 | `template` | Column value formatting template (a JS expression evaluated by `eval` on the frontend); available variables: `value` (current cell value), `item` (full row data), `item.xxx` (specific column value) |
+| `statistic` | Column statistic: `COUNT` / `DISTINCT_COUNT` / `SUM` / `AVG` / `MAX` / `MIN`, shown in a totals bar under the table over the whole query result, defaults to `NONE`, see [statistic Column Statistics](#statistic-column-statistics) (2.4.0+) |
 
 ## Display Types (ViewType)
 
@@ -107,6 +108,44 @@ private BigDecimal total;
 ```
 
 The `group` text is translated like `title`; fixed columns and lone members (a group with a single column) stay ungrouped, and the column settings panel keeps operating on the flat column list.
+
+## statistic Column Statistics <Badge type="tip" text="v2.4.0+" />
+
+Declaring `statistic` on a column adds a totals bar under the table showing that column's aggregate. The aggregate covers **every row the list query matches**, not the current page: search conditions, `@Filter` and link-tree filters all affect it, paging does not.
+
+```java
+@EruptField(views = @View(title = "Amount", statistic = View.Statistic.SUM))
+private BigDecimal amount;
+
+@EruptField(views = @View(title = "Quantity", statistic = View.Statistic.AVG))
+private Integer quantity;
+
+@EruptField(views = @View(title = "Customer", statistic = View.Statistic.DISTINCT_COUNT))
+private String customer;
+```
+
+| Value | Description |
+|-------|-------------|
+| `NONE` | No statistic (default) |
+| `COUNT` | Number of non-null values |
+| `DISTINCT_COUNT` | Number of distinct non-null values |
+| `SUM` | Sum, for numeric columns |
+| `AVG` | Average, for numeric columns |
+| `MAX` | Maximum |
+| `MIN` | Minimum |
+
+### How It Works
+
+- Alongside the list request the frontend calls `POST /erupt-api/data/aggregate/{erupt}` with the same body as the list (`TableQuery`: search conditions, link-tree value, view code) and receives a map of column name to aggregated value
+- The JPA data source folds every statistic column into one aggregate query; the JDBC, SQLite (designer) and MongoDB data sources run their own native aggregates
+- Columns the data source cannot aggregate (a `@Transient` field, a computed column filled in `DataProxy.afterFetch`) fall back to an in-memory computation over at most **2000** rows; beyond that the column reports unknown (`null`) rather than a value computed over a partial set. Persistent columns are not affected by the cap
+- Models hosted on a remote node (erupt-cloud) return no statistics
+- A column pointing at a property of a referenced entity (`@View(column = "name")`) can be aggregated as well
+- In a [grouped TABLE view](/en/annotation/vis#table-view-grouping), columns with a `statistic` also show a per-group subtotal in every group header
+
+:::tip
+Numbers in the totals bar use locale formatting (thousands separators, at most 2 decimals); an unknown value shows as `-`.
+:::
 
 <style scoped>
 .vt-group {

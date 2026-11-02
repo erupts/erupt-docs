@@ -6,7 +6,7 @@ Mount a bucket (or a prefix inside it) as an `@Erupt` model and the admin consol
 
 ## Defining the Model
 
-An object listing has a fixed schema, so the module declares the columns once in `S3ObjectModel`. A model just extends it and adds two annotations:
+An object listing has a fixed schema, so the module declares the columns once in the abstract base class `S3ObjectModel`, and the data service fills them through its setters — no field name travels as a string. A model just extends it and adds two annotations:
 
 ```java
 @Getter
@@ -22,10 +22,11 @@ public class S3ProductionUpload extends S3ObjectModel {
 - `@EruptDataProcessor(EruptS3DataService.DATA_PROCESSOR)`: routes the model to the S3 data source.
 - `power = @Power(add = false, edit = false)`: hides the Add and Edit buttons — see [read-only behaviour](#read-only-means-errors-on-submit-not-buttons-hidden) below.
 
-When the connection is already configured in `erupt.s3.*`, a model can carry just the prefix and browses the attachment bucket:
+When the connection is already configured in `erupt.s3.*`, the annotation needs no attributes at all — `bucket` and `region` fall back to the configuration too — and browses the attachment bucket; add `prefix` to look at one prefix inside it:
 
 ```java
-@EruptS3(prefix = "erupt/")
+@EruptS3                      // the whole attachment bucket
+@EruptS3(prefix = "erupt/")   // one prefix inside the attachment bucket
 ```
 
 To reach another bucket or provider, override only what differs:

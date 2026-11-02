@@ -90,6 +90,8 @@ Any service in the cluster can integrate erupt-node to implement internal config
 - **erupt-cloud-server**: The main server, responsible for scheduling and managing all node instances
 - **erupt-cloud-node**: A micro-node that can be deployed on different servers and is centrally managed by the server
 
+A node is not limited to Spring Boot <Badge type="tip" text="v2.4.0+" />: [Node Lite](/en/modules/cloud-node-lite) serves models with the same annotations from plain Java / Kotlin, Solon, Quarkus, Micronaut, Vert.x, Ktor or any servlet container, with only three dependency-free jars at runtime; for Python, Go, TypeScript, PHP and .NET there is [erupt-sdk](https://github.com/erupt-io/erupt-sdk), built on the [node protocol spec](https://github.com/erupts/erupt/blob/develop/erupt-cloud/PROTOCOL.md). Whatever language a node is written in, power checks, signing, references, Excel and attachments are [handled by the Server](/en/modules/cloud-server#what-the-server-does-for-a-node).
+
 ## Adding the Dependency
 
 Server side:

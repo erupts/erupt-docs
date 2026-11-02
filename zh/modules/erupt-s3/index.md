@@ -1,6 +1,6 @@
 # Erupt S3 对象存储
 
-erupt-data-s3 把任何 **S3 兼容的对象存储**接入 Erupt——AWS S3、MinIO、阿里云 OSS、腾讯云 COS、Cloudflare R2 等，基于 AWS SDK v2 构建。模块提供两项相互独立、但共用一套配置的能力：
+erupt-data-s3 把任何 **S3 兼容的对象存储**接入 Erupt——AWS S3、MinIO、阿里云 OSS、腾讯云 COS、Cloudflare R2 等，基于 AWS SDK v2（2.55）构建。模块提供两项相互独立、但共用一套配置的能力：
 
 | 能力 | 做什么 | 入口 |
 | --- | --- | --- |
@@ -37,7 +37,15 @@ erupt:
 ```
 
 - 附件代理 `S3AttachmentProxy` 直接读取这份配置。
-- 数据源注解 `@EruptS3` 上留空的连接属性也回退到这份配置，因此一个只写 `@EruptS3` 的模型浏览的就是附件 Bucket；需要看别的 Bucket 或别的服务商时，只覆盖对应属性即可。
+- 数据源注解 `@EruptS3` 上留空的连接属性也回退到这份配置，`bucket`、`region` 也不例外，因此一个不带任何属性的 `@EruptS3` 浏览的就是附件 Bucket；需要看别的 Bucket 或别的服务商时，只覆盖对应属性即可。
+
+```java
+@Erupt(name = "附件对象", power = @Power(add = false, edit = false))
+@EruptS3
+@EruptDataProcessor(EruptS3DataService.DATA_PROCESSOR)
+public class AttachmentObject extends S3ObjectModel {
+}
+```
 
 密钥请始终放在配置文件或环境变量，不要写进注解——注解值是编译期常量，会进 class 文件。完整字段说明见[配置参考](./config)。
 

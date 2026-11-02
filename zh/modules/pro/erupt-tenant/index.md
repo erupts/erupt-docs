@@ -48,29 +48,51 @@ ShardingSphere 解决的是「同一个 schema 怎么按租户分库分表」的
 
 <img src="/tenant/tenant-manage.png" width="900">
 
-### 租户菜单
-
-独立配置每个租户的功能菜单，配置形式与系统管理的菜单管理一致：
-
-<img src="/tenant/tenant-menu.png" width="900">
-
 ### 租户套餐
 
-配置租户有哪些菜单能力，不同租户下菜单数据完全隔离：
+套餐从平台「菜单管理」中勾选一组菜单，再按套餐授权给租户。租户的全部会话（含租户管理员）只能看到其已启用套餐内的菜单，租户的角色编辑器也只能从这些菜单中分配权限：
 
 <img src="/tenant/tenant-package.png" width="900">
+
+:::info
+2.4.0 起不再有独立的「租户菜单」：套餐直接引用平台菜单表 `e_upms_menu`，菜单只需在「菜单管理」维护一份。
+:::
 
 ### 租户登录
 
 <img src="/tenant/tenant-login.png" width="900">
 
+接入 [erupt-sso](/zh/modules/erupt-sso) 后，租户登录页会列出该租户自己配置的 SSO 提供方（`GET /erupt-api/sso/providers?tenant=<企业 ID>`），单点登录后开启的仍是租户会话；已锁定或已到期的租户同样会被拒绝。
+
 ### 用户 / 角色 / 组织管理
+
+租户端的用户、角色、组织就是 erupt-upms 的原生页面，数据与平台共用 `e_upms_user` / `e_upms_role` / `e_upms_org` 表，按 `tenant_id` 列由 Hibernate 自动隔离：
 
 <img src="/tenant/user-manage.png" width="900">
 
 <img src="/tenant/role-manage.png" width="900">
 
 <img src="/tenant/org-manage.png" width="900">
+
+## 订阅与试用
+
+租户的订阅只有一个日期：**到期时间**（`expireDate`），为空表示永不到期。
+
+- **试用**：新建租户时若未填写到期时间，取其已启用套餐中最长的「试用天数」（`EruptTenantPackage.trialDays`）作为到期时间；套餐都没有配置试用天数则不设到期。
+- **状态**：`Active` / `Grace` / `Expired` 由到期时间与宽限天数在每次读取时推导，不落库。过了到期时间但仍在 `erupt.tenant.subscription.grace-days` 内为 `Grace`，仍可使用；超过宽限期为 `Expired`。
+- **锁定**：租户配置中的「状态」开关独立于到期时间，锁定后无论是否到期都拒绝登录。
+- **在线会话**：租户在用户已登录的情况下到期或被锁定，其会话在下一次请求时被注销并返回 `401`，前端回到租户登录页并显示原因。状态会缓存 `erupt.tenant.subscription.status-cache-seconds`（默认 30 秒），超管端修改租户后立即失效。
+- **续期**：erupt 不负责收费。应用自己的支付逻辑在收款成功后调用 `TenantSubscriptionService#extend(tenantConfigId, Period, now)` 延长到期时间——从原到期时间顺延，已过期则从当前时间起算。
+
+```yaml
+erupt:
+  tenant:
+    subscription:
+      grace-days: 7            # 到期后的宽限天数，默认 0
+      status-cache-seconds: 30 # 订阅状态缓存秒数，默认 30
+```
+
+租户会话可通过 `GET /erupt-api/tenant/info` 查看自己的租户 ID、名称、订阅状态、到期时间与已启用的套餐。
 
 ## 数据隔离原理
 

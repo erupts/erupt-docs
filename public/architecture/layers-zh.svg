@@ -359,8 +359,8 @@ rect.c-bg-rect { fill: var(--bg); }
         <text x="195" y="226" class="t-muted" font-size="9" text-anchor="middle">Token / Session · MFA · 登录锁定</text>
         </g>
 
-        <g id="node-sso" data-node-id="sso" data-node-label="erupt-sso" tabindex="0" role="button" aria-label="Focus erupt-sso, 单点登录 · OAuth2 / OIDC · 17 种预设, 安全层" aria-pressed="false" data-node-kind="security" data-node-sublabel="单点登录 · OAuth2 / OIDC · 17 种预设" data-node-context="安全层">
-          <title>erupt-sso · 单点登录 · OAuth2 / OIDC · 17 种预设 · 安全层</title>
+        <g id="node-sso" data-node-id="sso" data-node-label="erupt-sso" tabindex="0" role="button" aria-label="Focus erupt-sso, 单点登录 · OAuth2 / SAML · 20 种预设, 安全层" aria-pressed="false" data-node-kind="security" data-node-sublabel="单点登录 · OAuth2 / SAML · 20 种预设" data-node-context="安全层">
+          <title>erupt-sso · 单点登录 · OAuth2 / SAML · 20 种预设 · 安全层</title>
           <rect x="350" y="180" width="270" height="64" rx="6" class="c-mask"/>
           <rect x="350" y="180" width="270" height="64" rx="6" class="c-security" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(356 186) scale(0.6875)">
@@ -368,7 +368,7 @@ rect.c-bg-rect { fill: var(--bg); }
             <path d="m5.8 8 1.5 1.5 3-3"/>
           </g>
           <text x="485" y="210" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-sso</text>
-        <text x="485" y="226" class="t-muted" font-size="9" text-anchor="middle">单点登录 · OAuth2 / OIDC · 17 种预设</text>
+        <text x="485" y="226" class="t-muted" font-size="9" text-anchor="middle">单点登录 · OAuth2 / SAML · 20 种预设</text>
         </g>
 
         <g id="node-core" data-node-id="core" data-node-label="erupt-core" tabindex="0" role="button" aria-label="Focus erupt-core, 注解解析 · CRUD 引擎 · Schema 下发, 核心层" aria-pressed="false" data-node-kind="backend" data-node-sublabel="注解解析 · CRUD 引擎 · Schema 下发" data-node-tag="核心" data-node-context="核心层">
@@ -556,14 +556,14 @@ rect.c-bg-rect { fill: var(--bg); }
         </g>
 
         <g id="node-comment" data-node-id="comment" data-node-label="erupt-comment" tabindex="0" role="button" aria-label="Focus erupt-comment, 记录评论, 扩展层（按需引入）" aria-pressed="false" data-node-kind="backend" data-node-sublabel="记录评论" data-node-context="扩展层（按需引入）">
-          <title>erupt-comment · 记录评论 · 扩展层（按需引入）</title>
+          <title>erupt-comment · revision · 记录评论 · 历史版本 · 扩展层（按需引入）</title>
           <rect x="1020" y="320" width="230" height="56" rx="6" class="c-mask"/>
           <rect x="1020" y="320" width="230" height="56" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1026 326) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text x="1135" y="346" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-comment</text>
-        <text x="1135" y="362" class="t-muted" font-size="9" text-anchor="middle">记录评论</text>
+          <text x="1135" y="346" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-comment · revision</text>
+        <text x="1135" y="362" class="t-muted" font-size="9" text-anchor="middle">记录评论 · 历史版本</text>
         </g>
 
         <g id="node-generator" data-node-id="generator" data-node-label="erupt-generator · designer" tabindex="0" role="button" aria-label="Focus erupt-generator · designer, 数据库导入生成 · 模型设计, 扩展层（按需引入）" aria-pressed="false" data-node-kind="backend" data-node-sublabel="数据库导入生成 · 模型设计" data-node-context="扩展层（按需引入）">
@@ -621,15 +621,15 @@ rect.c-bg-rect { fill: var(--bg); }
         <text x="885" y="672" class="t-muted" font-size="9" text-anchor="middle">大模型接入 · Agent Harness</text>
         </g>
 
-        <g id="node-aiapps" data-node-id="aiapps" data-node-label="erupt-ai-claw · staff" tabindex="0" role="button" aria-label="Focus erupt-ai-claw · staff, 对话式操作 · 数字员工, AI 层" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="对话式操作 · 数字员工" data-node-context="AI 层">
-          <title>erupt-ai-claw · staff · 对话式操作 · 数字员工 · AI 层</title>
+        <g id="node-aiapps" data-node-id="aiapps" data-node-label="erupt-ai-claw · staff · dev" tabindex="0" role="button" aria-label="Focus erupt-ai-claw · staff · dev, 对话式操作 · 数字员工 · AI 交付, AI 层" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="对话式操作 · 数字员工 · AI 交付" data-node-context="AI 层">
+          <title>erupt-ai-claw · staff · dev · 对话式操作 · 数字员工 · AI 交付 · AI 层</title>
           <rect x="1020" y="630" width="230" height="56" rx="6" class="c-mask"/>
           <rect x="1020" y="630" width="230" height="56" rx="6" class="c-cloud" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(1026 636) scale(0.6875)">
             <path d="M4.3 12.5h7.3a2.4 2.4 0 0 0 .2-4.8 4 4 0 0 0-7.5-1.3A3.1 3.1 0 0 0 4.3 12.5Z"/>
           </g>
-          <text x="1135" y="656" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-ai-claw · staff</text>
-        <text x="1135" y="672" class="t-muted" font-size="9" text-anchor="middle">对话式操作 · 数字员工</text>
+          <text x="1135" y="656" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">erupt-ai-claw · staff · dev</text>
+        <text x="1135" y="672" class="t-muted" font-size="9" text-anchor="middle">对话式操作 · 数字员工 · AI 交付</text>
         </g>
 
         <g id="node-aidata" data-node-id="aidata" data-node-label="erupt-ai-rag · canvas · decision" tabindex="0" role="button" aria-label="Focus erupt-ai-rag · canvas · decision, 知识库检索 · 页面生成 · AI 决策, AI 层" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="知识库检索 · 页面生成 · AI 决策" data-node-context="AI 层">

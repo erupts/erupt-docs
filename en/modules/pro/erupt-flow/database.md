@@ -15,3 +15,9 @@ erupt-flow uses an independent table design — existing erupt business tables a
 ER diagram:
 
 <img src="/flow/er.png" width="720">
+
+## Tenant Column <Badge type="tip" text="v2.4.0+" />
+
+`e_flow`, `e_flow_group` and `e_flow_instance` carry a Hibernate `@TenantId` column `tenant_id` (`varchar`, not null, `'0'` for platform rows and the [erupt-tenant](/en/modules/pro/erupt-tenant/) tenant ID for tenant rows). Hibernate restricts every query to the session's tenant and stamps it on insert, so flow definitions, groups and instances are listed per tenant by themselves; the child tables (node records, approval tasks, comments, form histories) carry no tenant column of their own and follow their instance.
+
+User references in the flow tables (initiator, assignee, creator and so on) point to `e_upms_user` (entity `EruptUserVo`), where tenant users and platform users share one table — see [Multi-tenant support](/en/modules/pro/erupt-flow/development#multi-tenant-support).

@@ -67,7 +67,7 @@ That `power` is the intersection of two sources:
 
 Generation happens in two places:
 
-- **At application startup**: `UpmsDataLoadService` walks the menus declared by each module's `initMenus()` and back-fills ADD / EDIT button sub-menus for FORM menus. Whether it runs is controlled by `erupt.init-method-enum` (`FILE` = first boot only, `EVERY` = every boot, `NONE` = never).
+- **At application startup**: `UpmsDataLoadService` walks the menus declared by each module's `initMenus()` and back-fills ADD / EDIT button sub-menus for FORM menus. Whether it runs is controlled by `erupt.init-modules-menu` (default `true`; v2.4.0+ replaces the removed `erupt.init-method-enum`).
 - **When a menu is created manually**: after you add and save a FORM menu in Menu Management, `EruptMenuService.afterAdd` immediately creates its ADD / EDIT sub-menus.
 
 The generated sub-menus look like this:

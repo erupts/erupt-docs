@@ -48,11 +48,15 @@ erupt:
 
 - `endpoint` and `pathStyle` form a pair: if the annotation sets `endpoint`, its `pathStyle` is used; otherwise both come from `erupt.s3.*`.
 - `accessKey` and `secretKey` form a pair: the annotation's `secretKey` is only read when it also sets `accessKey`.
-- `bucket` and `region` fall back independently.
+- `bucket` and `region` fall back independently, and neither is required on the annotation: a bare `@EruptS3` with no attributes uses `erupt.s3.*` in full. Only when `bucket` is empty in both the annotation and the configuration does opening the list fail with "bucket not configured".
 
 ## `endpoint` Is the Service Host, Not the Bucket Host
 
 `endpoint` should be the provider's service domain (e.g. `https://oss-cn-hangzhou.aliyuncs.com`). Consoles often show the bucket-specific host (`https://mybucket.oss-cn-hangzhou.aliyuncs.com`); with virtual-hosted addressing the SDK prepends the bucket name again and the request lands on a bucket that does not exist. The module detects this and drops the leading `mybucket.` label, but using the service domain directly is still recommended.
+
+## Request Checksums with a Custom `endpoint`
+
+Since AWS SDK 2.30 every upload carries a CRC32 checksum in an `aws-chunked` body by default, which several S3-compatible stores (Alibaba Cloud OSS, older MinIO releases, ...) reject. So whenever `endpoint` is set, the module switches request checksum calculation and response checksum validation to `WHEN_REQUIRED` — computed only where the operation demands it; without an `endpoint`, talking to AWS directly, the SDK default stays. Nothing to configure; this only explains why the same code sends differently shaped requests to AWS and to compatible stores.
 
 ## Credentials
 

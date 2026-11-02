@@ -6,7 +6,7 @@
 
 ## 定义模型
 
-对象列表的列是固定的，因此模块把字段统一声明在 `S3ObjectModel` 中，模型只需继承它，再加上两个注解：
+对象列表的列是固定的，因此模块把字段统一声明在抽象基类 `S3ObjectModel` 中，数据服务通过它的 setter 填充数据，不经过任何字符串字段名。模型只需继承它，再加上两个注解：
 
 ```java
 @Getter
@@ -22,10 +22,11 @@ public class S3ProductionUpload extends S3ObjectModel {
 - `@EruptDataProcessor(EruptS3DataService.DATA_PROCESSOR)`：指定由 S3 数据源处理该模型。
 - `power = @Power(add = false, edit = false)`：隐藏「新增」「修改」按钮，原因见下方[只读说明](#只读是「提交时报错」-不是按钮消失)。
 
-连接参数已在 `erupt.s3.*` 中配置时，模型可以只写前缀，浏览的就是附件 Bucket：
+连接参数已在 `erupt.s3.*` 中配置时，注解可以一个属性都不写——`bucket`、`region` 同样回退到配置——浏览的就是附件 Bucket；只想看其中某个前缀时加 `prefix`：
 
 ```java
-@EruptS3(prefix = "erupt/")
+@EruptS3                      // 整个附件 Bucket
+@EruptS3(prefix = "erupt/")   // 附件 Bucket 下的一个前缀
 ```
 
 需要看另一个 Bucket 或另一家服务商，只覆盖对应属性：

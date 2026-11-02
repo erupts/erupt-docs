@@ -11,7 +11,7 @@
 
 | **能力** | **说明** |
 |---|---|
-| **LLM** | 内置 19 个适配器：ChatGPT、Claude、Gemini、Ollama、Qwen、Doubao、GLM、DeepSeek、Moonshot、MiniMax、Mistral、Grok、Mimo、Fireworks、Together、OpenRouter、OrcaRouter、Requesty，以及可对接任意 OpenAI 兼容接口的 Open AI Adapter |
+| **LLM** | 内置 17 个适配器：ChatGPT、Claude、Gemini、Ollama、Qwen、Doubao、GLM、DeepSeek、Moonshot、MiniMax、Mistral、Grok、Mimo、Fireworks、Together、OpenRouter，以及可对接任意 OpenAI 兼容接口的 Open AI Adapter |
 | **Chat** | 会话管理（AiChat）、消息历史（AiChatMessage）、SSE 流式输出、可配置上下文轮次（maxContext） |
 | **Agent** | 自定义可视化控制 Prompt、可动态控制 Agent 提示词 |
 | **Tools** | 通过 `@AiToolbox` + `@Tool` 注册工具并在对话中调用；erupt-ai 内置 `EruptUserTools`（当前用户信息、角色与菜单权限、服务器时间），erupt-ai-claw 另提供 `EruptModelTools`（模块列表、模型列表、模型 Schema，以及基于结构化 filter / sort / page 参数的数据增删改查）|
@@ -65,7 +65,7 @@ erupt:
 
 | 页面 | 内容 |
 |---|---|
-| [配置大模型](/zh/modules/erupt-ai/llm) | 添加与测试大模型，19 个内置适配器 |
+| [配置大模型](/zh/modules/erupt-ai/llm) | 添加与测试大模型，17 个内置适配器 |
 | [对话工作台](/zh/modules/erupt-ai/chat) | 沉浸式对话、多模态图片输入、模型选择器 |
 | [专家（预设 AI 角色）](/zh/modules/erupt-ai/agent) | 把提示词、模型与参数固化成可选身份，`EruptPromptHandler` 动态改写提示词 |
 | [开发自定义 Tool](/zh/modules/erupt-ai/tools) | `@AiToolbox` + `@Tool` 把任意 Spring Bean 方法注册为 AI 工具 |

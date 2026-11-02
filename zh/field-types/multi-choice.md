@@ -29,6 +29,23 @@ private Set<String> multiChoice;
 `@JdbcTypeCode(SqlTypes.JSON)` 指示 Hibernate 将 `Set<String>` 序列化为 JSON 数组存入数据库单列，例如 `["A","C"]`。需要数据库列具有足够长度（建议 `length = 2000` 或更大）。
 :::
 
+## 枚举集合即多选 <Badge type="tip" text="v2.4.0+" />
+
+字段类型是 `Set<枚举>` / `List<枚举>` 时，不写 `type` 也不写 `vl`，Erupt 直接推断为 `MULTI_CHOICE`，选项为枚举常量（存常量名，显示文本经 i18n 翻译）：
+
+```java
+public enum Channel { WEB, APP, STORE }
+
+@JdbcTypeCode(SqlTypes.JSON)
+@EruptField(
+    views = @View(title = "渠道"),
+    edit = @Edit(title = "渠道") // 推断为 MULTI_CHOICE，选项 WEB / APP / STORE
+)
+private Set<Channel> channels;
+```
+
+`@MultiChoiceType` 声明了 `vl` 或 `fetchHandler` 时以声明为准。其他类型的推断规则见 [自动推测 AUTO](/zh/field-types/auto#按-java-类型推断)。
+
 ## 动态列表 <Badge type="tip" text="MyModel 2.0.0+" />
 
 实现 `ChoiceFetchHandler<T>` 接口，字段声明需使用 `@JdbcTypeCode(SqlTypes.JSON)` + `Set<String>`：
@@ -82,6 +99,8 @@ public @interface MultiChoiceType {
 
     String dependField() default ""; // 联动字段名（本表字段）
 
+    boolean validate() default true; // 服务端校验提交值是否在选项内（2.4.0+）
+
     enum Type {
         SELECT,   // 下拉多选
         CHECKBOX, // 复选框组（默认）
@@ -90,6 +109,21 @@ public @interface MultiChoiceType {
 
 }
 ```
+
+## 服务端选项校验 <Badge type="tip" text="v2.4.0+" />
+
+`erupt.choice-validate` **默认开启**：新增、修改、单元格编辑与 Excel 导入时，服务端会逐个检查提交的值是否在用户实际能看到的选项内（`vl`、枚举常量、`fetchHandler` / `fetchFilter` 的返回），有一个不在其中即拒绝。与库中已存的值相同的值直接通过，`disable = true` 的选项不能新选，没有声明任何选项的字段不做校验。
+
+```java
+@JdbcTypeCode(SqlTypes.JSON)
+@EruptField(
+    edit = @Edit(title = "标签", type = EditType.MULTI_CHOICE,
+                 multiChoiceType = @MultiChoiceType(validate = false, fetchHandler = TagFetchHandler.class))
+)
+private Set<String> tags; // 允许存选项之外的值
+```
+
+全局关闭在 `application.yml` 中设置 `erupt.choice-validate=false`，见 [配置项](/zh/guide/configuration)；校验规则的完整说明见 [单选 CHOICE](/zh/field-types/choice#服务端选项校验)。
 
 ## 穿梭框 <Badge type="tip" text="v2.3.0+" />
 
