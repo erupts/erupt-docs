@@ -24,6 +24,174 @@ outline: deep
 
 <div class="topic-list">
 
+<a class="topic-card" href="/topics/share-link-scoped-session">
+  <div class="topic-card__index">#26</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Share</div>
+    <h3 class="topic-card__title">公开链接不该是第二套认证</h3>
+    <p class="topic-card__desc">给陌生人一个能提交数据的链接，最容易的做法是开一条匿名接口。erupt-share 反过来：打开链接就是以签发人名义铸一枚普通会话，再由 SessionScopeGuard 按一张 22 条路由的白名单收窄到一张表单；链接权限不超过签发人，停用即注销已发会话，失败按 IP 限速，访问次数用一条 UPDATE 计数。代价写在明处：访客会话仍以签发人名义落库。</p>
+    <div class="topic-card__meta">
+      <span>2026-11-02</span>
+      <span>·</span>
+      <span>9 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/ai-dev-requirement-pool">
+  <div class="topic-card__index">#25</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">AI Dev</div>
+    <h3 class="topic-card__title">编码 Agent 的工牌</h3>
+    <p class="topic-card__desc">让 AI 写代码不难，难的是授权与交付。erupt-ai-dev 不给 Agent 造权限体系：每次运行由 DevMcpGrants 签发一枚只指向一张需求的 MCP 令牌，经 McpAuthenticator 接入 erupt-ai 的 /mcp，数据权限借需求创建者的 AI 角色；评审、验收、交付全是 @RowOperation，自审默认禁止；多仓库交付先 rebase 全部、任一冲突整批不推。代价写在明处：Agent 以服务器账号运行，读到的数据会发给模型提供方。</p>
+    <div class="topic-card__meta">
+      <span>2026-10-28</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/runtime-config-property-source">
+  <div class="topic-card__index">#24</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Config</div>
+    <h3 class="topic-card__title">配置中心不必是另一个服务</h3>
+    <p class="topic-card__desc">后台里的「系统参数」常是一张 key/value 表加一个 getConfig 工具方法：读的人自己管缓存，和 application.yml 互不相识。erupt-config 不造新的读取 API，而是把配置项做成 Spring 环境最前面的一层 PropertySource：启动前由 EruptConfigEnvironmentPostProcessor 用 JDBC 读入，@Value 与 @ConfigurationProperties 原样读取，保存后替换整层、重设 @Value 字段并发 EruptConfigRefreshedEvent，多节点靠 Redis 广播或轮询聚合签名。代价写在明处：没有版本、灰度和审批，密文只遮罩不加密，SpEL 与构造器注入只在启动时解析。</p>
+    <div class="topic-card__meta">
+      <span>2026-10-21</span>
+      <span>·</span>
+      <span>9 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/saml-sso-jdk-only">
+  <div class="topic-card__index">#23</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">SSO</div>
+    <h3 class="topic-card__title">SAML 的难点是拒绝</h3>
+    <p class="topic-card__desc">接入企业 SAML 单点登录，常见反应是找个成熟库——但库只解决 XML 签名的数学，一份响应能不能登录取决于验签前后查哪几样、按什么顺序。erupt-sso 的 SsoSamlService 只有 406 行、只用 JDK 的 javax.xml.crypto.dsig：状态一次性、InResponseTo、Destination、受众与有效期、只引用自身的签名，ID 只在被签元素上可解析以挡住签名包装，加密断言直接拒绝。代价写在明处：不解密断言、不签 AuthnRequest、没有单点登出，也不能充当 IdP。</p>
+    <div class="topic-card__meta">
+      <span>2026-10-20</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/webhook-after-commit">
+  <div class="topic-card__index">#22</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Webhook</div>
+    <h3 class="topic-card__title">事务没提交，别通知外部</h3>
+    <p class="topic-card__desc">数据变更要推给外部系统，最顺手的写法是在 DataProxy#afterAdd 里发 HTTP——它在事务提交之前执行，请求线程还得替接收方等着。erupt-webhook 押反向：订阅管线已发的 EruptAddEvent / EruptEditEvent / EruptDeleteEvent，AFTER_COMMIT 之后才匹配订阅，后台线程做 HMAC-SHA256 签名、3 次尝试、写投递日志，回滚的写入不通知。订阅表与日志表本身也是 @Erupt 模型，测试按钮、下钻、重发都是已有扩展点。代价写在明处：没有持久化队列、订阅缓存只在本节点刷新、脱敏只管 PASSWORD 字段。</p>
+    <div class="topic-card__meta">
+      <span>2026-10-19</span>
+      <span>·</span>
+      <span>9 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/erupt-scope-workspace">
+  <div class="topic-card__index">#21</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Scope</div>
+    <h3 class="topic-card__title">「当前项目」不该是一条 where</h3>
+    <p class="topic-card__desc">多项目、多集群的后台里，「当前范围」常是前端下拉框加每张表手写的过滤。@EruptScope 把范围声明成一个普通 @Erupt 表单类：客户端只递一个值，EruptScopeService 每次请求对照当前用户的可选项重验，并改写列表查询、按 id 校验和新增 / 编辑，必填范围从不猜。边界写在明处：范围不是权限，要隔离用户仍须用按用户过滤的选项或数据权限。</p>
+    <div class="topic-card__meta">
+      <span>2026-10-19</span>
+      <span>·</span>
+      <span>9 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/cloud-node-protocol">
+  <div class="topic-card__index">#20</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Cloud</div>
+    <h3 class="topic-card__title">节点不是 Spring 应用，是一份协议</h3>
+    <p class="topic-card__desc">传统分布式后台里，每接一个服务就要再接一遍网关、token 与权限。erupt-cloud 押反向：登录、菜单、校验、Excel、附件都由服务端代办，节点只交模型描述和数据读写；转发由 CloudSignature 做 HMAC 签名，Erupt-Enforced 声明服务端已查项。薄到 erupt-cloud-node-lite 约 2400 行、不依赖 Spring。代价写在明处：协议仍是 Draft v0，lite 节点未支持子表、树、文件上传，跨语言一致性测试在独立仓库。</p>
+    <div class="topic-card__meta">
+      <span>2026-10-16</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/declared-limits-server-side">
+  <div class="topic-card__index">#19</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Validation</div>
+    <h3 class="topic-card__title">声明一次，到处生效</h3>
+    <p class="topic-card__desc">低代码里的字段规则多半是设计器里的 UI 配置：浏览器拦得住，直接调写入接口未必。Erupt 的 @Edit 是页面与服务端共读的同一份注解，EruptValueValidator 在写入管线里把选项、长度、数值与日期边界再执行一遍，覆盖 8 类组件、5 个写入入口，连子表行与 Excel 导入也不例外。代价写在明处：时间类选择器不校验边界，choice-validate 默认开启会拒绝旧的越界写入。</p>
+    <div class="topic-card__meta">
+      <span>2026-10-15</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/record-revision-pipeline-event">
+  <div class="topic-card__index">#18</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">History</div>
+    <h3 class="topic-card__title">改动历史不属于任何一个 DataProxy</h3>
+    <p class="topic-card__desc">字段历史在业务代码里通常是每个模型一份 xxx_history。erupt-revision 押反向：不碰 DataProxy，订阅管线已发的 EruptEditEvent，在调用方事务里写字段级 diff；回滚把旧值送回同一条 updateEruptData 管线，校验与钩子照常执行，回滚本身也留修订。代价写在明处：拖拽排序不发事件、绕过管线的写入看不见、历史写失败只打 warn。</p>
+    <div class="topic-card__meta">
+      <span>2026-10-08</span>
+      <span>·</span>
+      <span>9 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/vis-one-query-many-views">
+  <div class="topic-card__index">#17</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Views</div>
+    <h3 class="topic-card__title">一张表，八种视图</h3>
+    <p class="topic-card__desc">明道云、简道云、宜搭把视图做成平台里的对象，各带一套筛选与分组。@Vis 押反向：视图只是同一次 TableQuery 的投影，行级权限写在 DataProxy#beforeFetch 里对 8 种视图一次生效，列统计与列表共用 assembleQuery。代价也写明了：看板、日历、甘特的拖动写回还没走整行校验，也没有 verifyIdPermissions。</p>
+    <div class="topic-card__meta">
+      <span>2026-10-03</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/remote-table-as-storage">
+  <div class="topic-card__index">#16</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Data Source</div>
+    <h3 class="topic-card__title">数据不在你库里的时候</h3>
+    <p class="topic-card__desc">数据在钉钉多维表、飞书多维表格、Airtable 或别人的 REST 接口里，宜搭、明道云、简道云的答案是"连接器 + 同步"。Erupt 押反向：不搬数据，换引擎——一行 @EruptDataProcessor，校验、DataProxy、权限、日志一条管线不动；任意 REST 的差异收进 EruptHttpAdapter 的 8 个钩子。代价也写在明处：5000 行上限、默认只下推等值条件、beforeFetch 只认等值片段、跨 HTTP 无事务。</p>
+    <div class="topic-card__meta">
+      <span>2026-10-02</span>
+      <span>·</span>
+      <span>11 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/typed-decision">
+  <div class="topic-card__index">#15</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Decision</div>
+    <h3 class="topic-card__title">让 AI 判断回到 if 语句里</h3>
+    <p class="topic-card__desc">工作流里的大模型节点吐出一段文本，下游条件分支再去猜它的意思。erupt-ai-decision 只回答三种类型化的问题——NOUL 是/否、CHOICE 多选一、SCORE 有序打分——每个答案都带概率分布，"拿不准"是一条 Optional.empty() 分支。对照宜搭、简道云、JeecgBoot、Dify：模型负责"有多像"，代码负责"算不算"，阈值永远写在你的 if 里。</p>
+    <div class="topic-card__meta">
+      <span>2026-10-01</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
 <a class="topic-card" href="/topics/generator-reads-database">
   <div class="topic-card__index">#14</div>
   <div class="topic-card__body">

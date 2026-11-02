@@ -361,6 +361,78 @@ export default withMermaid(defineConfig({
                             ],
                         },
                         {
+                            text: 'Issue 26 · Share',
+                            items: [
+                                {text: 'A Public Link Should Not Be a Second Auth System', link: '/en/topics/share-link-scoped-session'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 25 · AI Dev',
+                            items: [
+                                {text: 'A Badge for the Coding Agent', link: '/en/topics/ai-dev-requirement-pool'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 24 · Config',
+                            items: [
+                                {text: 'A Config Center Doesn\'t Have to Be Another Service', link: '/en/topics/runtime-config-property-source'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 23 · SSO',
+                            items: [
+                                {text: 'The Hard Part of SAML Is Refusing', link: '/en/topics/saml-sso-jdk-only'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 22 · Webhook',
+                            items: [
+                                {text: 'Don\'t Notify Anyone Before the Transaction Commits', link: '/en/topics/webhook-after-commit'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 21 · Scope',
+                            items: [
+                                {text: '"The Current Project" Should Not Be a where Clause', link: '/en/topics/erupt-scope-workspace'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 20 · Cloud',
+                            items: [
+                                {text: 'A Node Is Not a Spring App, It Is a Protocol', link: '/en/topics/cloud-node-protocol'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 19 · Validation',
+                            items: [
+                                {text: 'Declare Once, Enforce Everywhere', link: '/en/topics/declared-limits-server-side'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 18 · History',
+                            items: [
+                                {text: 'Change History Belongs to No DataProxy', link: '/en/topics/record-revision-pipeline-event'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 17 · Views',
+                            items: [
+                                {text: 'One Table, Eight Views', link: '/en/topics/vis-one-query-many-views'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 16 · Data Source',
+                            items: [
+                                {text: "When the Data Isn't in Your Database", link: '/en/topics/remote-table-as-storage'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 15 · Decision',
+                            items: [
+                                {text: 'Putting AI Judgements Back Inside an if', link: '/en/topics/typed-decision'},
+                            ],
+                        },
+                        {
                             text: 'Issue 14 · Generator',
                             items: [
                                 {text: 'Generating Models from an Existing Database', link: '/en/topics/generator-reads-database'},
@@ -1004,6 +1076,78 @@ export default withMermaid(defineConfig({
                             text: '专题',
                             items: [
                                 {text: '专题总览', link: '/zh/topics/'},
+                            ],
+                        },
+                        {
+                            text: '第 26 期 · Share',
+                            items: [
+                                {text: '公开链接不该是第二套认证', link: '/zh/topics/share-link-scoped-session'},
+                            ],
+                        },
+                        {
+                            text: '第 25 期 · AI Dev',
+                            items: [
+                                {text: '编码 Agent 的工牌', link: '/zh/topics/ai-dev-requirement-pool'},
+                            ],
+                        },
+                        {
+                            text: '第 24 期 · Config',
+                            items: [
+                                {text: '配置中心不必是另一个服务', link: '/zh/topics/runtime-config-property-source'},
+                            ],
+                        },
+                        {
+                            text: '第 23 期 · SSO',
+                            items: [
+                                {text: 'SAML 的难点是拒绝', link: '/zh/topics/saml-sso-jdk-only'},
+                            ],
+                        },
+                        {
+                            text: '第 22 期 · Webhook',
+                            items: [
+                                {text: '事务没提交，别通知外部', link: '/zh/topics/webhook-after-commit'},
+                            ],
+                        },
+                        {
+                            text: '第 21 期 · Scope',
+                            items: [
+                                {text: '「当前项目」不该是一条 where', link: '/zh/topics/erupt-scope-workspace'},
+                            ],
+                        },
+                        {
+                            text: '第 20 期 · Cloud',
+                            items: [
+                                {text: '节点不是 Spring 应用，是一份协议', link: '/zh/topics/cloud-node-protocol'},
+                            ],
+                        },
+                        {
+                            text: '第 19 期 · Validation',
+                            items: [
+                                {text: '声明一次，到处生效', link: '/zh/topics/declared-limits-server-side'},
+                            ],
+                        },
+                        {
+                            text: '第 18 期 · History',
+                            items: [
+                                {text: '改动历史不属于任何一个 DataProxy', link: '/zh/topics/record-revision-pipeline-event'},
+                            ],
+                        },
+                        {
+                            text: '第 17 期 · Views',
+                            items: [
+                                {text: '一张表，八种视图', link: '/zh/topics/vis-one-query-many-views'},
+                            ],
+                        },
+                        {
+                            text: '第 16 期 · Data Source',
+                            items: [
+                                {text: '数据不在你库里的时候', link: '/zh/topics/remote-table-as-storage'},
+                            ],
+                        },
+                        {
+                            text: '第 15 期 · Decision',
+                            items: [
+                                {text: '让 AI 判断回到 if 语句里', link: '/zh/topics/typed-decision'},
                             ],
                         },
                         {
