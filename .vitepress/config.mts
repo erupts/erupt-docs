@@ -674,7 +674,9 @@ export default withMermaid(defineConfig({
                                     items: [
                                         {text: 'Introduction', link: '/en/modules/pro/erupt-tenant/'},
                                         {text: 'Quick Start', link: '/en/modules/pro/erupt-tenant/quick-start'},
-                                        {text: 'Multi-tenant Development', link: '/en/modules/pro/erupt-tenant/development'},
+                                        {text: 'Multi-tenant UPMS', link: '/en/modules/pro/erupt-tenant/upms'},
+                                        {text: 'Multi-tenant Business Tables', link: '/en/modules/pro/erupt-tenant/development'},
+                                        {text: 'Packages & Subscription', link: '/en/modules/pro/erupt-tenant/subscription'},
                                         {text: 'Domain & Customization', link: '/en/modules/pro/erupt-tenant/domain'},
                                         {text: 'Database Design', link: '/en/modules/pro/erupt-tenant/database'},
                                     ],
@@ -1392,7 +1394,9 @@ export default withMermaid(defineConfig({
                                     items: [
                                         {text: '产品介绍', link: '/zh/modules/pro/erupt-tenant/'},
                                         {text: '快速开始', link: '/zh/modules/pro/erupt-tenant/quick-start'},
-                                        {text: '多租户开发', link: '/zh/modules/pro/erupt-tenant/development'},
+                                        {text: 'UPMS 多租户', link: '/zh/modules/pro/erupt-tenant/upms'},
+                                        {text: '业务表多租户', link: '/zh/modules/pro/erupt-tenant/development'},
+                                        {text: '套餐与订阅', link: '/zh/modules/pro/erupt-tenant/subscription'},
                                         {text: '域名与租户定制', link: '/zh/modules/pro/erupt-tenant/domain'},
                                         {text: '数据库设计', link: '/zh/modules/pro/erupt-tenant/database'},
                                     ],

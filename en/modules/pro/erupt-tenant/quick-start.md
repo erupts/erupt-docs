@@ -1,76 +1,81 @@
 # Quick Start
 
-This guide covers integrating the erupt-tenant multi-tenancy module into an erupt project. For a feature overview, see [Erupt SaaS Multi-tenant](/en/modules/pro/erupt-tenant/).
+This page shows how to add erupt-tenant to an erupt project. For an overview see [Erupt SaaS Multi-tenant](/en/modules/pro/erupt-tenant/).
 
 :::tip
-erupt-tenant is a commercial module. After purchase, contact the author to get access to the source repository.
+erupt-tenant is a commercial module. After purchase, contact the author for access to the source repository.
 :::
 
-## Source Code
+## Modules
 
-- Frontend: [https://gitee.com/erupt/erupt-web](https://gitee.com/erupt/erupt-web)
-- Backend: [https://github.com/erupt-io/erupt-tenant](https://github.com/erupt-io/erupt-tenant)
-
-## Module Structure
-
-erupt-tenant consists of two Maven modules:
-
-| Module | Description | Depends On |
+| Module | Description | Depends on |
 | --- | --- | --- |
-| **erupt-tenant-core** | Multi-tenancy core: the `@EruptTenant` annotation, data-isolation DataProxy, tenant context `EruptTenantContext`, inheritable tenant base classes | erupt-jpa |
-| **erupt-tenant** | Full tenant management: tenant config / tenant packages, tenant login and the subscription lifecycle; tenant-side users / roles / organizations reuse erupt-upms directly | erupt-upms + erupt-tenant-core |
+| **erupt-tenant-core** | Business-table isolation: the `@EruptTenant` annotation, the isolating DataProxy, the tenant context `EruptTenantContext`, and the `TenantBaseModel` base classes | erupt-jpa |
+| **erupt-tenant** | The tenant platform: tenant config, packages, subscriptions, tenant login and SSO, domain customization, menu scope; tenant users / roles / organizations come straight from erupt-upms | erupt-upms, erupt-tenant-core |
 
-## 1. Build the Source and Publish to Local Repository
+An erupt-cloud-node only needs `erupt-tenant-core`: the cloud server forwards the tenant identity with each request, so the node needs neither UPMS nor a session store.
 
-:::info
-Supported in 1.12.16 and above
-:::
+## 1. Build the source and install it locally
 
-Clone the erupt-tenant source from GitHub: [https://github.com/erupt-io/erupt-tenant](https://github.com/erupt-io/erupt-tenant)
-
-Switch to the tag matching your version: [https://github.com/erupt-io/erupt-tenant/tags](https://github.com/erupt-io/erupt-tenant/tags)
+Clone [https://github.com/erupt-io/erupt-tenant](https://github.com/erupt-io/erupt-tenant) and check out the tag matching your erupt version:
 
 <img src="/tenant/release-tag.png" width="750">
 
-Run the following maven command in the project root to publish to your local repository or private registry:
+From the project root:
 
 ```bash
 mvn -D skipTests=true install
 ```
 
-## 2. Add the POM Dependency
-
-:::warning
-You must complete the previous step (publishing to your local repository) before the dependencies below become available.
-:::
-
-**erupt-tenant**: the multi-tenant permission control module. Add this dependency alongside erupt-admin to enable multi-tenancy directly:
+## 2. Add the dependency
 
 ```xml
-<dependencies>
-  <dependency>
+<dependency>
     <groupId>xyz.erupt</groupId>
     <artifactId>erupt-tenant</artifactId>
     <version>${erupt.version}</version>
-  </dependency>
-</dependencies>
+</dependency>
 ```
 
-**erupt-tenant-core**: the multi-tenant core module providing base multi-tenancy features. For erupt-cloud-node scenarios, this dependency alone is sufficient.
+## 3. Start the application
 
-## 3. Start the Application
+Tables and menus are created on startup — no SQL scripts:
 
-On startup, the module initializes all menus automatically — no SQL scripts required:
+- The admin side gets a **Tenant Management** menu with **Tenant Config** and **Tenant Package**
+- The UPMS tables already carry a `tenant_id` column (platform rows are `'0'`); nothing to configure
 
-- **Super-admin side**: registers a "Tenant Management" root menu containing **Tenant Config** and **Tenant Package**
-- **Tenant side**: there is no separate menu table. The menus a tenant sees are the platform's own Menu Management entries, picked into a package and granted to the tenant; to let a tenant maintain its own users / roles / organizations, put the erupt-upms **User**, **Role** and **Organization** menus into the package
+:::warning Upgrading from 2.3.x
+The unique constraints on users, roles, organizations and posts are now `(tenant_id, account)` / `(tenant_id, code)`. Drop the old single-column unique indexes by hand and migrate the old `t_e_upms_*` tenant user tables; see the [Upgrade Guide](/en/guide/upgrade).
+:::
 
-After creating a tenant in Tenant Config (enterprise ID, tenant name, admin account/password, assigned packages; leave the expire date empty to start with the packages' trial days), tenants can sign in via the tenant login page:
+## 4. Set up packages
+
+Create a package in **Tenant Package** and pick the platform menus tenants may use. Tenants have no menu table of their own, so to let a tenant administrator manage their team, include erupt-upms menus in the package:
+
+- Users, Roles, Organizations, Posts
+- Login Log, Operate Log, Online Users
+- Your business menus (e.g. models using `@EruptTenant`)
+
+Optionally set **Trial Days**: a new tenant without an expire date gets one computed from it.
+
+## 5. Create a tenant
+
+In **Tenant Config**, create a tenant: enterprise ID, name, admin account (default `admin`) and password, and its packages. Leave the expire date empty to derive it from the packages' trial days; if no package has trial days, the tenant never expires.
+
+Saving generates the tenant id and creates the administrator user inside the tenant.
+
+## 6. Sign in to the tenant system
 
 ```
 http://your-host/#/passport/tenant
 ```
 
+Enter the enterprise ID, admin account and password — or use the **Enter Tenant Backend** row action in Tenant Config to open it as the administrator directly.
+
 Online demo: [https://demo.erupt.xyz/#/passport/tenant](https://demo.erupt.xyz/#/passport/tenant)
 
-Next, read [Multi-tenant Development](/en/modules/pro/erupt-tenant/development) to enable tenant data isolation for your business tables.
+## Next steps
+
+1. [Multi-tenant Business Tables](/en/modules/pro/erupt-tenant/development) — isolate a business table with one annotation
+2. [Multi-tenant UPMS](/en/modules/pro/erupt-tenant/upms) — how the user directory is isolated, and how to switch tenants in code
+3. [Packages & Subscription](/en/modules/pro/erupt-tenant/subscription) — trials, expiry and renewal

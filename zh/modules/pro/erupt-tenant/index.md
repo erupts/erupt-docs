@@ -1,6 +1,8 @@
 # Erupt SaaS 多租户
 
-使用 Erupt 注解低代码开发多租户能力，页面功能多租户复用且数据完全隔离，适合 SaaS 产品开发场景。
+一套代码服务多个企业客户：每个租户拥有自己的用户、角色、组织、菜单与数据，彼此完全隔离；平台方在超管端统一管理租户、套餐与订阅。
+
+erupt-tenant 不是在业务层外面再包一层"租户系统"，而是让 **erupt-upms 本身支持多租户**：用户、角色、组织、岗位、日志与平台共用同一套表，由框架按 `tenant_id` 列自动隔离。租户后台用的就是 erupt 原生的用户、角色、组织页面，平台已有的能力（单点登录、通知、审批流、报表、指标）在租户里直接可用。
 
 :::tip 商业模块
 **包含**：完整源码 · 全版本升级 · 技术支持 · erupt 相关问题优先支持 · 合理需求免费实现 · 能力持续迭代
@@ -17,7 +19,7 @@
 演示：[https://demo.erupt.xyz/#/passport/tenant](https://demo.erupt.xyz/#/passport/tenant)
 
 :::info 使用文档
-[快速开始](/zh/modules/pro/erupt-tenant/quick-start) · [多租户开发](/zh/modules/pro/erupt-tenant/development) · [域名与租户定制](/zh/modules/pro/erupt-tenant/domain) · [数据库设计](/zh/modules/pro/erupt-tenant/database)
+[快速开始](/zh/modules/pro/erupt-tenant/quick-start) · [UPMS 多租户](/zh/modules/pro/erupt-tenant/upms) · [业务表多租户](/zh/modules/pro/erupt-tenant/development) · [套餐与订阅](/zh/modules/pro/erupt-tenant/subscription) · [域名与租户定制](/zh/modules/pro/erupt-tenant/domain) · [数据库设计](/zh/modules/pro/erupt-tenant/database)
 :::
 
 ---
@@ -26,47 +28,36 @@
 
 <img src="/tenant/login2.png" width="900">
 
-## 为什么不用 ShardingSphere / Mybatis-Plus tenantId 插件 / 自研？
+## 整体架构
 
-| 维度 | ShardingSphere | Mybatis-Plus tenantId | 自研 | **Erupt Tenant** |
-| --- | --- | --- | --- | --- |
-| 数据隔离 | ✅（数据库层强项） | ⚠️ 仅 SQL 注入字段 | 看实现 | **✅ 表级隔离 + 业务级隔离** |
-| 业务隔离 | ❌ | ❌ | 需要自己做 | **✅ 自动注入租户上下文** |
-| 请求路由 | ❌ | ❌ | 需要自己做 | **✅ 配置即生效** |
-| 按租户配置 | ❌ | ❌ | 需要自己做 | **✅ 菜单 / 套餐 / 主题独立** |
-| 权限隔离 | ❌ | ❌ | 需要重做一遍 | **✅ 复用 UPMS，多租户感知** |
-| 学习曲线 | 陡 | 平 | — | **平（注解即多租户）** |
-| 上线时间 | 2–4 周 | 1–2 周（仍需补业务层） | 1–3 月 | **1–2 天** |
+| 层 | 谁负责 | 怎么隔离 |
+| --- | --- | --- |
+| **租户与套餐** | 平台超管 | `e_tenant_config` / `e_tenant_package` 只在超管端维护，不带租户列 |
+| **用户目录（UPMS）** | erupt-upms | 用户、角色、组织、岗位、登录 / 操作日志、在线用户与平台共用表，框架自动限定查询、自动填充租户（平台行为 `'0'`） |
+| **菜单** | 平台 | 菜单只有一份（`e_upms_menu`），套餐勾选菜单，租户的菜单树与可分配菜单被收窄到套餐内 |
+| **业务数据** | 你的 `@Erupt` 模型 | 加 `@EruptTenant` 或继承 `TenantBaseModel`，新增自动写入、查询自动过滤、跨租户修改直接拒绝 |
 
-ShardingSphere 解决的是「同一个 schema 怎么按租户分库分表」的数据库问题，**不解决业务层**：你的服务怎么知道当前请求属于哪个租户？菜单怎么按租户隔离？租户专属配置怎么落地？这些都得自己写 —— 这是自研多租户最容易低估的工作量。erupt-tenant 把数据隔离 + 请求路由 + 业务上下文 + 配置隔离 + 权限隔离一站打包。
+一个请求进来，安全拦截器从会话里拿到租户 ID，数据访问被绑定到这个租户 —— 从此 UPMS 表的查询只会看到本租户的行，业务表由 `@EruptTenant` 追加条件，`${tenantId}` 在报表、指标的 SQL 里同样可用。详见 [UPMS 多租户](/zh/modules/pro/erupt-tenant/upms) 与 [数据库设计](/zh/modules/pro/erupt-tenant/database)。
 
-## 功能说明
+## 功能一览
 
 ### 租户管理
 
-通过超管账号管理租户信息，支持一键跳转到租户应用、修改超管密码、定义域名、租户专属 JS/CSS 等：
+超管在「租户配置」中维护租户：企业 ID、名称、联系人、启用 / 锁定、到期时间、管理员账号、套餐、域名与品牌。行操作支持 **重置管理员密码**、**一键进入租户后台**（以该租户管理员身份打开租户系统）。
 
 <img src="/tenant/tenant-manage.png" width="900">
 
-### 租户套餐
+新建租户时会生成租户 ID，并在该租户内创建一个管理员用户（`is_admin = true`），之后租户的一切数据都在租户自己的范围内。
 
-套餐从平台「菜单管理」中勾选一组菜单，再按套餐授权给租户。租户的全部会话（含租户管理员）只能看到其已启用套餐内的菜单，租户的角色编辑器也只能从这些菜单中分配权限：
+### 套餐
+
+套餐从平台「菜单管理」中勾选一组菜单，再分配给租户。租户全部会话（包括租户管理员）只能看到已启用套餐内的菜单，租户的角色编辑器也只能分配这些菜单。套餐还可以设置试用天数。详见 [套餐与订阅](/zh/modules/pro/erupt-tenant/subscription)。
 
 <img src="/tenant/tenant-package.png" width="900">
 
-:::info
-2.4.0 起不再有独立的「租户菜单」：套餐直接引用平台菜单表 `e_upms_menu`，菜单只需在「菜单管理」维护一份。
-:::
+### 租户后台：原生 UPMS
 
-### 租户登录
-
-<img src="/tenant/tenant-login.png" width="900">
-
-接入 [erupt-sso](/zh/modules/erupt-sso) 后，租户登录页会列出该租户自己配置的 SSO 提供方（`GET /erupt-api/sso/providers?tenant=<企业 ID>`），单点登录后开启的仍是租户会话；已锁定或已到期的租户同样会被拒绝。
-
-### 用户 / 角色 / 组织管理
-
-租户端的用户、角色、组织就是 erupt-upms 的原生页面，数据与平台共用 `e_upms_user` / `e_upms_role` / `e_upms_org` 表，按 `tenant_id` 列由 Hibernate 自动隔离：
+把 erupt-upms 的 **用户维护**、**角色维护**、**组织维护**、**岗位维护**、**登录日志**、**在线用户** 等菜单放进套餐，租户管理员就能自己管理团队 —— 页面与平台完全一样，数据只属于本租户。同一个账号可以在不同租户下各存在一次。
 
 <img src="/tenant/user-manage.png" width="900">
 
@@ -74,39 +65,53 @@ ShardingSphere 解决的是「同一个 schema 怎么按租户分库分表」的
 
 <img src="/tenant/org-manage.png" width="900">
 
-## 订阅与试用
+### 租户登录与单点登录
 
-租户的订阅只有一个日期：**到期时间**（`expireDate`），为空表示永不到期。
+租户用户通过租户登录页（`/#/passport/tenant`）输入企业 ID、账号、密码登录；绑定了域名的租户无需输入企业 ID。接入 [erupt-sso](/zh/modules/erupt-sso) 后，每个租户可配置自己的 SSO 认证源，租户登录页只列出该租户的认证源，单点登录后开启的仍是租户会话。
 
-- **试用**：新建租户时若未填写到期时间，取其已启用套餐中最长的「试用天数」（`EruptTenantPackage.trialDays`）作为到期时间；套餐都没有配置试用天数则不设到期。
-- **状态**：`Active` / `Grace` / `Expired` 由到期时间与宽限天数在每次读取时推导，不落库。过了到期时间但仍在 `erupt.tenant.subscription.grace-days` 内为 `Grace`，仍可使用；超过宽限期为 `Expired`。
-- **锁定**：租户配置中的「状态」开关独立于到期时间，锁定后无论是否到期都拒绝登录。
-- **在线会话**：租户在用户已登录的情况下到期或被锁定，其会话在下一次请求时被注销并返回 `401`，前端回到租户登录页并显示原因。状态会缓存 `erupt.tenant.subscription.status-cache-seconds`（默认 30 秒），超管端修改租户后立即失效。
-- **续期**：erupt 不负责收费。应用自己的支付逻辑在收款成功后调用 `TenantSubscriptionService#extend(tenantConfigId, Period, now)` 延长到期时间——从原到期时间顺延，已过期则从当前时间起算。
+<img src="/tenant/tenant-login.png" width="900">
 
-```yaml
-erupt:
-  tenant:
-    subscription:
-      grace-days: 7            # 到期后的宽限天数，默认 0
-      status-cache-seconds: 30 # 订阅状态缓存秒数，默认 30
-```
+### 订阅
 
-租户会话可通过 `GET /erupt-api/tenant/info` 查看自己的租户 ID、名称、订阅状态、到期时间与已启用的套餐。
+租户的订阅只用一个到期时间描述：新租户按套餐试用天数自动计算到期日，到期后可配置宽限期，过期或被锁定的租户在下一次请求时即下线；续期由你的支付逻辑调用 `TenantSubscriptionService#extend` 完成。详见 [套餐与订阅](/zh/modules/pro/erupt-tenant/subscription)。
 
-## 数据隔离原理
+### 域名与品牌
 
-采用**表级隔离**——所有租户数据存储在同一张表中，通过租户标识进行行级过滤，而非 schema 或独立数据库隔离。
+每个租户可绑定独立域名，并配置 logo、CSS、JS，同一套系统按租户呈现不同的品牌形象，适合白标交付。详见 [域名与租户定制](/zh/modules/pro/erupt-tenant/domain)。
 
-优势：
-- 数据集中存储，查询、备份、运维无需跨库操作
-- 性能优化一次覆盖全部租户数据
-- 无需处理多 schema 的兼容性与升级问题
-- 无需为每个租户单独分配数据库资源，理论上支持无限租户数量
+### 平台能力租户内可用
 
-## 多租户开发
+| 能力 | 租户内表现 |
+| --- | --- |
+| erupt-sso 单点登录 | 认证源按租户隔离，租户自己配置 |
+| erupt-flow 审批流 | 审批人、角色、组织负责人按租户解析 |
+| erupt-notice 通知 | 租户会话中正常收发 |
+| erupt-report / erupt-cube | SQL 中使用 `${tenantId}`，同一张报表在不同租户展示各自的数据 |
+| 记录评论、修订记录 | 按租户隔离 |
+| erupt-share 分享 | 分享链接记录签发人所在租户，管理端只看到本租户的链接 |
+| erupt-cloud 节点 | 租户身份随请求转发到节点，节点只需依赖 `erupt-tenant-core` |
 
-在 Erupt 类中添加对应注解即可实现：不同租户功能一致（也可根据租户信息动态渲染），数据完全隔离，一套代码服务多个企业客户。
+## 为什么不用 ShardingSphere / MyBatis-Plus 租户插件 / 自研？
+
+| 维度 | ShardingSphere | MyBatis-Plus 租户插件 | 自研 | **Erupt Tenant** |
+| --- | --- | --- | --- | --- |
+| 数据隔离 | ✅（数据库层强项） | ⚠️ 仅 SQL 追加条件 | 看实现 | **✅ UPMS 框架级隔离 + 业务表注解隔离** |
+| 用户 / 角色 / 组织 | ❌ | ❌ | 需要重做一遍 | **✅ 原生 UPMS 直接多租户** |
+| 菜单与套餐 | ❌ | ❌ | 需要自己做 | **✅ 套餐勾选平台菜单** |
+| 登录 / SSO / 订阅 | ❌ | ❌ | 需要自己做 | **✅ 内置** |
+| 学习曲线 | 陡 | 平 | — | **平（一个注解接入业务表）** |
+| 上线时间 | 2–4 周 | 1–2 周（仍需补业务层） | 1–3 月 | **1–2 天** |
+
+ShardingSphere 解决的是「同一个 schema 怎么按租户分库分表」的数据库问题，**不解决业务层**：当前请求属于哪个租户？用户、角色、菜单怎么按租户隔离？租户怎么登录、怎么到期？这些都得自己写 —— 这是自研多租户最容易低估的工作量。
+
+## 数据隔离方式
+
+采用**共享表 + 租户列**：所有租户的数据存在同一张表中，按租户列过滤，而不是每个租户一个 schema 或数据库。
+
+- 数据集中存储，查询、备份、运维无需跨库
+- 加索引、调优一次覆盖全部租户
+- 没有多 schema 的结构同步与升级问题
+- 不需要为每个租户分配数据库资源，租户数量不受限
 
 ## 适用场景
 
@@ -118,7 +123,7 @@ erupt:
 ## 常见问题
 
 **Q1 · 和开源版 erupt 有什么差异？**
-开源 erupt 是单租户架构。erupt-tenant 是商业模块，引入了完整的多租户基建（数据隔离 + 请求路由 + 业务上下文 + 配置隔离 + 多租户感知权限）—— 这部分开源版不包含、且未来也不会开源。
+开源 erupt 的 UPMS 已经带有租户列与租户隔离能力，但不引入 erupt-tenant 时所有数据都属于平台（`'0'`），等同单租户。erupt-tenant 提供租户、套餐、订阅、租户登录、域名定制与业务表隔离注解 —— 这部分是商业模块，不会开源。
 
 **Q2 · 怎么交付？**
 付款后，提供你的 GitHub 用户名，作者会把你加入私有仓库 `erupts/erupt-tenant` 的 collaborator，可直接 clone 源码、本地编译、按需引用，并发一份接入文档。

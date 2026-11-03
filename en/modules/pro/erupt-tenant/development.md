@@ -1,41 +1,17 @@
-# Multi-tenant Development
+# Multi-tenant Business Tables
 
-Enabling tenant data isolation for a business table takes one annotation or one inheritance — pick either approach below.
+The UPMS user directory is already isolated by the framework (see [Multi-tenant UPMS](/en/modules/pro/erupt-tenant/upms)). Your business tables need one annotation or one base class to be isolated per tenant — pick either.
 
-## Option 1: Annotation-based Multi-tenancy
-
-Add the `@EruptTenant` annotation to a class annotated with `@Erupt`, and use the `tenantField` attribute to specify the tenant field name (defaults to `tenantId`). This suits scenarios where you want a tenant field named something other than tenantId. Within a tenant session, the tenant field value is filled and applied automatically.
-
-```java
-@Erupt
-@Table(name = "t_tenant_test")
-@EruptTenant(tenantField = "tenantId")
-public class TenantDemo extends BaseModel {
-
-    @Column(length = 50)
-    private String tenantId;
-
-    @EruptField(
-        views = @View(title = "Name"),
-        edit = @Edit(title = "Name", notNull = true)
-    )
-    private String name;
-
-}
-```
-
-## Option 2: Inheritance-based Multi-tenancy
-
-`@EruptTenant` carries the `@Inherited` meta-annotation — as long as the parent class has `@EruptTenant`, subclasses automatically inherit the tenant field and the annotation's handling logic:
+## Option 1: extend a tenant base class
 
 ```java
 @Entity
 @Table(
-        name = "t_tenant_demo",
-        indexes = @Index(columnList = EruptTenant.TENANT_FIELD) // creates an index on the tenant field; recommended
+        name = "t_student",
+        indexes = @Index(columnList = EruptTenant.TENANT_FIELD) // index the tenant field, recommended
 )
-@Erupt(name = "Tenant Data Management")
-public class StudentTenant extends TenantMetaModel {
+@Erupt(name = "Students")
+public class Student extends TenantMetaModel {
 
     @EruptField(
             views = @View(title = "Name"),
@@ -45,114 +21,98 @@ public class StudentTenant extends TenantMetaModel {
 
     @EruptField(
             views = @View(title = "Gender"),
-            edit = @Edit(title = "Gender",
-                    boolType = @BoolType(trueText = "Male", falseText = "Female"))
+            edit = @Edit(title = "Gender", boolType = @BoolType(trueText = "Male", falseText = "Female"))
     )
     private Boolean sex;
 
 }
 ```
 
-`TenantMetaModel` above automatically maintains tenant and audit information. More inheritable parent classes:
-
-| Class | Function |
+| Base class | Provides |
 | --- | --- |
-| TenantBaseModel | Manages the tenant ID field and auto-increment primary key |
-| TenantMetaModel | Extends TenantBaseModel; manages creation and update metadata |
-| TenantMetaModelCreateVo | Extends TenantMetaModel; displays creator and creation time |
-| TenantMetaModelUpdateVo | Extends TenantMetaModel; displays updater and update time |
+| `TenantBaseModel` | Auto-increment id + tenant field `tenantId` |
+| `TenantMetaModel` | `TenantBaseModel` plus creator, create time, updater and update time |
+| `TenantMetaModelCreateVo` | Same, showing creator and create time in the list |
+| `TenantMetaModelUpdateVo` | Same, showing updater and update time in the list |
+
+## Option 2: the `@EruptTenant` annotation
+
+If you already have your own base class, or want a different tenant field name, add `@EruptTenant` to the model and name the field with `tenantField` (default `tenantId`):
+
+```java
+@Entity
+@Table(name = "t_order")
+@Erupt(name = "Orders")
+@EruptTenant(tenantField = "orgTenant")
+public class Order extends BaseModel {
+
+    @Column(length = 64)
+    private String orgTenant;
+
+    @EruptField(
+            views = @View(title = "Order No."),
+            edit = @Edit(title = "Order No.", notNull = true)
+    )
+    private String orderNo;
+
+}
+```
+
+`@EruptTenant` is `@Inherited`: a subclass of an annotated class is isolated too — that is how the `TenantBaseModel` family works.
 
 ## Data Isolation Mechanism
 
-`@EruptTenant` internally uses `@PreDataProxy(EruptTenantDataProxy.class)` to enforce tenant isolation at every data operation:
+`@EruptTenant` isolates every data operation through `@PreDataProxy(EruptTenantDataProxy.class)`:
 
-| Operation | Isolation Behavior |
+| Operation | Behavior |
 | --- | --- |
-| Add | Automatically writes the current session's tenant ID into the tenant field — no manual assignment needed |
-| Query | Automatically appends a `tenantField = current tenant ID` condition; in non-tenant sessions (super-admin side) the condition becomes `tenantField is null` |
-| Update / Delete | Verifies that the record's tenant field matches the current tenant; on mismatch a `Cross-tenant permissions` exception is thrown, eliminating cross-tenant access |
+| Insert | Writes the session's tenant id into the tenant field, no manual assignment |
+| Query | Adds `tenant field = current tenant id`; a platform (admin) session adds `tenant field is null` |
+| Update / delete | Checks the row's tenant field against the session; a mismatch throws `Cross-tenant permissions` |
+| Sub-table rows (`TAB_TABLE_ADD`) | A row without a primary key is new and gets the current tenant |
 
-In other words, your business code never contains any tenant-filtering logic — annotation equals isolation.
+Your business code never contains tenant filtering.
 
-## Getting the TenantId
+:::info Platform rows are NULL
+On business tables, rows written by a platform session carry a `NULL` tenant field, while UPMS platform rows are `'0'`. They do not interfere: business tables are isolated by erupt's data proxy, UPMS by the framework at the data-access layer.
+:::
 
-To access the current tenant in business code, inject `EruptTenantContext`:
+:::warning Scope of isolation
+`@EruptTenant` covers CRUD through erupt's pages and APIs. When your own services reach business tables through `EruptDao`, JPA or SQL, add the tenant condition yourself (get the tenant id from `EruptTenantContext`).
+:::
+
+## Getting the current tenant
 
 ```java
 @Service
-public class TextService {
+public class OrderService {
 
-    // Inject the tenant context
     @Resource
     private EruptTenantContext eruptTenantContext;
 
     public void test() {
-        // Get the tenantId of the current request
+        // the tenant id in a tenant session, null in a platform session
         String tenantId = eruptTenantContext.getTenantId();
     }
 
 }
 ```
 
-:::info How it works
-The tenant ID lives in the server-side login session; the token itself is an opaque random string (tenant tokens carry a `t_` prefix). After validating the session, the security interceptor writes the tenant ID into the `MetaUser` of `MetaContext`; `EruptTenantContext.getTenantId()` reads it from there and also registers it as the `MetaContext` variable `tenantId`, so erupt-report and erupt-cube can use the `${tenantId}` parameter directly. Non-tenant sessions (e.g. super-admin login) return `null`. erupt-cloud-server forwards `MetaUser` to nodes together with the request, so an erupt-cloud-node only needs erupt-tenant-core — no upms or session store — to isolate tenant data.
-:::
+The tenant id comes from the server-side session: the security interceptor writes it into `MetaContext`'s `MetaUser` after verifying the token, and `TenantInterceptor` registers it as the request variable `tenantId`.
 
-Additionally, the `TenantInterceptor` registers `tenantId` as a context variable for `erupt-api` requests, so dynamic SQL and similar scenarios can reference it directly.
+## `${tenantId}` in SQL
 
-## Tenant Users and the Shared UPMS Tables <Badge type="tip" text="v2.4.0+" />
+Wherever erupt-report, erupt-cube or erupt-bi accept dynamic SQL you can reference the current tenant, so the same report shows each tenant its own data:
 
-Tenant users, roles and organizations no longer have entities of their own: they share erupt-upms's `e_upms_user` / `e_upms_role` / `e_upms_org` tables with the platform. These entities carry a Hibernate `@TenantId` column, `'0'` for platform rows and the tenant's `tenantId` for tenant rows. Every JPA session is bound to one tenant, so queries are confined to that tenant and inserts are stamped with its ID — business code needs no filter at all.
-
-What changed as a result:
-
-| 2.3.x | 2.4.0 |
-| --- | --- |
-| `TenantUpmsUser` / `TenantUpmsUserSimple` / `TenantUpmsRole` / `TenantUpmsOrg` with their data proxies and handlers | Removed; use `EruptUser` / `EruptRole` / `EruptOrg` directly |
-| `EruptTenantMenu` (a separate tenant menu table) | Removed; packages pick from the platform's `e_upms_menu` |
-| A tenant-side "System Management" menu of its own | Packages grant the erupt-upms user / role / organization menus |
-| A new tenant's administrator written to `t_e_upms_user` | An `EruptUser` (`isAdmin = true`) written in a session of that tenant |
-
-**Menu scope**: `TenantMenuScope` implements the erupt-upms `UpmsMenuScope` SPI. It narrows the menu tree of every tenant session (administrators included) and the menus a tenant's role editor may hand out to the menus of the tenant's enabled packages; platform users are not narrowed.
-
-**Running code as a given tenant**: a session is bound to exactly one tenant, so a login (no session yet), a platform operator resetting a tenant administrator's password, or a scheduler walking through every tenant has to act for another tenant. Inject erupt-upms's `UpmsTenantSessions`:
-
-```java
-@Resource
-private UpmsTenantSessions sessions;
-
-// callAs / runAs: hands you the tenant's EntityManager for direct JPA work and commits it
-EruptUser admin = sessions.callAs(tenantId, em ->
-        eruptDao.lambdaQuery(em, EruptUser.class).eq(EruptUser::getAccount, "admin").one());
-
-// callBound / runBound: binds the tenant's session to the current thread, so every
-// EruptDao-based service (including @Transactional methods) runs inside that tenant;
-// meant for threads without a session, such as schedulers
-sessions.runBound(tenantId, () -> flowService.processFlow(instance, nodeId));
+```sql
+select status, count(*) as cnt
+from t_order
+where tenant_id = '${tenantId}'
+group by status
 ```
 
-A `null` `tenantId` means the platform. `runBound` can only switch tenants on a thread that holds no session; a request thread is already bound to its own tenant, and acting as another throws `IllegalStateException`. To scan across every tenant, call `.allTenants()` on an `EruptDao.lambdaQuery`.
+erupt-bi also accepts the `:tenantId` parameter form.
 
-**Login and session endpoints**: once logged in, a tenant user is an ordinary erupt-upms session whose data is confined to its tenant, so changing the password, the menu and the user info go through the platform endpoints; only what concerns the tenant itself stays under `/erupt-api/tenant`:
+## erupt-cloud nodes
 
-| Endpoint | Description |
-| --- | --- |
-| `GET /erupt-api/tenant/domain-info?host=` | Enterprise ID, name, logo, JS and CSS of the tenant bound to the host, see [Domain & Tenant Customization](/en/modules/pro/erupt-tenant/domain) |
-| `POST /erupt-api/tenant/login` | Tenant login: enterprise ID + account + password (+ captcha); a locked or expired tenant is refused |
-| `GET /erupt-api/tenant/info` | The session's tenant ID, name, subscription status, expire date and enabled packages |
-| ~~`/tenant/change-pwd`, `/tenant/menu`, `/tenant/userinfo`~~ | Removed; a tenant session uses the platform's `/change-pwd`, `/menu` and `/userinfo` |
-| ~~`/tenant/subscription`~~ | Renamed to `/tenant/info` |
-
-A tenant user's sign-in is written to the tenant's own login log (`e_upms_login_log` carries the tenant column as well), and erupt-notice notifications work in tenant sessions. Single sign-on goes through `EruptTenantLoginService`, which implements the erupt-upms `UpmsTenantLogin` SPI: erupt-sso uses it to resolve an enterprise ID to a tenant, refuse a locked or expired tenant and open the tenant session.
-
-:::warning Upgrading from 2.3.x
-The unique constraints on users / roles / organizations are now `(tenant_id, account)` and `(tenant_id, code)`. The old single-column unique indexes are no longer dropped automatically at startup; drop them by hand with SQL, otherwise two tenants cannot share an account or code. See the [upgrade guide](/en/guide/upgrade).
-:::
-
-## Working with erupt-bi
-
-:::info
-Supported in 1.12.17 and above
-:::
-
-erupt-bi supports dynamic SQL — anywhere SQL appears, you can use `:tenantId` or `${tenantId}` to get the current tenant's ID, achieving per-tenant BI data isolation: the same report shows different analytics in different tenants.
+erupt-cloud-server forwards `MetaUser` (tenant id included) with every request, so a node only needs `erupt-tenant-core` — no UPMS, no session store — and `@EruptTenant` and `EruptTenantContext` work on the node as usual.

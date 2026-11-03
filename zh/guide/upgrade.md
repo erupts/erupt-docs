@@ -102,14 +102,14 @@ erupt-tenant 不再维护一套独立的租户用户体系：租户的用户、�
 2. 把每个租户的用户 / 角色 / 组织从 `t_e_upms_*` 写入对应的 `e_upms_*` 表，`tenant_id` 取该租户 `e_tenant_config.tenant_id`；或在租户后台重新创建。
 3. 租户套餐的菜单改为从平台 `e_upms_menu` 选择，原 `e_tenant_menu` 不再使用，需重新勾选。
 
-`/tenant/change-pwd`、`/tenant/menu`、`/tenant/userinfo` 已移除，租户会话直接使用平台的 `/change-pwd`、`/menu`、`/userinfo`；`/tenant/subscription` 更名为 `/tenant/info`。详见 [多租户开发](/zh/modules/pro/erupt-tenant/development)。
+`/tenant/change-pwd`、`/tenant/menu`、`/tenant/userinfo` 已移除，租户会话直接使用平台的 `/change-pwd`、`/menu`、`/userinfo`；`/tenant/subscription` 更名为 `/tenant/info`。详见 [UPMS 多租户](/zh/modules/pro/erupt-tenant/upms)。
 
 重构后，凡是基于 erupt-upms 的模块都自动按租户隔离，不需要额外适配：
 
 - **erupt-flow**：流程定义、分组与实例按租户分列，审批人解析限定在实例所属租户，定时调度在实例所属租户的会话中推进，见 [erupt-flow 多租户支持](/zh/modules/pro/erupt-flow/development#多租户支持)
 - **erupt-sso**：租户可配置自己的认证源，租户登录页列出这些认证源，单点登录后开启的是租户会话
 - **登录日志 / 操作日志 / 在线用户 / 记录评论 / 记录历史**：租户只看到自己的数据
-- **订阅与试用**：套餐试用天数、到期宽限与锁定，见 [订阅与试用](/zh/modules/pro/erupt-tenant/#订阅与试用)
+- **订阅与试用**：套餐试用天数、到期宽限与锁定，见 [订阅与试用](/zh/modules/pro/erupt-tenant/subscription)
 
 #### 7. 打印不再等同于读取记录 <Badge type="tip" text="权限收紧" />
 
