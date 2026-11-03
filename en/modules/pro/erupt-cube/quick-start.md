@@ -6,10 +6,9 @@ erupt-cube consists of several sub-modules that can be imported on demand:
 
 | Module | Description |
 | --- | --- |
-| `erupt-cube-semantic` | Core semantic model engine: annotation scanning, SQL generation, multi-datasource execution |
+| `erupt-cube-semantic` | Core semantic model engine: YAML / JSON file and annotation loading, SQL generation, multi-datasource execution |
 | `erupt-cube-puzzle` | Visualization: drag-and-drop dashboards, charts, filters |
-| `erupt-cube-design` | Visual modeling: define semantic models without annotations |
-| `erupt-cube-metric` | Metric management |
+| `erupt-cube-design` | Visual modeling: define semantic models in admin pages |
 | `erupt-cube-sql` | SQL port: exposes semantic models over the PostgreSQL protocol, see [SQL Port](/en/modules/pro/erupt-cube/sql) |
 
 ## Build the Source and Install Locally
@@ -46,5 +45,5 @@ After logging in again you will see the following menu:
 ## Next Steps
 
 1. [Configure a data source](/en/modules/pro/erupt-cube/datasource) — connect an OLAP warehouse or business database
-2. [Semantic modeling](/en/modules/pro/erupt-cube/semantic-model) — define dimensions and measures with annotations
+2. [Semantic modeling](/en/modules/pro/erupt-cube/semantic-model) — define dimensions and measures in YAML / JSON files or Java annotations
 3. [Visual analysis](/en/modules/pro/erupt-cube/visual-analysis) — build dashboards by drag and drop

@@ -6,10 +6,9 @@ erupt-cube 由多个可按需引入的子模块组成：
 
 | 模块 | 说明 |
 | --- | --- |
-| `erupt-cube-semantic` | 核心语义模型解析：注解扫描、SQL 生成、多数据源执行 |
+| `erupt-cube-semantic` | 核心语义模型解析：YAML / JSON 文件与注解加载、SQL 生成、多数据源执行 |
 | `erupt-cube-puzzle` | 可视化能力：拖拽仪表盘、图表、过滤器 |
-| `erupt-cube-design` | 可视化建模：非注解方式定义语义模型 |
-| `erupt-cube-metric` | 指标管理 |
+| `erupt-cube-design` | 可视化建模：在管理页面上定义语义模型 |
 | `erupt-cube-sql` | SQL 查询端口：以 PostgreSQL 协议对外暴露语义模型，详见 [SQL 查询端口](/zh/modules/pro/erupt-cube/sql) |
 
 ## 编译源代码，发布到本地仓库
@@ -46,5 +45,5 @@ mvn -D skipTests=true install
 ## 下一步
 
 1. [配置数据源](/zh/modules/pro/erupt-cube/datasource) — 接入 OLAP 数仓或业务数据库
-2. [语义建模](/zh/modules/pro/erupt-cube/semantic-model) — 用注解定义维度与指标
+2. [语义建模](/zh/modules/pro/erupt-cube/semantic-model) — 用 YAML / JSON 文件或 Java 注解定义维度与指标
 3. [可视化分析](/zh/modules/pro/erupt-cube/visual-analysis) — 拖拽构建仪表盘

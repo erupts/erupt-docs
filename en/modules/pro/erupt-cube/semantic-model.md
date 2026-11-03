@@ -1,43 +1,80 @@
 # Semantic Modeling
 
-EruptCube is the **zero-code data analysis capability** of the Erupt framework. By adding annotations to a Java class, you automatically get an analysis view with multi-dimensional drill-down and metric aggregation — no frontend code required.
+A semantic model (Cube) declares a SQL data source as analyzable **dimensions**, **measures** and **parameters**, and exposes one or more query views (Explores). Drag-and-drop dashboards, model-view charts, AI Q&A, AI Canvas and the SQL port all read the same model — metrics are defined exactly once.
+
+## Three Ways to Write a Model
+
+The same model can be written three ways. The structure is identical, all three can live in one project, and they can join one another through `joins`:
+
+| Way | Where it lives | Best for |
+| --- | --- | --- |
+| **YAML / JSON files** <Badge type="tip" text="v2.4.0+" /> | `resources/cube/*.yml` / `*.json`, or any external directory | Data engineers and analysts: add or change models without compiling; a JSON Schema provides IDE completion and validation |
+| **Java annotations** (most flexible) | An `@EruptCube` class | IDE navigation and refactoring, SQL highlighting for `sql` strings ([language injection](/en/topics/annotation-language-injection)), shared dimensions and measures inherited from a base class; share one class with an `@Erupt` entity, or plug in `CubeProxy` and custom functions |
+| **Visual modeling** | Admin pages (`erupt-cube-design`) | Ad-hoc, exploratory modeling — see [Visual Modeling](/en/modules/pro/erupt-cube/visual-modeling) |
+
+File keys are the annotation attribute names, so the attribute reference below applies to files and annotations alike.
 
 ## Quick Start
 
-Three steps to a working analysis module:
+Two dimensions and two measures on an order table:
 
-**Step 1: create a Cube class and bind a data source**
+::: code-group
 
-```java
-@EruptCube(name = "Order Analysis", sql = "order_info", sqlType = SqlType.TABLE_NAME)
-public class OrderCube {
-    // ...
+```yaml [cube/OrderCube.yml]
+# yaml-language-server: $schema=https://docs.erupt.xyz/schema/erupt-cube.schema.json
+name: Order Analysis
+sql: order_info
+sqlType: TABLE_NAME
+dimensions:
+  channel: { title: Channel }
+  create_time: { title: Order Time, type: DATE }
+measures:
+  order_count: { title: Order Count, sql: count(*) }
+  total_amount: { title: Total Amount, sql: sum(amount) }
+```
+
+```json [cube/OrderCube.json]
+{
+  "$schema": "https://docs.erupt.xyz/schema/erupt-cube.schema.json",
+  "name": "Order Analysis",
+  "sql": "order_info",
+  "sqlType": "TABLE_NAME",
+  "dimensions": {
+    "channel": { "title": "Channel" },
+    "create_time": { "title": "Order Time", "type": "DATE" }
+  },
+  "measures": {
+    "order_count": { "title": "Order Count", "sql": "count(*)" },
+    "total_amount": { "title": "Total Amount", "sql": "sum(amount)" }
+  }
 }
 ```
 
-**Step 2: declare dimensions (for grouping and filtering)**
+```java [OrderCube.java]
+@EruptCube(name = "Order Analysis", sql = "order_info", sqlType = SqlType.TABLE_NAME)
+public class OrderCube {
 
-```java
-@Dimension(title = "Channel")
-private String channel;
+    @Dimension(title = "Channel")
+    private String channel;
 
-@Dimension(title = "Order Time")
-private Date createTime;
+    @Dimension(title = "Order Time", sql = "create_time")
+    private Date createTime;
+
+    @Measure(title = "Order Count", sql = "count(*)")
+    private Long orderCount;
+
+    @Measure(title = "Total Amount", sql = "sum(amount)")
+    private Double totalAmount;
+}
 ```
 
-**Step 3: declare measures (aggregations)**
+:::
 
-```java
-@Measure(title = "Order Count", sql = "count(*)")
-private Long orderCount;
+Put the file under `src/main/resources/cube/`; its code defaults to the file name (`OrderCube`). Annotated classes are registered by component scanning. After startup the model shows up in the analysis menu, ready for drag-and-drop.
 
-@Measure(title = "Total Amount", sql = "sum(amount)")
-private Double totalAmount;
-```
+## Model Structure (Attribute Reference)
 
-On startup, Erupt automatically registers the class as an analysis view and renders it in the UI.
-
-## Annotation Reference
+The reference below uses the annotation syntax. In a file, `@EruptCube` attributes go at the top level; `@Dimension` / `@Measure` / `@Parameter` go into the `dimensions` / `measures` / `parameters` maps keyed by field name; `@Explore` goes into the `explores` list.
 
 ### @EruptCube — declare a data cube
 
@@ -157,6 +194,8 @@ With `type = FieldType.AUTO`, the framework infers the type from the Java field 
 | `Date` / `LocalDateTime` / `LocalDate` | `DATE` |
 | Others (`String`, `Boolean`, enums, ...) | `STRING` |
 
+Files have no Java field to infer from: dimensions and parameters without a `type` are `STRING`, measures are `NUMBER`.
+
 ### @Explore — query views
 
 Configured in the `explores` attribute of `@EruptCube`; defines multiple analysis views from different angles.
@@ -184,7 +223,7 @@ Configured in the `explores` attribute of `@EruptCube`; defines multiple analysi
 | `dimensions` | Dimensions shown in this view; empty = all | `{}` |
 | `measures` | Measures shown in this view; empty = all | `{}` |
 
-## Complete Examples
+## Complete Examples (Annotations)
 
 ### Example 1: single table reference
 
@@ -286,9 +325,9 @@ public class EruptOperateLog extends BaseModel {
 }
 ```
 
-## Defining Cubes in YAML / JSON Files <Badge type="tip" text="v2.4.0+" />
+## YAML / JSON Files: Loading, Completion and Validation <Badge type="tip" text="v2.4.0+" />
 
-Besides Java annotations, a cube can be written as a YAML or JSON file, so analysis models can be added or adjusted without compiling. On startup, after the annotation scan, every file matching `cube/**/*.yml`, `*.yaml` and `*.json` on the classpath is loaded; the locations are configurable (Spring resource patterns, `classpath*:` and `file:` both work):
+On startup, after the annotation scan, every file matching `cube/**/*.yml`, `*.yaml` and `*.json` on the classpath is loaded; the locations are configurable (Spring resource patterns, `classpath*:` and `file:` both work):
 
 ```yaml
 erupt:

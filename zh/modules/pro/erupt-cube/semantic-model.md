@@ -1,43 +1,80 @@
 # 语义建模
 
-EruptCube 是 Erupt 框架提供的**零代码数据分析能力**，通过在 Java 类上添加注解，即可自动生成支持多维度下钻、指标聚合的数据分析视图，无需编写任何前端代码。
+语义模型（Cube）把一段 SQL 数据源声明为可分析的**维度**、**指标**与**参数**，并对外暴露若干查询视图（Explore）。拖拽看板、模型视图图表、AI 问数、AI 画布、SQL 查询端口用的都是同一份模型 —— 口径只定义一次。
+
+## 三种书写方式
+
+同一个模型有三种写法，结构完全一致，可在同一项目中混用，彼此之间也能通过 `joins` 关联：
+
+| 方式 | 载体 | 适合 |
+| --- | --- | --- |
+| **YAML / JSON 文件** <Badge type="tip" text="v2.4.0+" /> | `resources/cube/*.yml` / `*.json`，或任意外部目录 | 数据工程师、分析师：不编译即可增改模型，JSON Schema 提供 IDE 补全与校验 |
+| **Java 注解**（最灵活） | `@EruptCube` 类 | IDE 跳转与重构、`sql` 字符串 SQL 高亮（[语言注入](/zh/topics/annotation-language-injection)）、父类继承公共维度与指标；可与 `@Erupt` 业务实体共用一个类，接 `CubeProxy`、自定义函数等 Java 扩展 |
+| **可视化建模** | 管理后台页面（`erupt-cube-design`） | 临时、探索性建模，见 [可视化建模](/zh/modules/pro/erupt-cube/visual-modeling) |
+
+文件里的键名就是注解的属性名，下文的属性参考对文件和注解通用。
 
 ## 快速上手
 
-只需三步，即可完成一个数据分析模块：
+以订单表为例，声明两个维度、两个指标：
 
-**第一步：创建 Cube 类，绑定数据源**
+::: code-group
 
-```java
-@EruptCube(name = "订单分析", sql = "order_info", sqlType = SqlType.TABLE_NAME)
-public class OrderCube {
-    // ...
+```yaml [cube/OrderCube.yml]
+# yaml-language-server: $schema=https://docs.erupt.xyz/schema/erupt-cube.schema.json
+name: 订单分析
+sql: order_info
+sqlType: TABLE_NAME
+dimensions:
+  channel: { title: 渠道 }
+  create_time: { title: 下单时间, type: DATE }
+measures:
+  order_count: { title: 订单量, sql: count(*) }
+  total_amount: { title: 总金额, sql: sum(amount) }
+```
+
+```json [cube/OrderCube.json]
+{
+  "$schema": "https://docs.erupt.xyz/schema/erupt-cube.schema.json",
+  "name": "订单分析",
+  "sql": "order_info",
+  "sqlType": "TABLE_NAME",
+  "dimensions": {
+    "channel": { "title": "渠道" },
+    "create_time": { "title": "下单时间", "type": "DATE" }
+  },
+  "measures": {
+    "order_count": { "title": "订单量", "sql": "count(*)" },
+    "total_amount": { "title": "总金额", "sql": "sum(amount)" }
+  }
 }
 ```
 
-**第二步：声明维度（用于分组、筛选）**
+```java [OrderCube.java]
+@EruptCube(name = "订单分析", sql = "order_info", sqlType = SqlType.TABLE_NAME)
+public class OrderCube {
 
-```java
-@Dimension(title = "渠道")
-private String channel;
+    @Dimension(title = "渠道")
+    private String channel;
 
-@Dimension(title = "下单时间")
-private Date createTime;
+    @Dimension(title = "下单时间", sql = "create_time")
+    private Date createTime;
+
+    @Measure(title = "订单量", sql = "count(*)")
+    private Long orderCount;
+
+    @Measure(title = "总金额", sql = "sum(amount)")
+    private Double totalAmount;
+}
 ```
 
-**第三步：声明指标（聚合计算）**
+:::
 
-```java
-@Measure(title = "订单量", sql = "count(*)")
-private Long orderCount;
+文件放在 `src/main/resources/cube/` 下即可，编码默认取文件名（`OrderCube`）；注解类随组件扫描注册。启动后模型出现在分析菜单中，可直接拖拽分析。
 
-@Measure(title = "总金额", sql = "sum(amount)")
-private Double totalAmount;
-```
+## 模型结构（属性参考）
 
-启动后，Erupt 自动将该类注册为一个数据分析视图，并在 UI 中展示。
-
-## 注解详解
+下文以注解写法展示。写成文件时：`@EruptCube` 的属性放在顶层；`@Dimension` / `@Measure` / `@Parameter` 分别写进 `dimensions` / `measures` / `parameters` 映射，键为字段名；`@Explore` 写进 `explores` 列表。
 
 ### @EruptCube — 声明数据立方体
 
@@ -157,6 +194,8 @@ private String status;
 | `Date` / `LocalDateTime` / `LocalDate` | `DATE` |
 | 其他（`String`、`Boolean`、枚举等） | `STRING` |
 
+文件中没有 Java 字段可供推断：维度与参数未声明 `type` 时为 `STRING`，指标为 `NUMBER`。
+
 ### @Explore — 查询视图
 
 在 `@EruptCube` 的 `explores` 属性中配置，可定义多个不同视角的分析视图。
@@ -184,7 +223,7 @@ private String status;
 | `dimensions` | 视图中使用的维度，不填则显示所有 | `{}` |
 | `measures` | 视图中使用的指标，不填则显示所有 | `{}` |
 
-## 完整示例
+## 完整示例（注解）
 
 ### 示例 1：直接引用单表
 
@@ -286,9 +325,9 @@ public class EruptOperateLog extends BaseModel {
 }
 ```
 
-## 用 YAML / JSON 文件定义 Cube <Badge type="tip" text="v2.4.0+" />
+## YAML / JSON 文件：加载、补全与校验 <Badge type="tip" text="v2.4.0+" />
 
-除 Java 注解外，Cube 也可以写成 YAML 或 JSON 文件，不用编译即可增加或调整分析模型。启动时在注解扫描之后加载 classpath 下 `cube/**/*.yml`、`*.yaml`、`*.json` 的全部文件，路径可通过配置修改（Spring 资源表达式，支持 `classpath*:` 与 `file:`）：
+启动时在注解扫描之后加载 classpath 下 `cube/**/*.yml`、`*.yaml`、`*.json` 的全部文件，路径可通过配置修改（Spring 资源表达式，支持 `classpath*:` 与 `file:`）：
 
 ```yaml
 erupt:

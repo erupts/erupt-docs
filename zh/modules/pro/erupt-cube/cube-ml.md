@@ -1,6 +1,6 @@
 # Cube 语法（ML）
 
-Cube ML 是 EruptCube 内置的模板表达式语言，基于 **Velocity** 语法，可在任意 SQL 注解中动态生成查询逻辑，适用于：
+Cube ML 是 EruptCube 内置的模板表达式语言，基于 **Velocity** 语法，可在模型的任意 SQL 属性中（注解与 YAML / JSON 文件均可）动态生成查询逻辑，适用于：
 
 `dimension.sql()` · `measure.sql()` · `EruptCube.sql()` · `explore.where()` 等
 
