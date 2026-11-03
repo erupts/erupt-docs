@@ -24,6 +24,174 @@ outline: deep
 
 <div class="topic-list">
 
+<a class="topic-card" href="/topics/share-link-scoped-session">
+  <div class="topic-card__index">#26</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Share</div>
+    <h3 class="topic-card__title">A Public Link Should Not Be a Second Auth System</h3>
+    <p class="topic-card__desc">The easy way to let a stranger submit data is an anonymous endpoint. erupt-share does the opposite: opening a link mints an ordinary session in the issuer's name, then SessionScopeGuard narrows it to one form through a 22-route whitelist. A link never exceeds its issuer, disabling it ends issued sessions, failures are rate limited per IP, and visits are counted in one UPDATE. The cost is stated: the visitor session still writes data in the issuer's name.</p>
+    <div class="topic-card__meta">
+      <span>2026-11-02</span>
+      <span>·</span>
+      <span>9 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/ai-dev-requirement-pool">
+  <div class="topic-card__index">#25</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">AI Dev</div>
+    <h3 class="topic-card__title">A Badge for the Coding Agent</h3>
+    <p class="topic-card__desc">Getting AI to write code is easy; authorization and delivery are hard. erupt-ai-dev builds no permission system for the agent: each run gets a DevMcpGrants token pointing at one requirement, accepted by erupt-ai's /mcp through McpAuthenticator, with data access borrowed from the creator's AI roles. Review, acceptance and delivery are plain @RowOperation, self-review off by default; multi-repo delivery rebases everything first and pushes nothing on any conflict. The costs are stated: the agent runs as the server account, and what it reads goes to the model provider.</p>
+    <div class="topic-card__meta">
+      <span>2026-10-28</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/runtime-config-property-source">
+  <div class="topic-card__index">#24</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Config</div>
+    <h3 class="topic-card__title">A Config Center Doesn't Have to Be Another Service</h3>
+    <p class="topic-card__desc">The admin's "system settings" is usually a key/value table plus a getConfig helper: callers run their own cache, and it knows nothing of application.yml. erupt-config adds no read API; the items become the front-most PropertySource of the Spring environment, loaded over JDBC by EruptConfigEnvironmentPostProcessor before any bean exists and read unchanged by @Value and @ConfigurationProperties. A save swaps the whole layer, sets @Value fields again and publishes EruptConfigRefreshedEvent; other nodes follow by Redis broadcast or by polling an aggregate signature. Costs are stated up front: no versions, canary or approval, secrets masked but not encrypted, SpEL and constructor injection resolved only at startup.</p>
+    <div class="topic-card__meta">
+      <span>2026-10-21</span>
+      <span>·</span>
+      <span>9 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/saml-sso-jdk-only">
+  <div class="topic-card__index">#23</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">SSO</div>
+    <h3 class="topic-card__title">The Hard Part of SAML Is Refusing</h3>
+    <p class="topic-card__desc">The usual reflex for enterprise SAML is "find a mature library" — but a library only solves the mathematics of XML signatures; whether a response may log in depends on what you check around verification and in what order. SsoSamlService in erupt-sso is 406 lines on the JDK's javax.xml.crypto.dsig alone: one-use state, InResponseTo, Destination, audience and validity window, a signature that references only itself, an ID resolvable only on the signed element to stop signature wrapping, and encrypted assertions refused outright. Costs are stated up front: no assertion decryption, no signed AuthnRequest, no single logout, and Erupt cannot be the IdP.</p>
+    <div class="topic-card__meta">
+      <span>2026-10-20</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/webhook-after-commit">
+  <div class="topic-card__index">#22</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Webhook</div>
+    <h3 class="topic-card__title">Don't Notify Anyone Before the Transaction Commits</h3>
+    <p class="topic-card__desc">The easiest way to push a data change elsewhere is an HTTP call in DataProxy#afterAdd — which runs before commit and parks the request thread on the receiver. erupt-webhook goes the other way: it subscribes to the EruptAddEvent / EruptEditEvent / EruptDeleteEvent the pipeline already publishes, matches subscriptions only AFTER_COMMIT, and a background worker signs with HMAC-SHA256, tries 3 times and logs each delivery; rolled-back writes notify no one. The subscription and log tables are ordinary @Erupt models. Costs stated up front: no durable queue, the subscription cache refreshes on the local node only, masking covers PASSWORD fields only.</p>
+    <div class="topic-card__meta">
+      <span>2026-10-19</span>
+      <span>·</span>
+      <span>9 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/erupt-scope-workspace">
+  <div class="topic-card__index">#21</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Scope</div>
+    <h3 class="topic-card__title">"The Current Project" Should Not Be a where Clause</h3>
+    <p class="topic-card__desc">In multi-project, multi-cluster admins, "current scope" is usually a front-end dropdown plus hand-written filters on every table. @EruptScope declares the scope as an ordinary @Erupt form class: the client sends one value, EruptScopeService re-validates it against the current user's options on every request and rewrites list queries, by-id checks and adds / edits, and a required scope is never guessed. Limits stated up front: a scope is not a permission; keeping users apart still takes per-user options or data permissions.</p>
+    <div class="topic-card__meta">
+      <span>2026-10-19</span>
+      <span>·</span>
+      <span>9 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/cloud-node-protocol">
+  <div class="topic-card__index">#20</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Cloud</div>
+    <h3 class="topic-card__title">A Node Is Not a Spring App, It Is a Protocol</h3>
+    <p class="topic-card__desc">In a traditional distributed admin, every service you add means wiring the gateway, tokens and permissions once more. erupt-cloud bets the other way: the server handles login, menus, validation, Excel and attachments, and a node hands over only a model description and data access; forwards are HMAC-signed by CloudSignature, and Erupt-Enforced says which checks the server already ran. Thin enough that erupt-cloud-node-lite is about 2,400 lines with no Spring. Costs stated up front: the protocol is still Draft v0, the lite node lacks sub-tables, trees and file upload, and the cross-language conformance suite lives in a separate repo.</p>
+    <div class="topic-card__meta">
+      <span>2026-10-16</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/declared-limits-server-side">
+  <div class="topic-card__index">#19</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Validation</div>
+    <h3 class="topic-card__title">Declare Once, Enforce Everywhere</h3>
+    <p class="topic-card__desc">Field rules in most low-code platforms are UI settings in a designer: the browser stops you, a direct call to the write endpoint may not. Erupt's @Edit is one annotation read by both the page and the server, and EruptValueValidator runs the declared options, lengths, number ranges and date bounds again inside the write pipeline: 8 component types, 5 write entry points, sub-table rows and Excel import included. The costs are written down too: time-type pickers aren't bound-checked, and choice-validate on by default refuses old out-of-range writes.</p>
+    <div class="topic-card__meta">
+      <span>2026-10-15</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/record-revision-pipeline-event">
+  <div class="topic-card__index">#18</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">History</div>
+    <h3 class="topic-card__title">Change History Belongs to No DataProxy</h3>
+    <p class="topic-card__desc">Field history in business code usually means one xxx_history per model. erupt-revision bets the other way: no DataProxy, just the EruptEditEvent the pipeline already publishes, with a field-level diff written in the caller's transaction. Rollback re-enters updateEruptData so validation and hooks still run, and the rollback is itself recorded. Gaps stated up front: drag sorting publishes no event, writes that bypass the pipeline are invisible, and a failed history write only logs a warning.</p>
+    <div class="topic-card__meta">
+      <span>2026-10-08</span>
+      <span>·</span>
+      <span>9 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/vis-one-query-many-views">
+  <div class="topic-card__index">#17</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Views</div>
+    <h3 class="topic-card__title">One Table, Eight Views</h3>
+    <p class="topic-card__desc">Mingdaoyun, Jiandaoyun and Yida make views objects of the platform, each with its own filter and grouping. @Vis bets the other way: a view is a projection of one TableQuery, row-level permission in DataProxy#beforeFetch applies to all 8 view types at once, and column statistics share assembleQuery with the list. The gap is written down too: board, calendar and Gantt drags skip whole-row validation and verifyIdPermissions.</p>
+    <div class="topic-card__meta">
+      <span>2026-10-03</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/remote-table-as-storage">
+  <div class="topic-card__index">#16</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Data Source</div>
+    <h3 class="topic-card__title">When the Data Isn't in Your Database</h3>
+    <p class="topic-card__desc">When data lives in DingTalk Notable, Feishu Bitable, Airtable or someone else's REST API, Yida, Mingdaoyun and Jiandaoyun answer with "connector + sync". Erupt bets the other way: don't move the data, swap the engine — one @EruptDataProcessor line, and validation, DataProxy, permissions and logging stay on one pipeline; any REST API's quirks fold into 8 EruptHttpAdapter hooks. The costs are written down too: a 5,000-row cap, equality-only push-down by default, beforeFetch understood only as equality fragments, and no transactions across HTTP.</p>
+    <div class="topic-card__meta">
+      <span>2026-10-02</span>
+      <span>·</span>
+      <span>11 min read</span>
+    </div>
+  </div>
+</a>
+
+<a class="topic-card" href="/topics/typed-decision">
+  <div class="topic-card__index">#15</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Decision</div>
+    <h3 class="topic-card__title">Putting AI Judgements Back Inside an if Statement</h3>
+    <p class="topic-card__desc">Workflow LLM nodes emit a paragraph, and a downstream branch tries to guess what it meant. erupt-ai-decision answers only three typed questions — NOUL yes/no, CHOICE pick-one, SCORE ordered levels — each with a probability distribution, and "not sure" is an Optional.empty() branch. Set against Yida, Jiandaoyun, JeecgBoot and Dify: the model says how much it looks like, the code says whether it counts, and the threshold always lives in your if.</p>
+    <div class="topic-card__meta">
+      <span>2026-10-01</span>
+      <span>·</span>
+      <span>10 min read</span>
+    </div>
+  </div>
+</a>
+
 <a class="topic-card" href="/topics/generator-reads-database">
   <div class="topic-card__index">#14</div>
   <div class="topic-card__body">
