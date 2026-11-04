@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Erupt · AI + Low-Code Platform
+title: Erupt · Model-Driven Engine for Enterprise Apps
 gitChangelog: false
 ---
 
