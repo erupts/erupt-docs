@@ -24,6 +24,20 @@ outline: deep
 
 <div class="topic-list">
 
+<a class="topic-card" href="/topics/module-center-menu-reconcile">
+  <div class="topic-card__index">#27</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Modules</div>
+    <h3 class="topic-card__title">模块开关不是卸载</h3>
+    <p class="topic-card__desc">装上 46 个模块后，新人面对的是一排看不懂的菜单。erupt-upms 的模块中心不做插件市场：关掉模块只是 e_upms_module.enabled 的一列，真正干活的是 EruptMenuSeeder——按指纹跳过没变的模块，变了就对每个菜单字段做三方合并（库里值、上次写入值、本次声明值），管理员改过的保留；关闭走同一条对账路径，菜单置为禁用而非隐藏，因为隐藏的菜单仍会授权。代价写在明处：关的只是入口，Bean、接口与定时任务仍在运行。</p>
+    <div class="topic-card__meta">
+      <span>2026-11-04</span>
+      <span>·</span>
+      <span>9 min read</span>
+    </div>
+  </div>
+</a>
+
 <a class="topic-card" href="/topics/share-link-scoped-session">
   <div class="topic-card__index">#26</div>
   <div class="topic-card__body">
