@@ -81,15 +81,24 @@ erupt-tenant 不是在业务层外面再包一层"租户系统"，而是让 **er
 
 ### 平台能力租户内可用
 
-| 能力 | 租户内表现 |
-| --- | --- |
-| erupt-sso 单点登录 | 认证源按租户隔离，租户自己配置 |
-| erupt-flow 审批流 | 审批人、角色、组织负责人按租户解析 |
-| erupt-notice 通知 | 租户会话中正常收发 |
-| erupt-report / erupt-cube | SQL 中使用 `${tenantId}`，同一张报表在不同租户展示各自的数据 |
-| 记录评论、修订记录 | 按租户隔离 |
-| erupt-share 分享 | 分享链接记录签发人所在租户，管理端只看到本租户的链接 |
-| erupt-cloud 节点 | 租户身份随请求转发到节点，节点只需依赖 `erupt-tenant-core` |
+以下官方模块已适配多租户，接入 erupt-tenant 后无需额外开发：
+
+| 模块 | 租户内表现 | 平台共享（不隔离） |
+| --- | --- | --- |
+| [erupt-upms](/zh/modules/pro/erupt-tenant/upms) | 用户、角色、组织、岗位、在线用户、登录 / 操作日志按租户隔离 | 菜单（由套餐收窄可见范围）、数据字典、OpenAPI |
+| [erupt-flow](/zh/modules/pro/erupt-flow/) 审批流 | 流程分组、流程定义、流程实例（含审批任务、流转记录、评论）按租户隔离；审批人、角色、组织负责人按租户解析，定时调度在实例所属租户内执行 | — |
+| [erupt-sso](/zh/modules/erupt-sso) 单点登录 | 认证源与账号绑定按租户隔离，租户自己配置 | — |
+| [erupt-notice](/zh/modules/erupt-notice) 通知 | 租户会话中正常收发，公告接收人限定在本租户 | 通知场景、公告、发送日志 |
+| [erupt-report](/zh/modules/erupt-report/) / [erupt-cube](/zh/modules/pro/erupt-cube) | 看板与报表由平台维护一份，SQL 中使用 [`${tenantId}`](/zh/modules/pro/erupt-tenant/development#在-sql-中使用-tenantid) 过滤，同一张报表在不同租户展示各自的数据 | 报表、数据源、语义模型、仪表盘配置 |
+| [记录评论](/zh/modules/erupt-comment)、[修订记录](/zh/modules/erupt-revision) | 按租户隔离 | — |
+| [erupt-share](/zh/modules/erupt-share) 分享 | 分享链接记录签发人所在租户，管理端只看到本租户的链接 | — |
+| [erupt-ai-dev](/zh/modules/erupt-ai-dev) | 开发项目按租户隔离 | — |
+| [erupt-ai](/zh/modules/erupt-ai/) MCP | MCP 调用以授权用户所在租户身份执行 | 模型、智能体等 AI 配置 |
+| [erupt-cloud](/zh/modules/erupt-cloud) 节点 | 租户身份随请求转发到节点，节点只需依赖 `erupt-tenant-core` | — |
+
+:::warning
+erupt-report / erupt-cube 的租户隔离只对写了 `${tenantId}` 条件的 SQL 生效，分配给租户的报表与看板，其 SQL 必须全部带上租户条件，否则租户之间可以互相看到数据。
+:::
 
 ## 为什么不用 ShardingSphere / MyBatis-Plus 租户插件 / 自研？
 

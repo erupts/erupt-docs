@@ -48,6 +48,7 @@ select * from xxx where 1=1 and field = 'xxx'
 | `__pageIndex__` | 分页索引 |
 | `__pageSize__` | 分页大小 |
 | `__export__` | 导出时为 true，查询时为 false（boolean） |
+| `tenantId` | 当前租户 ID，仅接入 [erupt-tenant](/zh/modules/pro/erupt-tenant/) 且处于租户会话时存在 |
 
 使用方式
 

@@ -81,15 +81,24 @@ Each tenant can bind its own domain with its own logo, CSS and JS, so one system
 
 ### Platform capabilities inside tenants
 
-| Capability | Inside a tenant |
-| --- | --- |
-| erupt-sso single sign-on | Providers are isolated per tenant and configured by the tenant |
-| erupt-flow approvals | Approvers, roles and organization heads resolve within the tenant |
-| erupt-notice notices | Sent and received in tenant sessions |
-| erupt-report / erupt-cube | `${tenantId}` in SQL — the same report shows each tenant its own data |
-| Record comments, revisions | Isolated per tenant |
-| erupt-share | A share link records its issuer's tenant; the admin view only lists the tenant's own links |
-| erupt-cloud nodes | The tenant identity travels with the request; nodes only need `erupt-tenant-core` |
+The following official modules are tenant-aware out of the box; no extra development is needed once erupt-tenant is in place:
+
+| Module | Inside a tenant | Platform-shared (not isolated) |
+| --- | --- | --- |
+| [erupt-upms](/en/modules/pro/erupt-tenant/upms) | Users, roles, organizations, posts, online users, login / operation logs are isolated per tenant | Menus (narrowed by packages), dictionaries, OpenAPI |
+| [erupt-flow](/en/modules/pro/erupt-flow/) approvals | Flow groups, definitions and instances (with approval tasks, records, comments) are isolated per tenant; approvers, roles and organization heads resolve within the tenant, and the scheduler runs each instance inside its own tenant | — |
+| [erupt-sso](/en/modules/erupt-sso) single sign-on | Providers and account bindings are isolated per tenant and configured by the tenant | — |
+| [erupt-notice](/en/modules/erupt-notice) notices | Sent and received in tenant sessions; announcement recipients stay within the tenant | Notice scenes, announcements, send logs |
+| [erupt-report](/en/modules/erupt-report/) / [erupt-cube](/en/modules/pro/erupt-cube) | Reports and dashboards are maintained once by the platform; filter with [`${tenantId}`](/en/modules/pro/erupt-tenant/development#tenantid-in-sql) in SQL so the same report shows each tenant its own data | Reports, data sources, semantic models, dashboard configuration |
+| [Record comments](/en/modules/erupt-comment), [revisions](/en/modules/erupt-revision) | Isolated per tenant | — |
+| [erupt-share](/en/modules/erupt-share) | A share link records its issuer's tenant; the admin view only lists the tenant's own links | — |
+| [erupt-ai-dev](/en/modules/erupt-ai-dev) | Dev projects are isolated per tenant | — |
+| [erupt-ai](/en/modules/erupt-ai/) MCP | MCP calls run as the granted user's tenant | AI configuration such as models and agents |
+| [erupt-cloud](/en/modules/erupt-cloud) nodes | The tenant identity travels with the request; nodes only need `erupt-tenant-core` | — |
+
+:::warning
+Tenant isolation in erupt-report / erupt-cube applies only to SQL carrying the `${tenantId}` condition. Every report and dashboard assigned to tenants must include it in all of its SQL, or tenants will see each other's data.
+:::
 
 ## Why not ShardingSphere / the MyBatis-Plus tenant plugin / a home-grown solution?
 
