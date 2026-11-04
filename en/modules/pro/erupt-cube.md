@@ -1,8 +1,6 @@
 # Erupt Cube Metrics Platform
 
-Inspired by Google Looker's semantic layer concept, built as a professional-grade big data analytics solution for the Java ecosystem. Data engineers focus on model construction; data analysts complete visualizations self-service based on the semantic layer — no multi-party collaboration required. Define semantic models with annotations, build visualizations with drag-and-drop, ready to use out of the box.
-
-<iframe src="https://www.erupt.xyz/#!/cube" width="100%" height="600" frameborder="0" style="border-radius:8px"></iframe>
+Inspired by Google Looker's semantic layer concept, built as a professional-grade big data analytics solution for the Java ecosystem. Data engineers focus on model construction; data analysts complete visualizations self-service based on the semantic layer — no multi-party collaboration required. Define semantic models in YAML / JSON or Java annotations, build visualizations with drag-and-drop, ready to use out of the box.
 
 :::tip Commercial Module
 **Includes**: Full source code · All future version upgrades · Technical support · Priority Erupt-related support · Reasonable feature requests implemented for free · Continuous capability iteration
@@ -30,7 +28,7 @@ Demo: [https://demo.erupt.xyz](https://demo.erupt.xyz) &nbsp; Username: `cube` P
 
 ## What Problems Does the Semantic Model Solve?
 
-Once data sources are connected, `@EruptCube` defines dimensions and measures in one place — every consumer shares the same semantics:
+Once data sources are connected, the semantic model (Cube) defines dimensions and measures in one place — every consumer shares the same semantics:
 
 <img src="/cube/semantic-layer-en.svg" width="900" alt="Semantic layer architecture">
 
@@ -41,20 +39,19 @@ Once data sources are connected, `@EruptCube` defines dimensions and measures in
 | Reusability | Logic scattered across reports | Centrally defined, reusable anywhere |
 | Maintainability | Table changes require updating all SQL | Only update the model layer |
 
-## Two Modeling Approaches: Annotations + Visual Interface, Complementing Each Other
+## Three Ways to Model, One Semantic Layer
 
-erupt-cube supports two semantic model definition methods simultaneously, covering different roles in the team:
+The same semantic model can be written three ways. The structure is identical; all three can coexist and join each other in one project, covering every role on the team:
 
-| Approach | Target User | Capabilities | Use Case |
+| Way | Target User | Highlights | Use Case |
 | --- | --- | --- | --- |
-| **Java Annotation Modeling (Primary)** | Developers / Data Engineers | Full capabilities covering all dimensions, metrics, relationships, custom SQL, dynamic fields | Complex models; version-controlled with code; Code Review friendly |
-| **Visual Interface Modeling (Secondary)** | Data Analysts / Business Users | Common dimensions, metrics, relationship configuration (slightly fewer capabilities than annotations) | Ad-hoc / exploratory modeling; quick iteration by non-Java roles |
+| **YAML / JSON files** <Badge type="tip" text="v2.4.0+" /> | Data engineers / analysts | No Java, no compiling; a JSON Schema gives IDE completion, and files are strictly validated at startup | Core models versioned in git and code-reviewed; can be loaded from an external directory |
+| **Java annotations** (most flexible) | Developers | IDE go-to / find usages / safe rename, SQL highlighting and checks for `sql` strings via language injection, class inheritance for shared dimensions and measures; share one class with an `@Erupt` entity and plug in Java extensions such as `CubeProxy` and custom functions | Models tightly bound to business code, or needing programmatic extension |
+| **Visual interface** | Analysts / business users | Configure SQL, dimensions and measures in the UI | Ad-hoc / exploratory modeling, quick iteration |
 
-Both approaches can coexist in the same project: define core complex models with annotations and manage them in git; business-side ad-hoc analysis uses visual modeling for quick validation, and stable models are later committed to annotations by developers.
+> Recommended workflow: **define core models as files or annotations → business users explore through the visual interface → models that stabilize are committed as files and managed with code**.
 
-> Recommended workflow: **Define core models with annotations → Use the visual interface for business self-service exploration → Stable models from exploration are converted back to annotations**.
-
-<img src="/cube/modeling-flow-en.svg" width="900" alt="Two complementary modeling approaches">
+<img src="/cube/modeling-flow-en.svg" width="900" alt="Three complementary modeling approaches">
 
 ## Charts inside the Model Page <Badge type="tip" text="v2.4.0+" />
 
@@ -64,11 +61,36 @@ Besides standalone dashboards and explores, cube charts can sit right in any Eru
 
 See [Charts in Model Views](/en/modules/pro/erupt-cube/vis-view).
 
-## Annotation Modeling Reference (API)
+## Modeling Reference (API)
 
-A semantic model = one `@EruptCube` class. The class declares the base-table SQL and its exposed query views (Explores); fields declare dimensions and metrics with `@Dimension` / `@Measure`. Below is a complete, compilable example (from `xyz.erupt.project.cube.WorkItemStatsCube`):
+A semantic model = one YAML / JSON file or one `@EruptCube` class: it declares the base-table SQL and its exposed query views (Explores), plus dimensions and measures. Below is the same model written both ways (from `xyz.erupt.project.cube.WorkItemStatsCube`):
 
-```java
+::: code-group
+
+```yaml [cube/WorkItemStatsCube.yml]
+# yaml-language-server: $schema=https://docs.erupt.xyz/schema/erupt-cube.schema.json
+name: Work Item Statistics
+sql: |
+  select wi.type         as type,
+         wi.status       as status,
+         u.name          as assignee_name,
+         wi.story_points as story_points,
+         wi.due_date     as due_date
+  from e_project_work_item wi
+           left join e_upms_user u on wi.assignee_id = u.id
+dimensions:
+  assignee_name: { title: Assignee }
+  status:        { title: Status }
+  due_date:      { title: Due Date, type: DATE }
+measures:
+  work_item_count: { title: Work Item Count, sql: count(*) }
+  overdue_count:
+    title: Overdue Count
+    sql: sum(case when status <> 'DONE' and due_date < current_date then 1 else 0 end)
+  story_points: { title: Story Points, sql: sum(story_points) }
+```
+
+```java [WorkItemStatsCube.java]
 @Getter
 @Setter
 @EruptCube(
@@ -105,6 +127,10 @@ public class WorkItemStatsCube {
     private Double storyPoints;
 }
 ```
+
+:::
+
+File keys are the annotation attribute names: class-level attributes at the top level, dimensions / measures / parameters in the `dimensions` / `measures` / `parameters` maps keyed by field name. See [Semantic Modeling](/en/modules/pro/erupt-cube/semantic-model) for the full rules.
 
 ### `@EruptCube` (class level)
 
@@ -181,7 +207,7 @@ public interface CubeProxy {
 
 | Dimension | Looker (Google) | Metabase | Cube.dev | Custom SQL Stitching | **Erupt Cube** |
 | --- | --- | --- | --- | --- | --- |
-| Semantic Layer Definition | LookML (proprietary DSL) | Models (GUI configuration) | YAML / JS Schema | None (scattered in report SQL) | **Java annotations (primary) + visual interface (secondary)** |
+| Semantic Layer Definition | LookML (proprietary DSL) | Models (GUI configuration) | YAML / JS Schema | None (scattered in report SQL) | **YAML / JSON files + Java annotations + visual interface** |
 | Language Ecosystem | LookML (requires separate learning) | Java / Clojure (closed-source core) | Node.js / TypeScript | Java | **Java (same stack as business project)** |
 | Deployment | SaaS (closed-source) | Standalone service (Docker) | Standalone service | Integrated with business | **Integrated with business project** |
 | Permission System Integration | Requires re-integration | Own user system requiring synchronization | No permissions included | Custom | **Reuses Erupt UPMS — zero cost** |
@@ -200,7 +226,7 @@ public interface CubeProxy {
 
 ## Relationship with Google Looker
 
-Looker takes the semantic layer concept to the extreme with **LookML**: the core idea is that all metric logic is defined only once and all reports share the same semantic layer. Erupt Cube replaces LookML's DSL with **Java annotations**, which is more developer-friendly for Java developers — no new language to learn — and enables deep integration with Erupt's permission, menu, and tenant capabilities.
+Looker takes the semantic layer concept to the extreme with **LookML**: the core idea is that all metric logic is defined only once and all reports share the same semantic layer. Erupt Cube adds no new language: models are written in plain YAML / JSON (with JSON Schema completion and validation) or Java annotations, run embedded in the business project, and integrate deeply with Erupt's permission, menu, and tenant capabilities.
 
 ## Who Is This For?
 

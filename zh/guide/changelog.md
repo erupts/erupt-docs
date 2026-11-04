@@ -54,7 +54,7 @@
 
 🌟 [erupt-cube 支持 YAML / JSON 定义 Cube](/zh/modules/pro/erupt-cube/semantic-model#用-yaml-json-文件定义-cube)：`cube/**/*.yml|json` 一文件一 Cube，与注解 Cube 可互相 join，发布 [JSON Schema](https://docs.erupt.xyz/schema/erupt-cube.schema.json) 供 IDE 补全
 
-🌟 [erupt-tenant 订阅生命周期](/zh/modules/pro/erupt-tenant/#订阅与试用)：套餐可设试用天数，到期状态（生效 / 宽限 / 过期）按到期日实时推导，过期或锁定的租户会话下一次请求即下线；`TenantSubscriptionService#extend` 供自有支付接入续期；租户登录页可用租户自己的 SSO 认证源
+🌟 [erupt-tenant 订阅生命周期](/zh/modules/pro/erupt-tenant/subscription)：套餐可设试用天数，到期状态（生效 / 宽限 / 过期）按到期日实时推导，过期或锁定的租户会话下一次请求即下线；`TenantSubscriptionService#extend` 供自有支付接入续期；租户登录页可用租户自己的 SSO 认证源
 
 🌟 [erupt-data-http 适配器钩子](/zh/modules/erupt-http#适配器钩子-erupthttpadapter)：`EruptHttpAdapter` 覆盖 url / 请求 / 响应各阶段，请求模板支持 `${}` 属性与 `#{}` SpEL（可取当前用户与 Bean），内置三种分页方式与响应信封解包
 

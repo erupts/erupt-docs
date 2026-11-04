@@ -1,9 +1,9 @@
 # 可视化建模
 
 :::tip
-使用非注解的方式实现数据建模。
+在管理页面上完成数据建模，无需编写文件或代码。
 
-此方式可实现轻量级的建模，复杂且工程化的建模建议使用[注解方式](/zh/modules/pro/erupt-cube/semantic-model)。
+此方式可实现轻量级的建模，复杂且工程化的建模建议使用 [YAML / JSON 文件或 Java 注解](/zh/modules/pro/erupt-cube/semantic-model)，随代码版本管理。
 :::
 
 ## 1. 添加依赖

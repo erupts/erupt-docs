@@ -1,6 +1,6 @@
 # Cube ML Syntax
 
-Cube ML is the template expression language built into EruptCube, based on **Velocity** syntax. It dynamically generates query logic inside any SQL annotation, applicable to:
+Cube ML is the template expression language built into EruptCube, based on **Velocity** syntax. It dynamically generates query logic inside any SQL attribute of a model (annotations and YAML / JSON files alike), applicable to:
 
 `dimension.sql()` · `measure.sql()` · `EruptCube.sql()` · `explore.where()` etc.
 

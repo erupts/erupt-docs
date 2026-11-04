@@ -1,76 +1,81 @@
 # 快速开始
 
-本文介绍如何在 erupt 项目中接入 erupt-tenant 多租户模块，能力介绍详见 [Erupt SaaS 多租户](/zh/modules/pro/erupt-tenant/)。
+本文介绍如何在 erupt 项目中接入 erupt-tenant，能力介绍见 [Erupt SaaS 多租户](/zh/modules/pro/erupt-tenant/)。
 
 :::tip
 erupt-tenant 为商业模块，购买后联系作者开通源码仓库权限。
 :::
 
-## 源码
-
-- 前端源码：[https://gitee.com/erupt/erupt-web](https://gitee.com/erupt/erupt-web)
-- 后端源码：[https://github.com/erupt-io/erupt-tenant](https://github.com/erupt-io/erupt-tenant)
-
 ## 模块组成
-
-erupt-tenant 由两个 Maven 模块组成：
 
 | 模块 | 说明 | 依赖 |
 | --- | --- | --- |
-| **erupt-tenant-core** | 多租户核心能力：`@EruptTenant` 注解、数据隔离 DataProxy、租户上下文 `EruptTenantContext`、可继承租户基类 | erupt-jpa |
-| **erupt-tenant** | 完整多租户管理：租户配置 / 租户套餐、租户登录与订阅生命周期；租户端的用户 / 角色 / 组织直接复用 erupt-upms | erupt-upms + erupt-tenant-core |
+| **erupt-tenant-core** | 业务表隔离：`@EruptTenant` 注解、隔离 DataProxy、租户上下文 `EruptTenantContext`、租户基类 `TenantBaseModel` 系列 | erupt-jpa |
+| **erupt-tenant** | 租户平台：租户配置、套餐、订阅、租户登录与 SSO 接入、域名定制、菜单范围；租户的用户 / 角色 / 组织直接由 erupt-upms 提供 | erupt-upms、erupt-tenant-core |
 
-## 1. 编译源代码，发布到本地仓库
+erupt-cloud-node 节点只需引入 `erupt-tenant-core`：租户身份由 cloud-server 随请求转发，节点上不需要 UPMS 与会话存储。
 
-:::info
-1.12.16 及以上版本支持
-:::
+## 1. 编译源码并发布到本地仓库
 
-拉取 erupt-tenant github 源代码：[https://github.com/erupt-io/erupt-tenant](https://github.com/erupt-io/erupt-tenant)
-
-切换 tag 到对应版本：[https://github.com/erupt-io/erupt-tenant/tags](https://github.com/erupt-io/erupt-tenant/tags)
+拉取源码：[https://github.com/erupt-io/erupt-tenant](https://github.com/erupt-io/erupt-tenant)，切换到与 erupt 版本一致的 tag：
 
 <img src="/tenant/release-tag.png" width="750">
 
-在项目根目录下执行如下 maven 打包命令，发布到本地中央仓库或私服即可：
+在项目根目录执行：
 
 ```bash
 mvn -D skipTests=true install
 ```
 
-## 2. 加入 POM 依赖
-
-:::warning
-需要执行上一步，发布到本地仓库才可获取到下面的依赖。
-:::
-
-**erupt-tenant**：多租户权限控制模块，使用 erupt-admin 依赖的同时加入此依赖即可直接实现多租户的功能：
+## 2. 引入依赖
 
 ```xml
-<dependencies>
-  <dependency>
+<dependency>
     <groupId>xyz.erupt</groupId>
     <artifactId>erupt-tenant</artifactId>
     <version>${erupt.version}</version>
-  </dependency>
-</dependencies>
+</dependency>
 ```
-
-**erupt-tenant-core**：多租户核心模块，提供多租户的基础功能，erupt-cloud-node 场景仅添加此依赖即可。
 
 ## 3. 启动应用
 
-启动后模块会自动初始化菜单，无需任何 SQL 脚本：
+启动时自动建表、初始化菜单，不需要执行 SQL 脚本：
 
-- **超管端**：自动注册「租户管理」根菜单，包含 **租户配置**、**租户套餐** 两个功能
-- **租户端**：没有独立的菜单表。租户能看到的菜单就是平台「菜单管理」里的菜单，由套餐勾选后授权给租户；要让租户自己维护用户 / 角色 / 组织，把 erupt-upms 的 **用户维护**、**角色维护**、**组织维护** 菜单放进套餐即可
+- 超管端出现「租户管理」菜单，包含 **租户配置**、**租户套餐**
+- UPMS 表已带 `tenant_id` 列（平台行为 `'0'`），无需任何配置
 
-在「租户配置」中新建租户（企业 ID、租户名称、管理员账号密码、分配套餐，到期时间留空则按套餐的试用天数计算）后，即可通过租户登录页进入租户系统：
+:::warning 从 2.3.x 升级
+用户、角色、组织、岗位的唯一约束已改为 `(tenant_id, account)` / `(tenant_id, code)`，旧版本的单列唯一索引需要手工删除，原 `t_e_upms_*` 租户用户表的数据需要迁移，见 [升级指南](/zh/guide/upgrade)。
+:::
+
+## 4. 配置套餐
+
+在「租户套餐」中新建套餐，从平台菜单中勾选租户可用的功能。租户没有独立的菜单表，想让租户管理员自己管理团队，就把 erupt-upms 的菜单一起勾进套餐：
+
+- 用户维护、角色维护、组织维护、岗位维护
+- 登录日志、操作日志、在线用户
+- 业务菜单（例如接入了 `@EruptTenant` 的业务模型）
+
+可选填写 **试用天数**，新租户未指定到期时间时按它计算到期日。
+
+## 5. 新建租户
+
+在「租户配置」中新建租户：填写企业 ID、名称、管理员账号（默认 `admin`）与密码，选择套餐；到期时间留空则按套餐试用天数计算，套餐都没有试用天数则永不到期。
+
+保存后会生成租户 ID，并在该租户内创建管理员用户。
+
+## 6. 登录租户系统
 
 ```
 http://your-host/#/passport/tenant
 ```
 
+输入企业 ID、管理员账号与密码即可进入；也可在「租户配置」的行操作中点击 **进入租户后台** 直接以管理员身份打开。
+
 在线演示：[https://demo.erupt.xyz/#/passport/tenant](https://demo.erupt.xyz/#/passport/tenant)
 
-接下来请阅读 [多租户开发](/zh/modules/pro/erupt-tenant/development)，为业务表接入租户数据隔离。
+## 下一步
+
+1. [业务表多租户](/zh/modules/pro/erupt-tenant/development) — 一个注解让业务表按租户隔离
+2. [UPMS 多租户](/zh/modules/pro/erupt-tenant/upms) — 了解用户目录如何隔离，以及在代码中切换租户
+3. [套餐与订阅](/zh/modules/pro/erupt-tenant/subscription) — 试用、到期、续期

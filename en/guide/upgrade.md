@@ -102,14 +102,14 @@ erupt-tenant no longer keeps a user directory of its own: tenant users, roles an
 2. Copy each tenant's users / roles / orgs from `t_e_upms_*` into the matching `e_upms_*` table with `tenant_id` set to that tenant's `e_tenant_config.tenant_id`, or re-create them in the tenant admin.
 3. Package menus are now picked from the platform's `e_upms_menu`; `e_tenant_menu` is no longer used, so tick the menus again.
 
-`/tenant/change-pwd`, `/tenant/menu` and `/tenant/userinfo` are removed; a tenant session uses the platform's `/change-pwd`, `/menu` and `/userinfo`. `/tenant/subscription` is now `/tenant/info`. See [Multi-tenant Development](/en/modules/pro/erupt-tenant/development).
+`/tenant/change-pwd`, `/tenant/menu` and `/tenant/userinfo` are removed; a tenant session uses the platform's `/change-pwd`, `/menu` and `/userinfo`. `/tenant/subscription` is now `/tenant/info`. See [Multi-tenant UPMS](/en/modules/pro/erupt-tenant/upms).
 
 After the refactor, every module built on erupt-upms is tenant-isolated with no extra work:
 
 - **erupt-flow**: flow definitions, groups and instances are kept per tenant, approvers resolve within the instance's tenant, and the scheduler advances each instance in its own tenant's session; see [erupt-flow multi-tenancy](/en/modules/pro/erupt-flow/development#multi-tenant-support)
 - **erupt-sso**: a tenant can configure its own identity providers, listed on the tenant login page, and single sign-on opens a tenant session
 - **Login log / operation log / online users / record comments / record history**: a tenant sees only its own rows
-- **Subscription and trial**: package trial days, a grace period after expiry, and locking; see [Subscription and Trial](/en/modules/pro/erupt-tenant/#subscription-and-trial)
+- **Subscription and trial**: package trial days, a grace period after expiry, and locking; see [Subscription and Trial](/en/modules/pro/erupt-tenant/subscription)
 
 #### 7. Printing No Longer Grants Reading a Record <Badge type="tip" text="Permission tightened" />
 

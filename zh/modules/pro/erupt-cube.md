@@ -1,8 +1,6 @@
 # Erupt Cube 指标平台
 
-借鉴 Google Looker 的语义层理念，为 Java 生态打造专业级大数据分析方案。数据工程师专注模型构建，数据分析师基于语义层自助完成可视化，无需多方协作，注解定义语义模型 + 拖拽完成可视化，开箱即用。
-
-<iframe src="https://www.erupt.xyz/#!/cube" width="100%" height="600" frameborder="0" style="border-radius:8px"></iframe>
+借鉴 Google Looker 的语义层理念，为 Java 生态打造专业级大数据分析方案。数据工程师专注模型构建，数据分析师基于语义层自助完成可视化，无需多方协作，YAML / JSON 或 Java 注解定义语义模型 + 拖拽完成可视化，开箱即用。
 
 :::tip 商业模块
 **包含**：完整源码 · 全版本升级 · 技术支持 · erupt 相关问题优先支持 · 合理需求免费实现 · 能力持续迭代
@@ -30,7 +28,7 @@
 
 ## 语义模型解决什么问题
 
-数据源接入后由 `@EruptCube` 统一定义维度与指标，所有消费端共享同一套语义：
+数据源接入后由语义模型（Cube）统一定义维度与指标，所有消费端共享同一套语义：
 
 <img src="/cube/semantic-layer-zh.svg" width="900" alt="语义层架构">
 
@@ -41,20 +39,19 @@
 | 复用性 | 逻辑散落在各报表 | 集中定义，随处复用 |
 | 可维护性 | 改表结构要改所有 SQL | 只改模型层即可 |
 
-## 两种建模方式：注解 + 可视化 互补
+## 三种建模方式，同一套语义
 
-erupt-cube 同时支持两种语义模型定义方式，覆盖团队内不同角色：
+同一个语义模型有三种写法，结构完全一致，可在同一项目内混用、相互关联，覆盖团队里的不同角色：
 
-| 方式 | 适用人 | 能力 | 适用场景 |
+| 方式 | 适用人 | 特点 | 适用场景 |
 | --- | --- | --- | --- |
-| **Java 注解建模（主）** | 开发工程师 / 数据工程师 | 完整能力，覆盖所有维度、指标、关系、自定义 SQL、动态字段 | 复杂模型、版本化随代码管理、需要 Code Review |
-| **可视化界面建模（辅）** | 数据分析师 / 业务人员 | 常用维度、指标、关系配置（能力略少于注解） | 临时性 / 探索性建模、非 Java 角色快速试错 |
+| **YAML / JSON 文件** <Badge type="tip" text="v2.4.0+" /> | 数据工程师 / 数据分析师 | 不写 Java、不用编译；JSON Schema 提供 IDE 补全，启动时严格校验 | 核心模型随 git 管理、走 Code Review；可从外部目录加载 |
+| **Java 注解**（最灵活） | 开发工程师 | IDE 跳转 / 查引用 / 安全重命名，`sql` 字符串经语言注入获得 SQL 高亮与校验，类继承复用公共维度与指标；可与 `@Erupt` 业务实体共用一个类，接 `CubeProxy`、自定义函数等 Java 扩展 | 模型与业务代码强绑定、需要编程扩展 |
+| **可视化界面** | 数据分析师 / 业务人员 | 页面上配置 SQL、维度、指标 | 临时性 / 探索性建模、快速试错 |
 
-两种方式可在同一项目内共存：复杂核心模型用注解定义并 git 管理，业务侧临时分析用可视化建模快速验证，提需求时再由开发同学把可视化模型沉淀为注解。
+> 推荐工作流：**文件或注解定义核心模型 → 可视化界面供业务自助探索 → 探索后稳定下来的模型沉淀为文件，随代码管理**。
 
-> 推荐工作流：**注解定义核心模型 → 可视化界面用于业务自助探索 → 探索后稳定下来的模型回流为注解**。
-
-<img src="/cube/modeling-flow-zh.svg" width="900" alt="两种建模方式互补">
+<img src="/cube/modeling-flow-zh.svg" width="900" alt="三种建模方式互补">
 
 ## 在模型页面嵌入指标图表 <Badge type="tip" text="v2.4.0+" />
 
@@ -64,11 +61,36 @@ erupt-cube 同时支持两种语义模型定义方式，覆盖团队内不同角
 
 详见 [模型视图图表](/zh/modules/pro/erupt-cube/vis-view)。
 
-## 注解建模速查（API 参考）
+## 建模速查（API 参考）
 
-一个语义模型 = 一个 `@EruptCube` 类，类上定义底表 SQL 与对外查询视图（Explore），字段上用 `@Dimension` / `@Measure` 声明维度与指标。下面是一个可直接编译的完整示例（源自 `xyz.erupt.project.cube.WorkItemStatsCube`）：
+一个语义模型 = 一个 YAML / JSON 文件或一个 `@EruptCube` 类：定义底表 SQL 与对外查询视图（Explore），并声明维度（Dimension）与指标（Measure）。下面是同一个模型的两种写法（源自 `xyz.erupt.project.cube.WorkItemStatsCube`）：
 
-```java
+::: code-group
+
+```yaml [cube/WorkItemStatsCube.yml]
+# yaml-language-server: $schema=https://docs.erupt.xyz/schema/erupt-cube.schema.json
+name: Work Item Statistics
+sql: |
+  select wi.type         as type,
+         wi.status       as status,
+         u.name          as assignee_name,
+         wi.story_points as story_points,
+         wi.due_date     as due_date
+  from e_project_work_item wi
+           left join e_upms_user u on wi.assignee_id = u.id
+dimensions:
+  assignee_name: { title: Assignee }
+  status:        { title: Status }
+  due_date:      { title: Due Date, type: DATE }
+measures:
+  work_item_count: { title: Work Item Count, sql: count(*) }
+  overdue_count:
+    title: Overdue Count
+    sql: sum(case when status <> 'DONE' and due_date < current_date then 1 else 0 end)
+  story_points: { title: Story Points, sql: sum(story_points) }
+```
+
+```java [WorkItemStatsCube.java]
 @Getter
 @Setter
 @EruptCube(
@@ -105,6 +127,10 @@ public class WorkItemStatsCube {
     private Double storyPoints;
 }
 ```
+
+:::
+
+文件中的键名即注解属性名：类级属性写在顶层，维度 / 指标 / 参数写进以字段名为键的 `dimensions` / `measures` / `parameters`。完整规则见 [语义建模](/zh/modules/pro/erupt-cube/semantic-model)。
 
 ### `@EruptCube`（类级）
 
@@ -183,7 +209,7 @@ public interface CubeProxy {
 
 | 维度 | Looker (Google) | Metabase | Cube.dev | 自研 SQL 拼接 | **Erupt Cube** |
 | --- | --- | --- | --- | --- | --- |
-| 语义层定义方式 | LookML（专用 DSL） | Models（GUI 配置） | YAML / JS Schema | 无（散落在各报表 SQL） | **Java 注解（主）+ 可视化界面（辅）** |
+| 语义层定义方式 | LookML（专用 DSL） | Models（GUI 配置） | YAML / JS Schema | 无（散落在各报表 SQL） | **YAML / JSON 文件 + Java 注解 + 可视化界面** |
 | 语言生态 | LookML（要单独学） | Java / Clojure（闭源核心） | Node.js / TypeScript | Java | **Java（与业务工程同一栈）** |
 | 部署形态 | SaaS（闭源） | 独立服务（Docker） | 独立服务 | 与业务一体 | **与业务工程一体** |
 | 与权限体系集成 | 重新对接 | 自有用户体系，要同步 | 不含权限 | 自研 | **复用 Erupt UPMS，零成本** |
@@ -202,7 +228,7 @@ public interface CubeProxy {
 
 ## 与 Google Looker 的关系
 
-Looker 将语义层理念做到极致，称之为 **LookML**，核心思想是：所有指标逻辑只定义一次，所有报表共享同一套语义层。Erupt Cube 用 **Java 注解**替代 LookML 的 DSL，对 Java 开发者更友好，无需学习新语言，且可深度集成 Erupt 体系内的权限、菜单、租户能力。
+Looker 将语义层理念做到极致，称之为 **LookML**，核心思想是：所有指标逻辑只定义一次，所有报表共享同一套语义层。Erupt Cube 不引入新语言：模型用通用的 YAML / JSON（有 JSON Schema 补全与校验）或 Java 注解书写，嵌入业务工程运行，并深度集成 Erupt 体系内的权限、菜单、租户能力。
 
 ## 适合谁
 

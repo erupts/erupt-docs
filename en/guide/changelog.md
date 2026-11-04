@@ -54,7 +54,7 @@ Read the [V 2.4.0 Upgrade Guide](/en/guide/upgrade#v-2-4-0-upgrade-guide): expor
 
 🌟 [erupt-cube cubes in YAML / JSON files](/en/modules/pro/erupt-cube/semantic-model#defining-cubes-in-yaml-json-files): one cube per `cube/**/*.yml|json` file, joinable with annotated cubes, with a [JSON Schema](https://docs.erupt.xyz/schema/erupt-cube.schema.json) for IDE completion
 
-🌟 [erupt-tenant subscription lifecycle](/en/modules/pro/erupt-tenant/#subscription-and-trial): packages carry trial days, the status (active / grace / expired) is derived from the expire date, sessions of an expired or locked tenant end on their next request, and `TenantSubscriptionService#extend` hooks your own billing; the tenant login page offers the tenant's own SSO providers
+🌟 [erupt-tenant subscription lifecycle](/en/modules/pro/erupt-tenant/subscription): packages carry trial days, the status (active / grace / expired) is derived from the expire date, sessions of an expired or locked tenant end on their next request, and `TenantSubscriptionService#extend` hooks your own billing; the tenant login page offers the tenant's own SSO providers
 
 🌟 [erupt-data-http adapter hooks](/en/modules/erupt-http#adapter-hooks-erupthttpadapter): `EruptHttpAdapter` covers every stage of a request, templates take `${}` properties and `#{}` SpEL with the current user and beans, and three paging styles plus envelope unwrapping are built in
 

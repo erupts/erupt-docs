@@ -1,9 +1,9 @@
 # Visual Modeling
 
 :::tip
-Define semantic models without annotations.
+Define semantic models in admin pages, without writing files or code.
 
-This approach suits lightweight modeling; for complex, engineering-grade models we recommend the [annotation approach](/en/modules/pro/erupt-cube/semantic-model).
+This approach suits lightweight modeling; for complex, engineering-grade models we recommend [YAML / JSON files or Java annotations](/en/modules/pro/erupt-cube/semantic-model), versioned with your code.
 :::
 
 ## 1. Add the Dependency

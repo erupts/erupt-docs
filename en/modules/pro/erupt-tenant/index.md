@@ -1,10 +1,12 @@
-# Erupt SaaS Multi-Tenancy
+# Erupt SaaS Multi-tenant
 
-Use Erupt annotation-based low-code development to implement multi-tenancy capabilities. Page functionality is reused across tenants while data is completely isolated. Ideal for SaaS product development scenarios.
+One codebase serving many enterprise customers: every tenant has its own users, roles, organizations, menus and data, fully isolated from the others, while the platform manages tenants, packages and subscriptions from the admin side.
+
+erupt-tenant does not wrap a separate "tenant system" around your app — it makes **erupt-upms itself multi-tenant**: users, roles, organizations, posts and logs share the platform's tables and are isolated per tenant by the framework through a `tenant_id` column. The tenant backend uses erupt's native user, role and organization pages, and the platform's existing capabilities (single sign-on, notices, approval flows, reports, metrics) work inside tenants as-is.
 
 :::tip Commercial Module
 **Includes**: Full source code · All future version upgrades · Technical support · Priority Erupt-related support · Reasonable feature requests implemented for free · Continuous capability iteration
-**License**: No License restrictions · Multi-project reuse allowed · No commercial restrictions
+**License**: No License restrictions · Reusable across projects · No commercial restrictions
 **Limitation**: Redistribution and secondary open-sourcing are prohibited
 :::
 
@@ -12,12 +14,12 @@ Use Erupt annotation-based low-code development to implement multi-tenancy capab
   <img src="/pro/cta-en.svg" width="900" alt="View Erupt Pro pricing and purchase process">
 </a>
 
-Officially produced and maintained by the open-source Erupt framework team ([GitHub 3k+ ★](https://github.com/erupts/erupt) · [Gitee 5k+ ★](https://gitee.com/erupt/erupt)). Source code delivered for deep customization with your business.
+Officially produced and maintained by the open-source Erupt framework team ([GitHub 3k+ ★](https://github.com/erupts/erupt) · [Gitee 5k+ ★](https://gitee.com/erupt/erupt)). Delivered as source code, ready for deep customization.
 
 Demo: [https://demo.erupt.xyz/#/passport/tenant](https://demo.erupt.xyz/#/passport/tenant)
 
 :::info Documentation
-[Quick Start](/en/modules/pro/erupt-tenant/quick-start) · [Multi-tenant Development](/en/modules/pro/erupt-tenant/development) · [Domain & Tenant Customization](/en/modules/pro/erupt-tenant/domain) · [Database Design](/en/modules/pro/erupt-tenant/database)
+[Quick Start](/en/modules/pro/erupt-tenant/quick-start) · [Multi-tenant UPMS](/en/modules/pro/erupt-tenant/upms) · [Multi-tenant Business Tables](/en/modules/pro/erupt-tenant/development) · [Packages & Subscription](/en/modules/pro/erupt-tenant/subscription) · [Domain & Customization](/en/modules/pro/erupt-tenant/domain) · [Database Design](/en/modules/pro/erupt-tenant/database)
 :::
 
 ---
@@ -26,47 +28,36 @@ Demo: [https://demo.erupt.xyz/#/passport/tenant](https://demo.erupt.xyz/#/passpo
 
 <img src="/tenant/login2.png" width="900">
 
-## Why Not Use ShardingSphere / Mybatis-Plus tenantId Plugin / Build Your Own?
+## Architecture
 
-| Dimension | ShardingSphere | Mybatis-Plus tenantId | Custom | **Erupt Tenant** |
-| --- | --- | --- | --- | --- |
-| Data Isolation | ✅ (database layer strength) | ⚠️ SQL field injection only | Depends on implementation | **✅ Table-level isolation + business-level isolation** |
-| Business Isolation | ❌ | ❌ | Must be built custom | **✅ Tenant context injected automatically** |
-| Request Routing | ❌ | ❌ | Must be built custom | **✅ Effective with configuration** |
-| Per-Tenant Configuration | ❌ | ❌ | Must be built custom | **✅ Independent menus / packages / themes** |
-| Permission Isolation | ❌ | ❌ | Must be reimplemented | **✅ Reuses UPMS with multi-tenant awareness** |
-| Learning Curve | Steep | Gentle | — | **Gentle (annotations = multi-tenancy)** |
-| Time to Go Live | 2–4 weeks | 1–2 weeks (business layer still needed) | 1–3 months | **1–2 days** |
+| Layer | Owner | How it is isolated |
+| --- | --- | --- |
+| **Tenants & packages** | Platform admin | `e_tenant_config` / `e_tenant_package` are maintained on the admin side only, with no tenant column |
+| **User directory (UPMS)** | erupt-upms | Users, roles, organizations, posts, login / operate logs and online users share the platform's tables; the framework restricts every query and stamps every insert (platform rows are `'0'`) |
+| **Menus** | Platform | One menu table (`e_upms_menu`); packages pick menus, and a tenant's menu tree and assignable menus are narrowed to its packages |
+| **Business data** | Your `@Erupt` models | Add `@EruptTenant` or extend `TenantBaseModel`: inserts are stamped, queries filtered, cross-tenant writes refused |
 
-ShardingSphere addresses the database problem of "how to shard by tenant in the same schema". It **does not address the business layer**: how does your service know which tenant a request belongs to? How are menus isolated per tenant? How is tenant-specific configuration implemented? All of this must be written manually — this is the most commonly underestimated effort in custom multi-tenancy work. erupt-tenant bundles data isolation + request routing + business context + configuration isolation + permission isolation in one package.
+When a request arrives, the security interceptor reads the tenant id from the session and data access is bound to that tenant — from then on UPMS queries only see that tenant's rows, business tables get their condition from `@EruptTenant`, and `${tenantId}` is available in report and metric SQL. See [Multi-tenant UPMS](/en/modules/pro/erupt-tenant/upms) and [Database Design](/en/modules/pro/erupt-tenant/database).
 
 ## Features
 
-### Tenant Management
+### Tenant management
 
-Manage tenant information via the super-admin account. Supports one-click jump to a tenant application, changing the super-admin password, defining domain names, and tenant-specific JS/CSS:
+The platform admin maintains tenants in **Tenant Config**: enterprise ID, name, contact, enabled / locked, expire date, admin account, packages, domain and branding. Row actions **reset the admin password** and **enter the tenant backend** (opening the tenant system as its administrator).
 
 <img src="/tenant/tenant-manage.png" width="900">
 
-### Tenant Packages
+Creating a tenant generates its tenant id and creates an administrator user (`is_admin = true`) inside that tenant; everything after that stays within the tenant.
 
-A package picks a set of menus from the platform's Menu Management and is granted to tenants. Every session of a tenant (administrators included) only sees the menus of its enabled packages, and a tenant's role editor can only hand out those menus:
+### Packages
+
+A package picks a set of menus from the platform's **Menu Management** and is assigned to tenants. All sessions of a tenant (its administrators included) only see the menus of its enabled packages, and the tenant's role editor can only grant those menus. Packages can also carry trial days. See [Packages & Subscription](/en/modules/pro/erupt-tenant/subscription).
 
 <img src="/tenant/tenant-package.png" width="900">
 
-:::info
-Since 2.4.0 there is no separate "tenant menu" any more: packages reference the platform menu table `e_upms_menu` directly, so menus are maintained once, in Menu Management.
-:::
+### Tenant backend: native UPMS
 
-### Tenant Login
-
-<img src="/tenant/tenant-login.png" width="900">
-
-With [erupt-sso](/en/modules/erupt-sso) installed, the tenant login page lists the tenant's own SSO providers (`GET /erupt-api/sso/providers?tenant=<enterprise ID>`); a single sign-on still opens a tenant session, and a locked or expired tenant is refused just the same.
-
-### User / Role / Organization Management
-
-The tenant-side user, role and organization pages are the native erupt-upms pages. Their data shares the platform's `e_upms_user` / `e_upms_role` / `e_upms_org` tables and is isolated by Hibernate through the `tenant_id` column:
+Put erupt-upms menus such as **Users**, **Roles**, **Organizations**, **Posts**, **Login Log** and **Online Users** into a package, and the tenant administrator manages their own team — the pages are exactly the platform's, the data belongs only to the tenant. The same account can exist once in each tenant.
 
 <img src="/tenant/user-manage.png" width="900">
 
@@ -74,66 +65,80 @@ The tenant-side user, role and organization pages are the native erupt-upms page
 
 <img src="/tenant/org-manage.png" width="900">
 
-## Subscription and Trial
+### Tenant login and single sign-on
 
-A tenant's subscription is a single date: its **expire date** (`expireDate`); empty means no end.
+Tenant users sign in on the tenant login page (`/#/passport/tenant`) with enterprise ID, account and password; a tenant with its own domain skips the enterprise ID. With [erupt-sso](/en/modules/erupt-sso), every tenant configures its own SSO providers, the tenant login page lists only that tenant's providers, and signing on opens a tenant session.
 
-- **Trial**: when a tenant is created without an expire date, it gets the longest "Trial Days" (`EruptTenantPackage.trialDays`) of its enabled packages as its expire date; if no package has trial days, there is no end.
-- **Status**: `Active` / `Grace` / `Expired` is derived from the expire date and the grace days on every read and never stored. Past the expire date but still within `erupt.tenant.subscription.grace-days` the tenant is `Grace` and keeps working; past the grace days it is `Expired`.
-- **Locking**: the "Status" switch in Tenant Config is independent of the expire date; a locked tenant is refused whatever its date.
-- **Live sessions**: when a tenant expires or is locked while its users are logged in, their sessions are logged out with `401` on the next request and the client returns to the tenant login page, which says why. The status is cached for `erupt.tenant.subscription.status-cache-seconds` (default 30) and evicted as soon as the tenant is edited on the platform side.
-- **Extending**: erupt does not bill anyone. The application's own payment integration calls `TenantSubscriptionService#extend(tenantConfigId, Period, now)` once a payment went through; the period is added to the current expire date, or to now when that date is already behind.
+<img src="/tenant/tenant-login.png" width="900">
 
-```yaml
-erupt:
-  tenant:
-    subscription:
-      grace-days: 7            # days a tenant keeps working after its expire date, default 0
-      status-cache-seconds: 30 # seconds the subscription status is cached, default 30
-```
+### Subscription
 
-A tenant session can read its own tenant id, name, subscription status, expire date and enabled packages from `GET /erupt-api/tenant/info`.
+A tenant's subscription is described by a single expire date: new tenants get one from their packages' trial days, an optional grace period follows, and sessions of an expired or locked tenant end on their next request. Renewal is done by your own billing code calling `TenantSubscriptionService#extend`. See [Packages & Subscription](/en/modules/pro/erupt-tenant/subscription).
 
-## Data Isolation Principle
+### Domain and branding
 
-Uses **table-level isolation** — all tenant data is stored in the same table, filtered at the row level by tenant identifier, rather than schema or separate database isolation.
+Each tenant can bind its own domain with its own logo, CSS and JS, so one system wears a different brand per tenant — ideal for white-label delivery. See [Domain & Customization](/en/modules/pro/erupt-tenant/domain).
 
-Advantages:
-- Centralized data storage; queries, backups, and operations require no cross-database work
-- Performance optimizations cover all tenant data at once
-- No compatibility or upgrade issues with multiple schemas
-- No need to allocate separate database resources per tenant; theoretically supports unlimited tenants
+### Platform capabilities inside tenants
 
-## Multi-Tenant Development
+| Capability | Inside a tenant |
+| --- | --- |
+| erupt-sso single sign-on | Providers are isolated per tenant and configured by the tenant |
+| erupt-flow approvals | Approvers, roles and organization heads resolve within the tenant |
+| erupt-notice notices | Sent and received in tenant sessions |
+| erupt-report / erupt-cube | `${tenantId}` in SQL — the same report shows each tenant its own data |
+| Record comments, revisions | Isolated per tenant |
+| erupt-share | A share link records its issuer's tenant; the admin view only lists the tenant's own links |
+| erupt-cloud nodes | The tenant identity travels with the request; nodes only need `erupt-tenant-core` |
 
-Add the corresponding annotation to an Erupt class to achieve this: different tenants share the same functionality (which can also be dynamically rendered based on tenant information), with completely isolated data — one codebase serving multiple enterprise customers.
+## Why not ShardingSphere / the MyBatis-Plus tenant plugin / a home-grown solution?
 
-## Use Cases
+| Dimension | ShardingSphere | MyBatis-Plus tenant plugin | Home-grown | **Erupt Tenant** |
+| --- | --- | --- | --- | --- |
+| Data isolation | ✅ (database-layer strength) | ⚠️ SQL condition only | Depends | **✅ UPMS isolated by the framework + business tables by annotation** |
+| Users / roles / orgs | ❌ | ❌ | Rebuild it all | **✅ Native UPMS, multi-tenant** |
+| Menus and packages | ❌ | ❌ | Build it yourself | **✅ Packages pick platform menus** |
+| Login / SSO / subscription | ❌ | ❌ | Build it yourself | **✅ Built in** |
+| Learning curve | Steep | Flat | — | **Flat (one annotation per business table)** |
+| Time to launch | 2–4 weeks | 1–2 weeks (business layer still missing) | 1–3 months | **1–2 days** |
 
-- SaaS startups (one codebase serving N enterprise customers)
-- White-label delivery (same system with per-customer branding, domain, and menus)
-- Group-wide isolation across multiple departments / subsidiaries
+ShardingSphere answers "how do I shard one schema by tenant" — a database question. It **does not address the business layer**: which tenant does this request belong to? How are users, roles and menus isolated per tenant? How does a tenant sign in, and when does it expire? All of that is left to you, and it is the work most often underestimated in home-grown multi-tenancy.
+
+## Isolation model
+
+**Shared tables with a tenant column**: all tenants' data lives in the same tables, filtered by the tenant column, rather than one schema or database per tenant.
+
+- Centralized data: no cross-database queries, backups or operations
+- One index or tuning effort covers every tenant
+- No schema-sync or upgrade issues across tenant schemas
+- No database resources per tenant, so the number of tenants is unbounded
+
+## Use cases
+
+- SaaS startups (one codebase for N enterprise customers)
+- White-label delivery (one system, rebranded per customer: brand, domain, menus)
+- Isolation across departments or subsidiaries of a group
 - Multi-region / multi-brand operations
 
 ## FAQ
 
-**Q1 · What is the difference from the open-source Erupt?**
-Open-source Erupt is single-tenant architecture. erupt-tenant is a commercial module that introduces complete multi-tenancy infrastructure (data isolation + request routing + business context + configuration isolation + multi-tenant-aware permissions) — this is not included in the open-source version and will not be open-sourced in the future.
+**Q1 · How does this differ from open-source erupt?**
+Open-source erupt's UPMS already carries the tenant column and tenant isolation, but without erupt-tenant all data belongs to the platform (`'0'`), i.e. single-tenant. erupt-tenant adds tenants, packages, subscriptions, tenant login, domain customization and the business-table isolation annotation — a commercial module that will not be open-sourced.
 
 **Q2 · How is it delivered?**
-After payment, provide your GitHub username. The author will add you as a collaborator to the private repository `erupts/erupt-tenant`. You can clone the source code directly, compile locally, reference as needed, and will receive an integration document.
+After payment, provide your GitHub username and the author adds you as a collaborator on the private repository `erupts/erupt-tenant`. You can clone, build and reference it directly, and you receive an integration guide.
 
-**Q3 · Do I need to pay again for future version upgrades?**
-No. One-time purchase = you have access to the current and all future versions. The private repository's master branch is continuously updated; just `git pull`.
+**Q3 · Are future upgrades charged?**
+No. One purchase gives you the current and all future versions. The private repository's master is continuously updated — just git pull.
 
-**Q4 · What about project count / commercial use / reselling?**
-- **Multi-project reuse allowed**: Deploy in as many internal or outsourced projects as you like
-- **No commercial restrictions**: Can be used in commercial products (including selling your finished product, but you may not sell the erupt-tenant source code itself)
-- **Reselling**: Redistribution and secondary open-sourcing are prohibited; company name or entity changes can apply for license migration
+**Q4 · Project count / commercial use / transfer?**
+- **Reusable across projects**: internal company projects and outsourced projects, deploy as many as you like
+- **No commercial restrictions**: usable in commercial products (including reselling your finished product, but not the erupt-tenant source itself)
+- **Transfer**: no secondary open-sourcing or source redistribution; a company rename or change of entity can apply for a license transfer
 
-**Q5 · Trial / Refunds?**
-The [online demo](https://demo.erupt.xyz/#/passport/tenant) has all features available. We recommend fully exploring it first. Once repository access is granted, delivery is considered complete and refunds are no longer supported.
+**Q5 · Trial / refund?**
+The [online demo](https://demo.erupt.xyz/#/passport/tenant) has every feature enabled — please evaluate it thoroughly first. Delivery is complete once repository access is granted; no refunds after that.
 
 ---
 
-For questions not listed above, visit the [pricing & purchase page](https://www.erupt.xyz/#!/pro) to contact the author.
+For anything not listed here, visit the [pricing and purchase page](https://www.erupt.xyz/#!/pro) to contact the author.

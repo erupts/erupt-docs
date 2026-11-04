@@ -11,7 +11,7 @@
 
   <!-- title -->
   <rect x="36" y="30" width="14" height="14" fill="#FFD440" stroke="#2B2827" stroke-width="2"/>
-  <text x="62" y="43" font-family="'Space Grotesk', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="17" font-weight="800" fill="#2B2827">Two complementary modeling approaches · Devs and analysts each play to their strengths</text>
+  <text x="62" y="43" font-family="'Space Grotesk', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="17" font-weight="800" fill="#2B2827">Three complementary ways to model · engineers and analysts each play to their strengths</text>
   <rect x="836" y="28" width="9" height="9" fill="#3BC4E8" stroke="#2B2827" stroke-width="2"/>
   <rect x="852" y="40" width="7" height="7" fill="#FE7DA8" stroke="#2B2827" stroke-width="2"/>
 
@@ -19,13 +19,13 @@
     <!-- annotation modeling -->
     <rect x="74" y="102" width="300" height="66" fill="#2B2827"/>
     <rect x="70" y="98" width="300" height="66" fill="#3BC4E8" stroke="#2B2827" stroke-width="2.5"/>
-    <text x="220" y="126" text-anchor="middle" font-size="15" font-weight="800" fill="#2B2827">Java Annotation Modeling (Primary)</text>
+    <text x="220" y="126" text-anchor="middle" font-size="15" font-weight="800" fill="#2B2827">YAML / JSON · Java Annotations</text>
     <text x="220" y="150" text-anchor="middle" font-size="12" font-weight="700" fill="#2B2827">Engineers · git versioned · Code Review</text>
 
     <!-- visual modeling -->
     <rect x="534" y="102" width="300" height="66" fill="#2B2827"/>
     <rect x="530" y="98" width="300" height="66" fill="#FE7DA8" stroke="#2B2827" stroke-width="2.5"/>
-    <text x="680" y="126" text-anchor="middle" font-size="15" font-weight="800" fill="#2B2827">Visual Modeling (Secondary)</text>
+    <text x="680" y="126" text-anchor="middle" font-size="15" font-weight="800" fill="#2B2827">Visual Modeling</text>
     <text x="680" y="150" text-anchor="middle" font-size="12" font-weight="700" fill="#2B2827">Analysts · drag &amp; drop · fast iteration</text>
 
     <!-- shared semantic layer -->
@@ -34,7 +34,7 @@
     <text x="450" y="227" text-anchor="middle" font-size="14" font-weight="800" fill="#2B2827">One Shared Semantic Layer</text>
 
     <!-- backflow label -->
-    <text x="450" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#6B6560">Once stable, commit as annotations · managed with code</text>
+    <text x="450" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#6B6560">Once stable, commit as files · managed with code</text>
   </g>
 
   <!-- arrows into semantic layer -->
@@ -45,5 +45,5 @@
   <path d="M660 96 C 600 66, 300 66, 234 94" fill="none" stroke="#2B2827" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arw)"/>
 
   <!-- caption -->
-  <text x="450" y="262" text-anchor="middle" font-family="'Space Grotesk', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" fill="#6B6560">Recommended workflow: define core models in annotations → self-service exploration visually → stabilize back into annotations</text>
+  <text x="450" y="262" text-anchor="middle" font-family="'Space Grotesk', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" fill="#6B6560">Recommended workflow: core models as files or annotations → self-service exploration visually → stabilize into files</text>
 </svg>
