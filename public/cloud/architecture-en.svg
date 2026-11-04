@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="340" viewBox="0 0 900 340" role="img" aria-label="Erupt Cloud cluster architecture">
+  <defs>
+    <marker id="arw" markerWidth="10" markerHeight="10" refX="7" refY="4" orient="auto">
+      <path d="M0 0 L8 4 L0 8 Z" fill="#2B2827"/>
+    </marker>
+  </defs>
+
+  <!-- card -->
+  <rect x="10" y="10" width="884" height="324" fill="#2B2827"/>
+  <rect x="3.5" y="3.5" width="884" height="324" fill="#FFFAEF" stroke="#2B2827" stroke-width="3"/>
+
+  <!-- title -->
+  <rect x="36" y="30" width="14" height="14" fill="#FFD440" stroke="#2B2827" stroke-width="2"/>
+  <text x="62" y="43" font-family="'Space Grotesk', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="17" font-weight="800" fill="#2B2827">One admin console governing configuration across every service in the cluster</text>
+  <rect x="836" y="28" width="9" height="9" fill="#3BC4E8" stroke="#2B2827" stroke-width="2"/>
+  <rect x="852" y="40" width="7" height="7" fill="#FE7DA8" stroke="#2B2827" stroke-width="2"/>
+
+  <g font-family="'Space Grotesk', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+    <!-- server -->
+    <rect x="255" y="85" width="400" height="60" fill="#2B2827"/>
+    <rect x="250" y="80" width="400" height="60" fill="#FFD440" stroke="#2B2827" stroke-width="2.5"/>
+    <text x="450" y="106" text-anchor="middle" font-size="15" font-weight="800" fill="#2B2827">erupt-cloud-server</text>
+    <text x="450" y="128" text-anchor="middle" font-size="12" font-weight="700" fill="#2B2827">Service registry · Request dispatch · Permissions · Unified admin UI</text>
+
+    <!-- nodes -->
+    <rect x="49" y="204" width="150" height="68" fill="#2B2827"/>
+    <rect x="45" y="200" width="150" height="68" fill="#3BC4E8" stroke="#2B2827" stroke-width="2.5"/>
+    <text x="120" y="227" text-anchor="middle" font-size="13" font-weight="800" fill="#2B2827">Notification Svc</text>
+    <rect x="80" y="238" width="80" height="18" fill="#2B2827"/>
+    <text x="120" y="251" text-anchor="middle" font-size="10" font-weight="700" fill="#FFFAEF">erupt-node</text>
+
+    <rect x="219" y="204" width="150" height="68" fill="#2B2827"/>
+    <rect x="215" y="200" width="150" height="68" fill="#FE7DA8" stroke="#2B2827" stroke-width="2.5"/>
+    <text x="290" y="227" text-anchor="middle" font-size="13" font-weight="800" fill="#2B2827">Gateway Svc</text>
+    <rect x="250" y="238" width="80" height="18" fill="#2B2827"/>
+    <text x="290" y="251" text-anchor="middle" font-size="10" font-weight="700" fill="#FFFAEF">erupt-node</text>
+
+    <rect x="389" y="204" width="150" height="68" fill="#2B2827"/>
+    <rect x="385" y="200" width="150" height="68" fill="#FFFFFF" stroke="#2B2827" stroke-width="2.5"/>
+    <text x="460" y="227" text-anchor="middle" font-size="13" font-weight="800" fill="#2B2827">App Svc</text>
+    <rect x="420" y="238" width="80" height="18" fill="#2B2827"/>
+    <text x="460" y="251" text-anchor="middle" font-size="10" font-weight="700" fill="#FFFAEF">erupt-node</text>
+
+    <rect x="559" y="204" width="150" height="68" fill="#2B2827"/>
+    <rect x="555" y="200" width="150" height="68" fill="#FFD440" stroke="#2B2827" stroke-width="2.5"/>
+    <text x="630" y="227" text-anchor="middle" font-size="13" font-weight="800" fill="#2B2827">AI Svc</text>
+    <rect x="590" y="238" width="80" height="18" fill="#2B2827"/>
+    <text x="630" y="251" text-anchor="middle" font-size="10" font-weight="700" fill="#FFFAEF">erupt-node</text>
+
+    <rect x="725" y="200" width="150" height="68" fill="#FFFFFF" stroke="#2B2827" stroke-width="2" stroke-dasharray="6 4"/>
+    <text x="800" y="227" text-anchor="middle" font-size="13" font-weight="700" fill="#2B2827">Any service…</text>
+    <rect x="760" y="238" width="80" height="18" fill="#FFFFFF" stroke="#2B2827" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <text x="800" y="251" text-anchor="middle" font-size="10" font-weight="700" fill="#2B2827">erupt-node</text>
+  </g>
+
+  <!-- links: server <-> nodes -->
+  <line x1="310" y1="142" x2="130" y2="196" stroke="#2B2827" stroke-width="2.5" marker-end="url(#arw)"/>
+  <line x1="380" y1="142" x2="296" y2="196" stroke="#2B2827" stroke-width="2.5" marker-end="url(#arw)"/>
+  <line x1="455" y1="142" x2="459" y2="196" stroke="#2B2827" stroke-width="2.5" marker-end="url(#arw)"/>
+  <line x1="530" y1="142" x2="622" y2="196" stroke="#2B2827" stroke-width="2.5" marker-end="url(#arw)"/>
+  <line x1="600" y1="142" x2="788" y2="196" stroke="#2B2827" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arw)"/>
+
+  <!-- caption -->
+  <text x="450" y="308" text-anchor="middle" font-family="'Space Grotesk', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" fill="#6B6560">No Nacos / Eureka required · Nodes need no database tables · Permissions down to table / row / column / button</text>
+</svg>

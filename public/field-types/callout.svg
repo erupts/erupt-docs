@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250">
+  <style>.s{font-family:-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}</style>
+  <rect width="400" height="250" rx="10" fill="#ffffff"/>
+  <!-- info -->
+  <rect x="40" y="56" width="320" height="56" rx="8" fill="#e6f4ff" stroke="#91caff" stroke-width="1.5"/>
+  <circle cx="70" cy="84" r="10" fill="#1677ff"/>
+  <text x="70" y="89" text-anchor="middle" class="s" font-size="13" font-weight="700" fill="#ffffff" font-style="italic">i</text>
+  <text x="92" y="80" class="s" font-size="13" font-weight="600" fill="#262626">Heads up</text>
+  <rect x="92" y="90" width="200" height="7" rx="3.5" fill="#91caff" opacity=".55"/>
+  <!-- warning -->
+  <rect x="40" y="136" width="320" height="56" rx="8" fill="#fffbe6" stroke="#ffe58f" stroke-width="1.5"/>
+  <path d="M70,152 l12,21 h-24 z" fill="#faad14"/>
+  <line x1="70" y1="160" x2="70" y2="166" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="70" cy="170" r="1.3" fill="#ffffff"/>
+  <text x="92" y="160" class="s" font-size="13" font-weight="600" fill="#262626">Warning</text>
+  <rect x="92" y="170" width="164" height="7" rx="3.5" fill="#ffe58f"/>
+</svg>

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="132" viewBox="0 0 900 132" role="img" aria-label="查看 Erupt Pro 定价与购买流程">
+  <!-- card hard shadow -->
+  <rect x="10" y="10" width="884" height="116" fill="#2B2827"/>
+  <!-- card -->
+  <rect x="3.5" y="3.5" width="884" height="116" fill="#FFFAEF" stroke="#2B2827" stroke-width="3"/>
+
+  <!-- icon tile: hard shadow + yellow tile -->
+  <rect x="35" y="35" width="64" height="64" fill="#2B2827"/>
+  <rect x="29.5" y="29.5" width="64" height="64" fill="#FFD440" stroke="#2B2827" stroke-width="3"/>
+  <!-- pixel lightning bolt -->
+  <g fill="#2B2827">
+    <rect x="59" y="41" width="12" height="6"/>
+    <rect x="53" y="47" width="12" height="6"/>
+    <rect x="47" y="53" width="12" height="6"/>
+    <rect x="47" y="59" width="30" height="6"/>
+    <rect x="59" y="65" width="12" height="6"/>
+    <rect x="53" y="71" width="12" height="6"/>
+    <rect x="47" y="77" width="12" height="6"/>
+  </g>
+
+  <!-- title / subtitle -->
+  <text x="122" y="60" font-family="'Space Grotesk', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="24" font-weight="800" fill="#2B2827">Erupt Pro 商业模块</text>
+  <text x="122" y="92" font-family="'Space Grotesk', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="14" fill="#6B6560">完整源码 · 一次买断 · 全版本升级 · 技术支持 · 无商用限制</text>
+
+  <!-- pixel decorations -->
+  <rect x="560" y="28" width="10" height="10" fill="#3BC4E8" stroke="#2B2827" stroke-width="2"/>
+  <rect x="580" y="44" width="7" height="7" fill="#FE7DA8" stroke="#2B2827" stroke-width="2"/>
+  <rect x="568" y="90" width="8" height="8" fill="#FFD440" stroke="#2B2827" stroke-width="2"/>
+
+  <!-- button: hard shadow + pink button -->
+  <g>
+    <rect x="632" y="47" width="228" height="46" fill="#2B2827"/>
+    <rect x="626.5" y="41.5" width="228" height="46" fill="#FE7DA8" stroke="#2B2827" stroke-width="3"/>
+    <text x="650" y="71" font-family="'Space Grotesk', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="17" font-weight="800" fill="#2B2827">查看定价与购买流程</text>
+    <path d="M816 56 L824 64.5 L816 73 M804 64.5 H823" stroke="#2B2827" stroke-width="3" fill="none" stroke-linecap="square"/>
+  </g>
+</svg>

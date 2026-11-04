@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250">
+  <style>.s{font-family:-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}.m{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace}</style>
+  <rect width="400" height="250" rx="10" fill="#ffffff"/>
+  <text x="60" y="88" class="s" font-size="13" fill="#595959">Quantity</text>
+  <rect x="60" y="102" width="280" height="44" rx="6" fill="#ffffff" stroke="#d9d9d9" stroke-width="1.5"/>
+  <text x="76" y="129" class="m" font-size="15" fill="#262626">1024</text>
+  <!-- steppers -->
+  <line x1="298" y1="102" x2="298" y2="146" stroke="#d9d9d9" stroke-width="1.2"/>
+  <line x1="298" y1="124" x2="340" y2="124" stroke="#d9d9d9" stroke-width="1.2"/>
+  <path d="M312,117 l7,-7 l7,7" fill="none" stroke="#8c959f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M312,131 l7,7 l7,-7" fill="none" stroke="#8c959f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

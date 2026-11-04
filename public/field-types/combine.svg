@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250">
+  <style>.s{font-family:-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}</style>
+  <rect width="400" height="250" rx="10" fill="#ffffff"/>
+  <!-- fieldset -->
+  <rect x="40" y="54" width="320" height="160" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1.5"/>
+  <rect x="54" y="46" width="76" height="16" fill="#ffffff"/>
+  <text x="62" y="59" class="s" font-size="13" font-weight="600" fill="#4b5cc4">Address</text>
+  <!-- nested inputs -->
+  <text x="60" y="90" class="s" font-size="11" fill="#8c959f">Province</text>
+  <rect x="60" y="98" width="136" height="36" rx="5" fill="#ffffff" stroke="#d9d9d9" stroke-width="1.4"/>
+  <text x="72" y="121" class="s" font-size="12" fill="#262626">Zhejiang</text>
+  <text x="216" y="90" class="s" font-size="11" fill="#8c959f">City</text>
+  <rect x="216" y="98" width="124" height="36" rx="5" fill="#ffffff" stroke="#d9d9d9" stroke-width="1.4"/>
+  <text x="228" y="121" class="s" font-size="12" fill="#262626">Hangzhou</text>
+  <text x="60" y="158" class="s" font-size="11" fill="#8c959f">Street</text>
+  <rect x="60" y="166" width="280" height="36" rx="5" fill="#ffffff" stroke="#d9d9d9" stroke-width="1.4"/>
+  <text x="72" y="189" class="s" font-size="12" fill="#262626">No.1 West Lake Road</text>
+</svg>

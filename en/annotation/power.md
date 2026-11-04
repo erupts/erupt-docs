@@ -1,0 +1,243 @@
+# Permission Control @Power
+
+The `@Power` annotation gives fine-grained control over which CRUD operations are enabled on an Erupt UI — add, delete, edit, query, import, and export.
+
+> Controls the capabilities of an Erupt class: add, edit, delete, import, export, and more.
+
+## Usage
+
+```java
+@Erupt(
+       name = "Erupt",
+       power = @Power(add = true, delete = true, 
+                      edit = true, query = true, 
+                      importable = false, export = true)
+)
+public class EruptTest extends BaseModel {
+    
+}
+```
+
+## Attributes
+
+| Attribute | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `add` | boolean | true | Whether adding data is allowed |
+| `delete` | boolean | true | Whether deleting data is allowed |
+| `edit` | boolean | true | Whether editing data is allowed |
+| `query` | boolean | true | Whether querying data is allowed |
+| `viewDetails` | boolean | true | Whether viewing record details is allowed |
+| `export` | boolean | true | Whether exporting data is allowed (on by default since 2.4.0) |
+| `importable` | boolean | false | Whether importing data is allowed |
+| `print` | boolean | true | Whether printing row data is allowed (1.14.1+) |
+| `copy` | boolean | true | Whether to allow one-click row copy (2.0.0+) |
+| `cellEdit` | boolean | true | Whether rows may be edited one cell at a time in the table (2.2.0+) |
+| `batchEdit` | boolean | true | Whether one field of several selected rows may be set to the same value at once (2.4.0+) |
+| `ai` | boolean | true | Whether AI tools may inspect and operate on this model (2.1.0+) |
+| `comment` | boolean | true | Whether records of this model carry a comment stream; needs erupt-comment (2.3.0+) |
+| `revision` | boolean | true | Whether changes are kept as a field-level history with rollback; needs erupt-revision (2.4.0+) |
+| `powerHandler` | Class | - | Implement this interface to control permissions dynamically |
+
+## Annotation Definition
+
+```java
+public @interface Power {
+    boolean add() default true; // add data
+
+    boolean delete() default true; // delete data
+
+    boolean edit() default true; // edit data
+
+    boolean query() default true; // query data
+
+    boolean viewDetails() default true; // view record details
+
+    // export data, on by default since 2.4.0; who may export is the role's EXPORT button, columns opt out with @View(export = false)
+    boolean export() default true;
+
+    boolean importable() default false; // import data
+
+    boolean print() default true; // print row data (1.14.1+)
+
+    boolean copy() default true; // one-click row copy (2.0.0+)
+
+    // in-table cell editing (2.2.0+)
+    boolean cellEdit() default true;
+
+    // batch editing: set one field of several rows to the same value, every row runs the cell edit pipeline (2.4.0+)
+    boolean batchEdit() default true;
+
+    // whether AI tools may inspect and operate on this model (2.1.0+)
+    boolean ai() default true;
+
+    // whether records carry a comment stream, needs the erupt-comment module (2.3.0+)
+    boolean comment() default true;
+
+    // whether changes are kept as a field-level history with rollback, needs the erupt-revision module (2.4.0+)
+    boolean revision() default true;
+
+    // implement this interface to control permissions dynamically
+    Class<? extends PowerHandler> powerHandler() default PowerHandler.class;
+}
+```
+
+```java
+public interface PowerHandler {
+
+    /**
+     * Dynamically control feature permissions
+     * @param power  a simple POJO representing add/delete/edit/query capabilities
+     */
+    void handler(PowerObject power);
+
+}
+```
+
+## export: On by Default <Badge type="tip" text="v2.4.0+" />
+
+Since 2.4.0 `export` **defaults to `true`**. Like `add` / `edit` / `delete` / `viewDetails` it no longer has to be switched on model by model; **who may export is decided by the EXPORT button on the role's menu**.
+
+- To keep a column out of the export file use `@View(export = false)`; the model-level `export` stays on
+- `importable` remains opt-in; the import entry still needs an explicit `@Power(importable = true)`
+- Menus created from now on carry the EXPORT button automatically; **existing menus are left as they are**, so roles that were never granted export must be ticked by hand
+
+```java
+// sensitive data must not leave as a whole table
+@Erupt(name = "Salary", power = @Power(export = false))
+```
+
+## print: Print Permission <Badge type="tip" text="v1.14.1+" />
+
+`print` controls whether the row **print** entry is available. It is enabled by default; turn it off explicitly for models that do not need printing:
+
+```java
+@Erupt(name = "Example", power = @Power(print = false))
+```
+
+:::info print is a model flag, not a grant to read a record
+`print` on its own never lets a user read a record: the detail endpoint asks for `edit` or `viewDetails`, and template printing requires `print && (edit || viewDetails)` plus the record being inside the current user's row scope.
+:::
+
+## batchEdit: Batch Editing <Badge type="tip" text="v2.4.0+" />
+
+`batchEdit` controls whether the table toolbar offers a **Batch edit** button. Defaults to `true`. Select several rows, click it, and **one field** of all of them is set to the same value through `POST /erupt-api/data/modify/{erupt}/update-cells`.
+
+It is built on cell editing, and **every row runs the whole cell-edit pipeline**:
+
+- field eligibility (a field marked `@Edit(cellEdit = false)` is excluded from batch editing too)
+- whole-row validation and row permission
+- `DataProxy#beforeUpdate` / `afterUpdate`
+- the operate log and the edit event
+
+**When any row is rejected the whole batch rolls back**; there is no half-applied batch.
+
+```java
+// rows must be reviewed one by one: no batch editing, cell editing stays
+@Erupt(name = "Settlement", power = @Power(batchEdit = false))
+```
+
+:::tip
+`batchEdit` is enforced server side: once off, a crafted multi-row update is rejected as well. The button also requires `edit` permission; it disappears when either is off.
+:::
+
+## revision: Change History <Badge type="tip" text="v2.4.0+" />
+
+`revision` controls whether changes to records of this model are kept as a **field-level history** with rollback. Defaults to `true` and only matters when the [erupt-revision](/en/modules/erupt-revision) module is present.
+
+```java
+// a write-heavy log model has no use for a history
+@Erupt(name = "Access Log", power = @Power(revision = false))
+```
+
+## ai — AI Access Switch <Badge type="tip" text="v2.1.0+" />
+
+`ai` controls **whether AI tools may inspect and operate on this Erupt model**. Defaults to `true`.
+
+:::warning A hard gate that sits above role authorization
+`ai` is a **model-level** switch that outranks any role or menu grant: once `ai = false` is set on `@Erupt`, no amount of AI Tool permission granted to a role — and not even super-admin status — lets the AI read or modify that model's data through its tools.
+:::
+
+It is enforced inside the Erupt model toolbox of `erupt-ai-claw`:
+
+- **Model listing**: `eruptModelList` skips every model whose `power().ai()` is `false`, so the AI cannot even see that it exists.
+- **Per-model access**: `eruptSchema`, `eruptDataQuery`, `findEruptDataByPk`, `insertEruptData`, `updateEruptData` and `deleteEruptData` all run the same pre-check first. When `ai = false` it throws `AI access is disabled for this Erupt model: xxx`, and that check happens **before** the super-admin bypass branch.
+
+```java
+// Sensitive model: humans may still operate it in the admin UI, but the AI must not touch it
+@Erupt(
+    name = "User Account",
+    power = @Power(ai = false)
+)
+public class SensitiveModel extends BaseModel {
+
+}
+```
+
+For models that should stay AI-accessible, keeping `ai = true` is not enough on its own — the usual permission chain still applies: the current user must hold the menu permission for the model, and the matching `query` / `add` / `edit` / `delete` flags in `@Power` must be enabled.
+
+:::tip
+Erupts served by remote `erupt-cloud` nodes carry no local annotation, so the `ai` switch does not apply to them — the owning node runs its own permission pipeline.
+:::
+
+## cellEdit: In-table Cell Editing <Badge type="tip" text="v2.2.0+" />
+
+`cellEdit` controls whether the table offers **in-place cell editing**. Defaults to `true`.
+
+Double-click a cell (or its edit icon) to change one field without opening the row form. The floating editor is the row form's own `erupt-edit-type` component fed a one-field model, so value conversion, validation and the reference pickers behave identically, and the write goes through the single-field endpoint `POST /erupt-api/data/modify/{erupt}/update-cell`.
+
+```java
+// rows here should always be changed as a reviewed whole
+@Erupt(name = "Settlement", power = @Power(cellEdit = false))
+```
+
+### One cell is validated as a whole row
+
+The server serializes the stored row, patches it with the new value and **validates the whole row** — the same call the edit form makes. As a result:
+
+- Every field's rules take part, so a cross-field invariant cannot be broken one cell at a time
+- A [@Dynamic](/en/annotation/dynamic) rule that reads another field resolves correctly
+- `DataProxy#beforeUpdate` / `afterUpdate` see a complete entity
+- The operate log and edit event match a form submission
+
+### Two switches, both enforced server side
+
+| Level | Switch | Default |
+| --- | --- | --- |
+| Model | `@Erupt(power = @Power(cellEdit = false))` | `true` |
+| Field | `@Edit(cellEdit = false)` | `true` |
+
+Both are checked where the write happens: a crafted request to the single-field endpoint is rejected for a model or a field that opted out.
+
+The field-level switch is for values the form should still edit but a grid cell should not — typically anything that grants access or changes identity. The framework opts out of exactly those: a user's account, admin flag, roles, org scopes, expiry, IP allowlist and status; a role's code and status; an open api key's secret, validity and status; the API domain of an LLM or embedding model; the agent url; and the BI datasource connection string.
+
+```java
+@EruptField(
+    views = @View(title = "Status"),
+    // status may only move through the workflow, never by a grid edit
+    edit = @Edit(title = "Status", type = EditType.CHOICE, cellEdit = false)
+)
+private String status;
+```
+
+:::warning Fields rewritten in afterFetch
+The cell editor seeds itself from the row the table query returned. If `DataProxy.afterFetch` rewrites a field for display (masking, formatting, turning it into markup), that display value is what gets written back. Rewrite view-only fields, or mark an editable one `@Edit(cellEdit = false)`.
+:::
+
+:::tip
+Cell editing opens nothing new: the table still needs `edit` permission, tree menus and sub-tables have no grid to click, and collection fields (many-to-many and friends) stay out because the list query does not select their values.
+:::
+
+## comment: Comment Switch <Badge type="tip" text="v2.3.0+" />
+
+`comment` controls whether records of this model carry a **comment stream**. Defaults to `true`. It only matters when the [erupt-comment](/en/modules/erupt-comment) module is present: the record form panel then shows a comment entry in its title bar and table rows show a comment count.
+
+```java
+// a log model has nothing to discuss; turn comments off
+@Erupt(name = "Login Log", power = @Power(comment = false))
+```
+
+With it off the frontend hides the entry and the add-comment endpoint refuses writes as well. Reading and writing comments otherwise follows the model's own menu permission; nothing extra needs to be granted.
+
+## Notes
+
+When a user accesses the page, both **menu permissions** and annotation values are checked. If a feature is enabled in `@Power` but still not visible, verify that the corresponding menu permission is complete — any missing permissions must be added manually.

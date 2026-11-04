@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250">
+  <style>.s{font-family:-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}</style>
+  <rect width="400" height="250" rx="10" fill="#ffffff"/>
+  <rect x="40" y="40" width="320" height="170" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1.5"/>
+  <!-- header -->
+  <path d="M48,40 h304 a8,8 0 0 1 8,8 v24 h-320 v-24 a8,8 0 0 1 8,-8 z" fill="#fafafa"/>
+  <rect x="58" y="48" width="18" height="18" rx="4" fill="#ffffff" stroke="#d9d9d9" stroke-width="1.8"/>
+  <text x="96" y="62" class="s" font-size="12" font-weight="600" fill="#595959">Name</text>
+  <text x="250" y="62" class="s" font-size="12" font-weight="600" fill="#595959">Status</text>
+  <line x1="40" y1="72" x2="360" y2="72" stroke="#f0f0f0" stroke-width="1.5"/>
+  <!-- row 1 checked -->
+  <rect x="41" y="73" width="318" height="45" fill="#eef0fa" opacity=".6"/>
+  <rect x="58" y="86" width="18" height="18" rx="4" fill="#4b5cc4"/>
+  <path d="M62.5,95 l4,4 l7,-7" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="96" y="100" class="s" font-size="13" fill="#262626">Product A</text>
+  <circle cx="256" cy="95" r="4" fill="#52c41a"/>
+  <text x="268" y="100" class="s" font-size="12" fill="#595959">Active</text>
+  <line x1="40" y1="118" x2="360" y2="118" stroke="#f0f0f0" stroke-width="1.5"/>
+  <!-- row 2 checked -->
+  <rect x="41" y="119" width="318" height="45" fill="#eef0fa" opacity=".6"/>
+  <rect x="58" y="132" width="18" height="18" rx="4" fill="#4b5cc4"/>
+  <path d="M62.5,141 l4,4 l7,-7" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="96" y="146" class="s" font-size="13" fill="#262626">Product B</text>
+  <circle cx="256" cy="141" r="4" fill="#52c41a"/>
+  <text x="268" y="146" class="s" font-size="12" fill="#595959">Active</text>
+  <line x1="40" y1="164" x2="360" y2="164" stroke="#f0f0f0" stroke-width="1.5"/>
+  <!-- row 3 unchecked -->
+  <rect x="58" y="178" width="18" height="18" rx="4" fill="#ffffff" stroke="#d9d9d9" stroke-width="1.8"/>
+  <text x="96" y="192" class="s" font-size="13" fill="#595959">Product C</text>
+  <circle cx="256" cy="187" r="4" fill="#bfbfbf"/>
+  <text x="268" y="192" class="s" font-size="12" fill="#8c959f">Draft</text>
+</svg>

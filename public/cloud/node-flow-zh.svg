@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="250" viewBox="0 0 900 250" role="img" aria-label="接入三步走">
+  <defs>
+    <marker id="arw" markerWidth="10" markerHeight="10" refX="7" refY="4" orient="auto">
+      <path d="M0 0 L8 4 L0 8 Z" fill="#2B2827"/>
+    </marker>
+  </defs>
+
+  <!-- card -->
+  <rect x="10" y="10" width="884" height="234" fill="#2B2827"/>
+  <rect x="3.5" y="3.5" width="884" height="234" fill="#FFFAEF" stroke="#2B2827" stroke-width="3"/>
+
+  <!-- title -->
+  <rect x="36" y="30" width="14" height="14" fill="#FFD440" stroke="#2B2827" stroke-width="2"/>
+  <text x="62" y="43" font-family="'Space Grotesk', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="17" font-weight="800" fill="#2B2827">三步接入 · 服务即管理后台</text>
+  <rect x="836" y="28" width="9" height="9" fill="#3BC4E8" stroke="#2B2827" stroke-width="2"/>
+  <rect x="852" y="40" width="7" height="7" fill="#FE7DA8" stroke="#2B2827" stroke-width="2"/>
+
+  <g font-family="'Space Grotesk', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+    <rect x="54" y="92" width="240" height="84" fill="#2B2827"/>
+    <rect x="50" y="88" width="240" height="84" fill="#FFD440" stroke="#2B2827" stroke-width="2.5"/>
+    <text x="170" y="124" text-anchor="middle" font-size="15" font-weight="800" fill="#2B2827">① 引入 erupt-cloud-node</text>
+    <text x="170" y="150" text-anchor="middle" font-size="12" font-weight="700" fill="#2B2827">一个依赖 · 无数据库表依赖</text>
+
+    <rect x="334" y="92" width="240" height="84" fill="#2B2827"/>
+    <rect x="330" y="88" width="240" height="84" fill="#3BC4E8" stroke="#2B2827" stroke-width="2.5"/>
+    <text x="450" y="124" text-anchor="middle" font-size="15" font-weight="800" fill="#2B2827">② 注解定义配置类</text>
+    <text x="450" y="150" text-anchor="middle" font-size="12" font-weight="700" fill="#2B2827">@Erupt 声明字段与行为</text>
+
+    <rect x="614" y="92" width="240" height="84" fill="#2B2827"/>
+    <rect x="610" y="88" width="240" height="84" fill="#FE7DA8" stroke="#2B2827" stroke-width="2.5"/>
+    <text x="730" y="124" text-anchor="middle" font-size="15" font-weight="800" fill="#2B2827">③ 后台自动出现菜单</text>
+    <text x="730" y="150" text-anchor="middle" font-size="12" font-weight="700" fill="#2B2827">权限 · 审计 · 实时生效</text>
+  </g>
+
+  <!-- arrows -->
+  <line x1="292" y1="130" x2="324" y2="130" stroke="#2B2827" stroke-width="2.5" marker-end="url(#arw)"/>
+  <line x1="572" y1="130" x2="604" y2="130" stroke="#2B2827" stroke-width="2.5" marker-end="url(#arw)"/>
+
+  <!-- caption -->
+  <text x="450" y="214" text-anchor="middle" font-family="'Space Grotesk', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="12" fill="#6B6560">0 前端代码 · 无需接口暴露与网关对接 · 配置界面由 erupt 自动渲染</text>
+</svg>

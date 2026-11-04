@@ -1,0 +1,389 @@
+---
+aside: false
+---
+
+<script setup>
+import { ref, computed } from 'vue'
+
+const search = ref('')
+
+const groups = [
+    {
+        title: 'AI Modules',
+        items: [
+            {icon: '🐴', name: 'Erupt AI Harness', artifact: 'erupt-ai', desc: 'Deep LLM integration, build AI apps with low code', link: '/en/modules/erupt-ai/'},
+            {icon: '🦞', name: 'Erupt AI Claw', artifact: 'erupt-ai-claw', desc: 'Drive your server with natural language, chat with data & business', link: '/en/modules/erupt-ai-claw/'},
+            {icon: '🎨', name: 'Erupt AI Canvas', artifact: 'erupt-ai-canvas', desc: 'Generate a page from one sentence, wired live to the Erupt backend', link: '/en/modules/erupt-ai-canvas'},
+            {icon: '📖', name: 'Erupt AI RAG', artifact: 'erupt-ai-rag', desc: 'Knowledge bases with vector retrieval, AI-driven Agentic RAG', link: '/en/modules/erupt-ai-rag'},
+            {icon: '👩‍💻', name: 'Erupt AI Staff', artifact: 'erupt-ai-staff', desc: 'AI digital staff running scheduled tasks and pushing work reports', link: '/en/modules/erupt-ai-staff'},
+            {icon: '🔀', name: 'Erupt AI Decision', artifact: 'erupt-ai-decision', desc: 'Typed, probability-backed judgements your code can branch on', link: '/en/modules/erupt-ai-decision'},
+            {icon: '🤖', name: 'Erupt AI Dev', artifact: 'erupt-ai-dev', desc: 'AI software delivery: a requirement pool, coding CLIs, review and push', link: '/en/modules/erupt-ai-dev'},
+            {icon: '🛠️', name: 'Erupt AI Skills', artifact: 'claude skills', desc: 'Claude skill pack for AI-assisted Erupt development', link: 'https://github.com/plinian/erupt-skill', external: true},
+        ],
+    },
+    {
+        title: 'Core Modules',
+        items: [
+            {icon: '🔐', name: 'Erupt Upms', artifact: 'erupt-upms', desc: 'Full permission management: users, roles, menus, orgs', link: '/en/modules/erupt-upms/'},
+            {icon: '📄', name: 'Erupt Tpl', artifact: 'erupt-tpl', desc: 'Custom HTML template pages with multiple UI kits', link: '/en/modules/erupt-tpl/'},
+            {icon: '🖥️', name: 'Erupt Web', artifact: 'erupt-web', desc: 'Angular frontend source, shipped as a Jar', link: '/en/modules/erupt-web'},
+            {icon: '🎨', name: 'Erupt Designer', artifact: 'erupt-designer', desc: 'Drag-and-drop entity designer at runtime, exports annotation code', link: '/en/modules/erupt-designer'},
+        ],
+    },
+    {
+        title: 'Data Connectors',
+        items: [
+            {icon: '🗃️', name: 'Erupt Jpa', artifact: 'erupt-data-jpa', desc: 'Deeply enhanced JPA layer, essential for most projects', link: '/en/modules/erupt-jpa'},
+            {icon: '🍃', name: 'Erupt Mongodb', artifact: 'erupt-data-mongodb', desc: 'MongoDB NoSQL data source support', link: '/en/modules/erupt-mongodb'},
+            {icon: '🧮', name: 'Erupt Jdbc', artifact: 'erupt-data-jdbc', desc: 'Plain JDBC single-table data source, no JPA mapping needed', link: '/en/modules/erupt-jdbc'},
+            {icon: '🔗', name: 'Erupt Http', artifact: 'erupt-data-http', desc: 'REST APIs as data sources, connect to any HTTP service', link: '/en/modules/erupt-http'},
+            {icon: '🔎', name: 'Erupt Es', artifact: 'erupt-data-es', desc: 'Manage and search Elasticsearch index data', link: '/en/modules/erupt-es'},
+            {icon: '🧰', name: 'Erupt Redis', artifact: 'erupt-data-redis', desc: 'Visual management of Redis key-value data', link: '/en/modules/erupt-redis'},
+            {icon: '⚡', name: 'Erupt Memory', artifact: 'erupt-data-memory', desc: 'In-memory data source, manage data without a database', link: '/en/modules/erupt-memory'},
+            {icon: '📁', name: 'Erupt File', artifact: 'erupt-data-file', desc: 'Files as tables: CSV, JSONL, TSV, INI and more', link: '/en/modules/erupt-file'},
+            {icon: '☸️', name: 'Erupt K8s', artifact: 'erupt-data-k8s', desc: 'Visual management of Kubernetes cluster resources', link: '/en/modules/erupt-k8s'},
+            {icon: '📇', name: 'Erupt Ldap', artifact: 'erupt-data-ldap', desc: 'LDAP directory service data source', link: '/en/modules/erupt-ldap'},
+            {icon: '📊', name: 'Erupt Feishu', artifact: 'erupt-data-feishu', desc: 'Feishu Bitable data source, manage records directly', link: '/en/modules/erupt-feishu'},
+            {icon: '📓', name: 'Erupt Notion', artifact: 'erupt-data-notion', desc: 'Notion database data source, pages as rows', link: '/en/modules/erupt-notion'},
+            {icon: '🪣', name: 'Erupt S3', artifact: 'erupt-data-s3', desc: 'S3-compatible object storage: attachment upload & object browsing', link: '/en/modules/erupt-s3/'},
+            {icon: '📋', name: 'Erupt DingTalk', artifact: 'erupt-data-dingtalk', desc: 'DingTalk Notable data source, manage records directly', link: '/en/modules/erupt-dingtalk'},
+            {icon: '🗂️', name: 'Erupt Airtable', artifact: 'erupt-data-airtable', desc: 'Airtable data source, table records as rows', link: '/en/modules/erupt-airtable'},
+        ],
+    },
+    {
+        title: 'Tool Modules',
+        items: [
+            {icon: '⌨️', name: 'Erupt Terminal', artifact: 'erupt-terminal', desc: 'Server shell terminal right in the browser', link: '/en/modules/erupt-terminal'},
+            {icon: '🖥️', name: 'Erupt Remote', artifact: 'erupt-remote', desc: 'VNC desktops and SSH shells for remote hosts, in the browser', link: '/en/modules/erupt-remote'},
+            {icon: '🕸️', name: 'Erupt Atlas', artifact: 'erupt-atlas', desc: 'Model relation graph, lineage tracing and structural audit', link: '/en/modules/erupt-atlas'},
+            {icon: '💬', name: 'Erupt Comment', artifact: 'erupt-comment', desc: 'Comment on any record: @mentions, pinned and resolved threads', link: '/en/modules/erupt-comment'},
+            {icon: '🔑', name: 'Erupt SSO', artifact: 'erupt-sso', desc: 'OAuth2 / OIDC single sign-on, providers configured in the admin without a restart', link: '/en/modules/erupt-sso'},
+            {icon: '🔗', name: 'Erupt Share', artifact: 'erupt-share', desc: 'One link opens a form or any menu page to the public, with expiry, visit cap and password', link: '/en/modules/erupt-share'},
+            {icon: '📡', name: 'Erupt Webhook', artifact: 'erupt-webhook', desc: 'Add / update / delete events POSTed to external URLs, HMAC-signed with retries', link: '/en/modules/erupt-webhook'},
+            {icon: '🎛️', name: 'Erupt Config', artifact: 'erupt-config', desc: 'Runtime settings layered by Spring profile, applied without a restart', link: '/en/modules/erupt-config'},
+            {icon: '🕘', name: 'Erupt Revision', artifact: 'erupt-revision', desc: 'Field-level record history, rollback and a recycle bin', link: '/en/modules/erupt-revision'},
+            {icon: '🗄️', name: 'Erupt File Center', artifact: 'erupt-file-center', desc: 'Finder-style file center over the upload directory, local folders, S3 and SFTP', link: '/en/modules/erupt-file-center'},
+            {icon: '🔌', name: 'Erupt Websocket', artifact: 'erupt-websocket', desc: 'WebSocket real-time messaging and data push', link: '/en/modules/erupt-websocket'},
+            {icon: '⚙️', name: 'Erupt Generator', artifact: 'erupt-generator', desc: 'Visual generator for Erupt entity classes', link: '/en/modules/erupt-generator'},
+            {icon: '⏰', name: 'Erupt Job', artifact: 'erupt-job', desc: 'Visual scheduled jobs with Cron config and logs', link: '/en/modules/erupt-job'},
+            {icon: '📢', name: 'Erupt Notice', artifact: 'erupt-notice', desc: 'Announcements and in-app messages', link: '/en/modules/erupt-notice'},
+            {icon: '📈', name: 'Erupt Monitor', artifact: 'erupt-monitor', desc: 'Live CPU, JVM, connection pool and online-user monitoring', link: '/en/modules/erupt-monitor'},
+            {icon: '🪄', name: 'Erupt Magic Api', artifact: 'erupt-magic-api', desc: 'Online IDE for building HTTP APIs in the browser', link: '/en/modules/erupt-magic-api'},
+            {icon: '🖨️', name: 'Erupt Print', artifact: 'erupt-print', desc: 'HTML-template printing for receipts and reports', link: '/en/modules/erupt-print'},
+            {icon: '📊', name: 'Erupt Report', artifact: 'erupt-report', desc: 'Reports and charts defined in pure SQL, multi-dimensional analysis', link: '/en/modules/erupt-report/'},
+            {icon: '☁️', name: 'Erupt Cloud', artifact: 'erupt-cloud', desc: 'Distributed config center, database tables replace yml', link: '/en/modules/erupt-cloud'},
+            {icon: '🛰️', name: 'Erupt Cloud Server', artifact: 'erupt-cloud-server', desc: 'Node management hub: registration and dispatch', link: '/en/modules/cloud-server'},
+            {icon: '📦', name: 'Erupt Cloud Node', artifact: 'erupt-cloud-node', desc: 'Distributed micro node managed by Cloud Server', link: '/en/modules/cloud-node'},
+            {icon: '🪶', name: 'Erupt Cloud Node Lite', artifact: 'erupt-cloud-node-lite', desc: 'A node without Spring, with Solon / Quarkus / Micronaut / Vert.x / Ktor / Servlet adapters', link: '/en/modules/cloud-node-lite'},
+            {icon: '🌐', name: 'Erupt SDK', artifact: 'erupt-sdk', desc: 'Node SDKs for Python, Go, TypeScript, PHP, .NET, Rust, Ruby and Swift: models in any language as admin pages', link: '/en/modules/erupt-sdk/'},
+        ],
+    },
+    {
+        title: 'Commercial Modules',
+        badge: 'PRO',
+        items: [
+            {icon: '🏢', name: 'Erupt SaaS Multi-tenant', artifact: 'erupt-tenant', desc: 'Reuse features across tenants with full data isolation', link: '/en/modules/pro/erupt-tenant/', pro: true},
+            {icon: '🔀', name: 'Erupt Flow', artifact: 'erupt-flow', desc: 'Universal workflow engine with visual process designer', link: '/en/modules/pro/erupt-flow/', pro: true},
+            {icon: '🧊', name: 'Erupt Cube Metrics Platform', artifact: 'erupt-cube', desc: 'Semantic-layer BI: model with annotations, analyze by drag-and-drop', link: '/en/modules/pro/erupt-cube', pro: true},
+        ],
+    },
+    {
+        title: 'Open-source Apps',
+        badge: 'erupt-io',
+        items: [
+            {icon: '☸️', name: 'Erupt K8s Dashboard', artifact: 'erupt-k8s-dashboard', desc: 'Ready-made Kubernetes admin: logs, web terminal, scaling, YAML editing', link: '/en/modules/apps/erupt-k8s-dashboard'},
+            {icon: '📋', name: 'Erupt PM', artifact: 'erupt-pm', desc: 'Project management: projects, iterations, tasks, worklogs, risks; board / gantt / calendar views', link: '/en/modules/apps/erupt-pm'},
+            {icon: '🧑‍💼', name: 'Erupt Talent', artifact: 'erupt-talent', desc: 'End-to-end recruiting: resumes, interviews, offer approval and mail, onboarding, funnel', link: '/en/modules/apps/erupt-talent'},
+            {icon: '✉️', name: 'Erupt SMS', artifact: 'erupt-sms', desc: 'SMS across vendors on SMS4J: templates, send log, verification codes, blacklist', link: '/en/modules/apps/erupt-sms'},
+            {icon: '💬', name: 'Erupt WeChat', artifact: 'erupt-wechat', desc: 'WeChat Official Account admin: fans, menus, auto replies, materials, mass messages, stats', link: '/en/modules/apps/erupt-wechat'},
+            {icon: '📱', name: 'Erupt MiniApp', artifact: 'erupt-miniapp', desc: 'WeChat Mini Program admin: sign-in, subscribe messages, codes, content checks, stats', link: '/en/modules/apps/erupt-miniapp'},
+        ],
+    },
+    {
+        title: 'Third-party Modules',
+        badge: 'Community',
+        items: [
+            {icon: '🔍', name: 'Erupt Dsl', artifact: 'erupt-dsl', desc: 'Dynamic ORM queries built with a DSL syntax', link: '/en/modules/third-party/erupt-dsl'},
+            {icon: '🧩', name: 'Erupt Pf4j', artifact: 'erupt-pf4j', desc: 'Dynamic plugin loading powered by PF4J', link: '/en/modules/third-party/erupt-pf4j'},
+            {icon: '🛢️', name: 'EZDML', artifact: 'ezdml', desc: 'Database modeling tool that generates Erupt entity code', link: '/en/modules/third-party/ezdml'},
+            {icon: '🕷️', name: 'MP Crawler', artifact: 'mp-crawler', desc: 'WeChat official-account content crawler and manager', link: '/en/modules/third-party/mp-crawler'},
+            {icon: '🗳️', name: 'Erupt Vote', artifact: 'erupt-vote', desc: 'Voting plugin supporting multiple voting scenarios', link: '/en/modules/third-party/erupt-vote'},
+        ],
+    },
+]
+
+const filtered = computed(() => {
+    const q = search.value.trim().toLowerCase()
+    if (!q) return groups
+    return groups
+        .map(g => ({...g, items: g.items.filter(i => (i.name + i.artifact + i.desc).toLowerCase().includes(q))}))
+        .filter(g => g.items.length > 0)
+})
+</script>
+
+# Modules Overview
+
+Erupt follows a modular design — core capabilities are split into independent Maven modules so you can pull in only what you need, all versioned in lockstep with the core.
+
+<div class="md-search">
+    <svg class="md-search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input v-model="search" placeholder="Search modules, e.g. upms, job, workflow..." />
+</div>
+
+<template v-for="g in filtered" :key="g.title">
+    <h2 class="md-group-title">{{ g.title }}<span v-if="g.badge" class="md-badge">{{ g.badge }}</span><span class="md-count">{{ g.items.length }}</span></h2>
+    <div class="md-grid">
+        <a v-for="item in g.items" :key="item.artifact" class="md-card" :href="item.link" :target="item.external ? '_blank' : undefined" :rel="item.external ? 'noreferrer' : undefined">
+            <span class="md-icon">{{ item.icon }}</span>
+            <span class="md-body">
+                <span class="md-head">
+                    <b>{{ item.name }}</b>
+                    <i v-if="item.pro" class="md-pro">PRO</i>
+                    <i v-if="item.external" class="md-ext">↗</i>
+                </span>
+                <code class="md-artifact">{{ item.artifact }}</code>
+                <span class="md-desc">{{ item.desc }}</span>
+            </span>
+        </a>
+    </div>
+</template>
+
+<p v-if="filtered.length === 0" class="md-empty">No matching modules found</p>
+
+## Installation
+
+All official modules share the same version as the erupt core, managed via `${erupt.version}`:
+
+```xml
+<dependency>
+    <groupId>xyz.erupt</groupId>
+    <artifactId>module-name</artifactId>
+    <version>${erupt.version}</version>
+</dependency>
+```
+
+<style scoped>
+.md-search {
+    position: relative;
+    margin: 24px 0 8px;
+}
+
+.md-search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(20, 18, 11, .45);
+    pointer-events: none;
+}
+
+.dark .md-search-icon {
+    color: rgba(240, 232, 214, .45);
+}
+
+.md-search input {
+    width: 100%;
+    padding: 10px 16px 10px 40px;
+    border: 2px solid #14120B;
+    border-radius: 0;
+    background: #FFFFFF;
+    color: #14120B;
+    font-size: 14px;
+    outline: none;
+    transition: box-shadow .15s;
+}
+
+.dark .md-search input {
+    border-color: #F0E8D6;
+    background: #201C12;
+    color: #F0E8D6;
+}
+
+.md-search input:focus {
+    box-shadow: 3px 3px 0 #4FC8EC;
+}
+
+.md-group-title {
+    margin: 32px 0 4px;
+    padding-top: 16px;
+    border-top: none;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.md-badge {
+    font-family: var(--vp-font-family-mono);
+    margin-left: 8px;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: .05em;
+    color: #14120B;
+    background: #F585B4;
+    border: 1.5px solid #14120B;
+    border-radius: 0;
+    padding: 1px 7px;
+    vertical-align: 3px;
+}
+
+.md-count {
+    font-family: var(--vp-font-family-mono);
+    margin-left: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    color: #14120B;
+    background: #4FC8EC;
+    border: 1.5px solid #14120B;
+    border-radius: 0;
+    padding: 1px 8px;
+    vertical-align: 2px;
+}
+
+.md-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 16px 0 8px;
+}
+
+@media (max-width: 960px) {
+    .md-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 560px) {
+    .md-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.md-card {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    border: 2px solid #14120B;
+    border-radius: 0;
+    padding: 14px;
+    text-decoration: none !important;
+    color: inherit !important;
+    background: #FFFFFF;
+    transition: box-shadow .15s, transform .15s;
+}
+
+.dark .md-card {
+    border-color: #F0E8D6;
+    background: #201C12;
+}
+
+.md-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 #14120B;
+}
+
+.dark .md-card:hover {
+    box-shadow: 5px 5px 0 #F0E8D6;
+}
+
+.md-icon {
+    flex: 0 0 auto;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    background: #FFF9EE;
+    border: 1.5px solid #14120B;
+    border-radius: 0;
+}
+
+.dark .md-icon {
+    background: #1A170F;
+    border-color: #F0E8D6;
+}
+
+.md-body {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.md-head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.md-head b {
+    font-size: 14px;
+    font-weight: 800;
+    color: #14120B;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dark .md-head b {
+    color: #F0E8D6;
+}
+
+.md-pro {
+    flex: 0 0 auto;
+    font-style: normal;
+    font-family: var(--vp-font-family-mono);
+    font-size: 9.5px;
+    font-weight: 800;
+    color: #14120B;
+    background: #F585B4;
+    border: 1.5px solid #14120B;
+    border-radius: 0;
+    padding: 1px 5px;
+}
+
+.md-ext {
+    font-style: normal;
+    font-size: 12px;
+    color: rgba(20, 18, 11, .5);
+}
+
+.dark .md-ext {
+    color: rgba(240, 232, 214, .5);
+}
+
+.md-artifact {
+    font-family: var(--vp-font-family-mono);
+    font-size: 11.5px;
+    color: rgba(20, 18, 11, .5);
+    background: none;
+    padding: 0;
+}
+
+.dark .md-artifact {
+    color: rgba(240, 232, 214, .5);
+}
+
+.md-desc {
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: #5C5647;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.dark .md-desc {
+    color: #B0A78F;
+}
+
+.md-empty {
+    margin: 48px 0;
+    text-align: center;
+    color: #5C5647;
+}
+
+.dark .md-empty {
+    color: #B0A78F;
+}
+</style>

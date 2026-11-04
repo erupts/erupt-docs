@@ -1,0 +1,347 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://docs.erupt.xyz/schema/erupt-cube.schema.json",
+  "title": "Erupt Cube",
+  "type": "object",
+  "required": [
+    "name",
+    "sql"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "code": {
+      "type": "string",
+      "description": "Cube code (registry key), defaults to the file name"
+    },
+    "dataProxy": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "Fully qualified class name, or a cube code for a join target"
+      }
+    },
+    "datasource": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "dimensions": {
+      "type": "object",
+      "description": "Dimensions keyed by field name",
+      "additionalProperties": {
+        "$ref": "#/definitions/Dimension"
+      }
+    },
+    "explores": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Explore"
+      }
+    },
+    "expose": {
+      "type": "boolean",
+      "default": true
+    },
+    "measures": {
+      "type": "object",
+      "description": "Measures keyed by field name",
+      "additionalProperties": {
+        "$ref": "#/definitions/Measure"
+      }
+    },
+    "name": {
+      "type": "string"
+    },
+    "parameters": {
+      "type": "object",
+      "description": "Velocity parameters keyed by name",
+      "additionalProperties": {
+        "$ref": "#/definitions/Parameter"
+      }
+    },
+    "prompt": {
+      "type": "string"
+    },
+    "sql": {
+      "type": "string"
+    },
+    "sqlType": {
+      "type": "string",
+      "enum": [
+        "TABLE_NAME",
+        "SUB_QUERY"
+      ],
+      "default": "SUB_QUERY"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "definitions": {
+    "Dimension": {
+      "type": "object",
+      "required": [
+        "title"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "hidden": {
+          "type": "boolean",
+          "default": false
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "sql": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "title": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "AUTO",
+            "NUMBER",
+            "STRING",
+            "DATE"
+          ],
+          "default": "AUTO"
+        }
+      }
+    },
+    "Explore": {
+      "type": "object",
+      "required": [
+        "code",
+        "name"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "dimensions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "hidden": {
+          "type": "boolean",
+          "default": false
+        },
+        "joins": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Join"
+          }
+        },
+        "measures": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ExploreParameter"
+          }
+        },
+        "where": {
+          "type": "string"
+        }
+      }
+    },
+    "ExploreParameter": {
+      "type": "object",
+      "required": [
+        "code",
+        "value"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "Join": {
+      "type": "object",
+      "required": [
+        "cube",
+        "on"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "cube": {
+          "type": "string",
+          "description": "Fully qualified class name, or a cube code for a join target"
+        },
+        "dimensions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "measures": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "on": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "default": "full join"
+        }
+      }
+    },
+    "Measure": {
+      "type": "object",
+      "required": [
+        "sql",
+        "title"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "drillFields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "drillFilter": {
+          "type": "string"
+        },
+        "hidden": {
+          "type": "boolean",
+          "default": false
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "sql": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "title": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "AUTO",
+            "NUMBER",
+            "STRING",
+            "DATE"
+          ],
+          "default": "AUTO"
+        }
+      }
+    },
+    "Parameter": {
+      "type": "object",
+      "required": [
+        "title"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "hidden": {
+          "type": "boolean",
+          "default": false
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "AUTO",
+            "NUMBER",
+            "STRING",
+            "DATE"
+          ],
+          "default": "STRING"
+        },
+        "vl": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VL"
+          }
+        }
+      }
+    },
+    "VL": {
+      "type": "object",
+      "required": [
+        "label",
+        "value"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "type": "string"
+        },
+        "desc": {
+          "type": "string"
+        },
+        "disable": {
+          "type": "boolean",
+          "default": false
+        },
+        "extra": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

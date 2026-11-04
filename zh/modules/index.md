@@ -1,0 +1,389 @@
+---
+aside: false
+---
+
+<script setup>
+import { ref, computed } from 'vue'
+
+const search = ref('')
+
+const groups = [
+    {
+        title: 'AI 模块',
+        items: [
+            {icon: '🐴', name: 'Erupt AI Harness', artifact: 'erupt-ai', desc: '大模型深度集成，低代码开发 AI 应用', link: '/zh/modules/erupt-ai/'},
+            {icon: '🦞', name: 'Erupt AI Claw', artifact: 'erupt-ai-claw', desc: '自然语言驱动服务器，对话式操作数据与业务', link: '/zh/modules/erupt-ai-claw/'},
+            {icon: '🎨', name: 'Erupt AI Canvas', artifact: 'erupt-ai-canvas', desc: '一句话生成页面，数据实时来自 Erupt 后端', link: '/zh/modules/erupt-ai-canvas'},
+            {icon: '📖', name: 'Erupt AI RAG', artifact: 'erupt-ai-rag', desc: '知识库与向量检索，AI 自主决策的 Agentic RAG', link: '/zh/modules/erupt-ai-rag'},
+            {icon: '👩‍💻', name: 'Erupt AI Staff', artifact: 'erupt-ai-staff', desc: 'AI 数字员工，定时执行任务并推送工作报告', link: '/zh/modules/erupt-ai-staff'},
+            {icon: '🔀', name: 'Erupt AI Decision', artifact: 'erupt-ai-decision', desc: '把大模型的判断变成带概率的类型化答案，代码直接分支', link: '/zh/modules/erupt-ai-decision'},
+            {icon: '🤖', name: 'Erupt Ai Dev', artifact: 'erupt-ai-dev', desc: 'AI 软件交付：需求池、编码 CLI 自动开发、评审验收后推送', link: '/zh/modules/erupt-ai-dev'},
+            {icon: '🛠️', name: 'Erupt AI Skills', artifact: 'claude skills', desc: 'Claude 技能包，AI 辅助 Erupt 开发', link: 'https://github.com/plinian/erupt-skill', external: true},
+        ],
+    },
+    {
+        title: '核心模块',
+        items: [
+            {icon: '🔐', name: 'Erupt Upms', artifact: 'erupt-upms', desc: '用户、角色、菜单、组织的完整权限管理', link: '/zh/modules/erupt-upms/'},
+            {icon: '📄', name: 'Erupt Tpl', artifact: 'erupt-tpl', desc: '自定义 HTML 模板页面，多套 UI 库集成', link: '/zh/modules/erupt-tpl/'},
+            {icon: '🖥️', name: 'Erupt Web', artifact: 'erupt-web', desc: 'Angular 前端源码，Jar 形式分发', link: '/zh/modules/erupt-web'},
+            {icon: '🎨', name: 'Erupt Designer', artifact: 'erupt-designer', desc: '运行时拖拽设计实体模型，可导出注解代码', link: '/zh/modules/erupt-designer'},
+        ],
+    },
+    {
+        title: '数据连接',
+        items: [
+            {icon: '🗃️', name: 'Erupt Jpa', artifact: 'erupt-data-jpa', desc: 'JPA 数据库能力高度扩展，多数项目必选', link: '/zh/modules/erupt-jpa'},
+            {icon: '🍃', name: 'Erupt Mongodb', artifact: 'erupt-data-mongodb', desc: 'MongoDB NoSQL 数据源支持', link: '/zh/modules/erupt-mongodb'},
+            {icon: '🧮', name: 'Erupt Jdbc', artifact: 'erupt-data-jdbc', desc: '纯 JDBC 单表数据源，无需 JPA 实体映射', link: '/zh/modules/erupt-jdbc'},
+            {icon: '🔗', name: 'Erupt Http', artifact: 'erupt-data-http', desc: 'REST 接口即数据源，对接任意 HTTP 服务', link: '/zh/modules/erupt-http'},
+            {icon: '🔎', name: 'Erupt Es', artifact: 'erupt-data-es', desc: 'Elasticsearch 索引数据的管理与检索', link: '/zh/modules/erupt-es'},
+            {icon: '🧰', name: 'Erupt Redis', artifact: 'erupt-data-redis', desc: 'Redis 键值数据的可视化管理', link: '/zh/modules/erupt-redis'},
+            {icon: '⚡', name: 'Erupt Memory', artifact: 'erupt-data-memory', desc: '内存数据源，无需数据库即可管理数据', link: '/zh/modules/erupt-memory'},
+            {icon: '📁', name: 'Erupt File', artifact: 'erupt-data-file', desc: '文件即数据表，CSV、JSONL、TSV、INI 等格式', link: '/zh/modules/erupt-file'},
+            {icon: '☸️', name: 'Erupt K8s', artifact: 'erupt-data-k8s', desc: 'Kubernetes 集群资源的可视化管理', link: '/zh/modules/erupt-k8s'},
+            {icon: '📇', name: 'Erupt Ldap', artifact: 'erupt-data-ldap', desc: 'LDAP 目录服务数据源', link: '/zh/modules/erupt-ldap'},
+            {icon: '📊', name: 'Erupt Feishu', artifact: 'erupt-data-feishu', desc: '飞书多维表格数据源，直接管理 Bitable 记录', link: '/zh/modules/erupt-feishu'},
+            {icon: '📓', name: 'Erupt Notion', artifact: 'erupt-data-notion', desc: 'Notion 数据库数据源，页面即数据行', link: '/zh/modules/erupt-notion'},
+            {icon: '🪣', name: 'Erupt S3', artifact: 'erupt-data-s3', desc: 'S3 兼容对象存储，附件上传与对象浏览', link: '/zh/modules/erupt-s3/'},
+            {icon: '📋', name: 'Erupt DingTalk', artifact: 'erupt-data-dingtalk', desc: '钉钉多维表数据源，直接管理 Notable 记录', link: '/zh/modules/erupt-dingtalk'},
+            {icon: '🗂️', name: 'Erupt Airtable', artifact: 'erupt-data-airtable', desc: 'Airtable 数据源，表格记录即数据行', link: '/zh/modules/erupt-airtable'},
+        ],
+    },
+    {
+        title: '工具模块',
+        items: [
+            {icon: '⌨️', name: 'Erupt Terminal', artifact: 'erupt-terminal', desc: '浏览器内直连服务器 Shell 终端', link: '/zh/modules/erupt-terminal'},
+            {icon: '🖥️', name: 'Erupt Remote', artifact: 'erupt-remote', desc: '浏览器直连远程主机，VNC 桌面与 SSH 终端', link: '/zh/modules/erupt-remote'},
+            {icon: '🕸️', name: 'Erupt Atlas', artifact: 'erupt-atlas', desc: '模型关系图谱、血缘追溯与结构审计', link: '/zh/modules/erupt-atlas'},
+            {icon: '💬', name: 'Erupt Comment', artifact: 'erupt-comment', desc: '任意记录可评论，@提及通知、置顶与已解决', link: '/zh/modules/erupt-comment'},
+            {icon: '🔑', name: 'Erupt SSO', artifact: 'erupt-sso', desc: 'OAuth2 / OIDC 单点登录，后台配置认证源无需重启', link: '/zh/modules/erupt-sso'},
+            {icon: '🔗', name: 'Erupt Share', artifact: 'erupt-share', desc: '一条链接对外开放表单或任意菜单页面，可过期、限次、设密码', link: '/zh/modules/erupt-share'},
+            {icon: '📡', name: 'Erupt Webhook', artifact: 'erupt-webhook', desc: '数据新增 / 修改 / 删除事件推送到外部 URL，HMAC 签名与重试', link: '/zh/modules/erupt-webhook'},
+            {icon: '🎛️', name: 'Erupt Config', artifact: 'erupt-config', desc: '按 Spring Profile 分层的运行时配置，改完即生效无需重启', link: '/zh/modules/erupt-config'},
+            {icon: '🕘', name: 'Erupt Revision', artifact: 'erupt-revision', desc: '字段级记录历史、回滚与回收站', link: '/zh/modules/erupt-revision'},
+            {icon: '🗄️', name: 'Erupt File Center', artifact: 'erupt-file-center', desc: 'Finder 式文件中心，浏览上传目录、本地文件夹、S3 与 SFTP', link: '/zh/modules/erupt-file-center'},
+            {icon: '🔌', name: 'Erupt Websocket', artifact: 'erupt-websocket', desc: 'WebSocket 实时通信与数据推送', link: '/zh/modules/erupt-websocket'},
+            {icon: '⚙️', name: 'Erupt Generator', artifact: 'erupt-generator', desc: '可视化生成 Erupt 实体类代码', link: '/zh/modules/erupt-generator'},
+            {icon: '⏰', name: 'Erupt Job', artifact: 'erupt-job', desc: '可视化定时任务，Cron 配置与任务日志', link: '/zh/modules/erupt-job'},
+            {icon: '📢', name: 'Erupt Notice', artifact: 'erupt-notice', desc: '公告、站内信等消息通知', link: '/zh/modules/erupt-notice'},
+            {icon: '📈', name: 'Erupt Monitor', artifact: 'erupt-monitor', desc: 'CPU、JVM、连接池、在线用户实时监控', link: '/zh/modules/erupt-monitor'},
+            {icon: '🪄', name: 'Erupt Magic Api', artifact: 'erupt-magic-api', desc: '在线 IDE，界面化编写 HTTP 接口', link: '/zh/modules/erupt-magic-api'},
+            {icon: '🖨️', name: 'Erupt Print', artifact: 'erupt-print', desc: 'HTML 模板打印，单据报告一键输出', link: '/zh/modules/erupt-print'},
+            {icon: '📊', name: 'Erupt Report', artifact: 'erupt-report', desc: '纯 SQL 定义报表图表，多维数据分析', link: '/zh/modules/erupt-report/'},
+            {icon: '☁️', name: 'Erupt Cloud', artifact: 'erupt-cloud', desc: '分布式配置中心，数据库表替代 yml 配置', link: '/zh/modules/erupt-cloud'},
+            {icon: '🛰️', name: 'Erupt Cloud Server', artifact: 'erupt-cloud-server', desc: '节点管理中心，服务注册与请求调度', link: '/zh/modules/cloud-server'},
+            {icon: '📦', name: 'Erupt Cloud Node', artifact: 'erupt-cloud-node', desc: '分布式微节点，向 Server 注册并接受调度', link: '/zh/modules/cloud-node'},
+            {icon: '🪶', name: 'Erupt Cloud Node Lite', artifact: 'erupt-cloud-node-lite', desc: '无 Spring 的轻量节点，Solon / Quarkus / Micronaut / Vert.x / Ktor / Servlet 适配', link: '/zh/modules/cloud-node-lite'},
+            {icon: '🌐', name: 'Erupt SDK', artifact: 'erupt-sdk', desc: 'Python / Go / TypeScript / PHP / .NET / Rust / Ruby / Swift 节点 SDK，任意语言的模型变成管理页面', link: '/zh/modules/erupt-sdk/'},
+        ],
+    },
+    {
+        title: '商业模块',
+        badge: 'PRO',
+        items: [
+            {icon: '🏢', name: 'Erupt SaaS 多租户', artifact: 'erupt-tenant', desc: '功能多租户复用，数据完全隔离', link: '/zh/modules/pro/erupt-tenant/', pro: true},
+            {icon: '🔀', name: 'Erupt Flow', artifact: 'erupt-flow', desc: '通用流程引擎，钉钉风格可视化流程设计', link: '/zh/modules/pro/erupt-flow/', pro: true},
+            {icon: '🧊', name: 'Erupt Cube 指标平台', artifact: 'erupt-cube', desc: '语义建模 BI 平台，注解建模 + 拖拽分析', link: '/zh/modules/pro/erupt-cube', pro: true},
+        ],
+    },
+    {
+        title: '开源应用',
+        badge: 'erupt-io',
+        items: [
+            {icon: '☸️', name: 'Erupt K8s Dashboard', artifact: 'erupt-k8s-dashboard', desc: '开箱即用的 Kubernetes 管理台：日志、Web 终端、扩缩容、YAML 编辑', link: '/zh/modules/apps/erupt-k8s-dashboard'},
+            {icon: '📋', name: 'Erupt PM', artifact: 'erupt-pm', desc: '项目管理：项目、迭代、任务、工时与风险，看板 / 甘特 / 日历多视图', link: '/zh/modules/apps/erupt-pm'},
+            {icon: '🧑‍💼', name: 'Erupt Talent', artifact: 'erupt-talent', desc: '招聘全流程：简历、面试、Offer 审批发件、入职与招聘漏斗', link: '/zh/modules/apps/erupt-talent'},
+            {icon: '✉️', name: 'Erupt SMS', artifact: 'erupt-sms', desc: '基于 SMS4J 的多厂商短信：模板、发送日志、验证码、黑名单', link: '/zh/modules/apps/erupt-sms'},
+            {icon: '💬', name: 'Erupt WeChat', artifact: 'erupt-wechat', desc: '微信公众号管理：粉丝、菜单、自动回复、素材、群发与统计', link: '/zh/modules/apps/erupt-wechat'},
+            {icon: '📱', name: 'Erupt MiniApp', artifact: 'erupt-miniapp', desc: '微信小程序管理：用户登录、订阅消息、小程序码、内容安全与统计', link: '/zh/modules/apps/erupt-miniapp'},
+        ],
+    },
+    {
+        title: '第三方模块',
+        badge: '社区',
+        items: [
+            {icon: '🔍', name: 'Erupt Dsl', artifact: 'erupt-dsl', desc: 'ORM 动态查询，DSL 语法构建复杂查询条件', link: '/zh/modules/third-party/erupt-dsl'},
+            {icon: '🧩', name: 'Erupt Pf4j', artifact: 'erupt-pf4j', desc: '基于 PF4J 的动态插件加载能力', link: '/zh/modules/third-party/erupt-pf4j'},
+            {icon: '🛢️', name: 'EZDML', artifact: 'ezdml', desc: '数据库建模工具，直接生成 Erupt 实体代码', link: '/zh/modules/third-party/ezdml'},
+            {icon: '🕷️', name: '公众号采集', artifact: 'mp-crawler', desc: '微信公众号内容采集与管理插件', link: '/zh/modules/third-party/mp-crawler'},
+            {icon: '🗳️', name: 'Erupt Vote', artifact: 'erupt-vote', desc: '投票插件，支持多种投票场景', link: '/zh/modules/third-party/erupt-vote'},
+        ],
+    },
+]
+
+const filtered = computed(() => {
+    const q = search.value.trim().toLowerCase()
+    if (!q) return groups
+    return groups
+        .map(g => ({...g, items: g.items.filter(i => (i.name + i.artifact + i.desc).toLowerCase().includes(q))}))
+        .filter(g => g.items.length > 0)
+})
+</script>
+
+# 模块总览
+
+Erupt 采用模块化设计，核心功能拆分为独立 Maven 模块，按需引入，版本号与核心保持一致。
+
+<div class="md-search">
+    <svg class="md-search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input v-model="search" placeholder="搜索模块，如 upms、定时任务、流程..." />
+</div>
+
+<template v-for="g in filtered" :key="g.title">
+    <h2 class="md-group-title">{{ g.title }}<span v-if="g.badge" class="md-badge">{{ g.badge }}</span><span class="md-count">{{ g.items.length }}</span></h2>
+    <div class="md-grid">
+        <a v-for="item in g.items" :key="item.artifact" class="md-card" :href="item.link" :target="item.external ? '_blank' : undefined" :rel="item.external ? 'noreferrer' : undefined">
+            <span class="md-icon">{{ item.icon }}</span>
+            <span class="md-body">
+                <span class="md-head">
+                    <b>{{ item.name }}</b>
+                    <i v-if="item.pro" class="md-pro">PRO</i>
+                    <i v-if="item.external" class="md-ext">↗</i>
+                </span>
+                <code class="md-artifact">{{ item.artifact }}</code>
+                <span class="md-desc">{{ item.desc }}</span>
+            </span>
+        </a>
+    </div>
+</template>
+
+<p v-if="filtered.length === 0" class="md-empty">未找到匹配的模块</p>
+
+## 引入方式
+
+所有官方模块的版本号与 erupt 核心版本保持一致，使用 `${erupt.version}` 统一管理：
+
+```xml
+<dependency>
+    <groupId>xyz.erupt</groupId>
+    <artifactId>模块名</artifactId>
+    <version>${erupt.version}</version>
+</dependency>
+```
+
+<style scoped>
+.md-search {
+    position: relative;
+    margin: 24px 0 8px;
+}
+
+.md-search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(20, 18, 11, .45);
+    pointer-events: none;
+}
+
+.dark .md-search-icon {
+    color: rgba(240, 232, 214, .45);
+}
+
+.md-search input {
+    width: 100%;
+    padding: 10px 16px 10px 40px;
+    border: 2px solid #14120B;
+    border-radius: 0;
+    background: #FFFFFF;
+    color: #14120B;
+    font-size: 14px;
+    outline: none;
+    transition: box-shadow .15s;
+}
+
+.dark .md-search input {
+    border-color: #F0E8D6;
+    background: #201C12;
+    color: #F0E8D6;
+}
+
+.md-search input:focus {
+    box-shadow: 3px 3px 0 #4FC8EC;
+}
+
+.md-group-title {
+    margin: 32px 0 4px;
+    padding-top: 16px;
+    border-top: none;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.md-badge {
+    font-family: var(--vp-font-family-mono);
+    margin-left: 8px;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: .05em;
+    color: #14120B;
+    background: #F585B4;
+    border: 1.5px solid #14120B;
+    border-radius: 0;
+    padding: 1px 7px;
+    vertical-align: 3px;
+}
+
+.md-count {
+    font-family: var(--vp-font-family-mono);
+    margin-left: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    color: #14120B;
+    background: #4FC8EC;
+    border: 1.5px solid #14120B;
+    border-radius: 0;
+    padding: 1px 8px;
+    vertical-align: 2px;
+}
+
+.md-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 16px 0 8px;
+}
+
+@media (max-width: 960px) {
+    .md-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 560px) {
+    .md-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.md-card {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    border: 2px solid #14120B;
+    border-radius: 0;
+    padding: 14px;
+    text-decoration: none !important;
+    color: inherit !important;
+    background: #FFFFFF;
+    transition: box-shadow .15s, transform .15s;
+}
+
+.dark .md-card {
+    border-color: #F0E8D6;
+    background: #201C12;
+}
+
+.md-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 #14120B;
+}
+
+.dark .md-card:hover {
+    box-shadow: 5px 5px 0 #F0E8D6;
+}
+
+.md-icon {
+    flex: 0 0 auto;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    background: #FFF9EE;
+    border: 1.5px solid #14120B;
+    border-radius: 0;
+}
+
+.dark .md-icon {
+    background: #1A170F;
+    border-color: #F0E8D6;
+}
+
+.md-body {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.md-head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.md-head b {
+    font-size: 14px;
+    font-weight: 800;
+    color: #14120B;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dark .md-head b {
+    color: #F0E8D6;
+}
+
+.md-pro {
+    flex: 0 0 auto;
+    font-style: normal;
+    font-family: var(--vp-font-family-mono);
+    font-size: 9.5px;
+    font-weight: 800;
+    color: #14120B;
+    background: #F585B4;
+    border: 1.5px solid #14120B;
+    border-radius: 0;
+    padding: 1px 5px;
+}
+
+.md-ext {
+    font-style: normal;
+    font-size: 12px;
+    color: rgba(20, 18, 11, .5);
+}
+
+.dark .md-ext {
+    color: rgba(240, 232, 214, .5);
+}
+
+.md-artifact {
+    font-family: var(--vp-font-family-mono);
+    font-size: 11.5px;
+    color: rgba(20, 18, 11, .5);
+    background: none;
+    padding: 0;
+}
+
+.dark .md-artifact {
+    color: rgba(240, 232, 214, .5);
+}
+
+.md-desc {
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: #5C5647;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.dark .md-desc {
+    color: #B0A78F;
+}
+
+.md-empty {
+    margin: 48px 0;
+    text-align: center;
+    color: #5C5647;
+}
+
+.dark .md-empty {
+    color: #B0A78F;
+}
+</style>

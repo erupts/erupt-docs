@@ -1,0 +1,750 @@
+# 升级指南
+
+本文档按版本说明 Erupt 升级时需要注意的事项，请按版本顺序依次阅读。
+
+## V 2.4.0 升级指南
+
+本节说明从 2.3.x 升级到 2.4.0 时需要注意的事项。
+
+### 升级要求
+
+| 项目 | 要求 |
+| --- | --- |
+| Erupt | 全部依赖统一升级至 `2.4.0` |
+| Spring Boot | **3.5.16**，与 2.3.x 相同，无需调整 |
+| JDK | 最低 **JDK 17**，无变化；已验证可在 JDK 27 上构建 |
+| 数据库 | 无最低版本变化；表结构变更见下文 |
+| erupt-cloud | Server 与所有 [Node](/zh/modules/cloud-node) **必须同步升级至 2.4.0**：权限、载荷校验、引用、Excel、上传等改由 Server 完成，旧节点与新 Server 的协议不一致 |
+| erupt-flow / erupt-tenant / erupt-cube | 同步升级至 2.4.0 对应版本 |
+
+### 第一步：修改依赖版本
+
+```xml
+<properties>
+    <erupt.version>2.4.0</erupt.version>
+</properties>
+```
+
+本次升级**没有** artifactId 重命名，2.3.x 的依赖坐标可直接沿用。唯一的模块迁移是 Kubernetes 管理台：Web 终端已从 `erupt-data-k8s` 移入独立仓库的 [erupt-k8s-dashboard](https://github.com/erupt-io/erupt-k8s-dashboard)，用到终端的项目需改为引入它。
+
+### 第二步：按需引入新模块（可选）
+
+2.4.0 新开源以下模块，不引入不会有任何影响；引入后首次启动自动初始化菜单与表结构。`erupt-spring-boot-starter-all` 已包含前六个。
+
+| 模块 | artifactId | 用途 |
+| --- | --- | --- |
+| [公开链接](/zh/modules/erupt-share) | `erupt-share` | 一条链接对外开放表单或任意菜单页面 |
+| [数据事件推送](/zh/modules/erupt-webhook) | `erupt-webhook` | 新增 / 修改 / 删除事件推送到外部 URL |
+| [运行时配置](/zh/modules/erupt-config) | `erupt-config` | 按 Spring Profile 分层的配置项，保存即生效 |
+| [记录历史](/zh/modules/erupt-revision) | `erupt-revision` | 字段级历史、回滚与回收站 |
+| [文件中心](/zh/modules/erupt-file-center) | `erupt-file-center` | 浏览上传目录、本地文件夹、S3 与 SFTP |
+| [AI 软件交付](/zh/modules/erupt-ai-dev) | `erupt-ai-dev` | 需求池 + 编码 CLI；服务器上未安装 CLI 时不会执行任何任务 |
+| [轻量节点](/zh/modules/cloud-node-lite) | `erupt-cloud-node-lite` 及 `-solon` / `-quarkus` / `-micronaut` / `-vertx` / `-ktor` / `-servlet` | 无 Spring 的 erupt-cloud 节点 |
+
+:::warning 引入 erupt-revision 前
+所有模型默认记录历史。存有敏感数据但不是 PASSWORD 类型的字段，或写入频繁的模型，请先加 `@Power(revision = false)`。
+:::
+
+### 破坏性变更与行为变化
+
+#### 1. 导出默认开启 <Badge type="warning" text="默认值变化" />
+
+`@Power(export)` 默认值由 `false` 改为 `true`，与增删改查一样由角色的菜单按钮决定谁能导出。**新建菜单**会自动带上「导出」按钮，已有菜单不受影响。不希望被导出的模型请显式写 `@Power(export = false)`，不希望被导出的列写 `@View(export = false)`。详见 [@Power](/zh/annotation/power#export-导出默认开启)。
+
+#### 2. 选项值与表单限制改为服务端强制校验 <Badge type="warning" text="默认值变化" />
+
+- `erupt.choice-validate` 默认开启：新增、编辑、单元格编辑与 Excel 导入时，CHOICE / MULTI_CHOICE 的值必须在当前用户可见的选项之内。与已存值相同的值放行，旧数据不影响编辑。单个字段可用 `@ChoiceType(validate = false)` 关闭，全局可用 `erupt.choice-validate: false` 关闭。详见 [CHOICE](/zh/field-types/choice#服务端选项校验)。
+- INPUT 长度、NUMBER / SLIDER 区间、RATE 范围、TAGS 数量与可选值、DATE 的 FUTURE / HISTORY 与区间，以及子表每一行的规则，都在服务端执行。直接调用接口写入越界数据的客户端会被拒绝。详见 [服务端强制校验](/zh/advanced/data-proxy-validate#服务端强制校验声明的限制)。
+
+#### 3. `erupt.init-method-enum` 改为 `erupt.init-modules-menu` <Badge type="warning" text="配置改名" />
+
+模块菜单不再依赖 `.erupt/<module>.loaded` 标记文件，而是把指纹存入新表 `e_upms_module`，每次启动对账：模块的新菜单与按钮自动补齐，管理员改过的字段保留，模块不再声明的菜单改为禁用而非删除。默认管理员账号按数据库只创建一次。
+
+```yaml
+erupt:
+  init-modules-menu: true   # 替代 init-method-enum；false 时不写入菜单，initFun 也不执行
+```
+
+配置了 `init-method-enum: none` 的项目，请改为 `init-modules-menu: false`。详见 [菜单管理](/zh/modules/erupt-upms/menu#模块菜单的自动维护)。
+
+#### 4. `X-Forwarded-For` 仅在来自可信代理时采信 <Badge type="warning" text="反向代理需检查" />
+
+客户端 IP 用于登录锁定与 IP 白名单。2.4.0 起只有当直连方是可信代理时才读取 `X-Forwarded-For`，默认可信范围是回环与内网网段；`Proxy-Client-IP` 与 `WL-Proxy-Client-IP` 不再读取。反向代理位于公网地址时，需要把它加进来，否则所有用户会被识别为代理的 IP，登录锁定会误伤全员：
+
+```yaml
+erupt:
+  upms:
+    trusted-proxies: 127.0.0.0/8,::1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,203.0.113.10
+```
+
+#### 5. upms 表新增租户列，唯一约束按租户 <Badge type="warning" text="表结构变化" />
+
+`e_upms_user` / `e_upms_role` / `e_upms_org` / `e_upms_post` 及登录日志、操作日志、评论表新增 `tenant_id` 列（平台为 `'0'`），由 Hibernate `@TenantId` 自动过滤。未使用多租户的项目无感知；自定义 SQL 直接读写这些表时，新增行需带上 `tenant_id = '0'`（列有默认值，不写也可）。SQL 见下文[数据库变更](#数据库变更)。
+
+#### 6. erupt-tenant 重构：租户用户迁入 upms 表 <Badge type="danger" text="需手动迁移" />
+
+erupt-tenant 不再维护一套独立的租户用户体系：租户的用户、角色、组织改为与平台共用 `e_upms_user` / `e_upms_role` / `e_upms_org`，以 Hibernate `@TenantId` 列 `tenant_id` 区分；租户菜单也不再单独建表，套餐直接引用平台菜单。
+
+**移除的表**（2.4.0 不再创建，也不再读取）：
+
+| 表 | 原用途 | 2.4.0 改为 |
+| --- | --- | --- |
+| `e_tenant_menu` | 租户菜单 | 套餐从平台 `e_upms_menu` 勾选 |
+| `t_e_upms_user`、`t_e_upms_user_role` | 租户用户及其角色 | `e_upms_user`、`e_upms_user_role` |
+| `t_e_upms_role`、`t_e_upms_role_menu` | 租户角色及其菜单 | `e_upms_role`、`e_upms_role_menu` |
+| `t_e_upms_org` | 租户组织 | `e_upms_org` |
+
+**移除的类**：`TenantUpmsUser`、`TenantUpmsUserSimple`、`TenantUpmsRole`、`TenantUpmsOrg`（及其 DataProxy、handler）、`EruptTenantMenu`，直接使用 erupt-upms 的 `EruptUser` / `EruptRole` / `EruptOrg`。
+
+**升级不会自动迁移旧数据**，请在启动新版本前完成：
+
+1. 删除 `e_upms_user.account`、`e_upms_role.code`、`e_upms_org.code`、`e_upms_post.code`、`e_upms_sso.code` 上原有的单列唯一索引（索引名先用 `SHOW INDEX FROM 表名 WHERE Non_unique = 0;` 查出）。
+2. 把每个租户的用户 / 角色 / 组织从 `t_e_upms_*` 写入对应的 `e_upms_*` 表，`tenant_id` 取该租户 `e_tenant_config.tenant_id`；或在租户后台重新创建。
+3. 租户套餐的菜单改为从平台 `e_upms_menu` 选择，原 `e_tenant_menu` 不再使用，需重新勾选。
+
+`/tenant/change-pwd`、`/tenant/menu`、`/tenant/userinfo` 已移除，租户会话直接使用平台的 `/change-pwd`、`/menu`、`/userinfo`；`/tenant/subscription` 更名为 `/tenant/info`。详见 [UPMS 多租户](/zh/modules/pro/erupt-tenant/upms)。
+
+重构后，凡是基于 erupt-upms 的模块都自动按租户隔离，不需要额外适配：
+
+- **erupt-flow**：流程定义、分组与实例按租户分列，审批人解析限定在实例所属租户，定时调度在实例所属租户的会话中推进，见 [erupt-flow 多租户支持](/zh/modules/pro/erupt-flow/development#多租户支持)
+- **erupt-sso**：租户可配置自己的认证源，租户登录页列出这些认证源，单点登录后开启的是租户会话
+- **登录日志 / 操作日志 / 在线用户 / 记录评论 / 记录历史**：租户只看到自己的数据
+- **订阅与试用**：套餐试用天数、到期宽限与锁定，见 [订阅与试用](/zh/modules/pro/erupt-tenant/subscription)
+
+#### 7. 打印不再等同于读取记录 <Badge type="tip" text="权限收紧" />
+
+`@Power(print)` 只是模型开关。打印与按 id 读取详情都要求 `edit` 或 `viewDetails`，并校验记录的行级范围；`viewDetails = false` 的模型不再显示打印按钮。模板打印改为 `?config=<id>` 指定已保存的模板，不再接受请求体中的模板内容，自行调用打印接口的客户端需调整。详见 [打印模块](/zh/modules/erupt-print#打印权限)。
+
+#### 8. 组件按 Java 类型推断
+
+`EditType.AUTO` 现在按字段类型推断：枚举字段成 CHOICE、`Collection<Enum>` 成 MULTI_CHOICE、`Map` 成 KEY_VALUE、`@Erupt` 类型成引用、集合成子表；`DateType.Type` 默认 `AUTO`，`LocalDateTime` 推断为日期时间、`LocalTime` 推断为时间。此前依赖默认 DATE 显示 `LocalDateTime` 字段的项目，显示会变为日期时间。详见 [AUTO](/zh/field-types/auto#按-java-类型推断)。
+
+#### 9. 移除的能力
+
+- LLM 适配器 Requesty 与 OrcaRouter 已移除，使用它们的模型请改用 OpenRouter 或 Open AI Adapter
+- erupt-ai-decision 的 HTTP 接口已移除，Java API 不变
+- erupt-ai-dev 没有 `executor.enabled` 开关，服务器上安装了编码 CLI 即会执行
+
+### 需要留意的默认值变化
+
+| 项目 | 2.3.x | 2.4.0 |
+| --- | --- | --- |
+| `@Power(export)` | `false` | `true` |
+| `@Power(batchEdit)` | —— | `true`，表格出现「批量编辑」按钮 |
+| `@Power(revision)` | —— | `true`，引入 erupt-revision 后生效 |
+| `erupt.choice-validate` | —— | `true` |
+| `erupt.init-modules-menu` | `init-method-enum: file` | `true` |
+| `erupt.upms.trusted-proxies` | 任意来源的 `X-Forwarded-For` | 回环与内网网段 |
+| `DateType.Type` | `DATE` | `AUTO`，按 Java 类型推断 |
+| 枚举字段的 `EditType.AUTO` | INPUT | CHOICE，选项取自枚举常量 |
+| erupt-config `refresh-seconds` | —— | `0`，多实例经 Redis 广播或自行开启轮询 |
+
+### 数据库变更
+
+::: details 展开表结构变更清单
+> 表结构变更由 JPA / Hibernate 在启动时自动执行，仅当项目禁用了自动 DDL（`spring.jpa.hibernate.ddl-auto=none` 或 `validate`）时才需手动执行。
+
+完整 SQL 见 [2.4.0 更新日志 → 数据库变更](/zh/guide/changelog#数据库变更)，涉及：
+
+- `e_upms_user`、`e_upms_role`、`e_upms_org`、`e_upms_post`：新增 `tenant_id`，唯一约束改为「租户 + 账号 / 编码」
+- `e_upms_login_log`、`e_upms_operate_log`：新增 `tenant_id`
+- `e_upms_sso`：新增 `tenant_id`、`idp_certificate`；`e_upms_sso_bind`：新增 `tenant_id`（引入 erupt-sso 时）
+- `e_record_comment`：新增 `tenant_id`（引入 erupt-comment 时）
+- `e_flow`、`e_flow_group`、`e_flow_instance`：新增 `tenant_id`（引入 erupt-flow 时）
+- `e_tenant_package`：新增 `trial_days`（引入 erupt-tenant 时）
+- 不再使用（迁移完成后可手动删除）：`e_tenant_menu`、`t_e_upms_user`、`t_e_upms_user_role`、`t_e_upms_role`、`t_e_upms_role_menu`、`t_e_upms_org`（引入 erupt-tenant 时）
+- 新表由 Hibernate 自动创建：`e_upms_module`；以及新模块的 `e_share_link`、`e_webhook`、`e_webhook_log`、`e_config_profile`、`e_config_item`、`e_record_revision`、`e_ai_dev_*`
+
+:::
+
+### 升级后核查清单
+
+重启后请依次确认：
+
+1. **导出权限** —— 不应被导出的模型已加 `@Power(export = false)`（见行为变化 1）
+2. **接口写入** —— 直接调用 `/erupt-api/data` 写入的集成方，选项值与字段限制是否符合声明（见行为变化 2）
+3. **配置项改名** —— `application.yml` 中的 `init-method-enum` 已改为 `init-modules-menu`（见行为变化 3）
+4. **客户端 IP** —— 反向代理之后登录日志中的 IP 是否为真实用户 IP，公网代理已加入 `trusted-proxies`（见行为变化 4）
+5. **erupt-tenant 项目** —— 旧唯一索引已删除，租户用户 / 角色 / 组织已迁入 `e_upms_*`，套餐菜单已重新勾选（见行为变化 6）
+6. **erupt-cloud 项目** —— Server 与全部 Node 已升级至 2.4.0
+7. **日期字段显示** —— 抽查 `LocalDateTime` / `LocalTime` 字段的表单控件是否符合预期（见行为变化 8）
+8. **禁用了自动 DDL 的项目** —— 确认上述 SQL 已执行
+9. **前端资源缓存** —— 翻译表已改按版本失效，页面异常时强制刷新浏览器缓存
+
+## V 2.3.0 升级指南
+
+本节说明从 2.2.x 升级到 2.3.0 时需要注意的事项。
+
+### 升级要求
+
+| 项目 | 要求 |
+| --- | --- |
+| Erupt | 全部依赖统一升级至 `2.3.0` |
+| Spring Boot | **3.5.16**，与 2.2.x 相同，无需调整 |
+| JDK | 最低 **JDK 17**，无变化 |
+| 数据库 | 无最低版本变化；表结构变更见下文 |
+| erupt-cloud-node | 使用了 [erupt-cloud-node](/zh/modules/cloud-node) 的项目，**节点服务必须同步升级至 2.3.0** |
+
+### 第一步：修改依赖版本
+
+```xml
+<properties>
+    <erupt.version>2.3.0</erupt.version>
+</properties>
+```
+
+未使用统一属性时，请把 `pom.xml` 中所有 `xyz.erupt` 坐标的 `<version>` 一并改为 `2.3.0`。本次升级**没有** artifactId 重命名或模块下线，2.2.x 的依赖坐标可直接沿用。
+
+### 第二步：按需引入新模块（可选）
+
+2.3.0 新开源五个模块，不引入不会有任何影响；引入后首次启动自动初始化菜单与表结构。使用 `erupt-spring-boot-starter-all` 的项目已包含前三个。
+
+| 模块 | artifactId | 用途 |
+| --- | --- | --- |
+| [单点登录](/zh/modules/erupt-sso) | `erupt-sso` | OAuth2 / OIDC 认证源在后台配置，17 种供应商预设，登录页自动出现登录按钮；引入后 erupt-notice 可借用认证源凭据向飞书 / 钉钉 / 企业微信 / Slack 推送 |
+| [记录评论](/zh/modules/erupt-comment) | `erupt-comment` | 任意记录的评论流，@提及通知依赖 erupt-notice |
+| [AI 决策](/zh/modules/erupt-ai-decision) | `erupt-ai-decision` | 带概率的类型化判断，仅依赖 erupt-data-jpa |
+| [钉钉多维表数据源](/zh/modules/erupt-dingtalk) | `erupt-data-dingtalk` | 把钉钉多维表绑定为 `@Erupt` 模型 |
+| [Airtable 数据源](/zh/modules/erupt-airtable) | `erupt-data-airtable` | 把 Airtable 表绑定为 `@Erupt` 模型 |
+
+:::tip erupt-sso 需要在认证源登记回调地址
+每个认证源的回调地址为 `<erupt 地址>/erupt-api/sso/callback/<编码>`，须与认证源控制台中登记的一致，详见[模块文档](/zh/modules/erupt-sso#配置认证源)。
+:::
+
+### 破坏性变更与行为变化
+
+#### 1. 登录锁定默认开启 <Badge type="warning" text="默认值变化" />
+
+**影响范围**：所有使用 erupt-upms 登录的项目。
+
+同一账号从同一 IP 连续密码错误达到 10 次后，该组合锁定 10 分钟；填错验证码同样计数。这是一道新增的暴力破解防线，正常用户几乎不会触发。压测脚本、自动化登录或共享出口 IP 的场景若受影响，可调整或关闭：
+
+```yaml
+erupt:
+  upms:
+    login-lock:
+      enable: true
+      max-failures: 10
+      lock-minutes: 10
+```
+
+#### 2. 修改密码后其他会话下线
+
+无论用户自行修改还是管理员**重置密码**，该账号的其他 Session 都会立即注销，只有发起修改的会话保留。依赖「改密后旧会话仍可用」的自动化流程需要调整。
+
+#### 3. 账户状态、有效期与 IP 白名单对所有登录方式生效
+
+三项检查移入 `EruptUserService.checkAccountUsable`，密码登录、erupt-sso 与自定义 `LoginProxy` 的登录一律执行。此前通过 `LoginProxy` 接管登录的项目，如果依赖跳过这些检查，升级后会被拒绝。
+
+#### 4. `app.js` 中 `logoPath: null` 的含义改变 <Badge type="warning" text="请检查 app.js" />
+
+**影响范围**：`app.js` 里写了 `logoPath: null`（2.2.x 官方模板的默认写法）却仍显示着默认 Logo 的项目。
+
+2.3.0 起三个 Logo 键语义统一：**不写** 取默认（内置 Erupt 标识，折叠 / 登录页 Logo 跟随 `logoPath`），**`null` 或 `''`** 表示该位置不显示 Logo。升级后若顶栏 Logo 消失，删掉 `logoPath: null` 这一行或填入自己的 Logo 路径即可。折叠侧栏在没有任何 Logo 时显示站点名称首字母，而不再显示 Erupt 标识。
+
+#### 5. 查询排序字段与条件键的严格校验
+
+排序字段、`queryColumn` 的条件键现在必须是合法的属性路径（点分 Java 标识符），条件值改为参数绑定。直接调用 `/erupt-api/data/...` 接口并在 `sort` 里拼接了表达式（如 `id desc, (select ...)`）的客户端会被拒绝，请改为只传字段名。
+
+#### 6. erupt-generator 重写
+
+生成器从手工录入改为[从数据库导入](/zh/modules/erupt-generator#从数据库导入)，`e_generator_class` / `e_generator_field` 新增列，旧记录保留但缺少列名、Java 类型等新字段，建议重新导入。字段上的「唯一」开关与列表的打印按钮已移除；模块不再依赖 freemarker 与 erupt-tpl。
+
+#### 7. `EruptUser` 表单不再分步
+
+用户表单的四个 `DIVIDE` 步骤标记（`accountStep` / `orgStep` / `pwdStep` / `securityStep`）替换为 GROUP 分组字段（`orgGroup` / `pwdGroup` / `securityGroup`），均为 `@Transient`，**无数据库影响**。仅在自定义代码引用了这些字段名时需要调整。
+
+### 需要留意的默认值变化
+
+| 项目 | 2.2.x | 2.3.0 |
+| --- | --- | --- |
+| `@BoolType(type)` | —— | `AUTO`：`notNull` 的 BOOLEAN 字段渲染为开关，其余为单选；恢复旧外观用 `@BoolType(type = BoolType.Type.RADIO)`，详见 [BOOLEAN](/zh/field-types/boolean#控件类型) |
+| 表格空 BOOLEAN 单元格 | 空标签 | 不显示 |
+| 行点击打开详情 | 开启 | 关闭（用户可在设置抽屉中开启） |
+| 菜单整树拖拽排序 | 支持 | 移除，菜单顺序以服务端为准；收藏仍可拖拽 |
+| `theme.customizable` | —— | `true`，设为 `false` 可锁定外观让全员一致 |
+| 附件域名 `fileDomain` | 需在 `app.js` 配置 | 后端 `/erupt-app` 下发，`app.js` 留空即自动采用 |
+| 新建表的枚举列 | 原生枚举 / check 约束 | 普通 `VARCHAR`，已有表不受影响 |
+| `@Power(comment)` | —— | `true`，引入 erupt-comment 后所有模型默认可评论，敏感模型加 `@Power(comment = false)` |
+
+### 数据库变更
+
+:::info
+表结构变更由 JPA / Hibernate 在启动时自动执行，仅当项目禁用了自动 DDL（`spring.jpa.hibernate.ddl-auto=none` 或 `validate`）时才需手动执行。
+:::
+
+完整 SQL 见 [2.3.0 更新日志 → 数据库变更](/zh/guide/changelog#数据库变更-1)，涉及：
+
+- `e_upms_user`：新增 `mfa_enabled`、`mfa_secret`、`mfa_recovery_codes` 三列
+- `e_generator_class`、`e_generator_field`：新增列（引入 erupt-generator 时）
+- `e_remote_host`：新增 `file_transfer` 列（引入 erupt-remote 时）
+- 新模块表由 Hibernate 自动创建：`e_upms_sso`、`e_upms_sso_role`、`e_upms_sso_bind`（erupt-sso）；`e_record_comment`（erupt-comment）；`e_ai_decision_def`、`e_ai_decision_model`、`e_ai_decision_question`（erupt-ai-decision）
+
+### 升级后核查清单
+
+重启后请依次确认：
+
+1. **登录锁定阈值** —— 默认 10 次 / 10 分钟，压测与自动化登录场景按需调整（见行为变化 1）
+2. **顶栏 Logo** —— `app.js` 中若有 `logoPath: null` 请删除或改为实际路径（见行为变化 4）
+3. **自定义 LoginProxy** —— 确认账户状态 / 有效期 / IP 白名单检查对你的登录方式是预期行为（见行为变化 3）
+4. **BOOLEAN 必填字段外观** —— 抽查表单中开关 / 单选是否符合预期，不满意的字段显式指定 `@BoolType(type)`
+5. **管理员账号绑定 MFA** —— 建议所有管理员在头像菜单完成[双因素认证](/zh/modules/erupt-upms/user#双因素认证-mfa)绑定
+6. **引入 erupt-comment 的项目** —— 复核不该被评论的模型是否已加 `@Power(comment = false)`，@提及通知需已引入 erupt-notice
+7. **erupt-generator 旧数据** —— 旧生成记录缺少新字段，建议重新从数据库导入
+8. **禁用了自动 DDL 的项目** —— 确认上述 SQL 已执行
+9. **前端资源缓存** —— 前端资源本次变化较大（皮肤、登录页、表单面板），页面样式异常时强制刷新浏览器缓存
+
+
+## V 2.2.0 升级指南
+
+本节说明从 2.1.x 升级到 2.2.0 时需要注意的事项。
+
+### 升级要求
+
+| 项目 | 要求 |
+| --- | --- |
+| Erupt | 全部依赖统一升级至 `2.2.0` |
+| Spring Boot | **3.5.16**，与 2.1.x 相同，无需调整 |
+| JDK | 最低 **JDK 17**，无变化 |
+| 数据库 | 无最低版本变化；表结构变更见下文 |
+| erupt-cloud-node | 使用了 [erupt-cloud-node](/zh/modules/cloud-node) 的项目，**节点服务必须同步升级至 2.2.0** |
+
+### 第一步：修改依赖版本
+
+项目通常用一个属性统一管理版本号，改这一处即可：
+
+```xml
+<properties>
+    <erupt.version>2.2.0</erupt.version>
+</properties>
+```
+
+未使用统一属性时，请把 `pom.xml` 中所有 `xyz.erupt` 坐标的 `<version>` 一并改为 `2.2.0`——框架内部模块之间按同版本装配，混用版本会在启动时报错。
+
+:::tip
+使用 [erupt-spring-boot-starter](/zh/guide/quick-start) 或 `erupt-spring-boot-starter-all` 的项目，子模块版本由启动器统一管理，只需改启动器自身的版本号。
+:::
+
+本次升级**没有** artifactId 重命名或模块下线，2.1.x 的依赖坐标可直接沿用。
+
+### 第二步：按需引入新模块（可选）
+
+2.2.0 新开源两个模块，不引入不会有任何影响；引入后首次启动自动初始化菜单，无需手工建菜单：
+
+| 模块 | artifactId | 用途 |
+| --- | --- | --- |
+| [模型图谱](/zh/modules/erupt-atlas) | `erupt-atlas` | 模型关系图、血缘追溯、耦合矩阵、结构审计，以及自 erupt-monitor 迁入的 Erupt 类注册表 |
+| [远程访问](/zh/modules/erupt-remote) | `erupt-remote` | 浏览器内 VNC 桌面与 SSH 终端 |
+
+```xml
+<dependency>
+    <groupId>xyz.erupt</groupId>
+    <artifactId>erupt-atlas</artifactId>
+    <version>${erupt.version}</version>
+</dependency>
+```
+
+:::warning erupt-remote 需要额外配置
+多节点部署必须为每个节点配置相同的 `erupt.remote.secret-key`，否则一个节点加密的主机凭据在另一个节点上无法解密。反向代理还需为 `/erupt-remote` 转发 WebSocket 升级请求，详见[模块文档](/zh/modules/erupt-remote#nginx-反向代理)。
+:::
+
+### 破坏性变更
+
+#### 1. 用户与角色列表不再按创建人过滤 <Badge type="warning" text="访问面扩大" />
+
+**影响范围**：给非管理员用户授予了「用户管理」或「角色管理」菜单的系统。
+
+2.1.x 中 `EruptUser` 从 `LookerSelf` 继承了一条 `@PreDataProxy`，`EruptRoleDataProxy` 中也有同样的内联规则：`isAdmin` 为 false 的用户只能看到 `createUser` 是自己的行。
+
+这条规则并不成立：`beforeFetch` 只作用于列表查询，而按主键读取、修改、删除走的是 `verifyIdPermissions`，它只用主键构造查询。也就是说，那些行**在列表里被藏起来，却仍可按 id 读取、修改和删除**——看起来像一道边界，实际上不是。
+
+2.2.0 起两个模型的可见性统一由**菜单与角色权限**决定，与框架其余部分保持一致。`EruptUser` 改为继承 `HyperModelCreatorVo`（即 `LookerSelf` 自身的父类），映射列没有变化，**无需数据库迁移**。`LookerSelf` 本身予以保留，下游实体仍可继续继承。
+
+:::warning 升级后请立即复核
+这是一次**访问面扩大**：持有用户 / 角色菜单的非管理员用户，升级后将看到全部行。请确认这两个菜单的授权范围符合预期。
+:::
+
+#### 2. erupt-designer 数据存储迁移到 SQLite
+
+**影响范围**：使用 [erupt-designer](/zh/modules/erupt-designer) 并已录入业务数据的项目。
+
+设计器模型的数据不再存放于主库的 `e_designer_data` 表，改为内嵌 SQLite 文件（默认 `data/designer.db`），每个已发布设计对应其中一张真实表。
+
+- **不会自动迁移**：升级后重新发布设计即可得到新表结构；如需保留历史数据，请从 `e_designer_data` 导出 JSON 后重新导入。
+- **旧表不再使用**：`e_designer_data` 不会再被读写，Hibernate 也不会自动删除它。确认数据已迁移或不再需要后，可手动 `DROP TABLE e_designer_data`（不可逆）。设计配置表 `e_designer` 仍在使用，请勿删除。
+- **务必纳入备份**：该文件独立于主数据库，容器化部署需挂载到持久化卷，否则重建后数据丢失。
+- 设计配置本身（`e_designer`）不受影响，路径可用 `erupt.designer.db-path` 调整。
+
+#### 3. 图标库升级至 Font Awesome 7
+
+**影响范围**：所有自定义过菜单图标、`@Drill` / `@RowOperation` 图标的项目。
+
+`font-awesome` 4.7 已于 2016 年停更，2.2.0 迁移到 `@fortawesome/fontawesome-free` 7.x。旧类名通过 `v4-shims` 继续可用，786 个 FA4 类名中仅 `meanpath` 与 `tripadvisor` 失去对应图标。
+
+一处视觉差异：FA7 为每个 `.fa` 设置了 `1.25em` 的默认宽度（FA4 无此设置），图标会落在统一方框内。需要旧版度量时设置 `--fa-width: auto`。
+
+#### 4. Erupt 类注册表从 erupt-monitor 迁入 erupt-atlas
+
+**影响范围**：使用了「系统监控 → Erupt 类注册表」菜单的项目，以及在代码中引用了 `xyz.erupt.monitor.model.EruptClassInfo` 的项目。
+
+类注册表（`EruptClassInfo`）与其字段下钻（`EruptFieldInfo`）读取的是运行时模型注册表，和模型图谱是同一份数据。2.2.0 起两者归入 [erupt-atlas](/zh/modules/erupt-atlas#类注册表)，包名由 `xyz.erupt.monitor` 改为 `xyz.erupt.atlas`；erupt-monitor 回归纯系统监控（服务、缓存、诊断）。注册表行上新增「在图谱中查看」操作，可直接跳到该模型的关系图。
+
+菜单初始化**只增不改**，已有的 `EruptClassInfo` / `EruptFieldInfo` 菜单行会原样保留在「系统监控」下，请按情况处理：
+
+| 项目情况 | 升级后表现 | 处理方式 |
+| --- | --- | --- |
+| 只引入了 `erupt-monitor` | 旧菜单指向的模型不再注册，打开报错 | 引入 `erupt-atlas`，或在菜单管理中删除「Erupt 类注册表」及隐藏的 `EruptFieldInfo` 菜单 |
+| 同时引入了 `erupt-atlas`（含 `erupt-spring-boot-starter-all`） | 旧菜单继续可用，但仍挂在「系统监控」下；「模型图谱」根菜单下只有「模型关系图」 | 在菜单管理中把「Erupt 类注册表」移到「模型图谱」下；或删除旧菜单后重启，由框架在新位置重建 |
+| 自定义代码引用了 `xyz.erupt.monitor.model.*` 或 `EruptClassInfoDataService` | 编译失败 | 改为 `xyz.erupt.atlas.model.*` / `xyz.erupt.atlas.service.*`，并确认已依赖 `erupt-atlas` |
+
+### 需要留意的默认值变化
+
+| 项目 | 2.1.x | 2.2.0 |
+| --- | --- | --- |
+| `@Power(cellEdit)` | —— | `true`，表格默认支持单元格编辑，详见 [@Power](/zh/annotation/power#celledit-单元格编辑) |
+| `@Edit(ai)` | —— | `true`，文本字段默认提供 [表单 AI 写作助手](/zh/modules/erupt-ai/writing-assistant) |
+| 前端默认主题色 | `#00B515` | `rgb(22, 119, 255)`，可用 `app.js` 的 `theme.primaryColor` 覆盖 |
+| 菜单树展开层级 | 5 级 | 1 级 |
+
+:::tip 需要收紧默认值时
+- 某张表的行必须整体审阅后修改：`@Erupt(power = @Power(cellEdit = false))`
+- 某个字段不该在表格里随手改：`@Edit(cellEdit = false)`
+- 某个模型完全不提供 AI 能力：`@Erupt(power = @Power(ai = false))`
+:::
+
+### 数据库变更
+
+:::info
+表结构变更由 JPA / Hibernate 在启动时自动执行，仅当项目禁用了自动 DDL（`spring.jpa.hibernate.ddl-auto=none` 或 `validate`）时才需手动执行。
+:::
+
+完整 SQL 见 [2.2.0 更新日志 → 数据库变更](/zh/guide/changelog#数据库变更-2)，涉及：
+
+- `e_remote_host`：引入 [erupt-remote](/zh/modules/erupt-remote) 时新建，由 Hibernate 自动创建
+- `e_ai_canvas_model`：新增表；`e_ai_canvas` 的 `data_type`、`target_model` 两列迁移后删除（引入 erupt-ai-canvas 时）
+- `e_ai_chat_message`：新增 `images` 列（引入 erupt-ai 时）
+- `e_designer_data`：不再使用，可在确认数据已迁移后手动删除（引入 erupt-designer 时）
+
+### 升级后核查清单
+
+重启后请依次确认：
+
+1. **用户 / 角色菜单授权** —— 非管理员用户现在能看到这两张表的全部行，确认授权范围符合预期（见破坏性变更 1）
+2. **敏感模型的单元格编辑** —— 表格默认支持单元格编辑，需要整行审阅才能修改的模型加 `@Power(cellEdit = false)`，不该在表格里随手改的字段加 `@Edit(cellEdit = false)`
+3. **AI 写作助手范围** —— 文本字段默认提供写作助手，不希望 AI 介入的模型加 `@Power(ai = false)`
+4. **匿名遥测** —— 默认开启，内网或合规要求严格的环境可用 `erupt.telemetry.enabled=false` 关闭
+5. **erupt-designer 数据卷** —— 容器化部署确认 `data/designer.db` 已挂载到持久化卷并纳入备份
+6. **菜单图标显示** —— Font Awesome 7 下抽查自定义图标是否正常，异常时对照 [FA7 图标库](https://fontawesome.com/search)更换类名
+7. **前端资源缓存** —— 前端资源本次变化较大（主题体系、图标库），如页面样式异常请强制刷新浏览器缓存
+8. **禁用了自动 DDL 的项目** —— 确认上述 SQL 已执行
+9. **Erupt 类注册表菜单** —— 该菜单已随模型迁入 erupt-atlas，确认「系统监控」下的旧菜单仍能打开（已引入 erupt-atlas）或已删除（见破坏性变更 4）
+
+
+## V 2.1.0 升级指南
+
+本节说明从 2.0.x 升级到 2.1.0 时需要注意的事项。
+
+### 升级要求
+
+1. Spring Boot 版本升级至 **3.5.16**（使用 `<parent>` 继承 spring-boot-starter-parent 的项目仅需修改版本号）
+2. JDK 最低版本要求为 **JDK 17**（无变化）
+3. 将 Erupt 版本号统一修改为 `2.1.0`
+4. 使用了 [erupt-cloud-node](/zh/modules/cloud-node) 的项目，**节点服务也必须同步升级至 2.1.0**
+
+### 破坏性变更
+
+#### 1. `erupt-jpa` 更名为 `erupt-data-jpa`
+
+**影响范围**：`pom.xml` 中显式声明了 `erupt-jpa` 依赖的项目。
+
+2.1.0 将 JPA 数据源统一归入 erupt-data 数据连接层，**artifactId** 由 `erupt-jpa` 变更为 `erupt-data-jpa`。
+**Java 包名没有变化**，仍为 `xyz.erupt.jpa.*`（如 `xyz.erupt.jpa.model.BaseModel`、`xyz.erupt.jpa.dao.EruptDao`），
+因此只需修改依赖坐标，业务代码无需调整。
+
+```xml
+<!-- 旧写法（构建时报找不到依赖） -->
+<dependency>
+  <groupId>xyz.erupt</groupId>
+  <artifactId>erupt-jpa</artifactId>
+  <version>${erupt.version}</version>
+</dependency>
+
+<!-- 新写法 -->
+<dependency>
+  <groupId>xyz.erupt</groupId>
+  <artifactId>erupt-data-jpa</artifactId>
+  <version>${erupt.version}</version>
+</dependency>
+```
+
+#### 2. `erupt-mongodb` 更名为 `erupt-data-mongodb`
+
+**影响范围**：`pom.xml` 中显式声明了 `erupt-mongodb` 依赖的项目。
+
+与 JPA 同理，**artifactId** 由 `erupt-mongodb` 变更为 `erupt-data-mongodb`，Java 包名仍为 `xyz.erupt.mongodb.*`，无需改动业务代码。
+
+```xml
+<!-- 旧写法（构建时报找不到依赖） -->
+<dependency>
+  <groupId>xyz.erupt</groupId>
+  <artifactId>erupt-mongodb</artifactId>
+  <version>${erupt.version}</version>
+</dependency>
+
+<!-- 新写法 -->
+<dependency>
+  <groupId>xyz.erupt</groupId>
+  <artifactId>erupt-data-mongodb</artifactId>
+  <version>${erupt.version}</version>
+</dependency>
+```
+
+:::tip
+使用 [erupt-spring-boot-starter](/zh/guide/quick-start) 或 `erupt-spring-boot-starter-all` 的项目，依赖由启动器统一管理，无需手动修改。
+:::
+
+#### 3. `erupt-tpl-ui.amis` 模块已移除
+
+**影响范围**：依赖了 AMIS 模板集成模块的项目。
+
+`erupt-tpl-ui` 中的 AMIS 集成模块（artifactId：`erupt-tpl-ui.amis`）已从 2.1.0 中移除，请从 `pom.xml` 中删除该依赖：
+
+```xml
+<!-- 该依赖已不再发布，请移除 -->
+<dependency>
+  <groupId>xyz.erupt</groupId>
+  <artifactId>erupt-tpl-ui.amis</artifactId>
+  <version>${erupt.version}</version>
+</dependency>
+```
+
+如项目中使用了 AMIS 页面，请迁移至 erupt-tpl 支持的其他模板集成方式（`erupt-tpl-ui.ant-design`、`erupt-tpl-ui.element-ui`、`erupt-tpl-ui.element-plus`），
+或改用 [erupt-ai-canvas](/zh/modules/erupt-ai-canvas) 生成自定义页面。这三个模板皮肤的 artifactId 未发生变化，仅目录位置由 `erupt-tpl-ui/` 调整为 `erupt-tpl/`，不影响依赖声明。
+
+## V 2.0.0 升级指南
+
+本节说明从 1.14.x 升级到 2.0.0 时需要注意的事项。
+
+### 升级要求
+
+1. Spring Boot 版本升级至 **3.5.15**（使用 `<parent>` 继承 spring-boot-starter-parent 的项目仅需修改版本号）
+2. JDK 最低版本要求为 **JDK 17**（无变化）
+3. 将 Erupt 版本号统一修改为 `2.0.0`
+4. 使用了 [erupt-cloud-node](/zh/modules/cloud-node) 的项目，**节点服务也必须同步升级至 2.0.0**
+
+### 破坏性变更
+
+#### 1. 密码加密算法升级（MD5 → SHA-512 + Salt）
+
+**影响范围**：所有使用 Erupt 内置 UPMS 登录体系的系统。
+
+升级后，系统改用 SHA-512 + 盐值（Salt）对新建及重置的密码进行加密。**此变更向后兼容**——`EruptUserService` 中的 `checkPwd` 方法会检查 `encryptType` 字段：`encryptType` 为空或为 `MD5` 的用户（即现有用户）仍可使用原密码正常登录；只有新建或重置后的密码才会使用 SHA-512 + 盐值加密。感谢 [段鹏鹏](https://gitee.com/erupt/erupt/pulls/35) 贡献此安全改进（Gitee [!35](https://gitee.com/erupt/erupt/pulls/35)）。
+
+**处理方式**：
+- **无需强制迁移**：现有用户无需任何操作即可继续登录。
+- **可选批量迁移**：如需将全部用户密码升级为新算法，可使用 `SecretUtil.encodePassword(plaintext, salt)` 重新加密，并更新 `e_upms_user` 表的 `password`、`salt` 和 `encrypt_type` 字段。
+
+#### 2. `DataProxy.extraContent` 签名变更
+
+**影响范围**：实现了 `DataProxy` 并覆盖了 `extraContent` 方法的类。
+
+| | 旧签名 | 新签名 |
+|---|---|---|
+| 方法 | `default String extraContent(List<Condition> conditions)` | `default String extraContent(List<Condition> conditions, Collection<Map<String, Object>> list)` |
+
+新增的第二个参数 `list` 为当前页的数据集合，可据此渲染包含行数据的动态 HTML。
+
+```java
+// 旧写法（覆盖了此方法的类需更新）
+@Override
+public String extraContent(List<Condition> conditions) {
+    return "<div>自定义内容</div>";
+}
+
+// 新写法
+@Override
+public String extraContent(List<Condition> conditions, Collection<Map<String, Object>> list) {
+    return "<div>自定义内容，当前页共 " + list.size() + " 条数据</div>";
+}
+```
+
+#### 3. `HTML_EDITOR` 默认编辑器改为 CKEditor
+
+**影响范围**：使用了 `EditType.HTML_EDITOR` 字段类型的模块。
+
+2.0.0 将 HTML_EDITOR 组件的默认富文本编辑器由 **UEditor** 改为 **CKEditor**。升级后，所有未显式指定编辑器类型的 HTML_EDITOR 字段将自动使用 CKEditor 渲染。
+
+**如需继续使用 UEditor**，需通过注解显式声明：
+
+```java
+@Edit(
+    type = EditType.HTML_EDITOR,
+    htmlEditorType = @HtmlEditorType(type = HtmlEditorType.Type.UEDITOR)
+)
+private String content;
+```
+
+#### 4. `AutoCompleteHandler`、`ChoiceFetchHandler`、`TagsFetchHandler` 需要泛型参数
+
+**影响范围**：实现了上述任一接口的类。
+
+`fetchFilter` 方法的参数类型由 `Map<String, Object> formData` 改为实际模型对象（泛型 `T`），接口也改为泛型接口。
+
+```java
+// 旧写法（编译报错）
+class MyHandler implements ChoiceFetchHandler {
+    @Override
+    public List<String> fetchFilter(Map<String, Object> formData, ...) {
+        String value = (String) formData.get("someField");
+        ...
+    }
+}
+
+// 新写法
+class MyHandler implements ChoiceFetchHandler<MyEruptClass> {
+    @Override
+    public List<String> fetchFilter(MyEruptClass data, ...) {
+        String value = data.getSomeField();
+        ...
+    }
+}
+```
+
+`AutoCompleteHandler` 和 `TagsFetchHandler` 的迁移方式相同。
+
+#### 5. Excel 导入模板格式从 `.xls` 改为 `.xlsx`
+
+**影响范围**：已缓存或收藏了导入模板下载链接的用户。
+
+Excel 导入模板的生成格式已从旧版 `.xls` 升级为 `.xlsx`。如果用户的浏览器或下载工具缓存了旧的模板文件，需清除缓存或重新下载模板。
+
+#### 6. `@Search.vague` 属性已移除
+
+**影响范围**：代码中使用了 `@Search(vague = true)` 或 `@Search(vague = false)` 的字段。
+
+```java
+// 旧写法（编译报错）
+@Edit(search = @Search(vague = true))
+@Edit(search = @Search(vague = false))
+
+// 新写法
+@Edit(search = @Search)            // 等同于旧的 vague = true（高级搜索为默认行为）
+@Edit(search = @Search(value = true)) // 仅开启搜索，无特殊含义变化
+```
+
+高级搜索（范围查询、模糊匹配等）现为各组件的默认行为，无需额外配置。
+
+#### 7. `EruptApiModel` 类已删除
+
+**影响范围**：代码中使用了 `EruptApiModel.PromptWay` 的地方。
+
+```java
+// 旧写法（编译报错）
+throw new EruptApiErrorTip("错误信息", EruptApiModel.PromptWay.MESSAGE);
+throw new EruptApiErrorTip("错误信息", EruptApiModel.PromptWay.NOTIFY);
+
+// 新写法
+throw new EruptApiErrorTip("错误信息", R.PromptWay.MESSAGE);
+throw new EruptApiErrorTip("错误信息", R.PromptWay.NOTIFY);
+```
+
+同时，如果项目中直接引用 `EruptApiModel` 类，请替换为 `R<T>`：
+
+```java
+// 旧写法
+import xyz.erupt.core.view.EruptApiModel;
+
+// 新写法
+import xyz.erupt.core.view.R;
+```
+
+#### 8. `ChoiceTrigger` 接口已移除
+
+**影响范围**：实现了 `ChoiceTrigger` 接口的类。
+
+该接口已于早期版本废弃，2.0.0 正式删除。请使用 `@ChoiceType.fetchHandler` 替代：
+
+```java
+// 新写法：通过 fetchHandler 实现联动
+@Edit(
+    choiceType = @ChoiceType(fetchHandler = MyChoiceFetchHandler.class)
+)
+```
+
+详见：[Choice 组件 → fetchHandler](/zh/field-types/choice#动态列表)
+
+#### 9. 登录与修改密码接口改为 HTTP POST
+
+**影响范围**：自定义登录页、直接调用 Erupt 登录 API 的前端代码。
+
+| 接口 | 旧方式 | 新方式 |
+|------|--------|--------|
+| `/erupt-api/erupt-user/login` | GET | POST |
+| `/erupt-api/erupt-user/change-pwd` | GET | POST |
+
+如果使用了自定义登录页，需将对应的 AJAX 请求方式由 `GET` 改为 `POST`。
+
+### API 变更速查
+
+| 旧 API | 新 API |
+|--------|--------|
+| `EruptApiModel.PromptWay.MESSAGE` | `R.PromptWay.MESSAGE` |
+| `EruptApiModel.PromptWay.NOTIFY` | `R.PromptWay.NOTIFY` |
+| `EruptApiModel.PromptWay.DIALOG` | `R.PromptWay.DIALOG` |
+| `@Search(vague = true)` | `@Search` |
+| `@Search(vague = false)` | `@Search(value = true)` |
+| `ChoiceTrigger` 接口 | `@ChoiceType.fetchHandler` |
+| `MD5Util` | `EncryptUtil` / `SecretUtil` |
+| `EditType.COLLAPSE` | `EditType.GROUP` |
+
+### 数据库变更
+
+:::info
+所有表结构变更均由 JPA / Hibernate 在启动时自动执行。仅当项目**禁用了 Hibernate 自动 DDL**（`spring.jpa.hibernate.ddl-auto=none` 或 `validate`）时，才需要手动执行以下脚本。
+:::
+
+#### `e_upms_user` 表新增字段
+
+```sql
+ALTER TABLE e_upms_user ADD COLUMN salt         VARCHAR(64);
+ALTER TABLE e_upms_user ADD COLUMN encrypt_type VARCHAR(20);
+```
+
+
+### 升级必做操作
+
+:::warning
+以下操作**必须在升级后首次启动前完成**，否则相关模块的菜单将出现路由不匹配或空白页问题。
+:::
+
+#### 第一步：删除 `.erupt` 目录
+
+`.erupt` 目录（位于 JVM 工作目录）保存了模块初始化标记文件。删除后，框架在下次启动时会重新执行所有模块的菜单初始化逻辑：
+
+```bash
+rm -rf .erupt
+```
+
+#### 第二步：手动删除受影响的旧菜单
+
+登录后台 → 系统设置 → 菜单管理，按需删除以下菜单：
+
+##### 使用了 erupt-monitor
+
+2.0.0 对 erupt-monitor 进行了**完全重写**，菜单结构与旧版完全不同，旧菜单无法自动迁移：
+
+找到**"系统监控"**（或 Monitor）根菜单，将其下所有子菜单及根菜单本身全部删除。
+
+##### 使用了 erupt-terminal
+
+2.0.0 重构了终端模块前端 UI，旧版路由已变更：
+
+找到**"终端"**菜单，将其删除。
+
+#### 第三步：重启应用
+
+重启后，系统自动重新生成上述模块的最新菜单。
+
+## 历史升级指南
+
+- [1.12.x → 1.13.x 升级指南](https://www.yuque.com/erupts/1.13.x)

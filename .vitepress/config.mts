@@ -2,23 +2,32 @@ import {defineConfig} from 'vitepress'
 import {withMermaid} from 'vitepress-plugin-mermaid'
 import {InlineLinkPreviewElementTransform} from '@nolebase/vitepress-plugin-inline-link-preview/markdown-it'
 import {GitChangelog, GitChangelogMarkdownSection} from '@nolebase/vitepress-plugin-git-changelog/vite'
+import {readFileSync} from 'node:fs'
+import {fileURLToPath} from 'node:url'
+
+// 从中文更新日志的首个版本标题解析最新版本号，供侧边栏徽标与首页版本标签共用，发版后无需手改
+const latestVersion = readFileSync(fileURLToPath(new URL('../zh/guide/changelog.md', import.meta.url)), 'utf8')
+    .match(/^## (\d+\.\d+\.\d+)/m)?.[1] ?? ''
+const versionBadge = latestVersion ? ` <span class="VPBadge tip">v${latestVersion}</span>` : ''
 
 export default withMermaid(defineConfig({
     title: 'Erupt',
     description: 'MDD & Annotation-driven Low-code Data platform & AI Harness',
-    lang: 'zh-CN',
     lastUpdated: true,
     cleanUrls: true,
     ignoreDeadLinks: true,
 
     markdown: {
+        languageAlias: {
+            velocity: 'sql',
+        },
         config(md) {
             md.use(InlineLinkPreviewElementTransform)
         },
     },
 
     head: [
-        ['link', {rel: 'icon', href: '/logo.png'}],
+        ['link', {rel: 'icon', href: '/icon.svg'}],
         ['meta', {name: 'theme-color', content: '#646cff'}],
     ],
 
@@ -27,277 +36,1491 @@ export default withMermaid(defineConfig({
             GitChangelog({
                 repoURL: 'https://github.com/erupts/erupt-docs',
             }),
-            GitChangelogMarkdownSection(),
+            GitChangelogMarkdownSection({
+                // iframe 嵌入页不需要贡献者 / 页面历史区块
+                exclude: (id: string) => id.includes('/embed/'),
+            }),
         ],
         build: {
             rollupOptions: {
                 output: {
-                    manualChunks: {
-                        mermaid: ['mermaid'],
+                    // rolldown-vite only accepts the function form of manualChunks
+                    manualChunks(id: string) {
+                        if (id.includes('node_modules/mermaid')) return 'mermaid'
                     },
                 },
             },
         },
+        // mermaid 11.17+ 新增的 CJS 依赖未被 vitepress-plugin-mermaid 加入预构建，开发模式会白屏
+        optimizeDeps: {
+            include: [
+                'fastdom',
+                'fastdom/extensions/fastdom-promised.js',
+                'cytoscape-fcose',
+                'dayjs/plugin/duration.js',
+                '@upsetjs/venn.js',
+                'ts-dedent',
+            ],
+        },
         ssr: {
             noExternal: [
-                /^@nolebase\/.*/,           // 匹配所有 @nolebase 包,一劳永逸
+                /^@nolebase\/.*/,
                 'vitepress-plugin-mermaid',
                 'mermaid',
+                'dayjs',
             ],
         },
     },
 
-    themeConfig: {
-        logo: {light: '/logo.png', dark: '/logo.png'},
-        siteTitle: 'Erupt',
-        search: {
-            provider: 'local'
+    locales: {
+        en: {
+            label: 'English',
+            lang: 'en',
+            link: '/en/',
+            themeConfig: {
+                nav: [
+                    {text: 'Guide', link: '/en/guide/', activeMatch: '/en/guide/'},
+                    {text: 'Annotations', link: '/en/annotation/', activeMatch: '/en/annotation/'},
+                    {text: 'Components', link: '/en/field-types/', activeMatch: '/en/field-types/'},
+                    {text: 'Advanced', link: '/en/advanced/', activeMatch: '/en/advanced/'},
+                    {text: 'Modules', link: '/en/modules/', activeMatch: '/en/modules/'},
+                    {text: 'Topics', link: '/en/topics/', activeMatch: '/en/topics/'},
+                    {text: 'Architecture', link: '/en/guide/architecture'},
+                    {text: 'Changelog', link: '/en/guide/changelog'},
+                    {
+                        text: 'Resources',
+                        items: [
+                            {text: '🚀 Project Init', link: 'https://start.erupt.xyz/'},
+                            {text: '⚡ AI Skill', link: 'https://skill.erupt.xyz'},
+                            {text: 'Website', link: 'https://www.erupt.xyz'},
+                            {text: 'Linq.J', link: 'https://linq.erupt.xyz/'},
+                            {text: 'GitHub', link: 'https://github.com/erupts/erupt'},
+                            {text: 'Gitee', link: 'https://gitee.com/erupt/erupt'},
+                            {text: 'Live Demo', link: 'https://demo.erupt.xyz'},
+                        ],
+                    },
+                ],
+
+                sidebar: {
+                    '/en/guide/': [
+                        {
+                            text: 'Getting Started',
+                            items: [
+                                {text: '🚀 Project Init', link: 'https://start.erupt.xyz/'},
+                                {text: '⚡ No-Code Builder', link: 'https://skill.erupt.xyz'},
+                                {text: 'Framework Introduction', link: '/en/guide/'},
+                                {text: 'Quick Start', link: '/en/guide/quick-start'},
+                                {text: 'First Example', link: '/en/guide/getting-started'},
+                                {text: 'User & Permission Management', link: '/en/modules/erupt-upms/'},
+                                {
+                                    text: 'Configuration',
+                                    collapsed: true,
+                                    items: [
+                                        {text: 'Backend: application.yml', link: '/en/guide/configuration'},
+                                        {text: 'Frontend: app.js', link: '/en/guide/config-frontend'},
+                                        {text: 'Frontend: app.css', link: '/en/guide/config-style'},
+                                        {text: 'Home page: home.html', link: '/en/guide/config-home'},
+                                    ],
+                                },
+                                {text: 'UI & Interaction', link: '/en/guide/ui'},
+                                {text: 'Desktop App (PWA)', link: '/en/guide/pwa'},
+                            ],
+                        },
+                        {
+                            text: 'Releases',
+                            items: [
+                                {text: 'Changelog' + versionBadge, link: '/en/guide/changelog'},
+                                {text: 'Upgrade Guide', link: '/en/guide/upgrade'},
+                                {text: 'Legacy Versions', link: '/en/guide/history'},
+                            ],
+                        },
+                        {
+                            text: 'Reference',
+                            items: [
+                                {text: 'Architecture', link: '/en/guide/architecture'},
+                                {text: 'Database Support', link: '/en/guide/database'},
+                                {text: 'FAQ', link: '/en/guide/faq'},
+                                {text: 'Anonymous Telemetry', link: '/en/guide/telemetry'},
+                            ],
+                        },
+                        {
+                            text: 'Community',
+                            items: [
+                                {text: 'Community', link: '/en/guide/community'},
+                                {text: 'Governance & License', link: '/en/guide/governance'},
+                                {text: 'Contributing', link: '/en/guide/contributing'},
+                                {text: 'Donate', link: '/en/guide/donate'},
+                            ],
+                        },
+                    ],
+
+                    '/en/annotation/': [
+                        {
+                            text: 'Core Annotations',
+                            items: [
+                                {text: 'Overview', link: '/en/annotation/'},
+                                {text: '@EruptScan', link: '/en/annotation/erupt-scan'},
+                                {text: '@Erupt', link: '/en/annotation/erupt'},
+                                {text: '@EruptField', link: '/en/annotation/erupt-field'},
+                                {text: '@Edit', link: '/en/annotation/edit'},
+                                {text: '@View', link: '/en/annotation/view'},
+                                {text: '@Search', link: '/en/annotation/search'},
+                            ],
+                        },
+                        {
+                            text: 'Dynamic Annotations',
+                            items: [
+                                {text: 'OnChange Field Linkage', link: '/en/annotation/on-change'},
+                                {text: 'ifRender Dynamic Rendering', link: '/en/annotation/if-render'},
+                                {text: 'Dynamic Form Control', link: '/en/annotation/dynamic'},
+                            ],
+                        },
+                        {
+                            text: 'Feature Annotations',
+                            items: [
+                                {text: '@Filter', link: '/en/annotation/filter'},
+                                {text: '@Power', link: '/en/annotation/power'},
+                                {text: '@EruptScope <span class="VPBadge tip">new</span>', link: '/en/annotation/erupt-scope'},
+                                {text: '@Tree', link: '/en/annotation/tree'},
+                                {text: '@LinkTree', link: '/en/annotation/link-tree'},
+                                {text: '@Drill', link: '/en/annotation/drill'},
+                                {text: '@Layout', link: '/en/annotation/layout'},
+                                {text: 'formSteps', link: '/en/annotation/form-steps'},
+                                {text: '@OrderBy', link: '/en/annotation/order-by'},
+                                {text: '@RowOperation', link: '/en/annotation/row-operation'},
+                                {text: '@DragSort', link: '/en/annotation/drag-sort'},
+                                {text: '@Tpl', link: '/en/annotation/tpl'},
+                                {
+                                    text: '@Vis',
+                                    collapsed: false,
+                                    items: [
+                                        {text: 'Overview', link: '/en/annotation/vis'},
+                                        {text: 'CARD View', link: '/en/annotation/vis-card'},
+                                        {text: 'GANTT Chart', link: '/en/annotation/vis-gantt'},
+                                        {text: 'BOARD View', link: '/en/annotation/vis-board'},
+                                        {text: 'CALENDAR View', link: '/en/annotation/vis-calendar'},
+                                        {text: 'TIMELINE View <span class="VPBadge tip">new</span>', link: '/en/annotation/vis-timeline'},
+                                        {text: 'MAP View <span class="VPBadge tip">new</span>', link: '/en/annotation/vis-map'},
+                                        {text: 'CUBE View <span class="VPBadge tip">new</span>', link: '/en/annotation/vis-cube'},
+                                        {text: 'Custom View TPL', link: '/en/annotation/vis-tpl'},
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+
+                    '/en/field-types/': [
+                        {
+                            text: 'Components',
+                            items: [
+                                {text: 'Overview', link: '/en/field-types/'},
+                                {text: 'AUTO', link: '/en/field-types/auto'},
+                                {text: 'INPUT', link: '/en/field-types/input'},
+                                {text: 'PASSWORD', link: '/en/field-types/password'},
+                                {text: 'TEXTAREA', link: '/en/field-types/textarea'},
+                                {text: 'NUMBER', link: '/en/field-types/number'},
+                                {text: 'SLIDER', link: '/en/field-types/slider'},
+                                {text: 'DATE', link: '/en/field-types/date'},
+                                {text: 'BOOLEAN', link: '/en/field-types/boolean'},
+                                {text: 'MAP', link: '/en/field-types/map'},
+                                {text: 'COLOR', link: '/en/field-types/color'},
+                                {text: 'ICON', link: '/en/field-types/icon'},
+                                {text: 'KEY_VALUE', link: '/en/field-types/key-value'},
+                                {text: 'RATE', link: '/en/field-types/rate'},
+                            ],
+                        },
+                        {
+                            text: 'Choice Components',
+                            items: [
+                                {text: 'CHOICE', link: '/en/field-types/choice'},
+                                {text: 'MULTI_CHOICE', link: '/en/field-types/multi-choice'},
+                                {text: 'TAGS', link: '/en/field-types/tags'},
+                                {text: 'AUTO_COMPLETE', link: '/en/field-types/auto-complete'},
+                            ],
+                        },
+                        {
+                            text: 'Media & Editors',
+                            items: [
+                                {text: 'ATTACHMENT', link: '/en/field-types/attachment'},
+                                {text: 'HTML_EDITOR', link: '/en/field-types/html-editor'},
+                                {text: 'CODE_EDITOR', link: '/en/field-types/code-editor'},
+                                {text: 'MARKDOWN', link: '/en/field-types/markdown'},
+                                {text: 'SIGNATURE', link: '/en/field-types/signature'},
+                            ],
+                        },
+                        {
+                            text: 'Relation Components',
+                            items: [
+                                {text: 'Overview', link: '/en/field-types/relation'},
+                                {text: 'REFERENCE_TABLE', link: '/en/field-types/reference-table'},
+                                {text: 'REFERENCE_TREE', link: '/en/field-types/reference-tree'},
+                                {text: 'CHECKBOX', link: '/en/field-types/checkbox'},
+                                {text: 'TRANSFER', link: '/en/field-types/transfer'},
+                                {text: 'TAB_TREE', link: '/en/field-types/tab-tree'},
+                                {text: 'TAB_TABLE_REFER', link: '/en/field-types/tab-table-refer'},
+                                {text: 'TAB_TABLE_ADD', link: '/en/field-types/tab-table-add'},
+                                {text: 'MULTI_FORM', link: '/en/field-types/multi-form'},
+                                {text: 'COMBINE', link: '/en/field-types/combine'},
+                            ],
+                        },
+                        {
+                            text: 'Other Types',
+                            items: [
+                                {text: 'GROUP', link: '/en/field-types/group'},
+                                {text: 'DIVIDE', link: '/en/field-types/divide'},
+                                {text: 'CALLOUT', link: '/en/field-types/callout'},
+                                {text: 'BUTTON', link: '/en/field-types/button'},
+                                {text: 'TPL', link: '/en/field-types/tpl'},
+                                {text: 'HIDDEN', link: '/en/field-types/hidden'},
+                                {text: 'EMPTY', link: '/en/field-types/empty'},
+                            ],
+                        },
+                    ],
+
+                    '/en/advanced/': [
+                        {
+                            text: 'Advanced',
+                            items: [
+                                {text: 'Overview', link: '/en/advanced/'},
+                            ],
+                        },
+                        {
+                            text: 'DataProxy',
+                            items: [
+                                {text: 'DataProxy Overview', link: '/en/advanced/data-proxy'},
+                                {text: 'CRUD Interception', link: '/en/advanced/data-proxy-crud'},
+                                {text: 'Form Validation', link: '/en/advanced/data-proxy-validate'},
+                                {text: 'Query Conditions', link: '/en/advanced/data-proxy-query'},
+                                {text: 'Table Display', link: '/en/advanced/data-proxy-table'},
+                                {text: 'Custom Rows', link: '/en/advanced/extra-row'},
+                                {text: 'Virtual Fields', link: '/en/advanced/virtual-field'},
+                                {text: 'Form Behaviors', link: '/en/advanced/data-proxy-form'},
+                                {text: 'Form View', link: '/en/advanced/form-view'},
+                                {text: 'Excel Import & Export', link: '/en/advanced/data-proxy-excel'},
+                                {text: 'Print Processing', link: '/en/advanced/data-proxy-print'},
+                                {text: 'Inherited Proxy', link: '/en/advanced/pre-data-proxy'},
+                                {text: 'Global Interception', link: '/en/advanced/post-data-proxy'},
+                            ],
+                        },
+                        {
+                            text: 'EruptDao Database Operations',
+                            items: [
+                                {text: 'EruptDao Overview', link: '/en/advanced/erupt-dao'},
+                                {text: 'Chained Queries', link: '/en/advanced/erupt-dao-lambda'},
+                                {text: 'Multi-Datasource Operations', link: '/en/advanced/erupt-dao-datasource'},
+                            ],
+                        },
+                        {
+                            text: 'Data Sources & Storage',
+                            items: [
+                                {text: 'Multiple Data Sources', link: '/en/advanced/datasource'},
+                                {text: 'Custom Data Source', link: '/en/advanced/custom-datasource'},
+                                {text: 'Soft Delete', link: '/en/advanced/soft-delete'},
+                                {text: 'Attachment Storage', link: '/en/advanced/upload'},
+                            ],
+                        },
+                        {
+                            text: 'Authentication & Authorization',
+                            items: [
+                                {text: 'Login & Authentication', link: '/en/advanced/auth'},
+                                {text: 'API Auth & Operation Logs', link: '/en/advanced/rest-api'},
+                                {text: 'Open API', link: '/en/advanced/open-api'},
+                            ],
+                        },
+                        {
+                            text: 'Integration & Deployment',
+                            items: [
+                                {text: 'Embedding External Systems', link: '/en/advanced/integration'},
+                                {text: 'Frontend/Backend Separation', link: '/en/advanced/separation'},
+                            ],
+                        },
+                        {
+                            text: 'Frontend Customization',
+                            items: [
+                                {text: 'Messages & Dialogs', link: '/en/advanced/frontend-notify'},
+                                {text: 'Internationalization', link: '/en/advanced/i18n'},
+                                {text: 'Extending Erupt Annotations', link: '/en/advanced/extend'},
+                            ],
+                        },
+                        {
+                            text: 'Extension Development',
+                            items: [
+                                {text: 'Event Listeners', link: '/en/advanced/event-listener'},
+                                {text: 'Module & Plugin Development', link: '/en/advanced/plugin'},
+                                {text: 'Utility Classes', link: '/en/advanced/utils'},
+                                {text: 'Hot Build', link: '/en/advanced/hot-build'},
+                            ],
+                        },
+                    ],
+
+                    '/en/topics/': [
+                        {
+                            text: 'Topics',
+                            items: [
+                                {text: 'Topics Overview', link: '/en/topics/'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 26 · Share',
+                            items: [
+                                {text: 'A Public Link Should Not Be a Second Auth System', link: '/en/topics/share-link-scoped-session'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 25 · AI Dev',
+                            items: [
+                                {text: 'A Badge for the Coding Agent', link: '/en/topics/ai-dev-requirement-pool'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 24 · Config',
+                            items: [
+                                {text: 'A Config Center Doesn\'t Have to Be Another Service', link: '/en/topics/runtime-config-property-source'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 23 · SSO',
+                            items: [
+                                {text: 'The Hard Part of SAML Is Refusing', link: '/en/topics/saml-sso-jdk-only'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 22 · Webhook',
+                            items: [
+                                {text: 'Don\'t Notify Anyone Before the Transaction Commits', link: '/en/topics/webhook-after-commit'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 21 · Scope',
+                            items: [
+                                {text: '"The Current Project" Should Not Be a where Clause', link: '/en/topics/erupt-scope-workspace'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 20 · Cloud',
+                            items: [
+                                {text: 'A Node Is Not a Spring App, It Is a Protocol', link: '/en/topics/cloud-node-protocol'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 19 · Validation',
+                            items: [
+                                {text: 'Declare Once, Enforce Everywhere', link: '/en/topics/declared-limits-server-side'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 18 · History',
+                            items: [
+                                {text: 'Change History Belongs to No DataProxy', link: '/en/topics/record-revision-pipeline-event'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 17 · Views',
+                            items: [
+                                {text: 'One Table, Eight Views', link: '/en/topics/vis-one-query-many-views'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 16 · Data Source',
+                            items: [
+                                {text: "When the Data Isn't in Your Database", link: '/en/topics/remote-table-as-storage'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 15 · Decision',
+                            items: [
+                                {text: 'Putting AI Judgements Back Inside an if', link: '/en/topics/typed-decision'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 14 · Generator',
+                            items: [
+                                {text: 'Generating Models from an Existing Database', link: '/en/topics/generator-reads-database'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 13 · Identity',
+                            items: [
+                                {text: 'A Login Chain Without Spring Security', link: '/en/topics/identity-without-security-stack'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 12 · Remote Access',
+                            items: [
+                                {text: 'Security Boundaries for Remote Hosts', link: '/en/topics/remote-sftp-boundary'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 11 · Record Comment',
+                            items: [
+                                {text: "Why Comments Don't Bind to Business Tables", link: '/en/topics/record-comment-crosscut'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 10 · Cell Edit',
+                            items: [
+                                {text: 'Why Cell Edits Run the Whole-Row Pipeline', link: '/en/topics/cell-edit-whole-row'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 09 · Model Atlas',
+                            items: [
+                                {text: 'Model Atlas as a Static Audit', link: '/en/topics/model-atlas-audit'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 08 · Annotation DX',
+                            items: [
+                                {text: 'Code With Syntax, Not a String', link: '/en/topics/annotation-language-injection'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 07 · Runtime Designer',
+                            items: [
+                                {text: 'ByteBuddy × Bytecode Designer', link: '/en/topics/bytecode-designer'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 06 · Secure by Default',
+                            items: [
+                                {text: 'Secure by Default', link: '/en/topics/security-defaults'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 05 · Design Philosophy',
+                            items: [
+                                {text: 'The most controllable low-code platform', link: '/en/topics/controllable-low-code'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 04 · BI × LLM',
+                            items: [
+                                {text: 'Let Your BI Dashboard Answer "Why Did It Drop"', link: '/en/topics/cube-llm'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 03 · JPA Superset',
+                            items: [
+                                {text: 'A Full Ring of Backend Infrastructure for JPA', link: '/en/topics/jpa-superset'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 02 · Design Philosophy',
+                            items: [
+                                {text: '@Erupt × DataProxy × Handler', link: '/en/topics/annotation-vs-canvas'},
+                            ],
+                        },
+                        {
+                            text: 'Issue 01 · AI Harness',
+                            items: [
+                                {text: '50+ LLM × A2A × Memory', link: '/en/topics/50-llm-a2a-memory'},
+                            ],
+                        },
+                    ],
+
+                    '/en/modules/': [
+                        {
+                            text: 'Modules',
+                            items: [
+                                {text: 'Modules Overview', link: '/en/modules/'},
+                            ],
+                        },
+                        {
+                            text: 'AI Modules',
+                            items: [
+                                {
+                                    text: '🐴 Erupt AI Harness',
+                                    collapsed: true,
+                                    items: [
+                                        {text: 'Overview & Quick Start', link: '/en/modules/erupt-ai/'},
+                                        {text: 'Configure LLMs', link: '/en/modules/erupt-ai/llm'},
+                                        {text: 'Chat Workbench', link: '/en/modules/erupt-ai/chat'},
+                                        {text: 'Experts (Preset AI Roles)', link: '/en/modules/erupt-ai/agent'},
+                                        {text: 'Build Custom Tools', link: '/en/modules/erupt-ai/tools'},
+                                        {text: 'Authorize Tools by Role', link: '/en/modules/erupt-ai/tool-auth'},
+                                        {text: 'Connect External MCP Servers', link: '/en/modules/erupt-ai/mcp'},
+                                        {text: 'Expose Erupt as an MCP Server', link: '/en/modules/erupt-ai/mcp-server'},
+                                        {text: 'Inject System Prompts Dynamically', link: '/en/modules/erupt-ai/prompt'},
+                                        {text: 'Connect External Agents (A2A)', link: '/en/modules/erupt-ai/a2a'},
+                                        {text: 'Long-Term Memory', link: '/en/modules/erupt-ai/memory'},
+                                        {text: 'AI Writing Assistant for Forms', link: '/en/modules/erupt-ai/writing-assistant'},
+                                    ],
+                                },
+                                {
+                                    text: '🦞 Erupt AI Claw',
+                                    collapsed: true,
+                                    items: [
+                                        {text: 'Overview & Setup', link: '/en/modules/erupt-ai-claw/'},
+                                        {text: 'Install & Use Skills', link: '/en/modules/erupt-ai-claw/skill'},
+                                        {text: 'Operate Erupt Data by Chat', link: '/en/modules/erupt-ai-claw/erupt-model'},
+                                        {text: 'Shell & File Operations', link: '/en/modules/erupt-ai-claw/os'},
+                                        {text: 'Control a Browser', link: '/en/modules/erupt-ai-claw/browser'},
+                                        {text: 'Long-Term Memory', link: '/en/modules/erupt-ai-claw/memory'},
+                                        {text: 'Inspect App Runtime (Spring Boot)', link: '/en/modules/erupt-ai-claw/spring-boot'},
+                                        {text: 'Tool Reference & Role Authorization', link: '/en/modules/erupt-ai-claw/tools'},
+                                    ],
+                                },
+                                {text: '🎨 Erupt AI Canvas', link: '/en/modules/erupt-ai-canvas'},
+                                {text: '📖 Erupt AI RAG', link: '/en/modules/erupt-ai-rag'},
+                                {text: '👩‍💻 Erupt AI Staff', link: '/en/modules/erupt-ai-staff'},
+                                {text: '🔀 Erupt AI Decision', link: '/en/modules/erupt-ai-decision'},
+                                {text: '🤖 Erupt AI Dev', link: '/en/modules/erupt-ai-dev'},
+                                {text: '🛠️ Erupt AI Skills', link: 'https://github.com/plinian/erupt-skill'},
+                            ],
+                        },
+                        {
+                            text: 'Core Modules',
+                            items: [
+                                {
+                                    text: 'Erupt Upms',
+                                    collapsed: true,
+                                    items: [
+                                        {text: 'Overview & Permission Model', link: '/en/modules/erupt-upms/'},
+                                        {text: 'Menu Management', link: '/en/modules/erupt-upms/menu'},
+                                        {text: 'Role Management', link: '/en/modules/erupt-upms/role'},
+                                        {text: 'Organizations & Posts', link: '/en/modules/erupt-upms/org-post'},
+                                        {text: 'User Management', link: '/en/modules/erupt-upms/user'},
+                                        {text: 'Data Dictionary', link: '/en/modules/erupt-upms/dict'},
+                                        {text: 'Open API', link: '/en/modules/erupt-upms/open-api'},
+                                        {text: 'Online Users', link: '/en/modules/erupt-upms/online'},
+                                        {text: 'Login & Operation Logs', link: '/en/modules/erupt-upms/log'},
+                                        {text: 'System Log', link: '/en/modules/erupt-upms/system-log'},
+                                    ],
+                                },
+                                {
+                                    text: 'Erupt Tpl',
+                                    collapsed: true,
+                                    items: [
+                                        {text: 'Overview', link: '/en/modules/erupt-tpl/'},
+                                        {text: 'Menu Pages', link: '/en/modules/erupt-tpl/menu'},
+                                        {text: 'Template Development', link: '/en/modules/erupt-tpl/template'},
+                                        {text: 'Micro-Frontend Integration', link: '/en/modules/erupt-tpl/micro-frontend'},
+                                        {text: 'UI Component Kits', link: '/en/modules/erupt-tpl/ui'},
+                                    ],
+                                },
+                                {text: 'Erupt Web', link: '/en/modules/erupt-web'},
+                                {text: 'Erupt Designer', link: '/en/modules/erupt-designer'},
+                            ],
+                        },
+                        {
+                            text: 'Tool Modules',
+                            items: [
+                                {text: 'Erupt Terminal', link: '/en/modules/erupt-terminal'},
+                                {text: 'Erupt Remote', link: '/en/modules/erupt-remote'},
+                                {text: 'Erupt Atlas', link: '/en/modules/erupt-atlas'},
+                                {text: 'Erupt Comment', link: '/en/modules/erupt-comment'},
+                                {text: 'Erupt SSO', link: '/en/modules/erupt-sso'},
+                                {text: 'Erupt Share', link: '/en/modules/erupt-share'},
+                                {text: 'Erupt Webhook', link: '/en/modules/erupt-webhook'},
+                                {text: 'Erupt Config', link: '/en/modules/erupt-config'},
+                                {text: 'Erupt Revision', link: '/en/modules/erupt-revision'},
+                                {text: 'Erupt File Center', link: '/en/modules/erupt-file-center'},
+                                {text: 'Erupt Websocket', link: '/en/modules/erupt-websocket'},
+                                {text: 'Erupt Generator', link: '/en/modules/erupt-generator'},
+                                {text: 'Erupt Job', link: '/en/modules/erupt-job'},
+                                {text: 'Erupt Notice', link: '/en/modules/erupt-notice'},
+                                {text: 'Erupt Monitor', link: '/en/modules/erupt-monitor'},
+                                {text: 'Erupt Magic Api', link: '/en/modules/erupt-magic-api'},
+                                {text: 'Erupt Print', link: '/en/modules/erupt-print'},
+                                {
+                                    text: 'Erupt Cloud',
+                                    collapsed: true,
+                                    items: [
+                                        {text: 'Introduction', link: '/en/modules/erupt-cloud'},
+                                        {text: 'Server Deployment', link: '/en/modules/cloud-server'},
+                                        {text: 'Node Deployment', link: '/en/modules/cloud-node'},
+                                        {text: 'Node Lite (without Spring)', link: '/en/modules/cloud-node-lite'},
+                                    ],
+                                },
+                                {
+                                    text: 'Erupt SDK (Any Language)',
+                                    collapsed: true,
+                                    items: [
+                                        {text: 'Overview', link: '/en/modules/erupt-sdk/'},
+                                        {text: 'Python', link: '/en/modules/erupt-sdk/python'},
+                                        {text: 'Go', link: '/en/modules/erupt-sdk/go'},
+                                        {text: 'TypeScript / Node.js', link: '/en/modules/erupt-sdk/typescript'},
+                                        {text: 'PHP', link: '/en/modules/erupt-sdk/php'},
+                                        {text: 'C# / .NET', link: '/en/modules/erupt-sdk/dotnet'},
+                                        {text: 'Java / Kotlin', link: '/en/modules/erupt-sdk/java'},
+                                        {text: 'Ruby', link: '/en/modules/erupt-sdk/ruby'},
+                                        {text: 'Rust', link: '/en/modules/erupt-sdk/rust'},
+                                        {text: 'Swift', link: '/en/modules/erupt-sdk/swift'},
+                                    ],
+                                },
+                                {
+                                    text: 'Erupt Report',
+                                    collapsed: true,
+                                    items: [
+                                        {text: 'Introduction & Setup', link: '/en/modules/erupt-report/'},
+                                        {text: 'Data Sources', link: '/en/modules/erupt-report/datasource'},
+                                        {text: 'Report Handlers', link: '/en/modules/erupt-report/handler'},
+                                        {text: 'Reference Dimensions', link: '/en/modules/erupt-report/dimension'},
+                                        {text: 'Function Management', link: '/en/modules/erupt-report/function'},
+                                        {text: 'Report Configuration', link: '/en/modules/erupt-report/report-config'},
+                                        {text: 'Publishing Reports', link: '/en/modules/erupt-report/publish'},
+                                        {text: 'FAQ', link: '/en/modules/erupt-report/faq'},
+                                    ],
+                                },
+                            ],
+                        },
+                        {
+                            text: 'Commercial Modules',
+                            items: [
+                                {text: 'Pricing & Purchase ↗', link: 'https://www.erupt.xyz/#!/pro'},
+                                {
+                                    text: 'Erupt SaaS Multi-tenant',
+                                    collapsed: true,
+                                    items: [
+                                        {text: 'Introduction', link: '/en/modules/pro/erupt-tenant/'},
+                                        {text: 'Quick Start', link: '/en/modules/pro/erupt-tenant/quick-start'},
+                                        {text: 'Multi-tenant UPMS', link: '/en/modules/pro/erupt-tenant/upms'},
+                                        {text: 'Multi-tenant Business Tables', link: '/en/modules/pro/erupt-tenant/development'},
+                                        {text: 'Packages & Subscription', link: '/en/modules/pro/erupt-tenant/subscription'},
+                                        {text: 'Domain & Customization', link: '/en/modules/pro/erupt-tenant/domain'},
+                                        {text: 'Database Design', link: '/en/modules/pro/erupt-tenant/database'},
+                                    ],
+                                },
+                                {
+                                    text: 'Erupt Flow',
+                                    collapsed: true,
+                                    items: [
+                                        {text: 'Introduction', link: '/en/modules/pro/erupt-flow/'},
+                                        {text: 'Quick Start', link: '/en/modules/pro/erupt-flow/quick-start'},
+                                        {text: 'Approval Forms', link: '/en/modules/pro/erupt-flow/approval-form'},
+                                        {text: 'Workflow Development', link: '/en/modules/pro/erupt-flow/development'},
+                                        {text: 'Custom Extensions', link: '/en/modules/pro/erupt-flow/custom-node'},
+                                        {text: 'Flow Printing', link: '/en/modules/pro/erupt-flow/print'},
+                                        {text: 'Database Design', link: '/en/modules/pro/erupt-flow/database'},
+                                    ],
+                                },
+                                {
+                                    text: 'Erupt Cube Metrics Platform',
+                                    collapsed: true,
+                                    items: [
+                                        {text: 'Introduction', link: '/en/modules/pro/erupt-cube'},
+                                        {text: 'Quick Start', link: '/en/modules/pro/erupt-cube/quick-start'},
+                                        {text: 'Data Sources', link: '/en/modules/pro/erupt-cube/datasource'},
+                                        {text: 'Semantic Modeling', link: '/en/modules/pro/erupt-cube/semantic-model'},
+                                        {text: 'Cube ML Syntax', link: '/en/modules/pro/erupt-cube/cube-ml'},
+                                        {text: 'Visual Modeling', link: '/en/modules/pro/erupt-cube/visual-modeling'},
+                                        {text: 'Visual Analysis', link: '/en/modules/pro/erupt-cube/visual-analysis'},
+                                        {text: 'Charts in Model Views', link: '/en/modules/pro/erupt-cube/vis-view'},
+                                        {text: 'SQL Port', link: '/en/modules/pro/erupt-cube/sql'},
+                                        {text: 'AI Query', link: '/en/modules/pro/erupt-cube/ai'},
+                                        {text: 'AI Canvas', link: '/en/modules/pro/erupt-cube/ai-canvas'},
+                                        {text: 'Cloud Node Mode', link: '/en/modules/pro/erupt-cube/cloud'},
+                                    ],
+                                },
+                            ],
+                        },
+                        {
+                            text: 'Data Connectors',
+                            items: [
+                                {text: 'Erupt Jpa', link: '/en/modules/erupt-jpa'},
+                                {text: 'Erupt Mongodb', link: '/en/modules/erupt-mongodb'},
+                                {text: 'Erupt Jdbc', link: '/en/modules/erupt-jdbc'},
+                                {text: 'Erupt Http', link: '/en/modules/erupt-http'},
+                                {text: 'Erupt Es', link: '/en/modules/erupt-es'},
+                                {text: 'Erupt Redis', link: '/en/modules/erupt-redis'},
+                                {text: 'Erupt Memory', link: '/en/modules/erupt-memory'},
+                                {text: 'Erupt File', link: '/en/modules/erupt-file'},
+                                {text: 'Erupt K8s', link: '/en/modules/erupt-k8s'},
+                                {text: 'Erupt Ldap', link: '/en/modules/erupt-ldap'},
+                                {text: 'Erupt Feishu', link: '/en/modules/erupt-feishu'},
+                                {text: 'Erupt Notion', link: '/en/modules/erupt-notion'},
+                                {
+                                    text: 'Erupt S3',
+                                    collapsed: true,
+                                    items: [
+                                        {text: 'Overview', link: '/en/modules/erupt-s3/'},
+                                        {text: 'Attachment Upload', link: '/en/modules/erupt-s3/upload'},
+                                        {text: 'Object Data Source', link: '/en/modules/erupt-s3/datasource'},
+                                        {text: 'Configuration Reference', link: '/en/modules/erupt-s3/config'},
+                                        {text: 'Providers', link: '/en/modules/erupt-s3/providers'},
+                                        {text: 'FAQ', link: '/en/modules/erupt-s3/faq'},
+                                    ],
+                                },
+                                {text: 'Erupt DingTalk', link: '/en/modules/erupt-dingtalk'},
+                                {text: 'Erupt Airtable', link: '/en/modules/erupt-airtable'},
+                            ],
+                        },
+                        {
+                            text: 'Open-source Apps',
+                            items: [
+                                {text: 'Erupt K8s Dashboard', link: '/en/modules/apps/erupt-k8s-dashboard'},
+                                {text: 'Erupt PM', link: '/en/modules/apps/erupt-pm'},
+                                {text: 'Erupt Talent', link: '/en/modules/apps/erupt-talent'},
+                                {text: 'Erupt SMS', link: '/en/modules/apps/erupt-sms'},
+                                {text: 'Erupt WeChat', link: '/en/modules/apps/erupt-wechat'},
+                                {text: 'Erupt MiniApp', link: '/en/modules/apps/erupt-miniapp'},
+                            ],
+                        },
+                        {
+                            text: 'Third-party Modules',
+                            items: [
+                                {text: 'Erupt Dsl', link: '/en/modules/third-party/erupt-dsl'},
+                                {text: 'Erupt Pf4j', link: '/en/modules/third-party/erupt-pf4j'},
+                                {text: 'EZDML', link: '/en/modules/third-party/ezdml'},
+                                {text: 'MP Crawler', link: '/en/modules/third-party/mp-crawler'},
+                                {text: 'Erupt Vote', link: '/en/modules/third-party/erupt-vote'},
+                            ],
+                        },
+                    ],
+                },
+
+                editLink: {
+                    pattern: 'https://github.com/erupts/erupt-docs/edit/main/:path',
+                    text: 'Edit this page on GitHub',
+                },
+
+                lastUpdated: {
+                    text: 'Last updated',
+                },
+
+                outline: {
+                    label: 'On this page',
+                    level: [2, 3],
+                },
+
+                docFooter: {
+                    prev: 'Previous',
+                    next: 'Next',
+                },
+
+                returnToTopLabel: 'Return to top',
+                sidebarMenuLabel: 'Menu',
+                darkModeSwitchLabel: 'Theme',
+            },
         },
 
-        nav: [
-            {text: '指南', link: '/guide/', activeMatch: '/guide/'},
-            {text: '注解参考', link: '/annotation/', activeMatch: '/annotation/'},
-            {text: '组件类型', link: '/field-types/', activeMatch: '/field-types/'},
-            {text: '进阶', link: '/advanced/', activeMatch: '/advanced/'},
-            {text: '扩展模块', link: '/modules/', activeMatch: '/modules/'},
-            {text: '更新日志', link: '/guide/changelog'},
-            {text: '🚀 项目初始化', link: 'https://start.erupt.xyz/'},
-            {
-                text: '相关链接',
-                items: [
-                    {text: '官网', link: 'https://www.erupt.xyz'},
-                    {text: 'Linq.J', link: 'https://linq.erupt.xyz/'},
-                    {text: 'GitHub', link: 'https://github.com/erupts/erupt'},
-                    {text: 'Gitee', link: 'https://gitee.com/erupt/erupt'},
-                    {text: '在线体验', link: 'https://demo.erupt.xyz'},
+        zh: {
+            label: '中文',
+            lang: 'zh-CN',
+            themeConfig: {
+                nav: [
+                    {text: '指南', link: '/zh/guide/', activeMatch: '/zh/guide/'},
+                    {text: '注解', link: '/zh/annotation/', activeMatch: '/zh/annotation/'},
+                    {text: '组件', link: '/zh/field-types/', activeMatch: '/zh/field-types/'},
+                    {text: '进阶', link: '/zh/advanced/', activeMatch: '/zh/advanced/'},
+                    {text: '模块', link: '/zh/modules/', activeMatch: '/zh/modules/'},
+                    {text: '专题', link: '/zh/topics/', activeMatch: '/zh/topics/'},
+                    {text: '架构', link: '/zh/guide/architecture'},
+                    {text: '更新日志', link: '/zh/guide/changelog'},
+                    {
+                        text: '资源',
+                        items: [
+                            {text: '🚀 项目初始化', link: 'https://start.erupt.xyz/'},
+                            {text: '⚡ AI Skill', link: 'https://skill.erupt.xyz'},
+                            {text: '官网', link: 'https://www.erupt.xyz'},
+                            {text: 'Linq.J', link: 'https://linq.erupt.xyz/'},
+                            {text: 'GitHub', link: 'https://github.com/erupts/erupt'},
+                            {text: 'Gitee', link: 'https://gitee.com/erupt/erupt'},
+                            {text: '在线体验', link: 'https://demo.erupt.xyz'},
+                        ],
+                    },
                 ],
+
+                sidebar: {
+                    '/zh/guide/': [
+                        {
+                            text: '开始使用',
+                            items: [
+                                {text: '🚀 项目初始化', link: 'https://start.erupt.xyz/'},
+                                {text: '⚡ 零代码构建', link: 'https://skill.erupt.xyz'},
+                                {text: '框架介绍', link: '/zh/guide/'},
+                                {text: '快速部署', link: '/zh/guide/quick-start'},
+                                {text: '入门示例', link: '/zh/guide/getting-started'},
+                                {text: '用户权限管理', link: '/zh/modules/erupt-upms/'},
+                                {
+                                    text: '参数配置',
+                                    collapsed: true,
+                                    items: [
+                                        {text: '后端配置 application.yml', link: '/zh/guide/configuration'},
+                                        {text: '前端配置 app.js', link: '/zh/guide/config-frontend'},
+                                        {text: '前端样式 app.css', link: '/zh/guide/config-style'},
+                                        {text: '自定义首页 home.html', link: '/zh/guide/config-home'},
+                                    ],
+                                },
+                                {text: '界面与交互', link: '/zh/guide/ui'},
+                                {text: '安装为桌面应用（PWA）', link: '/zh/guide/pwa'},
+                            ],
+                        },
+                        {
+                            text: '版本发布',
+                            items: [
+                                {text: '更新日志' + versionBadge, link: '/zh/guide/changelog'},
+                                {text: '升级指南', link: '/zh/guide/upgrade'},
+                                {text: '历史版本', link: '/zh/guide/history'},
+                            ],
+                        },
+                        {
+                            text: '参考',
+                            items: [
+                                {text: '架构', link: '/zh/guide/architecture'},
+                                {text: '数据源支持', link: '/zh/guide/database'},
+                                {text: '常见问题', link: '/zh/guide/faq'},
+                                {text: '匿名遥测', link: '/zh/guide/telemetry'},
+                            ],
+                        },
+                        {
+                            text: '社区',
+                            items: [
+                                {text: '加入讨论', link: '/zh/guide/community'},
+                                {text: '治理与许可承诺', link: '/zh/guide/governance'},
+                                {text: '贡献指南', link: '/zh/guide/contributing'},
+                                {text: '捐赠', link: '/zh/guide/donate'},
+                            ],
+                        },
+                    ],
+
+                    '/zh/annotation/': [
+                        {
+                            text: '核心注解',
+                            items: [
+                                {text: '概览', link: '/zh/annotation/'},
+                                {text: '@EruptScan', link: '/zh/annotation/erupt-scan'},
+                                {text: '@Erupt', link: '/zh/annotation/erupt'},
+                                {text: '@EruptField', link: '/zh/annotation/erupt-field'},
+                                {text: '@Edit 编辑配置', link: '/zh/annotation/edit'},
+                                {text: '@View 展示配置', link: '/zh/annotation/view'},
+                                {text: '@Search 搜索', link: '/zh/annotation/search'},
+                            ],
+                        },
+                        {
+                            text: '动态注解',
+                            items: [
+                                {text: 'OnChange 字段联动', link: '/zh/annotation/on-change'},
+                                {text: 'ifRender 动态渲染', link: '/zh/annotation/if-render'},
+                                {text: 'Dynamic 动态控制', link: '/zh/annotation/dynamic'},
+                            ],
+                        },
+                        {
+                            text: '功能注解',
+                            items: [
+                                {text: '@Filter 数据过滤', link: '/zh/annotation/filter'},
+                                {text: '@Power 权限控制', link: '/zh/annotation/power'},
+                                {text: '@EruptScope 全局上下文 <span class="VPBadge tip">new</span>', link: '/zh/annotation/erupt-scope'},
+                                {text: '@Tree 树形展示', link: '/zh/annotation/tree'},
+                                {text: '@LinkTree 左树右表', link: '/zh/annotation/link-tree'},
+                                {text: '@Drill 数据钻取', link: '/zh/annotation/drill'},
+                                {text: '@Layout 布局定义', link: '/zh/annotation/layout'},
+                                {text: 'formSteps 分步表单', link: '/zh/annotation/form-steps'},
+                                {text: '@OrderBy 排序', link: '/zh/annotation/order-by'},
+                                {text: '@RowOperation 行按钮', link: '/zh/annotation/row-operation'},
+                                {text: '@DragSort 行拖拽排序', link: '/zh/annotation/drag-sort'},
+                                {text: '@Tpl 自定义模板', link: '/zh/annotation/tpl'},
+                                {
+                                    text: '@Vis 多视图',
+                                    collapsed: false,
+                                    items: [
+                                        {text: '概览', link: '/zh/annotation/vis'},
+                                        {text: '卡片视图 CARD', link: '/zh/annotation/vis-card'},
+                                        {text: '甘特图 GANTT', link: '/zh/annotation/vis-gantt'},
+                                        {text: '看板视图 BOARD', link: '/zh/annotation/vis-board'},
+                                        {text: '日历视图 CALENDAR', link: '/zh/annotation/vis-calendar'},
+                                        {text: '时间线视图 TIMELINE <span class="VPBadge tip">new</span>', link: '/zh/annotation/vis-timeline'},
+                                        {text: '地图视图 MAP <span class="VPBadge tip">new</span>', link: '/zh/annotation/vis-map'},
+                                        {text: '指标图表视图 CUBE <span class="VPBadge tip">new</span>', link: '/zh/annotation/vis-cube'},
+                                        {text: '自定义视图 TPL', link: '/zh/annotation/vis-tpl'},
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+
+                    '/zh/field-types/': [
+                        {
+                            text: '组件',
+                            items: [
+                                {text: '概览', link: '/zh/field-types/'},
+                                {text: 'AUTO 自动推测', link: '/zh/field-types/auto'},
+                                {text: 'INPUT 单行文本', link: '/zh/field-types/input'},
+                                {text: 'PASSWORD 密码输入框', link: '/zh/field-types/password'},
+                                {text: 'TEXTAREA 多行文本', link: '/zh/field-types/textarea'},
+                                {text: 'NUMBER 数值输入', link: '/zh/field-types/number'},
+                                {text: 'SLIDER 数字滑块', link: '/zh/field-types/slider'},
+                                {text: 'DATE 日期', link: '/zh/field-types/date'},
+                                {text: 'BOOLEAN 布尔开关', link: '/zh/field-types/boolean'},
+                                {text: 'MAP 地理位置', link: '/zh/field-types/map'},
+                                {text: 'COLOR 颜色选择', link: '/zh/field-types/color'},
+                                {text: 'ICON 图标选择', link: '/zh/field-types/icon'},
+                                {text: 'KEY_VALUE 键值对', link: '/zh/field-types/key-value'},
+                                {text: 'RATE 评分器', link: '/zh/field-types/rate'},
+                            ],
+                        },
+                        {
+                            text: '选择类组件',
+                            items: [
+                                {text: 'CHOICE 单选', link: '/zh/field-types/choice'},
+                                {text: 'MULTI_CHOICE 多选', link: '/zh/field-types/multi-choice'},
+                                {text: 'TAGS 标签选择', link: '/zh/field-types/tags'},
+                                {text: 'AUTO_COMPLETE 自动完成', link: '/zh/field-types/auto-complete'},
+                            ],
+                        },
+                        {
+                            text: '媒体与编辑器',
+                            items: [
+                                {text: 'ATTACHMENT 文件上传', link: '/zh/field-types/attachment'},
+                                {text: 'HTML_EDITOR 富文本', link: '/zh/field-types/html-editor'},
+                                {text: 'CODE_EDITOR 代码编辑器', link: '/zh/field-types/code-editor'},
+                                {text: 'MARKDOWN 编辑器', link: '/zh/field-types/markdown'},
+                                {text: 'SIGNATURE 签名板', link: '/zh/field-types/signature'},
+                            ],
+                        },
+                        {
+                            text: '关联组件',
+                            items: [
+                                {text: '关联类型概览', link: '/zh/field-types/relation'},
+                                {text: 'REFERENCE_TABLE 多对一表引用', link: '/zh/field-types/reference-table'},
+                                {text: 'REFERENCE_TREE 多对一树引用', link: '/zh/field-types/reference-tree'},
+                                {text: 'CHECKBOX 多对多复选框', link: '/zh/field-types/checkbox'},
+                                {text: 'TRANSFER 多对多穿梭框', link: '/zh/field-types/transfer'},
+                                {text: 'TAB_TREE 多对多树引用', link: '/zh/field-types/tab-tree'},
+                                {text: 'TAB_TABLE_REFER 多对多表引用', link: '/zh/field-types/tab-table-refer'},
+                                {text: 'TAB_TABLE_ADD 一对多新增', link: '/zh/field-types/tab-table-add'},
+                                {text: 'MULTI_FORM 多表单块', link: '/zh/field-types/multi-form'},
+                                {text: 'COMBINE 一对一新增', link: '/zh/field-types/combine'},
+                            ],
+                        },
+                        {
+                            text: '其他类型',
+                            items: [
+                                {text: 'GROUP 字段分组面板', link: '/zh/field-types/group'},
+                                {text: 'DIVIDE 分割线', link: '/zh/field-types/divide'},
+                                {text: 'CALLOUT 提示区块', link: '/zh/field-types/callout'},
+                                {text: 'BUTTON 按钮', link: '/zh/field-types/button'},
+                                {text: 'TPL 自定义模板', link: '/zh/field-types/tpl'},
+                                {text: 'HIDDEN 隐藏字段', link: '/zh/field-types/hidden'},
+                                {text: 'EMPTY 空占位', link: '/zh/field-types/empty'},
+                            ],
+                        },
+                    ],
+
+                    '/zh/advanced/': [
+                        {
+                            text: '进阶',
+                            items: [
+                                {text: '进阶总览', link: '/zh/advanced/'},
+                            ],
+                        },
+                        {
+                            text: 'DataProxy 数据代理',
+                            items: [
+                                {text: 'DataProxy 概览', link: '/zh/advanced/data-proxy'},
+                                {text: 'CRUD 拦截', link: '/zh/advanced/data-proxy-crud'},
+                                {text: '表单校验', link: '/zh/advanced/data-proxy-validate'},
+                                {text: '查询条件控制', link: '/zh/advanced/data-proxy-query'},
+                                {text: '表格展示扩展', link: '/zh/advanced/data-proxy-table'},
+                                {text: '自定义行', link: '/zh/advanced/extra-row'},
+                                {text: '虚拟字段', link: '/zh/advanced/virtual-field'},
+                                {text: '表单行为', link: '/zh/advanced/data-proxy-form'},
+                                {text: '表单视图', link: '/zh/advanced/form-view'},
+                                {text: 'Excel 导入导出', link: '/zh/advanced/data-proxy-excel'},
+                                {text: '打印内容处理', link: '/zh/advanced/data-proxy-print'},
+                                {text: '通用继承', link: '/zh/advanced/pre-data-proxy'},
+                                {text: '全局拦截', link: '/zh/advanced/post-data-proxy'},
+                            ],
+                        },
+                        {
+                            text: 'EruptDao 数据库操作',
+                            items: [
+                                {text: 'EruptDao 概览', link: '/zh/advanced/erupt-dao'},
+                                {text: '链式查询', link: '/zh/advanced/erupt-dao-lambda'},
+                                {text: '多数据源操作', link: '/zh/advanced/erupt-dao-datasource'},
+                            ],
+                        },
+                        {
+                            text: '数据源与存储',
+                            items: [
+                                {text: '多数据源', link: '/zh/advanced/datasource'},
+                                {text: '自定义数据源', link: '/zh/advanced/custom-datasource'},
+                                {text: '逻辑删除', link: '/zh/advanced/soft-delete'},
+                                {text: '附件存储', link: '/zh/advanced/upload'},
+                            ],
+                        },
+                        {
+                            text: '认证与鉴权',
+                            items: [
+                                {text: '登录与认证', link: '/zh/advanced/auth'},
+                                {text: '接口鉴权与操作日志', link: '/zh/advanced/rest-api'},
+                                {text: '开放接口 Open API', link: '/zh/advanced/open-api'},
+                            ],
+                        },
+                        {
+                            text: '集成与部署',
+                            items: [
+                                {text: '嵌入外部系统', link: '/zh/advanced/integration'},
+                                {text: '前后端分离部署', link: '/zh/advanced/separation'},
+                            ],
+                        },
+                        {
+                            text: '前端定制',
+                            items: [
+                                {text: '消息提示与弹窗', link: '/zh/advanced/frontend-notify'},
+                                {text: '国际化', link: '/zh/advanced/i18n'},
+                                {text: '扩展 Erupt 注解', link: '/zh/advanced/extend'},
+                            ],
+                        },
+                        {
+                            text: '扩展开发',
+                            items: [
+                                {text: '事件监听', link: '/zh/advanced/event-listener'},
+                                {text: '模块与插件开发', link: '/zh/advanced/plugin'},
+                                {text: '常用工具类', link: '/zh/advanced/utils'},
+                                {text: '热构建', link: '/zh/advanced/hot-build'},
+                            ],
+                        },
+                    ],
+
+                    '/zh/topics/': [
+                        {
+                            text: '专题',
+                            items: [
+                                {text: '专题总览', link: '/zh/topics/'},
+                            ],
+                        },
+                        {
+                            text: '第 26 期 · Share',
+                            items: [
+                                {text: '公开链接不该是第二套认证', link: '/zh/topics/share-link-scoped-session'},
+                            ],
+                        },
+                        {
+                            text: '第 25 期 · AI Dev',
+                            items: [
+                                {text: '编码 Agent 的工牌', link: '/zh/topics/ai-dev-requirement-pool'},
+                            ],
+                        },
+                        {
+                            text: '第 24 期 · Config',
+                            items: [
+                                {text: '配置中心不必是另一个服务', link: '/zh/topics/runtime-config-property-source'},
+                            ],
+                        },
+                        {
+                            text: '第 23 期 · SSO',
+                            items: [
+                                {text: 'SAML 的难点是拒绝', link: '/zh/topics/saml-sso-jdk-only'},
+                            ],
+                        },
+                        {
+                            text: '第 22 期 · Webhook',
+                            items: [
+                                {text: '事务没提交，别通知外部', link: '/zh/topics/webhook-after-commit'},
+                            ],
+                        },
+                        {
+                            text: '第 21 期 · Scope',
+                            items: [
+                                {text: '「当前项目」不该是一条 where', link: '/zh/topics/erupt-scope-workspace'},
+                            ],
+                        },
+                        {
+                            text: '第 20 期 · Cloud',
+                            items: [
+                                {text: '节点不是 Spring 应用，是一份协议', link: '/zh/topics/cloud-node-protocol'},
+                            ],
+                        },
+                        {
+                            text: '第 19 期 · Validation',
+                            items: [
+                                {text: '声明一次，到处生效', link: '/zh/topics/declared-limits-server-side'},
+                            ],
+                        },
+                        {
+                            text: '第 18 期 · History',
+                            items: [
+                                {text: '改动历史不属于任何一个 DataProxy', link: '/zh/topics/record-revision-pipeline-event'},
+                            ],
+                        },
+                        {
+                            text: '第 17 期 · Views',
+                            items: [
+                                {text: '一张表，八种视图', link: '/zh/topics/vis-one-query-many-views'},
+                            ],
+                        },
+                        {
+                            text: '第 16 期 · Data Source',
+                            items: [
+                                {text: '数据不在你库里的时候', link: '/zh/topics/remote-table-as-storage'},
+                            ],
+                        },
+                        {
+                            text: '第 15 期 · Decision',
+                            items: [
+                                {text: '让 AI 判断回到 if 语句里', link: '/zh/topics/typed-decision'},
+                            ],
+                        },
+                        {
+                            text: '第 14 期 · Generator',
+                            items: [
+                                {text: '从数据库反向生成模型', link: '/zh/topics/generator-reads-database'},
+                            ],
+                        },
+                        {
+                            text: '第 13 期 · Identity',
+                            items: [
+                                {text: '不依赖 Spring Security 的登录链', link: '/zh/topics/identity-without-security-stack'},
+                            ],
+                        },
+                        {
+                            text: '第 12 期 · Remote Access',
+                            items: [
+                                {text: '远程主机的安全边界', link: '/zh/topics/remote-sftp-boundary'},
+                            ],
+                        },
+                        {
+                            text: '第 11 期 · Record Comment',
+                            items: [
+                                {text: '记录评论为什么不绑定业务表', link: '/zh/topics/record-comment-crosscut'},
+                            ],
+                        },
+                        {
+                            text: '第 10 期 · Cell Edit',
+                            items: [
+                                {text: '单元格编辑为什么走整行管线', link: '/zh/topics/cell-edit-whole-row'},
+                            ],
+                        },
+                        {
+                            text: '第 09 期 · Model Atlas',
+                            items: [
+                                {text: '模型图谱与静态审计', link: '/zh/topics/model-atlas-audit'},
+                            ],
+                        },
+                        {
+                            text: '第 08 期 · Annotation DX',
+                            items: [
+                                {text: '注解里写的是有语法的代码', link: '/zh/topics/annotation-language-injection'},
+                            ],
+                        },
+                        {
+                            text: '第 07 期 · Runtime Designer',
+                            items: [
+                                {text: 'ByteBuddy × 字节码设计器', link: '/zh/topics/bytecode-designer'},
+                            ],
+                        },
+                        {
+                            text: '第 06 期 · Secure by Default',
+                            items: [
+                                {text: '默认安全', link: '/zh/topics/security-defaults'},
+                            ],
+                        },
+                        {
+                            text: '第 05 期 · Design Philosophy',
+                            items: [
+                                {text: '史上最可控的低代码', link: '/zh/topics/controllable-low-code'},
+                            ],
+                        },
+                        {
+                            text: '第 04 期 · BI × LLM',
+                            items: [
+                                {text: '让 BI 看板自己回答“为什么变了”', link: '/zh/topics/cube-llm'},
+                            ],
+                        },
+                        {
+                            text: '第 03 期 · JPA Superset',
+                            items: [
+                                {text: '给 JPA 补齐一整圈后台基础设施', link: '/zh/topics/jpa-superset'},
+                            ],
+                        },
+                        {
+                            text: '第 02 期 · Design Philosophy',
+                            items: [
+                                {text: '@Erupt × DataProxy × Handler', link: '/zh/topics/annotation-vs-canvas'},
+                            ],
+                        },
+                        {
+                            text: '第 01 期 · AI Harness',
+                            items: [
+                                {text: '50+ LLM × A2A × Memory', link: '/zh/topics/50-llm-a2a-memory'},
+                            ],
+                        },
+                    ],
+
+                    '/zh/modules/': [
+                        {
+                            text: '模块',
+                            items: [
+                                {text: '模块总览', link: '/zh/modules/'},
+                            ],
+                        },
+                        {
+                            text: 'AI 模块',
+                            items: [
+                                {
+                                    text: '🐴 Erupt Ai Harness',
+                                    collapsed: true,
+                                    items: [
+                                        {text: '概览与快速接入', link: '/zh/modules/erupt-ai/'},
+                                        {text: '配置大模型', link: '/zh/modules/erupt-ai/llm'},
+                                        {text: '对话工作台', link: '/zh/modules/erupt-ai/chat'},
+                                        {text: '专家（预设 AI 角色）', link: '/zh/modules/erupt-ai/agent'},
+                                        {text: '开发自定义 Tool', link: '/zh/modules/erupt-ai/tools'},
+                                        {text: '按角色授权 Tool', link: '/zh/modules/erupt-ai/tool-auth'},
+                                        {text: '接入外部 MCP Server', link: '/zh/modules/erupt-ai/mcp'},
+                                        {text: '对外提供 MCP Server', link: '/zh/modules/erupt-ai/mcp-server'},
+                                        {text: '动态注入系统提示词', link: '/zh/modules/erupt-ai/prompt'},
+                                        {text: '接入外部 Agent（A2A）', link: '/zh/modules/erupt-ai/a2a'},
+                                        {text: '长期记忆', link: '/zh/modules/erupt-ai/memory'},
+                                        {text: '表单 AI 写作助手', link: '/zh/modules/erupt-ai/writing-assistant'},
+                                    ],
+                                },
+                                {
+                                    text: '🦞 Erupt Ai Claw',
+                                    collapsed: true,
+                                    items: [
+                                        {text: '概览与安装', link: '/zh/modules/erupt-ai-claw/'},
+                                        {text: '安装与使用 Skill', link: '/zh/modules/erupt-ai-claw/skill'},
+                                        {text: '对话操作 Erupt 数据', link: '/zh/modules/erupt-ai-claw/erupt-model'},
+                                        {text: '执行 Shell 与文件操作', link: '/zh/modules/erupt-ai-claw/os'},
+                                        {text: '操控浏览器', link: '/zh/modules/erupt-ai-claw/browser'},
+                                        {text: '长期记忆', link: '/zh/modules/erupt-ai-claw/memory'},
+                                        {text: '查看应用运行状态（Spring Boot）', link: '/zh/modules/erupt-ai-claw/spring-boot'},
+                                        {text: '工具清单与角色授权', link: '/zh/modules/erupt-ai-claw/tools'},
+                                    ],
+                                },
+                                {text: '🎨 Erupt Ai Canvas', link: '/zh/modules/erupt-ai-canvas'},
+                                {text: '📖 Erupt Ai RAG 知识库', link: '/zh/modules/erupt-ai-rag'},
+                                {text: '👩‍💻 Erupt Ai Staff 数字员工', link: '/zh/modules/erupt-ai-staff'},
+                                {text: '🔀 Erupt Ai Decision 决策模型', link: '/zh/modules/erupt-ai-decision'},
+                                {text: '🤖 Erupt Ai Dev AI 软件交付', link: '/zh/modules/erupt-ai-dev'},
+                                {text: '🛠️ Erupt Ai Skills', link: 'https://github.com/plinian/erupt-skill'},
+                            ],
+                        },
+                        {
+                            text: '核心模块',
+                            items: [
+                                {
+                                    text: 'Erupt Upms 权限管理',
+                                    collapsed: true,
+                                    items: [
+                                        {text: '概览与权限模型', link: '/zh/modules/erupt-upms/'},
+                                        {text: '菜单管理', link: '/zh/modules/erupt-upms/menu'},
+                                        {text: '角色管理', link: '/zh/modules/erupt-upms/role'},
+                                        {text: '组织与岗位', link: '/zh/modules/erupt-upms/org-post'},
+                                        {text: '用户管理', link: '/zh/modules/erupt-upms/user'},
+                                        {text: '字典管理', link: '/zh/modules/erupt-upms/dict'},
+                                        {text: 'Open API', link: '/zh/modules/erupt-upms/open-api'},
+                                        {text: '在线用户', link: '/zh/modules/erupt-upms/online'},
+                                        {text: '登录日志与操作日志', link: '/zh/modules/erupt-upms/log'},
+                                        {text: '系统日志', link: '/zh/modules/erupt-upms/system-log'},
+                                    ],
+                                },
+                                {
+                                    text: 'Erupt Tpl 自定义页面',
+                                    collapsed: true,
+                                    items: [
+                                        {text: '概览', link: '/zh/modules/erupt-tpl/'},
+                                        {text: '菜单页面', link: '/zh/modules/erupt-tpl/menu'},
+                                        {text: '模板开发', link: '/zh/modules/erupt-tpl/template'},
+                                        {text: '微前端集成', link: '/zh/modules/erupt-tpl/micro-frontend'},
+                                        {text: 'UI 组件库', link: '/zh/modules/erupt-tpl/ui'},
+                                    ],
+                                },
+                                {text: 'Erupt Web 前端源码', link: '/zh/modules/erupt-web'},
+                                {text: 'Erupt Designer 表单设计器', link: '/zh/modules/erupt-designer'},
+                            ],
+                        },
+                        {
+                            text: '工具模块',
+                            items: [
+                                {text: 'Erupt Terminal 服务终端', link: '/zh/modules/erupt-terminal'},
+                                {text: 'Erupt Remote 远程访问', link: '/zh/modules/erupt-remote'},
+                                {text: 'Erupt Atlas 模型图谱', link: '/zh/modules/erupt-atlas'},
+                                {text: 'Erupt Comment 记录评论', link: '/zh/modules/erupt-comment'},
+                                {text: 'Erupt SSO 单点登录', link: '/zh/modules/erupt-sso'},
+                                {text: 'Erupt Share 公开链接', link: '/zh/modules/erupt-share'},
+                                {text: 'Erupt Webhook 数据事件推送', link: '/zh/modules/erupt-webhook'},
+                                {text: 'Erupt Config 运行时配置', link: '/zh/modules/erupt-config'},
+                                {text: 'Erupt Revision 记录历史', link: '/zh/modules/erupt-revision'},
+                                {text: 'Erupt File Center 文件中心', link: '/zh/modules/erupt-file-center'},
+                                {text: 'Erupt Websocket 实时交互', link: '/zh/modules/erupt-websocket'},
+                                {text: 'Erupt Generator 代码生成', link: '/zh/modules/erupt-generator'},
+                                {text: 'Erupt Job 定时任务', link: '/zh/modules/erupt-job'},
+                                {text: 'Erupt Notice 消息通知', link: '/zh/modules/erupt-notice'},
+                                {text: 'Erupt Monitor 服务监控', link: '/zh/modules/erupt-monitor'},
+                                {text: 'Erupt Magic Api 在线IDE', link: '/zh/modules/erupt-magic-api'},
+                                {text: 'Erupt Print 打印模块', link: '/zh/modules/erupt-print'},
+                                {
+                                    text: 'Erupt Cloud 分布式配置中心',
+                                    collapsed: true,
+                                    items: [
+                                        {text: '产品介绍', link: '/zh/modules/erupt-cloud'},
+                                        {text: 'Server 部署', link: '/zh/modules/cloud-server'},
+                                        {text: 'Node 部署', link: '/zh/modules/cloud-node'},
+                                        {text: '轻量节点 Node Lite（无 Spring）', link: '/zh/modules/cloud-node-lite'},
+                                    ],
+                                },
+                                {
+                                    text: 'Erupt SDK 多语言节点',
+                                    collapsed: true,
+                                    items: [
+                                        {text: '总览', link: '/zh/modules/erupt-sdk/'},
+                                        {text: 'Python', link: '/zh/modules/erupt-sdk/python'},
+                                        {text: 'Go', link: '/zh/modules/erupt-sdk/go'},
+                                        {text: 'TypeScript / Node.js', link: '/zh/modules/erupt-sdk/typescript'},
+                                        {text: 'PHP', link: '/zh/modules/erupt-sdk/php'},
+                                        {text: 'C# / .NET', link: '/zh/modules/erupt-sdk/dotnet'},
+                                        {text: 'Java / Kotlin', link: '/zh/modules/erupt-sdk/java'},
+                                        {text: 'Ruby', link: '/zh/modules/erupt-sdk/ruby'},
+                                        {text: 'Rust', link: '/zh/modules/erupt-sdk/rust'},
+                                        {text: 'Swift', link: '/zh/modules/erupt-sdk/swift'},
+                                    ],
+                                },
+                                {
+                                    text: 'Erupt Report 报表图表',
+                                    collapsed: true,
+                                    items: [
+                                        {text: '介绍与安装', link: '/zh/modules/erupt-report/'},
+                                        {text: '数据源管理', link: '/zh/modules/erupt-report/datasource'},
+                                        {text: '报表处理类', link: '/zh/modules/erupt-report/handler'},
+                                        {text: '参照维度', link: '/zh/modules/erupt-report/dimension'},
+                                        {text: '函数管理', link: '/zh/modules/erupt-report/function'},
+                                        {text: '报表配置', link: '/zh/modules/erupt-report/report-config'},
+                                        {text: '发布报表', link: '/zh/modules/erupt-report/publish'},
+                                        {text: '常见问题', link: '/zh/modules/erupt-report/faq'},
+                                    ],
+                                },
+                            ],
+                        },
+                        {
+                            text: '商业模块',
+                            items: [
+                                {text: '定价与购买 ↗', link: 'https://www.erupt.xyz/#!/pro'},
+                                {
+                                    text: 'Erupt SaaS 多租户',
+                                    collapsed: true,
+                                    items: [
+                                        {text: '产品介绍', link: '/zh/modules/pro/erupt-tenant/'},
+                                        {text: '快速开始', link: '/zh/modules/pro/erupt-tenant/quick-start'},
+                                        {text: 'UPMS 多租户', link: '/zh/modules/pro/erupt-tenant/upms'},
+                                        {text: '业务表多租户', link: '/zh/modules/pro/erupt-tenant/development'},
+                                        {text: '套餐与订阅', link: '/zh/modules/pro/erupt-tenant/subscription'},
+                                        {text: '域名与租户定制', link: '/zh/modules/pro/erupt-tenant/domain'},
+                                        {text: '数据库设计', link: '/zh/modules/pro/erupt-tenant/database'},
+                                    ],
+                                },
+                                {
+                                    text: 'Erupt Flow 流程引擎',
+                                    collapsed: true,
+                                    items: [
+                                        {text: '产品介绍', link: '/zh/modules/pro/erupt-flow/'},
+                                        {text: '快速开始', link: '/zh/modules/pro/erupt-flow/quick-start'},
+                                        {text: '审批表单', link: '/zh/modules/pro/erupt-flow/approval-form'},
+                                        {text: '流程开发', link: '/zh/modules/pro/erupt-flow/development'},
+                                        {text: '自定义扩展', link: '/zh/modules/pro/erupt-flow/custom-node'},
+                                        {text: '流程打印', link: '/zh/modules/pro/erupt-flow/print'},
+                                        {text: '数据库设计', link: '/zh/modules/pro/erupt-flow/database'},
+                                    ],
+                                },
+                                {
+                                    text: 'Erupt Cube 指标平台',
+                                    collapsed: true,
+                                    items: [
+                                        {text: '产品介绍', link: '/zh/modules/pro/erupt-cube'},
+                                        {text: '快速开始', link: '/zh/modules/pro/erupt-cube/quick-start'},
+                                        {text: '数据源', link: '/zh/modules/pro/erupt-cube/datasource'},
+                                        {text: '语义建模', link: '/zh/modules/pro/erupt-cube/semantic-model'},
+                                        {text: 'Cube 语法（ML）', link: '/zh/modules/pro/erupt-cube/cube-ml'},
+                                        {text: '可视化建模', link: '/zh/modules/pro/erupt-cube/visual-modeling'},
+                                        {text: '可视化分析', link: '/zh/modules/pro/erupt-cube/visual-analysis'},
+                                        {text: '模型视图图表', link: '/zh/modules/pro/erupt-cube/vis-view'},
+                                        {text: 'SQL 查询端口', link: '/zh/modules/pro/erupt-cube/sql'},
+                                        {text: 'AI 问数', link: '/zh/modules/pro/erupt-cube/ai'},
+                                        {text: 'AI 画布', link: '/zh/modules/pro/erupt-cube/ai-canvas'},
+                                        {text: '云端节点模式', link: '/zh/modules/pro/erupt-cube/cloud'},
+                                    ],
+                                },
+                            ],
+                        },
+                        {
+                            text: '数据连接',
+                            items: [
+                                {text: 'Erupt Jpa 数据库扩展', link: '/zh/modules/erupt-jpa'},
+                                {text: 'Erupt Mongodb NoSQL 数据源', link: '/zh/modules/erupt-mongodb'},
+                                {text: 'Erupt Jdbc 单表数据源', link: '/zh/modules/erupt-jdbc'},
+                                {text: 'Erupt Http 接口数据源', link: '/zh/modules/erupt-http'},
+                                {text: 'Erupt Es 搜索引擎数据源', link: '/zh/modules/erupt-es'},
+                                {text: 'Erupt Redis 键值数据源', link: '/zh/modules/erupt-redis'},
+                                {text: 'Erupt Memory 内存数据源', link: '/zh/modules/erupt-memory'},
+                                {text: 'Erupt File 文件数据源', link: '/zh/modules/erupt-file'},
+                                {text: 'Erupt K8s 容器资源数据源', link: '/zh/modules/erupt-k8s'},
+                                {text: 'Erupt Ldap 目录数据源', link: '/zh/modules/erupt-ldap'},
+                                {text: 'Erupt Feishu 多维表格数据源', link: '/zh/modules/erupt-feishu'},
+                                {text: 'Erupt Notion 数据源', link: '/zh/modules/erupt-notion'},
+                                {
+                                    text: 'Erupt S3 对象存储',
+                                    collapsed: true,
+                                    items: [
+                                        {text: '概览', link: '/zh/modules/erupt-s3/'},
+                                        {text: '附件上传', link: '/zh/modules/erupt-s3/upload'},
+                                        {text: '对象浏览数据源', link: '/zh/modules/erupt-s3/datasource'},
+                                        {text: '配置参考', link: '/zh/modules/erupt-s3/config'},
+                                        {text: '服务商接入', link: '/zh/modules/erupt-s3/providers'},
+                                        {text: '常见问题', link: '/zh/modules/erupt-s3/faq'},
+                                    ],
+                                },
+                                {text: 'Erupt DingTalk 钉钉多维表数据源', link: '/zh/modules/erupt-dingtalk'},
+                                {text: 'Erupt Airtable 数据源', link: '/zh/modules/erupt-airtable'},
+                            ],
+                        },
+                        {
+                            text: '开源应用',
+                            items: [
+                                {text: 'Erupt K8s Dashboard 容器管理台', link: '/zh/modules/apps/erupt-k8s-dashboard'},
+                                {text: 'Erupt PM 项目管理', link: '/zh/modules/apps/erupt-pm'},
+                                {text: 'Erupt Talent 招聘管理', link: '/zh/modules/apps/erupt-talent'},
+                                {text: 'Erupt SMS 短信', link: '/zh/modules/apps/erupt-sms'},
+                                {text: 'Erupt WeChat 公众号管理', link: '/zh/modules/apps/erupt-wechat'},
+                                {text: 'Erupt MiniApp 小程序管理', link: '/zh/modules/apps/erupt-miniapp'},
+                            ],
+                        },
+                        {
+                            text: '第三方模块',
+                            items: [
+                                {text: 'Erupt Dsl ORM动态查询', link: '/zh/modules/third-party/erupt-dsl'},
+                                {text: 'Erupt Pf4j 动态加载', link: '/zh/modules/third-party/erupt-pf4j'},
+                                {text: 'EZDML 代码生成', link: '/zh/modules/third-party/ezdml'},
+                                {text: '公众号采集', link: '/zh/modules/third-party/mp-crawler'},
+                                {text: 'Erupt Vote 投票插件', link: '/zh/modules/third-party/erupt-vote'},
+                            ],
+                        },
+                    ],
+                },
+
+                editLink: {
+                    pattern: 'https://github.com/erupts/erupt-docs/edit/main/:path',
+                    text: '在 GitHub 上编辑此页',
+                },
+
+                lastUpdated: {
+                    text: '最后更新于',
+                },
+
+                outline: {
+                    label: '本页目录',
+                    level: [2, 3],
+                },
+
+                docFooter: {
+                    prev: '上一页',
+                    next: '下一页',
+                },
+
+                returnToTopLabel: '回到顶部',
+                sidebarMenuLabel: '菜单',
+                darkModeSwitchLabel: '主题',
             },
-        ],
+        },
+    },
 
-        sidebar: {
-            '/guide/': [
-                {
-                    text: '开始使用',
-                    items: [
-                        {text: '🚀 项目初始化', link: 'https://start.erupt.xyz/'},
-                        {text: '框架介绍', link: '/guide/'},
-                        {text: '快速部署', link: '/guide/quick-start'},
-                        {text: '入门示例', link: '/guide/getting-started'},
-                        {text: '参数配置', link: '/guide/configuration'},
-                    ],
-                },
-                {
-                    text: '部署',
-                    items: [
-                        {text: '数据源支持', link: '/guide/database'},
-                        {text: '前后端分离部署', link: '/guide/separation'},
-                    ],
-                },
-                {
-                    text: '其他',
-                    items: [
-                        {text: '常见问题 FAQ', link: '/guide/faq'},
-                        {text: '更新日志', link: '/guide/changelog'},
-                        {text: '历史版本', link: '/guide/changelog#历史版本文档'},
-                        {text: '升级指南', link: '/guide/upgrade'},
-                        {text: '架构图', link: '/guide/architecture'},
-                        {text: '加入讨论', link: '/guide/community'},
-                        {text: '贡献指南', link: '/guide/contributing'},
-                        {text: '捐赠', link: '/guide/donate'},
-                    ],
-                },
-            ],
-
-            '/annotation/': [
-                {
-                    text: '核心注解',
-                    items: [
-                        {text: '概览', link: '/annotation/'},
-                        {text: '@Erupt', link: '/annotation/erupt'},
-                        {text: '@EruptField', link: '/annotation/erupt-field'},
-                        {text: '@Edit 编辑配置', link: '/annotation/edit'},
-                        {text: '@View 展示配置', link: '/annotation/view'},
-                        {text: '@Search 搜索', link: '/annotation/search'},
-                    ],
-                },
-                {
-                    text: '功能注解',
-                    items: [
-                        {text: '@Filter 数据过滤', link: '/annotation/filter'},
-                        {text: '@Power 权限控制', link: '/annotation/power'},
-                        {text: '@Tree 树形展示', link: '/annotation/tree'},
-                        {text: '@LinkTree 左树右表', link: '/annotation/link-tree'},
-                        {text: '@Drill 数据钻取', link: '/annotation/drill'},
-                        {text: '@Layout 布局定义', link: '/annotation/layout'},
-                        {text: '@OrderBy 排序', link: '/annotation/order-by'},
-                        {text: '@RowOperation 行按钮', link: '/annotation/row-operation'},
-                        {text: '@Dynamic 动态控制', link: '/annotation/dynamic'},
-                        {text: '@Vis 多视图', link: '/annotation/vis'},
-                        {text: '卡片视图 CARD', link: '/annotation/vis-card'},
-                        {text: '甘特图 GANTT', link: '/annotation/vis-gantt'},
-                    ],
-                },
-            ],
-
-            '/field-types/': [
-                {
-                    text: '组件类型',
-                    items: [
-                        {text: '概览', link: '/field-types/'},
-                        {text: 'AUTO 自动推测', link: '/field-types/auto'},
-                        {text: 'INPUT 单行文本', link: '/field-types/input'},
-                        {text: 'TEXTAREA 多行文本', link: '/field-types/textarea'},
-                        {text: 'NUMBER 数值输入', link: '/field-types/number'},
-                        {text: 'SLIDER 数字滑块', link: '/field-types/slider'},
-                        {text: 'DATE 日期', link: '/field-types/date'},
-                        {text: 'BOOLEAN 布尔开关', link: '/field-types/boolean'},
-                        {text: 'MAP 地理位置', link: '/field-types/map'},
-                        {text: 'COLOR 颜色选择', link: '/field-types/color'},
-                        {text: 'RATE 评分器', link: '/field-types/rate'}
-                    ],
-                },
-                {
-                    text: '选择类组件',
-                    items: [
-                        {text: 'CHOICE 单选', link: '/field-types/choice'},
-                        {text: 'MULTI_CHOICE 多选', link: '/field-types/multi-choice'},
-                        {text: 'TAGS 标签选择', link: '/field-types/tags'},
-                        {text: 'AUTO_COMPLETE 自动完成', link: '/field-types/auto-complete'},
-                    ],
-                },
-                {
-                    text: '媒体与编辑器',
-                    items: [
-                        {text: 'ATTACHMENT 文件上传', link: '/field-types/attachment'},
-                        {text: 'HTML_EDITOR 富文本', link: '/field-types/html-editor'},
-                        {text: 'CODE_EDITOR 代码编辑器', link: '/field-types/code-editor'},
-                        {text: 'MARKDOWN 编辑器', link: '/field-types/markdown'},
-                        {text: 'SIGNATURE 签名板', link: '/field-types/signature'},
-                    ],
-                },
-                {
-                    text: '关联组件',
-                    items: [
-                        {text: '关联类型概览', link: '/field-types/relation'},
-                        {text: 'REFERENCE_TABLE 多对一表引用', link: '/field-types/reference-table'},
-                        {text: 'REFERENCE_TREE 多对一树引用', link: '/field-types/reference-tree'},
-                        {text: 'CHECKBOX 多对多复选框', link: '/field-types/checkbox'},
-                        {text: 'TAB_TREE 多对多树引用', link: '/field-types/tab-tree'},
-                        {text: 'TAB_TABLE_REFER 多对多表引用', link: '/field-types/tab-table-refer'},
-                        {text: 'TAB_TABLE_ADD 一对多新增', link: '/field-types/tab-table-add'},
-                        {text: 'COMBINE 一对一新增', link: '/field-types/combine'},
-                    ],
-                },
-                {
-                    text: '其他类型',
-                    items: [
-                        {text: 'DIVIDE 分割线', link: '/field-types/divide'},
-                        {text: 'TPL 自定义模板', link: '/field-types/tpl'},
-                        {text: 'HIDDEN 隐藏字段', link: '/field-types/hidden'},
-                        {text: 'EMPTY 空占位', link: '/field-types/empty'},
-                    ],
-                },
-            ],
-
-            '/advanced/': [
-                {
-                    text: '业务扩展',
-                    items: [
-                        {text: '数据代理 DataProxy', link: '/advanced/data-proxy'},
-                        {text: '全局拦截 PostDataProxy', link: '/advanced/post-data-proxy'},
-                        {text: '动态表单', link: '/advanced/dynamic-form'},
-                        {text: '自定义文件上传', link: '/advanced/upload'},
-                        {text: '事件监听器', link: '/advanced/event-listener'},
-                        {text: '国际化', link: '/advanced/i18n'},
-                        {text: '前端消息与弹窗', link: '/advanced/frontend-notify'},
-                        {text: '杂项功能', link: '/advanced/misc'},
-                    ],
-                },
-                {
-                    text: '开发扩展',
-                    items: [
-                        {text: '接口开发与操作日志', link: '/advanced/rest-api'},
-                        {text: '数据库操作 EruptDao', link: '/advanced/erupt-dao'},
-                        {text: '工具类', link: '/advanced/utils'},
-                        {text: '插件开发', link: '/advanced/plugin'},
-                        {text: '扩展 Erupt 注解', link: '/advanced/extend'},
-                    ],
-                },
-                {
-                    text: '集成接入',
-                    items: [
-                        {text: '现有项目接入', link: '/advanced/integration'},
-                        {text: '登录与认证', link: '/advanced/auth'},
-                        {text: '自定义登录页', link: '/advanced/custom-login-page'},
-                        {text: '多数据源', link: '/advanced/datasource'},
-                        {text: '自定义数据源', link: '/advanced/custom-datasource'},
-                        {text: 'Open API 开放接口', link: '/advanced/open-api'},
-                    ],
-                },
-            ],
-
-            '/modules/': [
-                {
-                    text: '扩展模块',
-                    items: [
-                        {text: '模块总览', link: '/modules/'},
-                    ],
-                },
-                {
-                    text: 'AI 模块',
-                    items: [
-                        {text: '🐴 Erupt Ai Harness', link: '/modules/erupt-ai'},
-                        {text: '🦞 Erupt Ai Claw', link: '/modules/erupt-ai-claw'},
-                        {text: '🛠️ Erupt Ai Skills', link: 'https://github.com/erupts/erupt/tree/master/.claude/skills/erupt'},
-                    ],
-                },
-                {
-                    text: '核心模块',
-                    items: [
-                        {text: 'Erupt Upms 权限管理', link: '/modules/erupt-upms'},
-                        {text: 'Erupt Jpa 数据库扩展', link: '/modules/erupt-jpa'},
-                        {text: 'Erupt Mongodb NoSQL', link: '/modules/erupt-mongodb'},
-                        {text: 'Erupt Tpl 自定义页面', link: '/modules/erupt-tpl'},
-                        {text: 'Erupt Web 前端源码', link: '/modules/erupt-web'},
-                    ],
-                },
-                {
-                    text: '工具模块',
-                    items: [
-                        {text: 'Erupt Terminal 服务终端', link: '/modules/erupt-terminal'},
-                        {text: 'Erupt Websocket 实时交互', link: '/modules/erupt-websocket'},
-                        {text: 'Erupt Generator 代码生成', link: '/modules/erupt-generator'},
-                        {text: 'Erupt Job 定时任务', link: '/modules/erupt-job'},
-                        {text: 'Erupt Notice 消息通知', link: '/modules/erupt-notice'},
-                        {text: 'Erupt Monitor 服务监控', link: '/modules/erupt-monitor'},
-                        {text: 'Erupt Magic Api 在线IDE', link: '/modules/erupt-magic-api'},
-                        {text: 'Erupt Print 打印模块', link: '/modules/erupt-print'},
-                        {text: 'Erupt Cloud 分布式配置中心', link: '/modules/erupt-cloud'},
-                        {text: 'Erupt Cloud Server 部署', link: '/modules/cloud-server'},
-                        {text: 'Erupt Cloud Node 部署', link: '/modules/cloud-node'},
-                    ],
-                },
-                {
-                    text: '商业模块',
-                    items: [
-                        {text: 'Erupt Chart 报表图表', link: '/modules/pro/erupt-chart'},
-                        {text: 'Erupt SaaS 多租户', link: '/modules/pro/erupt-tenant'},
-                        {text: 'Erupt Flow 流程引擎', link: '/modules/pro/erupt-flow'},
-                        {text: 'Erupt Cube BI 平台', link: '/modules/pro/erupt-cube'},
-                    ],
-                },
-                {
-                    text: '第三方插件',
-                    items: [
-                        {text: 'Erupt Dsl ORM动态查询', link: '/modules/third-party/erupt-dsl'},
-                        {text: 'Erupt Pf4j 动态加载', link: '/modules/third-party/erupt-pf4j'},
-                        {text: 'EZDML 代码生成', link: '/modules/third-party/ezdml'},
-                        {text: '公众号采集', link: '/modules/third-party/mp-crawler'},
-                        {text: 'Erupt Vote 投票插件', link: '/modules/third-party/erupt-vote'},
-                    ],
-                },
-            ],
-
+    themeConfig: {
+        logo: {light: '/icon.svg', dark: '/icon.svg'},
+        siteTitle: 'Erupt',
+        latestVersion,
+        search: {
+            provider: 'local'
         },
 
         socialLinks: [
@@ -308,28 +1531,5 @@ export default withMermaid(defineConfig({
             message: 'Released under the Apache-2.0 License.',
             copyright: 'Copyright © 2019-present YuePeng',
         },
-
-        editLink: {
-            pattern: 'https://github.com/erupts/erupt-docs/edit/main/:path',
-            text: '在 GitHub 上编辑此页',
-        },
-
-        lastUpdated: {
-            text: '最后更新于',
-        },
-
-        outline: {
-            label: '本页目录',
-            level: [2, 3],
-        },
-
-        docFooter: {
-            prev: '上一页',
-            next: '下一页',
-        },
-
-        returnToTopLabel: '回到顶部',
-        sidebarMenuLabel: '菜单',
-        darkModeSwitchLabel: '主题',
     },
 }))

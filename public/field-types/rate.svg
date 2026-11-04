@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250">
+  <style>.s{font-family:-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}</style>
+  <rect width="400" height="250" rx="10" fill="#ffffff"/>
+  <defs>
+    <path id="star" d="M0,-22.4 L5.6,-7.7 L21.3,-6.9 L9.1,2.9 L13.2,18.1 L0,9.5 L-13.2,18.1 L-9.1,2.9 L-21.3,-6.9 L-5.6,-7.7 Z"/>
+  </defs>
+  <use href="#star" x="96" y="115" fill="#fadb14"/>
+  <use href="#star" x="148" y="115" fill="#fadb14"/>
+  <use href="#star" x="200" y="115" fill="#fadb14"/>
+  <use href="#star" x="252" y="115" fill="#fadb14"/>
+  <use href="#star" x="304" y="115" fill="#e8e8e8"/>
+  <text x="200" y="185" text-anchor="middle" class="s" font-size="14" fill="#8c959f">4 / 5</text>
+</svg>

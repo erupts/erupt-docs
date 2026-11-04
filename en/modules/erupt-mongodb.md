@@ -1,0 +1,78 @@
+# Erupt MongoDB NoSQL Data Source
+
+The erupt-mongodb module adds MongoDB data source support to the Erupt framework. You can manage MongoDB collection data just like a relational database, fully reusing Erupt's annotation system.
+
+## Adding the Dependency
+
+```xml
+<dependency>
+  <groupId>xyz.erupt</groupId>
+  <artifactId>erupt-data-mongodb</artifactId>
+  <version>${erupt.version}</version>
+</dependency>
+```
+
+## Configuration
+
+Add the MongoDB connection configuration to `application.yml`:
+
+```yaml
+spring:
+  data:
+    mongodb:
+      uri: mongodb://username:password@localhost:27017/database
+```
+
+## Usage
+
+Replace the JPA entity's `@Entity` + `@Table` with `@Document`, and you **must** also add `@EruptDataProcessor(EruptMongodbImpl.MONGODB_PROCESS)` to declare the data processor. All other Erupt annotations remain unchanged:
+
+```java
+import xyz.erupt.core.annotation.EruptDataProcessor;
+import xyz.erupt.mongodb.impl.EruptMongodbImpl;
+
+@Erupt(name = "Article Management")
+@EruptDataProcessor(EruptMongodbImpl.MONGODB_PROCESS)
+@Document(collection = "articles")
+public class Article {
+
+    @Id
+    @EruptField
+    private String id;
+
+    @EruptField(
+        views = @View(title = "Title"),
+        edit = @Edit(title = "Title", notNull = true)
+    )
+    private String title;
+
+    @EruptField(
+        views = @View(title = "Content"),
+        edit = @Edit(title = "Content", type = EditType.TEXTAREA)
+    )
+    private String content;
+
+    @EruptField(
+        views = @View(title = "Created At"),
+        edit = @Edit(title = "Created At", type = EditType.DATE)
+    )
+    private Date createTime;
+}
+```
+
+:::warning The data processor is mandatory
+`@EruptDataProcessor(EruptMongodbImpl.MONGODB_PROCESS)` cannot be omitted. Without it, `DataProcessorManager` falls back to the default JPA processor and the model fails at runtime. The constant value is `"mongodb"`, registered by `EruptMongodbImpl` at startup.
+:::
+
+:::tip
+The `_id` field type in a MongoDB document is typically `String` or `ObjectId`. Use `String` as the corresponding Java type.
+:::
+
+## Differences from the JPA Module
+
+| Feature | erupt-jpa | erupt-mongodb |
+| --- | --- | --- |
+| Database Type | Relational databases | MongoDB |
+| Primary Key Annotation | `@Id` (jakarta.persistence) | `@Id` (org.springframework.data) |
+| Entity Annotation | `@Entity` + `@Table` | `@Document` + `@EruptDataProcessor(EruptMongodbImpl.MONGODB_PROCESS)` |
+| Transaction Support | Full support | Limited support |

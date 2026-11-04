@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="250" viewBox="0 0 900 250" role="img" aria-label="自定义节点执行机制">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="7" refY="4" orient="auto">
+      <path d="M0 0 L8 4 L0 8 Z" fill="#2B2827"/>
+    </marker>
+  </defs>
+
+  <!-- card -->
+  <rect x="10" y="10" width="884" height="234" fill="#2B2827"/>
+  <rect x="3.5" y="3.5" width="884" height="234" fill="#FFFAEF" stroke="#2B2827" stroke-width="3"/>
+
+  <!-- title -->
+  <rect x="36" y="30" width="14" height="14" fill="#FFD440" stroke="#2B2827" stroke-width="2"/>
+  <text x="62" y="43" font-family="'Space Grotesk', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="17" font-weight="800" fill="#2B2827">自定义节点执行机制</text>
+  <rect x="836" y="28" width="9" height="9" fill="#3BC4E8" stroke="#2B2827" stroke-width="2"/>
+  <rect x="852" y="40" width="7" height="7" fill="#FE7DA8" stroke="#2B2827" stroke-width="2"/>
+
+  <!-- box 1: flow reaches node -->
+  <rect x="45" y="95" width="150" height="56" fill="#2B2827"/>
+  <rect x="40.5" y="90.5" width="150" height="56" fill="#FFD440" stroke="#2B2827" stroke-width="2.5"/>
+  <text x="115" y="124" text-anchor="middle" font-family="'Space Grotesk', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="15" font-weight="700" fill="#2B2827">流程到达节点</text>
+
+  <!-- arrow 1 -->
+  <line x1="196" y1="118" x2="242" y2="118" stroke="#2B2827" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- box 2: prepare -->
+  <rect x="255" y="95" width="170" height="56" fill="#2B2827"/>
+  <rect x="250.5" y="90.5" width="170" height="56" fill="#FFFFFF" stroke="#2B2827" stroke-width="2.5"/>
+  <text x="335" y="114" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="14" font-weight="700" fill="#2B2827">prepare()</text>
+  <text x="335" y="136" text-anchor="middle" font-family="'Space Grotesk', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="12" fill="#6B6560">节点初始化 · 返回快照数据</text>
+
+  <!-- arrow 2 -->
+  <line x1="426" y1="118" x2="472" y2="118" stroke="#2B2827" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- box 3: evaluate -->
+  <rect x="485" y="95" width="170" height="56" fill="#2B2827"/>
+  <rect x="480.5" y="90.5" width="170" height="56" fill="#FFFFFF" stroke="#2B2827" stroke-width="2.5"/>
+  <text x="565" y="114" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="14" font-weight="700" fill="#2B2827">evaluate()</text>
+  <text x="565" y="136" text-anchor="middle" font-family="'Space Grotesk', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="12" fill="#6B6560">节点校验</text>
+
+  <!-- arrow 3 + label -->
+  <line x1="656" y1="118" x2="702" y2="118" stroke="#2B2827" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="680" y="80" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="12" font-weight="700" fill="#2B2827">Flow.next()</text>
+
+  <!-- box 4: next node -->
+  <rect x="715" y="95" width="150" height="56" fill="#2B2827"/>
+  <rect x="710.5" y="90.5" width="150" height="56" fill="#FE7DA8" stroke="#2B2827" stroke-width="2.5"/>
+  <text x="785" y="124" text-anchor="middle" font-family="'Space Grotesk', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="15" font-weight="700" fill="#2B2827">进入下一节点</text>
+
+  <!-- await self-loop -->
+  <path d="M 612 147 L 612 192 L 518 192 L 518 155" fill="none" stroke="#2B2827" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arrow)"/>
+  <text x="565" y="218" text-anchor="middle" font-family="'Space Grotesk', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="12" fill="#6B6560">Flow.await() · 等待调度器（scheduler-cron）下次检查时重新执行</text>
+</svg>

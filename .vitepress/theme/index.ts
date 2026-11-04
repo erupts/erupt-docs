@@ -1,7 +1,9 @@
 import DefaultTheme from 'vitepress/theme'
 import './custom.css'
 
-import {h} from 'vue'
+import {h, onMounted, watch, nextTick} from 'vue'
+import {useRoute} from 'vitepress'
+import mediumZoom, {type Zoom} from 'medium-zoom'
 import Floating from './Floating.vue'
 
 import {
@@ -39,7 +41,26 @@ export default {
         })
     },
 
-    enhanceApp({app}) {
+    // @ts-ignore
+    enhanceApp({app, router}) {
+        const knownPrefixes = ['/guide', '/annotation', '/field-types', '/advanced', '/modules', '/topics']
+        const redirect = (path: string) => {
+            const lang = typeof navigator !== 'undefined' ? navigator.language : ''
+            const locale = lang.toLowerCase().startsWith('zh') ? 'zh' : 'en'
+            window.location.replace('/' + locale + path)
+        }
+        // 直接访问旧 URL（初始加载）
+        if (typeof window !== 'undefined') {
+            const path = window.location.pathname
+            if (knownPrefixes.some(p => path.startsWith(p))) redirect(path)
+        }
+        // SPA 站内导航
+        router.onBeforeRouteChange = (to: string) => {
+            if (knownPrefixes.some(p => to.startsWith(p))) {
+                redirect(to)
+                return false
+            }
+        }
         app.provide(InjectionKey, {
             layoutSwitch: {
                 defaultMode: LayoutMode.FullWidth,
@@ -54,4 +75,17 @@ export default {
         app.use(NolebaseGitChangelogPlugin)
     },
 
+    setup() {
+        const route = useRoute()
+        let zoom: Zoom | null = null
+        // 单实例：路由切换时先解绑旧图片再绑定新页面的图片，避免重复创建实例
+        // 链接内的图片（如组件总览的卡片缩略图）点击应跳转而非放大，因此排除
+        const initZoom = () => {
+            if (!zoom) zoom = mediumZoom({background: 'var(--vp-c-bg)', margin: 24})
+            zoom.detach()
+            zoom.attach(...Array.from(document.querySelectorAll<HTMLImageElement>('.main img')).filter(img => !img.closest('a')))
+        }
+        onMounted(initZoom)
+        watch(() => route.path, () => nextTick(initZoom))
+    },
 }

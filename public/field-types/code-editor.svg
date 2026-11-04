@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250">
+  <style>.m{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace}</style>
+  <rect width="400" height="250" rx="10" fill="#ffffff"/>
+  <defs>
+    <clipPath id="win"><rect x="40" y="32" width="320" height="186" rx="8"/></clipPath>
+  </defs>
+  <g clip-path="url(#win)">
+    <rect x="40" y="32" width="320" height="186" fill="#0d1117"/>
+    <rect x="40" y="32" width="320" height="32" fill="#161b22"/>
+    <circle cx="60" cy="48" r="5" fill="#ff5f56"/>
+    <circle cx="78" cy="48" r="5" fill="#ffbd2e"/>
+    <circle cx="96" cy="48" r="5" fill="#27c93f"/>
+    <text x="200" y="52" text-anchor="middle" class="m" font-size="10" fill="#8b949e">Demo.java</text>
+    <g class="m" font-size="12">
+      <text x="56" y="92" fill="#484f58">1</text>
+      <text x="76" y="92"><tspan fill="#ff7b72">@Erupt</tspan><tspan fill="#c9d1d9">(name = </tspan><tspan fill="#a5d6ff">"Demo"</tspan><tspan fill="#c9d1d9">)</tspan></text>
+      <text x="56" y="118" fill="#484f58">2</text>
+      <text x="76" y="118"><tspan fill="#ff7b72">public class</tspan> <tspan fill="#ffa657">Demo</tspan><tspan fill="#c9d1d9"> {</tspan></text>
+      <text x="56" y="144" fill="#484f58">3</text>
+      <text x="104" y="144"><tspan fill="#ff7b72">private</tspan> <tspan fill="#ffa657">String</tspan><tspan fill="#c9d1d9"> name;</tspan></text>
+      <text x="56" y="170" fill="#484f58">4</text>
+      <text x="76" y="170" fill="#c9d1d9">}</text>
+    </g>
+    <rect x="76" y="186" width="8" height="15" fill="#c9d1d9" opacity=".8"/>
+  </g>
+</svg>

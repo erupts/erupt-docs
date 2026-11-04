@@ -1,0 +1,675 @@
+# Changelog
+
+## 2.4.0 (2026-11-01) <Badge type="tip" text="Spring Boot 3.5.16" />
+
+:::warning Before you upgrade
+Read the [V 2.4.0 Upgrade Guide](/en/guide/upgrade#v-2-4-0-upgrade-guide): export is on by default, choice values and declared form limits are now enforced on the server, `erupt.init-method-enum` is replaced by `erupt.init-modules-menu`, deployments behind a reverse proxy need `erupt.upms.trusted-proxies`, the user / role / org / post tables gain a `tenant_id` column, erupt-cloud nodes must be upgraded together, and there are [database changes](#database-changes).
+:::
+
+🦞 Open-sourced [erupt-share](/en/modules/erupt-share): a signed-in user issues a link to a form or to any menu page they hold, so visitors without an account can fill the form or read a report / dashboard / canvas; links expire, cap visits, may ask a password and can be switched off; the visitor's session holds only what the target needs and every other endpoint answers 403
+
+🦞 Open-sourced [erupt-webhook](/en/modules/erupt-webhook): subscribe to the add / update / delete events of chosen models; each committed change is POSTed as JSON to an external URL, HMAC-SHA256 signed, with custom headers, three attempts, a log row per delivery and one-click resend
+
+🦞 Open-sourced [erupt-config](/en/modules/erupt-config): key/value settings layered by Spring profile and served as a property source to `@Value` / `Environment` / `@ConfigurationProperties`; a save applies without a restart and other instances refresh over Redis; 17 item types, secrets masked
+
+🦞 Open-sourced [erupt-revision](/en/modules/erupt-revision): every add / update / cell edit / delete leaves a field-level revision; the record panel shows the history and rolls an update back; the revision table doubles as a recycle bin that restores deleted records; `@Power(revision = false)` opts a model out
+
+🦞 Open-sourced [erupt-file-center](/en/modules/erupt-file-center): a Finder-style file center over the upload directory, local folders, S3 buckets and SFTP directories with inline preview of images, video, audio, PDF and text; upload, new folder, rename and delete are granted by a separate Write button
+
+🦞 Open-sourced [erupt-ai-dev](/en/modules/erupt-ai-dev): projects span several git repositories; an approved requirement from the pool is developed in its own workspace by a coding CLI installed on the server (Claude Code, Codex, OpenCode, Kimi Code, Cursor CLI, Qwen Code or any CLI), progress and QA verdicts come back over MCP, and a human accepts before a rebase-and-push; ships with the new erupt-git support module
+
+🦞 Open-sourced [erupt-cloud-node-lite](/en/modules/cloud-node-lite): declare models with erupt's annotations in plain Java / Kotlin, Solon, Quarkus, Micronaut, Vert.x, Ktor or any servlet container, while the erupt server renders the UI and checks access
+
+🦞 Open-sourced [erupt-sdk](/en/modules/erupt-sdk/): services written in [Python](/en/modules/erupt-sdk/python), [Go](/en/modules/erupt-sdk/go), [TypeScript](/en/modules/erupt-sdk/typescript), [PHP](/en/modules/erupt-sdk/php), [.NET](/en/modules/erupt-sdk/dotnet), [Rust](/en/modules/erupt-sdk/rust), [Ruby](/en/modules/erupt-sdk/ruby) or [Swift](/en/modules/erupt-sdk/swift) run as erupt-cloud nodes and turn their models into admin pages; each SDK has zero dependencies or the standard library only, is generated from the same [node protocol](https://github.com/erupts/erupt/blob/develop/erupt-cloud/PROTOCOL.md) and annotation JSON Schema, and passes the same conformance suite
+
+🦞 Open-sourced [erupt-k8s-dashboard](https://github.com/erupt-io/erupt-k8s-dashboard), a ready-made Kubernetes admin: add the dependency and get Pod, Deployment, StatefulSet, DaemonSet, Service, ConfigMap, Event, Namespace and Node pages with logs, web terminal, scale, restart and YAML editing, switched per cluster and namespace (see [erupt-data-k8s](/en/modules/erupt-k8s))
+
+🌟 [SAML 2.0 single sign-on](/en/modules/erupt-sso#saml-2-0-single-sign-on): erupt-sso supports SAML next to OAuth2 (SAML, ADFS and Microsoft Entra ID presets), exports SP metadata for the IdP and verifies with the JDK's XML-DSig API only; tenants can configure [providers of their own](/en/modules/erupt-sso#tenant-providers)
+
+🌟 [@EruptScope global context](/en/annotation/erupt-scope): pick a cluster, project or company once in the page header and every model declaring that scope filters by it and prefills it on add; picks are checked against the user's options on every request, so editing the header cannot step outside them
+
+🌟 [Multi-tenant upms tables](/en/modules/erupt-upms/#multi-tenancy-and-tenantid): users, roles, orgs and posts, plus the login log, operation log, comment and revision tables, carry a Hibernate `@TenantId` column, so tenant users share the platform's tables without seeing each other and accounts and codes are unique per tenant; erupt-tenant drops its own user tables and erupt-flow keeps definitions and instances per tenant
+
+🌟 Three new @Vis views: [TIMELINE](/en/annotation/vis-timeline), [MAP](/en/annotation/vis-map) (AMap, Baidu, Tencent, Tianditu, Google or OSM, converting coordinate systems per vendor) and [CUBE](/en/annotation/vis-cube) (a grid of erupt-cube charts inside the model page, filtered by the list's search)
+
+🌟 [Board](/en/annotation/vis-board) swimlanes `swimlaneField`, column sums `sumField` and WIP limits; [calendar](/en/annotation/vis-calendar) `mode` (month / week / year) and drag-to-reschedule; [gantt](/en/annotation/vis-gantt) dependencies `dependencyField` and milestones `milestoneField`; [grouped tables](/en/annotation/vis#table-view-grouping) `@TableView(groupField)` with collapsible groups and subtotals
+
+🌟 [Column statistics](/en/annotation/view#statistic-column-statistics) `@View(statistic = SUM | AVG | COUNT | ...)`: totals over every row the list query matches, not the page; native aggregates on JPA / JDBC / Mongo, an in-memory fallback for computed columns
+
+🌟 [Batch edit](/en/annotation/power#batchedit-batch-editing): a toolbar button sets one field on all selected rows; every row runs the full cell-edit pipeline and the batch rolls back if one is rejected; `@Power(batchEdit = false)` turns it off
+
+🌟 [Export formats](/en/advanced/data-proxy-excel#export-formats): Excel, CSV, JSON, JSON Lines or Markdown from the export button, more through a `TableCodec` bean; an Excel export now imports back as it is
+
+🌟 [Components inferred from the Java type](/en/field-types/auto#inference-from-the-java-type): an `@Erupt` field becomes a reference table / tree, `Collection<@Erupt>` a sub-table, `Collection<Enum>` a multi-select, `Map` a key/value editor, and [an enum field a dropdown](/en/field-types/choice#enum-fields-are-dropdowns) of its constants; [`DateType.Type.AUTO`](/en/field-types/date#date-sub-type-inferred-from-the-java-type) follows `LocalDate` / `LocalDateTime` / `LocalTime`
+
+🌟 [Declared limits enforced on the server](/en/advanced/data-proxy-validate#server-side-enforcement-of-declared-limits): INPUT length, NUMBER / SLIDER ranges, RATE bounds, TAGS count and allowed values, DATE FUTURE / HISTORY and ranges, and every sub-table row's rules apply to API calls too; [`erupt.choice-validate`](/en/field-types/choice#server-side-option-check) is on by default, so CHOICE / MULTI_CHOICE values must be among the user's options
+
+🌟 [Module center](/en/modules/erupt-upms/menu#module-center): System Management lists installed modules by group with their docs and switches a module's menus off; the sidebar shows section titles per module group and root menus are re-sorted by purpose; [module menus reconcile by fingerprint](/en/modules/erupt-upms/menu#automatic-module-menu-maintenance), so new menus and buttons arrive on upgrade while admin edits are kept, without `.erupt/*.loaded` marker files
+
+🌟 [The erupt-cloud server does the work for its nodes](/en/modules/cloud-server#what-the-server-does-for-a-node): power and payload checks, HMAC request signing, references, Excel, uploads, static options, cell / batch edit, drag sort and board / calendar / gantt writes, shrinking the node protocol to nine endpoints; nodes registering `invoke` take options, onchange, buttons and row operations through `/erupt-api/invoke`
+
+🌟 [Material and Terminal skins](/en/guide/ui#appearance): a Material 3 / Google Workspace shell and a phosphor console; the lock screen can switch theme, skin and color
+
+🌟 [Built-in print](/en/modules/erupt-print#built-in-print): label position, columns, border, font size, title, paper and margins set before printing; one-to-many, many-to-many and multi-form fields print as tables, and printing through a hidden iframe reflows to the paper
+
+🌟 [erupt-cube cubes in YAML / JSON files](/en/modules/pro/erupt-cube/semantic-model#defining-cubes-in-yaml-json-files): one cube per `cube/**/*.yml|json` file, joinable with annotated cubes, with a [JSON Schema](https://docs.erupt.xyz/schema/erupt-cube.schema.json) for IDE completion
+
+🌟 [erupt-tenant subscription lifecycle](/en/modules/pro/erupt-tenant/subscription): packages carry trial days, the status (active / grace / expired) is derived from the expire date, sessions of an expired or locked tenant end on their next request, and `TenantSubscriptionService#extend` hooks your own billing; the tenant login page offers the tenant's own SSO providers
+
+🌟 [erupt-data-http adapter hooks](/en/modules/erupt-http#adapter-hooks-erupthttpadapter): `EruptHttpAdapter` covers every stage of a request, templates take `${}` properties and `#{}` SpEL with the current user and beans, and three paging styles plus envelope unwrapping are built in
+
+🌟 [OpenAPI 3.1 spec](/en/advanced/rest-api#openapi-specification): `openapi/erupt.json`, generated from controller Javadoc, covers every core, upms, tpl and excel endpoint
+
+🌟 The home page gains an [account security tile](/en/guide/config-home#home-page-tiles) (password age, MFA state) and an AI prompt box; the MCP endpoint takes [module-level grants](/en/modules/erupt-ai/mcp-server#module-level-grants-mcpauthenticator) through `McpAuthenticator`, typed tool schemas from langchain4j, and runs calls made for a user in that user's tenant and rights
+
+🧩 [`@Power(export)` is on by default](/en/annotation/power#export-on-by-default) and, like add / edit / delete, decided by the role's menu buttons; `@View(export = false)` keeps a column out; `importable` stays opt-in
+
+🧩 [`@ReferenceTreeType(leafOnly = true)`](/en/field-types/reference-tree#leaf-nodes-only-leafonly) lets only leaf nodes be picked, thanks to [chenxiaolong8023](https://github.com/chenxiaolong8023) for the contribution
+
+🧩 [Masonry layout for the card view](/en/annotation/vis-card#masonry-layout): `@CardView(layout = CardView.Layout.MASONRY)` keeps each cover's own aspect ratio and packs cards into staggered columns
+
+🧩 `EditType.MAP` fields can hold a typed [`Location`](/en/field-types/map#the-location-type) (coordinates, name, address, coordinate system); a String field switches without a migration
+
+🌟 [Map vendors](/en/field-types/map#map-vendors): `EditType.MAP` fields and the MAP view share `eruptSiteConfig.map` and run on AMap, Baidu, Tencent, Tianditu, Google or OpenStreetMap (no key needed); the frontend converts coordinates by `Location.crs`, so switching vendors needs no data migration
+
+🧩 [`spring.jpa.open-in-view: false` supported](/en/modules/erupt-jpa#finddatabyid-initializes-collection-fields): `findDataById` initializes collection fields inside the lookup, so detail, print, templates and record history no longer rely on open-in-view keeping the EntityManager open; `@EruptDataSource` models included
+
+🧩 erupt-data-s3: a typed `S3ObjectModel` base class, `@EruptS3` attributes left empty fall back to `erupt.s3.*`, and checksums are computed only where required on custom endpoints for MinIO / OSS and other S3-compatible stores
+
+🧩 [`X-Forwarded-For` is believed only from a trusted proxy](/en/guide/configuration) (`erupt.upms.trusted-proxies`, loopback and private ranges by default), so a forged header no longer bypasses the login lock or the IP whitelist
+
+🧩 Performance: DataProxy chains cached per model, `@Match` SpEL cached, deterministic LambdaQuery placeholders that hit Hibernate's query cache, one count query to check row access for a batch, lazy `EruptRole.users`, and modules reference users through the slim `EruptUserVo`
+
+🧩 Builds on JDK 27; dependency updates include gson 2.14, guava 33.7, commons-lang3 3.21, POI 5.5.1, AWS SDK 2.55, ShedLock 7.10 and JSch 2.28.7; the Requesty and OrcaRouter LLM adapters are removed; erupt-ai-decision drops its HTTP endpoints (the Java API is unchanged)
+
+🧩 Copy buttons work on plain http; `theme.menuGroups` hides the sidebar section titles; the erupt-start scaffold lists the 2.4.0 modules
+
+🐞 Fixed formula fields breaking column comments, thanks to [AryanGupta833](https://github.com/AryanGupta833) for the contribution
+
+🐞 erupt-flow fixes: gateway conditions on multi-choice, tags and many-to-many fields never matching; an unreadable flush error when a reviewer resolves to nobody; an NPE for instances without a form row; standalone approval details missing task context, hiding urge and withdraw
+
+### Database Changes
+
+::: details Show schema changes and SQL (MySQL syntax; convert for other databases)
+> Schema changes are applied by JPA / Hibernate at startup. Run them by hand only when automatic DDL is disabled (`spring.jpa.hibernate.ddl-auto=none` or `validate`).
+
+This release touches:
+
+- `e_upms_user`, `e_upms_role`, `e_upms_org`, `e_upms_post` gain `tenant_id`; the account / code unique constraint becomes tenant + account / code
+- `e_upms_login_log`, `e_upms_operate_log` gain `tenant_id`
+- `e_upms_sso` gains `tenant_id` and `idp_certificate`, `e_upms_sso_bind` gains `tenant_id` (with erupt-sso)
+- `e_record_comment` gains `tenant_id` (with erupt-comment)
+- `e_flow`, `e_flow_group`, `e_flow_instance` gain `tenant_id` (with erupt-flow)
+- `e_tenant_package` gains `trial_days` (with erupt-tenant); the tenant-side user / role / org tables are no longer used, see the [upgrade guide](/en/guide/upgrade#v-2-4-0-upgrade-guide)
+
+Tables of new modules are created by Hibernate, no manual step:
+
+- erupt-upms: `e_upms_module` (module menu fingerprints and switches, default admin and telemetry instance state)
+- erupt-share: `e_share_link`
+- erupt-webhook: `e_webhook`, `e_webhook_log`
+- erupt-config: `e_config_profile`, `e_config_item`
+- erupt-revision: `e_record_revision`
+- erupt-ai-dev: `e_ai_dev_project`, `e_ai_dev_project_repo`, `e_ai_dev_project_member`, `e_ai_dev_requirement`, `e_ai_dev_requirement_review`, `e_ai_dev_requirement_delivery`, `e_ai_dev_agent_session`, `e_ai_dev_agent_event`
+
+**`e_upms_user` / `e_upms_role` / `e_upms_org` / `e_upms_post` (erupt-upms)**
+
+```sql
+ALTER TABLE e_upms_user ADD COLUMN tenant_id VARCHAR(64) NOT NULL DEFAULT '0' COMMENT 'Tenant, 0 = platform';
+ALTER TABLE e_upms_role ADD COLUMN tenant_id VARCHAR(64) NOT NULL DEFAULT '0' COMMENT 'Tenant, 0 = platform';
+ALTER TABLE e_upms_org  ADD COLUMN tenant_id VARCHAR(64) NOT NULL DEFAULT '0' COMMENT 'Tenant, 0 = platform';
+ALTER TABLE e_upms_post ADD COLUMN tenant_id VARCHAR(64) NOT NULL DEFAULT '0' COMMENT 'Tenant, 0 = platform';
+
+ALTER TABLE e_upms_user ADD CONSTRAINT uk_upms_user_account UNIQUE (tenant_id, account);
+ALTER TABLE e_upms_role ADD CONSTRAINT uk_upms_role_code    UNIQUE (tenant_id, code);
+ALTER TABLE e_upms_org  ADD CONSTRAINT uk_upms_org_code     UNIQUE (tenant_id, code);
+ALTER TABLE e_upms_post ADD CONSTRAINT uk_upms_post_code    UNIQUE (tenant_id, code);
+```
+
+Projects without erupt-tenant may keep the old single-column unique index on `account` / `code`. Projects with erupt-tenant must drop it, otherwise two tenants cannot use the same account; index names differ per database, so look them up first with `SHOW INDEX FROM e_upms_user WHERE Non_unique = 0;`.
+
+**`e_upms_login_log` / `e_upms_operate_log` (erupt-upms)**
+
+```sql
+ALTER TABLE e_upms_login_log   ADD COLUMN tenant_id VARCHAR(64) NOT NULL DEFAULT '0' COMMENT 'Tenant';
+ALTER TABLE e_upms_operate_log ADD COLUMN tenant_id VARCHAR(64) NOT NULL DEFAULT '0' COMMENT 'Tenant';
+```
+
+**`e_upms_sso` / `e_upms_sso_bind` (erupt-sso)**
+
+```sql
+ALTER TABLE e_upms_sso      ADD COLUMN tenant_id       VARCHAR(64) NOT NULL DEFAULT '0' COMMENT 'Tenant';
+ALTER TABLE e_upms_sso      ADD COLUMN idp_certificate LONGTEXT    COMMENT 'SAML IdP signing certificate';
+ALTER TABLE e_upms_sso_bind ADD COLUMN tenant_id       VARCHAR(64) NOT NULL DEFAULT '0' COMMENT 'Tenant';
+ALTER TABLE e_upms_sso      ADD CONSTRAINT uk_upms_sso_code UNIQUE (tenant_id, code);
+```
+
+**`e_record_comment` (erupt-comment)**
+
+```sql
+ALTER TABLE e_record_comment ADD COLUMN tenant_id VARCHAR(64) NOT NULL DEFAULT '0' COMMENT 'Tenant';
+```
+
+**`e_flow` / `e_flow_group` / `e_flow_instance` (erupt-flow)**
+
+```sql
+ALTER TABLE e_flow          ADD COLUMN tenant_id VARCHAR(64) NOT NULL DEFAULT '0' COMMENT 'Tenant';
+ALTER TABLE e_flow_group    ADD COLUMN tenant_id VARCHAR(64) NOT NULL DEFAULT '0' COMMENT 'Tenant';
+ALTER TABLE e_flow_instance ADD COLUMN tenant_id VARCHAR(64) NOT NULL DEFAULT '0' COMMENT 'Tenant';
+```
+
+**`e_tenant_package` (erupt-tenant)**
+
+```sql
+ALTER TABLE e_tenant_package ADD COLUMN trial_days INT COMMENT 'Trial days';
+```
+
+:::
+
+## 2.3.0 (2026-09-24) <Badge type="tip" text="Spring Boot 3.5.16" />
+
+:::warning Before you upgrade
+Read the [V 2.3.0 Upgrade Guide](/en/guide/upgrade#v-2-3-0-upgrade-guide): the login lock is on by default, a password change signs out other sessions, `logoPath: null` in `app.js` now means "no logo", and there are [database changes](#database-changes-1).
+:::
+
+🦞 Open-sourced [erupt-sso](/en/modules/erupt-sso): OAuth2 authorization code + PKCE with 17 [provider presets](/en/modules/erupt-sso#provider-presets) (Keycloak, Okta, Auth0, Entra ID, GitHub, Feishu, DingTalk, WeCom, WeChat and more): pick the type, paste the credentials, done. Providers are rows configured in the admin, no restart; the code is exchanged server side and the token never travels in a URL
+
+🦞 Open-sourced [erupt-comment](/en/modules/erupt-comment): a comment stream on any record with one-level replies, pinned / resolved threads and per-row counts; an @mention sends an erupt-notice that deep-links to the record; `@Power(comment = false)` opts a model out
+
+🦞 Open-sourced [erupt-ai-decision](/en/modules/erupt-ai-decision): yes/no, choice and score questions answered by a System One decision model as typed answers with a probability distribution, so code branches on a threshold instead of parsing a sentence; supports TypeSafe Jev and the self-hostable open-source Laya
+
+🦞 Open-sourced the [erupt-data-dingtalk](/en/modules/erupt-dingtalk) (DingTalk Notable) and [erupt-data-airtable](/en/modules/erupt-airtable) data sources, sharing one REST-table base with Feishu and Notion
+
+🌟 New [ICON](/en/field-types/icon) edit component: picks from the full Font Awesome catalogue and renders the icon in tables
+
+🌟 New [KEY_VALUE](/en/field-types/key-value) edit component: edits a JSON object stored as a String or as a `Map` on a JSON column
+
+🌟 New [TRANSFER](/en/field-types/transfer) edit component: handles many-to-many relations as a searchable two-list transfer, and `@MultiChoiceType(type = TRANSFER)` gives value lists the same widget
+
+🌟 Tables support [multi-level headers](/en/annotation/view#group-multi-level-headers): adjacent columns sharing `@View(group)` merge under one parent header while column settings keep working per column
+
+🌟 [Form panel](/en/guide/ui#form-panel): record forms open centered, docked to the side or fullscreen and keep unsaved input when switching; the title bar offers previous / next, a view-edit toggle, copy link, delete, AI assistant and print; `?id=` deep-links open a record
+
+🌟 [Login page layouts](/en/guide/ui#login-page-layouts): four new layouts (cover / wide / wallpaper / poster) and a configurable login picture (`theme.loginLayout` / `theme.loginBackground`), switchable from the login page itself
+
+🌟 [Workspace and Classic skins](/en/guide/ui#appearance): Workspace is a Slack / Feishu style shell with 32 light and dark frame presets; Classic is the Ant Design Pro navy sidebar; the Brutalist skin was redrawn against raft.build
+
+🌟 [Install as a desktop app (PWA)](/en/guide/pwa): the manifest is generated from the site config, the header doubles as a draggable title bar, and `pwa.icon` / `pwa.shortcuts` / `faviconPath` are configurable
+
+🌟 [Two-factor authentication (MFA)](/en/modules/erupt-upms/user#two-factor-authentication-mfa): TOTP codes, self-enrolled from the avatar menu; after the password a 6-digit code is required before a session is issued; recovery codes are single-use and stored hashed, and an admin can reset MFA in one click
+
+🌟 [Login lock](/en/modules/erupt-upms/user#login-lock): ten failed passwords for one account from one IP lock the pair for ten minutes (`erupt.upms.login-lock`), a wrong captcha counts too; changing a password signs out the account's other sessions
+
+🌟 erupt-notice gains [provider-backed channels](/en/modules/erupt-notice#provider-backed-channels): Feishu, DingTalk, WeCom and Slack push notifications through the erupt-sso provider row's own credentials; any user who has signed in through that provider can be reached, no separate bot setup. `EruptSsoBindService` lets other modules read a user's identifier and profile snapshot at the provider
+
+🌟 [erupt-generator rewritten](/en/modules/erupt-generator#import-from-database): read the schema of any registered datasource and turn tables into entities: comments become titles, foreign keys become references, documented enum values become `@Choice`; preview in the code editor drawer, download several classes as a zip
+
+🌟 [S3AttachmentProxy](/en/modules/erupt-s3/upload): `erupt-data-s3` ships a ready-made attachment proxy; set `erupt.s3.*` and every upload lands in S3 / MinIO / OSS / COS / R2; the attachment domain now comes from the backend, no app.js edit needed
+
+🌟 [erupt-remote SFTP file transfer](/en/modules/erupt-remote#sftp-file-transfer): a file panel next to the SSH terminal browses remote directories, uploads by drag-and-drop, downloads, creates folders and deletes files; switchable per host and sharing the terminal's credentials and authorization
+
+🧩 New [`ViewType.AVATAR`](/en/annotation/view#display-types-viewtype) round avatar view type, used by the user table
+
+🧩 [`@Tree(maxLevel)`](/en/annotation/tree#limiting-depth-with-maxlevel) caps a tree's depth: the UI stops offering "add child" at the limit and the server refuses any save that would place a node deeper
+
+🧩 [`@Layout(tableTruncate = false)`](/en/annotation/layout#tabletruncate-wrapping-cells) wraps overflowing cells instead of truncating, so a crowded operation column keeps every action reachable
+
+🧩 [`@BoolType(type)`](/en/field-types/boolean#widget-type) picks a switch or radios, default AUTO: a required field renders as a switch, others as radios; a null table cell no longer shows an empty tag
+
+🧩 [`theme.customizable = false`](/en/guide/config-frontend) locks the branding side of the appearance (theme color, header color, skin, menu mode) for everyone; light/dark and compact stay per-user
+
+🧩 `app.js` logo keys: leave out for the default, `null` / `''` for none; a collapsed sidebar without a logo shows the site's initial instead of the Erupt mark; new `faviconPath`
+
+🧩 "Publish to menu" in reports, the designer, Atlas and AI Canvas lets you pick the menu icon
+
+🧩 [Profile and lock screen](/en/modules/erupt-upms/user#profile-and-lock-screen): users change their own avatar and display name (`LoginProxy.beforeUpdateProfile` can veto); a lock screen in the avatar menu unlocks with the password without issuing a new session
+
+🧩 IP whitelist accepts IPv4 / IPv6 CIDR ranges, thanks to [chenxiaolong8023](https://github.com/chenxiaolong8023) for the contribution
+
+🧩 [erupt-atlas "Used by"](/en/modules/erupt-atlas#used-by): modules report what a model is used for through `EruptUsageProvider` (flow forms and custom nodes, menus, cube dashboards, print templates, row-operation forms); table views now fill the screen
+
+🐞 Fixed every scheduled job failing with a missing ShedLock `LockProvider` when `redis-session` is on and the host application component-scans `xyz.erupt`; a job without a lock is now skipped and logged instead of running unlocked on every node
+
+🐞 Fixed week pickers throwing a RangeError
+
+🐞 Fixed print entries showing despite `@Power(print = false)`
+
+🐞 Fixed `@View(column)` on a COMBINE field not reaching the table (Gitee IKGOKN)
+
+🐞 Fixed `item.xxx` in `@View(template)` reading the stored value instead of the cell's display text
+
+### Database Changes
+
+:::info
+Hibernate applies these changes automatically at startup; run them by hand only when automatic DDL is disabled (`spring.jpa.hibernate.ddl-auto=none` or `validate`).
+:::
+
+This release changes:
+
+- `e_upms_user`: three new columns (MFA)
+- `e_generator_class`, `e_generator_field`: new columns (when erupt-generator is used)
+- `e_remote_host`: one new column (when erupt-remote is used)
+
+Tables for newly introduced modules are created by Hibernate automatically, nothing to run by hand:
+
+- erupt-sso: `e_upms_sso`, `e_upms_sso_role`, `e_upms_sso_bind`
+- erupt-comment: `e_record_comment`
+- erupt-ai-decision: `e_ai_decision_def`, `e_ai_decision_model`, `e_ai_decision_question`
+
+::: details Show SQL (MySQL syntax; adapt for other databases)
+
+**New columns on `e_upms_user` (erupt-upms)**
+
+```sql
+ALTER TABLE e_upms_user ADD COLUMN mfa_enabled        BIT(1)        COMMENT 'two-factor authentication enabled';
+ALTER TABLE e_upms_user ADD COLUMN mfa_secret         VARCHAR(64)   COMMENT 'TOTP secret';
+ALTER TABLE e_upms_user ADD COLUMN mfa_recovery_codes VARCHAR(2000) COMMENT 'hashed recovery codes, JSON array';
+```
+
+**New columns on `e_generator_class` (erupt-generator)**
+
+```sql
+ALTER TABLE e_generator_class ADD COLUMN super_class  VARCHAR(255) COMMENT 'parent class';
+ALTER TABLE e_generator_class ADD COLUMN package_name VARCHAR(255) COMMENT 'package';
+```
+
+**New columns on `e_generator_field` (erupt-generator)**
+
+```sql
+ALTER TABLE e_generator_field ADD COLUMN column_name    VARCHAR(255) COMMENT 'column name';
+ALTER TABLE e_generator_field ADD COLUMN java_type      VARCHAR(255) COMMENT 'java type';
+ALTER TABLE e_generator_field ADD COLUMN length         INT          COMMENT 'length';
+ALTER TABLE e_generator_field ADD COLUMN type_code      VARCHAR(255) COMMENT 'JDBC type code';
+ALTER TABLE e_generator_field ADD COLUMN primary_key    BIT(1)       COMMENT 'primary key';
+ALTER TABLE e_generator_field ADD COLUMN auto_increment BIT(1)       COMMENT 'auto increment';
+```
+
+**New column on `e_remote_host` (erupt-remote)**
+
+```sql
+ALTER TABLE e_remote_host ADD COLUMN file_transfer BIT(1) DEFAULT b'1' COMMENT 'SFTP file transfer allowed on this SSH host';
+```
+
+:::
+
+## 2.2.0 (2026-09-15) <Badge type="tip" text="Spring Boot 3.5.16" />
+
+:::warning Breaking changes
+Read the [V 2.2.0 Upgrade Guide](/en/guide/upgrade#v-2-2-0-upgrade-guide) before upgrading.
+
+**erupt-designer data moves to an embedded SQLite file**: business data no longer lives in the main database's `e_designer_data` table and is **not migrated automatically**; the file needs its own backup and a persistent volume.
+
+Table structures change too — see [Database Changes](#database-changes-2) at the end of this release.
+:::
+
+🦞 Open-sourced [erupt-atlas](/en/modules/erupt-atlas): the relations already implied by your annotations, drawn as a graph — lineage tracing, dependency layers, a module coupling matrix, impact analysis, and a structural audit for cycles, shared tables and orphan models.
+
+🦞 Open-sourced [erupt-remote](/en/modules/erupt-remote): remote hosts in the browser — VNC desktops and SSH shells over one WebSocket, credentials stored AES-GCM encrypted, and the VNC authentication answered server-side so the password never reaches the front end.
+
+🌟 Tables gain [bitable-style editing](/en/annotation/power#celledit-in-table-cell-editing): double-click a cell to change one field in place, without opening the row form. The server validates the whole row, so `DataProxy`, the operate log and the edit event behave exactly as a form submission — gated by `@Power(cellEdit)` on the model and `@Edit(cellEdit)` on the field.
+
+🌟 [AI writing assistant](/en/modules/erupt-ai/writing-assistant) on text fields: generate, polish, continue, shorten or expand a value with the rest of the form as the brief. Streams over SSE and persists nothing; `@Edit(prompt)` is that field's authoring guidance.
+
+🌟 [erupt-ai goes multimodal](/en/modules/erupt-ai/chat#multimodal-conversation): attach images with the paper-clip button or a clipboard paste and send them alongside the text. Images are persisted with the message and carried along when the history context is rebuilt, regenerated or edit-resent.
+
+🌟 New [Liquid Glass skin](/en/modules/erupt-web#themes-and-skins): the sidebar becomes a translucent pane of glass — backdrop blur, specular top edge — floating on an ambient color field, switchable against the default and Brutalist skins from the settings drawer.
+
+🌟 New [dark theme](/en/modules/erupt-web#themes-and-skins): light / dark / auto, where auto follows the OS live, and charts, code editors and Markdown previews follow along; compact mode combines freely with it.
+
+🌟 [TPL fields](/en/field-types/tpl#talking-to-the-form) now talk to the form both ways: a template reads every sibling field's value and writes back formData and editExpr, so a custom editor is no longer cut off from the form it lives in.
+
+🧩 [Theme color and header color](/en/modules/erupt-web#themes-and-skins) are now set with a color picker and remembered; the default theme color is `rgb(22, 119, 255)`.
+
+🧩 [Menu layout](/en/modules/erupt-web#themes-and-skins) offers single-column, split and dual-column modes — dual being a first-level icon rail plus the selected category's children — and menu names can show under the icons when the sidebar is collapsed.
+
+🧩 A [dark sidebar](/en/modules/erupt-web#themes-and-skins) can be turned on on its own while the rest of the UI stays light.
+
+🧩 The [login page](/en/modules/erupt-web#themes-and-skins) gained a skin dropdown and a theme color picker, so the first screen can be dressed before signing in.
+
+🧩 Multi-tab improvements: pages opened from a row operation or a link (remote host, AI canvas, cube dashboard, form designer) name their tab after their data and close it on back.
+
+🧩 The menu tree expands one level by default, so a large menu no longer fills the screen at once.
+
+🧩 Upgraded to Font Awesome 7, taking available icons from 675 to 1992; legacy FA4 class names keep working.
+
+🧩 The micro-frontend container switched to the iframe sandbox, so Vite / ESM sub-apps load correctly and several micro-frontend menus can be open at once.
+
+🧩 New [micro-frontend link menu type](/en/modules/erupt-upms/menu): opens an external URL in the micro-frontend container when the target refuses framing.
+
+🧩 Gantt charts and the Markdown editor load their libraries on demand, only when a page actually shows one.
+
+🧩 [TEXTAREA](/en/field-types/textarea#configuration) gained configuration: max length, visible row bounds, and `@` / `#` mentions (static candidates plus a `TagsFetchHandler`, served on demand).
+
+🧩 [AUTO_COMPLETE](/en/field-types/auto-complete#static-candidates) supports static `values`; `handler` is no longer required.
+
+🧩 The [NUMBER](/en/field-types/number) input ignores the mouse wheel, so scrolling a page can no longer nudge a value.
+
+🧩 Tree view labels now go through [@EruptI18n](/en/advanced/i18n) translation, so tree pages such as Menu Management follow the console language instead of showing their authored text.
+
+🧩 [erupt-designer](/en/modules/erupt-designer#data-storage) stores its data in an embedded SQLite file: one real table per published design, with filtering, sorting and paging pushed down as SQL regardless of the host database.
+
+🧩 [erupt-ai-canvas](/en/modules/erupt-ai-canvas) enhancements: a canvas binds several data models, each with its own add / edit / delete permission; generation runs asynchronously, plus page validation and publish versions.
+
+🧩 A [model picker](/en/modules/erupt-ai/chat#model-picker) in the chat input toolbar switches models mid-conversation; shown only when more than one enabled model exists, and hidden when the model is pinned through `?llm=`.
+
+🧩 The AI now replies in the language the console is set to, instead of drifting to Chinese whatever language the question was asked in.
+
+🧩 Added [`erupt.ai.request-timeout`](/en/modules/erupt-ai/), raising the LLM read timeout to 15 minutes by default (langchain4j defaults to 60s, which cuts off long non-streaming generations).
+
+🧩 [erupt-print](/en/modules/erupt-print) templates are authored with CKEditor, matching the storage format the frontend print-template editor expects (Velocity tokens plus widget markup).
+
+🧩 Added [anonymous telemetry](/en/guide/telemetry) — version and module stats only, and it can be turned off at any time.
+
+🧩 User and role lists are no longer scoped to their creator — visibility is decided by menu and role permissions. **Review those two menu grants after upgrading**; see the [upgrade guide](/en/guide/upgrade#v-2-2-0-upgrade-guide).
+
+🧩 WebSocket pushes go through a per-connection async queue, so business threads never block on slow clients.
+
+🧩 ip2region loads its xdb file on demand instead of shipping the database in the jar.
+
+🐞 Fixed 64-bit id precision loss in the browser: erupt-api responses returning bare Map / Collection bypassed Gson's safe-number serialization.
+
+🐞 Fixed scheduled jobs crashing with `redis-session` enabled — the LockProvider is now resolved from the Spring container. Thanks to [chenxiaolong8023](https://github.com/chenxiaolong8023) for the contribution.
+
+🐞 Fixed sub-table row corruption caused by unstable temporary primary keys.
+
+🐞 Fixed the drag-sort grip appearing on placeholder and measuring rows.
+
+🐞 Fixed the designer copying a field along with its original field id.
+
+### Database Changes
+
+:::info
+Schema changes are applied automatically by JPA / Hibernate at startup. Run these manually only if automatic DDL is disabled (`spring.jpa.hibernate.ddl-auto=none` or `validate`).
+:::
+
+This release adds the table `e_ai_canvas_model`, drops two columns from `e_ai_canvas` after migrating them, adds one column to `e_ai_chat_message`, and leaves `e_designer_data` unused. Adding [erupt-remote](/en/modules/erupt-remote) also creates `e_remote_host`, which Hibernate builds on its own.
+
+::: details Show the SQL (MySQL syntax; translate for other databases)
+
+**New table `e_ai_canvas_model` (erupt-ai-canvas)**
+
+```sql
+CREATE TABLE e_ai_canvas_model
+(
+    id           BIGINT NOT NULL AUTO_INCREMENT,
+    canvas_id    BIGINT,
+    data_type    VARCHAR(255),
+    model        VARCHAR(255),
+    purpose      VARCHAR(255),
+    allow_add    BIT(1),
+    allow_edit   BIT(1),
+    allow_delete BIT(1),
+    PRIMARY KEY (id)
+);
+ALTER TABLE e_ai_canvas_model ADD CONSTRAINT fk_ai_canvas_model_canvas FOREIGN KEY (canvas_id) REFERENCES e_ai_canvas (id);
+```
+
+**Changed columns on `e_ai_canvas` (erupt-ai-canvas)**
+
+Model bindings moved into `e_ai_canvas_model`. **Migrate the data first, then drop the old columns**:
+
+```sql
+INSERT INTO e_ai_canvas_model (canvas_id, data_type, model, allow_add, allow_edit, allow_delete)
+SELECT id, data_type, target_model, 0, 0, 0 FROM e_ai_canvas WHERE target_model IS NOT NULL;
+
+ALTER TABLE e_ai_canvas DROP COLUMN data_type;
+ALTER TABLE e_ai_canvas DROP COLUMN target_model;
+```
+
+**New column on `e_ai_chat_message` (erupt-ai)**
+
+```sql
+ALTER TABLE e_ai_chat_message ADD COLUMN images LONGTEXT COMMENT 'JSON array of image attachment paths sent with a user message';
+```
+
+**`e_designer_data` is no longer used (erupt-designer)**
+
+Designer business data moves to an embedded SQLite file (`data/designer.db` by default). The table is neither read nor written any more, and **Hibernate will not drop it for you**. Nothing is migrated automatically, so drop it by hand only once you are sure nothing in it is still needed (or it has been exported):
+
+```sql
+-- Irreversible: confirm the data is migrated or no longer needed first
+DROP TABLE e_designer_data;
+```
+
+The design config table `e_designer` is still in use — do not drop it.
+
+:::
+
+## 2.1.1 (2026-08-30) <Badge type="tip" text="Spring Boot 3.5.16" />
+
+🌟 Added the [MULTI_FORM](/en/field-types/multi-form) edit type — one-to-many child rows are edited directly as inline form blocks, ideal when child tables have many fields.
+
+🌟 [@Layout](/en/annotation/layout) added the [formSteps step-form](/en/annotation/form-steps) wizard mode: DIVIDE fields delimit the steps, splitting long forms into guided stages.
+
+🌟 [erupt-cube](/en/modules/pro/erupt-cube/visual-analysis#map-report) added a Map report type: ECharts-based choropleth maps with a GeoJSON map registry and region-click drill-down linkage.
+
+🧩 [@Search](/en/annotation/search) added `lockOperator` — the query operator is enforced server-side so crafted requests cannot bypass frontend query restrictions.
+
+🧩 Choice and reference field search now supports [IN / NOT_IN multi-select queries](/en/annotation/search#multi-select-search-with-in--not_in), matching multiple options at once.
+
+🧩 [DATE](/en/field-types/date) picker added a QUARTER mode plus `min` / `max` selectable date bounds.
+
+🧩 [NUMBER](/en/field-types/number) input enhanced with decimal precision, step size, prefix/suffix units, and thousands separator.
+
+🧩 [COLOR](/en/field-types/color) picker added configuration for alpha channel, preset swatches, and color value text.
+
+🧩 [erupt-job](/en/modules/erupt-job#cluster-deduplication) supports cluster deduplication: with `redis-session` enabled, each scheduled job runs on exactly one node across the cluster.
+
+🧩 Security hardening: nested sub-model requests (TAB, COMBINE, reference fields, etc.) are now authorized against their parent's menu permission.
+
+🧩 ADD/EDIT function permissions are auto-generated for FORM-type menus — no manual configuration needed.
+
+🧩 Sidebar menu gained a toolbar: refresh, reset, expand all, and split mode.
+
+🧩 Tree views support batch delete with checkboxes.
+
+🧩 Table column widths are computed from measured text for better accuracy; overly long header breadcrumbs are truncated with ellipsis; the multi-tab bar is hidden on mobile.
+
+🧩 Added the OrcaRouter LLM provider — thanks to [XiaoHuo888-hue](https://github.com/XiaoHuo888-hue) for the contribution.
+
+🐞 Fixed RAG knowledge-base ingestion failing for remote attachments and stale embedding clients after configuration changes.
+
+🐞 Fixed the TIME search filter being blank and unusable.
+
+🐞 Fixed Markdown fields not displaying asynchronously loaded content — thanks to [chenxiaolong8023](https://github.com/chenxiaolong8023) for the contribution.
+
+🐞 Fixed left-join queries in erupt-cube semantic models.
+
+🐞 Fixed the fixed-mode multi-tab bar overlapping page content.
+
+## 2.1.0 (2026-08-23) <Badge type="tip" text="Spring Boot 3.5.16" />
+
+> 🦞 15 modules open-sourced &emsp; 🔌 13+ data connectors &emsp; 🤖 Major AI upgrades
+
+🦞 Open-sourced the [Erupt Report](/en/modules/erupt-report/) module (formerly the commercial erupt-bi) — define reports and charts in pure SQL, multi-dimensional analytics with zero frontend code.
+
+🦞 Open-sourced the [erupt-ai-canvas](/en/modules/erupt-ai-canvas) module: generate a complete page from one sentence — SSE streaming generation, version rollback, element picking, multi-device preview, one-click publish to menu, with live data from the Erupt backend.
+
+🦞 Open-sourced the erupt-ai-rag module: [knowledge bases with vector retrieval (RAG)](/en/modules/erupt-ai-rag), pluggable embedding models and vector stores (pgvector, Redis, etc.), with Agentic RAG support.
+
+🦞 Open-sourced the erupt-ai-staff module: [AI digital employees](/en/modules/erupt-ai-staff) bound to real system accounts, inheriting UPMS permissions, running Cron-scheduled tasks, and pushing work reports to DingTalk, WeCom, Feishu, or Slack.
+
+🦞 Open-sourced the erupt-data connector layer: where data lives, admin follows — one unified data-source interface, letting the same annotated model perform CRUD, pagination, and search over any data. 11 new data-source modules:
+
+| Module | Description |
+|---|---|
+| [erupt-data-jdbc](/en/modules/erupt-jdbc) | Plain JDBC single-table data source, no JPA mapping needed — supports ClickHouse, Doris, TDengine, DM, and other JDBC-driver-only databases |
+| [erupt-data-http](/en/modules/erupt-http) | REST APIs as data sources — map any HTTP service to a manageable admin table |
+| [erupt-data-es](/en/modules/erupt-es) | Elasticsearch data source for managing and full-text searching index data |
+| [erupt-data-redis](/en/modules/erupt-redis) | Visual management of Redis key-value data |
+| [erupt-data-memory](/en/modules/erupt-memory) | In-memory data source — manage data without a database |
+| [erupt-data-file](/en/modules/erupt-file) | Files as tables, supporting CSV, JSONL, TSV, INI, and more |
+| [erupt-data-k8s](/en/modules/erupt-k8s) | Visual management of Kubernetes cluster resources |
+| [erupt-data-ldap](/en/modules/erupt-ldap) | LDAP directory service data source |
+| [erupt-data-feishu](/en/modules/erupt-feishu) | Feishu Bitable data source |
+| [erupt-data-notion](/en/modules/erupt-notion) | Notion data source |
+| [erupt-data-s3](/en/modules/erupt-s3/) | S3 object storage data source |
+
+🌟 [erupt-cube](/en/modules/pro/erupt-cube/sql) gains a SQL Port: a PostgreSQL-compatible wire-protocol port (Calcite query pushdown) — any BI tool can connect to the semantic layer as if it were PostgreSQL.
+
+🌟 [erupt-ai-claw](/en/modules/erupt-ai-claw/) enhancements: sandboxed file and shell tools, an Agent Skills library with skill sedimentation, an Erupt model CRUD toolbox, and JVM/Spring runtime diagnostics tools.
+
+🌟 [erupt-cloud](/en/modules/erupt-cloud) enhancements: node lifecycle management, resource reporting, routing failover and graceful shutdown, plus support for mounting erupt-flow, erupt-ai-claw, and erupt-monitor.
+
+🌟 [erupt-flow](/en/modules/pro/erupt-flow/development#flex-nodes) gains Flex automation nodes: HTTP request, script, data, variable (JS expression resolution), notify, and wait-callback — flows can now perform automated actions without human steps.
+
+🌟 New erupt-docker all-in-one image — spin up a complete Erupt environment with a single command.
+
+🌟 AI chat can now be stopped mid-generation; partial output is kept and marked as interrupted.
+
+🧩 [erupt-monitor](/en/modules/erupt-monitor#erupt-class-registry) adds an Erupt class registry page listing runtime models, with one-click publish to menu.
+
+🧩 [@Power](/en/annotation/power) adds an `ai` switch to control AI availability per entity.
+
+🧩 Admin UI refresh: new Brutalist theme with one-click toggle, redesigned login screens and brand logo.
+
+🧩 Table columns now filter dynamically based on [@Vis](/en/annotation/vis) field visibility.
+
+🐞 Fixed the change-password API failing when `pwd-transfer-encrypt = false`.
+
+🐞 Fixed operation-log recording errors caused by masking failures.
+
+:::warning Breaking Changes
+- `erupt-jpa` has been renamed to `erupt-data-jpa`, and `erupt-mongodb` to `erupt-data-mongodb` (both now part of the erupt-data connector layer) — update the artifactId in your Maven dependencies.
+- The AMIS integration module in `erupt-tpl-ui` has been removed; migrate to another template engine integration if you were using it.
+:::
+
+## 2.0.4 (2026-07-19) <Badge type="tip" text="Spring Boot 3.5.16" />
+
+🌟 New [`BUTTON` edit type](/en/field-types/button) — an in-form button that calls a backend handler with all current form values, supporting form population and dynamic field configuration.
+
+🌟 New [`@DragSort` row drag sorting](/en/annotation/drag-sort) — reorder table rows by dragging, with the result automatically persisted to the sort field.
+
+🌟 New [`PROGRESS` view type](/en/annotation/view#display-types-viewtype) — display numeric columns as progress bars; the SLIDER edit type contributes its max value automatically.
+
+🌟 New [`PASSWORD` view type](/en/annotation/view#display-types-viewtype) — sensitive fields are masked and the actual value is never sent to the client.
+
+🧩 [`PASSWORD` edit type](/en/field-types/password#masked-edit-echo) security hardening: edit echo returns only a mask placeholder; submitting it unchanged keeps the stored password.
+
+🌟 [Card view](/en/annotation/vis-card) now supports card selection, with selected-state styling wired to action buttons.
+
+🧩 Built-in forms for AI models, MCP servers, agents, and scheduled jobs gain test/validation buttons for one-click connection and configuration checks.
+
+🧩 [erupt-ai](/en/modules/erupt-ai/) supports an embedded chat mode; the LLM `apiKey` is now masked with the password view.
+
+🧩 More lenient date parsing, accepting a wider range of date/time input formats.
+
+🐞 Fixed password fields not being masked in operation logs.
+
+🐞 Fixed swapped "Hidden" and "Disable" labels in the menu status enum.
+
+🐞 Fixed an error caused by the AI chat drawer opening outside the Angular zone.
+
+## 2.0.3 (2026-07-04) <Badge type="tip" text="Spring Boot 3.5.16" />
+
+🌟 New [`erupt-spring-boot-starter` and `erupt-spring-boot-starter-all`](/en/guide/quick-start#manual-integration-existing-project) starters — integrate Erupt core or every feature module with a single dependency.
+
+🌟 New [`CALLOUT` edit type](/en/field-types/callout) — render static guidance content inside forms with HTML support and card/info/warning styles; the field is neither collected nor persisted.
+
+🌟 [`@Search`](/en/annotation/search) adds an `operator` property to specify the default query operator per field; `AUTO` resolves by edit type.
+
+🌟 [erupt-print](/en/modules/erupt-print) templates now support block-level template variables, with a new editor variable plugin, automatic print-variable generation, and loading feedback in print preview.
+
+🧩 Operation logging enhanced: new [`record-operate-log-max-body-size`](/en/guide/configuration) property caps the recorded request body size, with improved request-context cleanup.
+
+🧩 Admin home page visual refresh: animated blueprint background, collapsible sidebar, and refined terminal tab styling.
+
+🐞 Fixed unbounded captcha image height parameter that could be abused to generate oversized images.
+
+🐞 Fixed a deserialization error in erupt-designer when the form `view` field is null.
+
+## 2.0.1 (2026-06-29) <Badge type="tip" text="Spring Boot 3.5.15" />
+
+> 🚀 New modules ×2 &emsp; 🌟 New features ×21 &emsp; 🎨 Frontend 50+ updates
+
+:::warning
+2.0.0 contains multiple breaking changes. Please read the [1.14.x → 2.0.0 Upgrade Guide](/en/guide/upgrade) before upgrading.
+:::
+
+🚀 Open-sourced [erupt-designer](/en/modules/erupt-designer) — visually design Erupt entity models at runtime and publish them to the menu with one click.
+
+🚀 Open-sourced [erupt-print](/en/modules/erupt-print) — define print templates and variables for any Erupt entity and print rows with a single click.
+
+🌟 [erupt-monitor](/en/modules/erupt-monitor) **completely rewritten**: new diagnostics system covering JVM, HikariCP pool, HTTP stats, and Redis health metrics.
+
+🌟 [erupt-ai](/en/modules/erupt-ai/prompt#llmrequest-request-level-extensions): LLM requests now support `agentPrompt` and `contextPrompt` for context-aware prompt injection per invocation.
+
+🌟 [@Vis](/en/annotation/vis) adds **Calendar** (`CALENDAR`) and **Board** (`BOARD`) view types for richer data visualization.
+
+🌟 [@Power](/en/annotation/power) adds a `copy` toggle — supports one-click row duplication in tables.
+
+🌟 [@Layout](/en/annotation/layout) adds `collapseActionButton` — collapses the view-details, edit, and delete buttons into a dropdown menu.
+
+🌟 New [`@GroupType` annotation](/en/field-types/group) — group fields inside a collapsible panel (`EditType.GROUP`).
+
+🌟 [`@Erupt`](/en/annotation/erupt) and [`@Edit`](/en/annotation/edit) gain a `prompt` field for AI agent prompt configuration.
+
+🌟 New [`PASSWORD` edit type](/en/field-types/password) — password fields render and transmit more securely.
+
+🌟 Open search support — INPUT, NUMBER, and other components now let users choose the search operator (equals, not-equals, contains, range, etc.) directly in the search bar.
+
+🌟 Dynamic dropdown refresh — `ChoiceFetchHandler` / `AutoCompleteHandler` / `TagsFetchHandler` can now reload options on demand.
+
+🌟 Selection Handler interfaces are now generic — callbacks can directly access other form fields for cascading linkage.
+
+🌟 New [**FormView**](/en/advanced/form-view) — dedicated backend endpoint with `DataProxy.formViewBehavior` / `formSave` hooks for single-record full-page form scenarios.
+
+🌟 Excel export supports exporting only selected rows.
+
+🌟 Password encryption upgraded from MD5 to SHA-512 with salt for significantly improved security — thanks to [段鹏鹏](https://gitee.com/erupt/erupt/pulls/35) for the contribution ([!35](https://gitee.com/erupt/erupt/pulls/35)).
+
+🌟 Spring Boot upgraded to 3.5.15.
+
+🌟 Operation logs now record the entity state **before** modification/deletion — the previous field values are visible in log details.
+
+🌟 erupt-ai adds [Requesty](https://requesty.ai) as a new LLM provider.
+
+🌟 OpenAPI: new `getAppid` endpoint to retrieve appid information by token.
+
+🌟 [`EruptLambdaQuery`](/en/advanced/erupt-dao-lambda) adds `or()` support for building OR-logic composite queries.
+
+🌟 [erupt-cube](/en/modules/pro/erupt-cube): new `drillFields` dimension filtering and `drillMeasure` measure-level drill-down support.
+
+🌟 [erupt-cube](/en/modules/pro/erupt-cube): Cube annotations gain a `prompt` field for AI-readable semantic descriptions.
+
+🧩 `dependField` now uses getter-style references with IDE field-name auto-complete.
+
+🧩 [erupt-designer](/en/modules/erupt-designer): button permissions are now auto-generated when publishing a menu.
+
+🐞 Fixed: Ollama model configuration was missing the `baseUrl` parameter — thanks to [canjian215215](https://github.com/canjian215215) for the contribution.
+
+🎨 Frontend Complete Overhaul (erupt-web 2.0)
+
+> Angular 20 → 21. The entire UI layer has been rewritten from architecture to interaction.
+
+- New login page and preloader animation; new **Split Menu** mode (first-level nav on left, second-level alongside)
+- Sidebar width is draggable and persisted; favourites support drag-and-drop reordering; responsive layout optimized for mobile
+- Table: column drag-sort, column pinning, column density, row copy, persistent search state, collapsible search panel
+- Left-tree panel is collapsible; table-tree layout supports fullscreen mode
+- **AI side panel embedded in table / tree views** — chat with AI about visible data without leaving the page
+- erupt-ai chat: wide-screen mode, session search, input-history navigation
+- Code editor: smart hints and fullscreen mode; attachment component: drag-sort and batch update
+- MultiChoice / Checkbox gain a select-all button; Choice shows color dots; input shows real-time character count
+- Tree view: sort, node locate; BI / Monitor modules gain fullscreen improvements
+- Terminal module ([erupt-terminal](/en/modules/erupt-terminal)) UI integrated — multi-tab switching with real-time WebSocket communication
+- Table and modal now support dynamic action buttons — visibility can be controlled based on row data state
+- erupt-flow approval UI fully redesigned with mobile-responsive master-detail layout and accessibility improvements
+- TAGS component supports `joinSeparator = "[]"` JSON array format for tag value storage and parsing
+
+### 1.14.x → 2.0.0 Upgrade Guide
+
+> Full guide: [/en/guide/upgrade](/en/guide/upgrade)
+
+**Breaking Changes**
+
++ **Password encryption upgraded**: MD5 → SHA-512 with salt. The upgrade is backward compatible — existing users can still log in with their current passwords; only new and reset passwords will use SHA-512 + salt going forward. Thanks to [段鹏鹏](https://gitee.com/erupt/erupt/pulls/35) for this security improvement.
++ **`DataProxy.extraContent` signature changed**: A second parameter `Collection<Map<String, Object>> list` has been added. Any class that overrides this method must update its signature.
++ **`AutoCompleteHandler`, `ChoiceFetchHandler`, `TagsFetchHandler` require a generic type parameter**: The `fetchFilter` method's `formData` parameter (`Map<String,Object>`) has been replaced with the actual model object (generic `T`).
++ **Excel import template format changed from `.xls` to `.xlsx`**: Users with cached or bookmarked download links must re-download the template.
++ **`@Search.vague` removed**: The `vague` property has been deleted. Remove all `vague = true` / `vague = false` from your code — advanced search is now the default behaviour.
++ **`EruptApiModel` deleted**: The response model is now `R<T>`. Replace `EruptApiModel.PromptWay` with `R.PromptWay` throughout your code.
++ **`ChoiceTrigger` interface removed**: Use `@ChoiceType.fetchHandler` instead.
++ **Login / change-password endpoints switched to HTTP POST**: `/login` and `/change-pwd` changed from GET to POST. Custom login pages must be updated accordingly.
+
+## Legacy Versions
+
+Changelogs and documentation for the 1.x release line have moved to the [Legacy Versions](/en/guide/history) page.

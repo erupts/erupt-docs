@@ -1,0 +1,99 @@
+# Erupt Flow 流程引擎
+
+通用流程引擎解决方案，完整支持流程配置、流程发起、流程审批与流程通知。零前端代码定义流程节点，配合钉钉风格的可视化流程设计界面，快速搭建企业级流程系统。Erupt 可同时作为流程表单引擎与流程配置平台使用。
+
+:::tip 商业模块
+**包含**：完整源码 · 全版本升级 · 技术支持 · erupt 相关问题优先支持 · 合理需求免费实现 · 能力持续迭代
+**授权**：无 License 限制 · 可多项目复用 · 无商用限制
+**限制**：禁止二次开源与分发
+:::
+
+<a href="https://www.erupt.xyz/?utm_source=docs&utm_medium=banner&utm_campaign=pro#!/pro" target="_blank">
+  <img src="/pro/cta-zh.svg" width="900" alt="查看 Erupt Pro 定价与购买流程">
+</a>
+
+由开源 Erupt 框架团队官方出品与维护（[GitHub 3k+ ★](https://github.com/erupts/erupt) · [Gitee 5k+ ★](https://gitee.com/erupt/erupt)），私有化部署，数据不出域，合规友好。
+
+演示：[https://demo.erupt.xyz](https://demo.erupt.xyz) &nbsp; 账号：`flow` 密码：`flow`
+
+:::info 使用文档
+[快速开始](/zh/modules/pro/erupt-flow/quick-start) · [审批表单](/zh/modules/pro/erupt-flow/approval-form) · [流程开发](/zh/modules/pro/erupt-flow/development) · [自定义扩展](/zh/modules/pro/erupt-flow/custom-node) · [流程打印](/zh/modules/pro/erupt-flow/print) · [数据库设计](/zh/modules/pro/erupt-flow/database)
+:::
+
+---
+
+<img src="/flow/ui1.png" width="900">
+
+<img src="/flow/ui2.png" width="900">
+
+<img src="/flow/ui3.png" width="900">
+
+<img src="/flow/ui4.png" width="900">
+
+已发起的流程数据动态关联 Erupt 类：
+
+<img src="/flow/data.png" width="900">
+
+发起流程：
+
+<img src="/flow/start.png" width="900">
+
+自定义打印（详见 [流程打印](/zh/modules/pro/erupt-flow/print)）：
+
+<img src="/flow/print.png" width="900">
+
+## 配合 erupt-designer 拖拽设计流程表单
+
+erupt-flow 支持两种方式定义流程表单：
+
+| 方式 | 说明 | 适用场景 |
+|------|------|---------|
+| **注解驱动**（默认） | 在 Java 实体类中用 `@EruptField` 声明字段，框架自动渲染为审批表单 | 研发团队主导，字段需要复杂逻辑 |
+| **拖拽设计**（配合 [erupt-designer](/zh/modules/erupt-designer)） | 在可视化画布上拖拽组件、配置字段，无需编写任何 Java 代码 | 业务人员独立维护，快速迭代表单 |
+
+引入 erupt-designer 后，在流程配置阶段可直接进入可视化表单设计界面，拖拽添加文本框、下拉选择、日期、附件等组件并实时预览，发布即生效。两种方式可混合使用：技术字段用注解定义，业务字段由设计器维护。
+
+两种方式的能力边界、如何混用、以及从拖拽迁移到注解的步骤，详见 [审批表单 →](/zh/modules/pro/erupt-flow/approval-form)
+
+## 为什么不用 Camunda / Flowable / 钉钉飞书审批？
+
+| 维度 | Camunda / Flowable | 钉钉 / 飞书审批 | 自研 | **Erupt Flow** |
+| --- | --- | --- | --- | --- |
+| 学习曲线 | 陡（BPMN 2.0 标准 + 引擎概念） | 低 | 低 | **低（注解即流程）** |
+| UI 工作量 | 高（设计器 + 表单 + 审批界面全要自研） | 0（但完全锁定） | 高 | **0（自带设计器 + 审批中心）** |
+| 数据归属 | 私有部署 | 上 SaaS，数据在第三方 | 私有 | **私有部署，数据不出域** |
+| 与业务系统集成 | 中（需要桥接） | 低（SDK 接入麻烦） | 高 | **原生（同一套 Erupt 注解体系）** |
+| 自定义节点 / 按钮 | 中（需扩展引擎） | 不支持 | 自由 | **注解 + handler，几行代码** |
+| 适合行业 | 大型企业内部 | 中小企业一般审批 | 全部 | **政企 / 金融 / 制造 / 医疗 等强合规** |
+| 总体投入 | 1–3 月 | 0 元但被锁定 | 2 月+ | **半天接入，几天上线** |
+
+## 适用场景
+
+- 政企 OA：请假、报销、用印、用车
+- 金融机构：信贷审批、风控审查、合规复核
+- 制造业：物料采购、质量异常、变更控制
+- 医疗：药品采购、临床试验流程、医疗事故上报
+- 通用：合同签批、招聘审批、资产领用
+
+## 常见问题
+
+**Q1 · 和开源版 erupt 有什么差异？**
+开源 erupt 提供基础 CRUD 与表单能力。erupt-flow 是商业模块，新增工作流引擎、可视化流程设计器、审批中心 UI、网关与会签等完整工作流能力 —— 这部分开源版不包含、且未来也不会开源。
+
+**Q2 · 怎么交付？**
+付款后，提供你的 GitHub 用户名，作者会把你加入私有仓库 `erupt-io/erupt-flow` 的 collaborator，可直接 clone 源码、本地编译、按需引用。接入方式见 [快速开始](/zh/modules/pro/erupt-flow/quick-start)。
+
+**Q3 · 后续版本升级要再付费吗？**
+不需要。一次买断 = 你拥有当前及所有未来版本的访问权。私有仓库的 master 持续更新，git pull 即可。
+
+**Q4 · 项目数量 / 商用 / 转手怎么算？**
+- **可多项目复用**：公司内部、你接的外包项目，部署多少个都不限
+- **无商用限制**：可用于商业产品（含二次销售你的成品，但不可直接卖 erupt-flow 源码本身）
+- **转手**：禁止二次开源、禁止源代码再分发；公司更名或主体变更可申请授权迁移
+
+**Q5 · 试用 / 退款？**
+[在线演示](https://demo.erupt.xyz) 已开放完整功能（账号 `flow` / 密码 `flow`），建议先充分体验。开通仓库权限后视为交付完成，不再支持退款。
+
+---
+
+如有未列出问题，请前往 [定价与购买页面](https://www.erupt.xyz/#!/pro) 联系作者咨询。

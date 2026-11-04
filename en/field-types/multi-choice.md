@@ -1,0 +1,186 @@
+# Multi-Select MULTI_CHOICE
+
+A dropdown multi-select or checkbox group. The selected values are stored as a JSON array in a single field.
+
+![multi-choice-select](/field-types/multi-choice-select.png)
+
+## Basic Usage
+
+```java
+@JdbcTypeCode(SqlTypes.JSON)
+@Column(length = 2000)
+@EruptField(
+    edit = @Edit(
+        title = "Multi-Select",
+        type = EditType.MULTI_CHOICE,
+        multiChoiceType = @MultiChoiceType(
+            vl = {
+                @VL(label = "Option A", value = "A"),
+                @VL(label = "Option B", value = "B"),
+                @VL(label = "Option C", value = "C"),
+            }
+        )
+    )
+)
+private Set<String> multiChoice;
+```
+
+:::info
+`@JdbcTypeCode(SqlTypes.JSON)` instructs Hibernate to serialize `Set<String>` as a JSON array stored in a single database column, for example `["A","C"]`. The column must be wide enough (recommended `length = 2000` or larger).
+:::
+
+## Enum Collections Are Multi-selects <Badge type="tip" text="v2.4.0+" />
+
+When the field type is `Set<enum>` / `List<enum>`, Erupt infers `MULTI_CHOICE` with no `type` and no `vl` written: the options are the enum constants (the constant name is stored, the label is that name translated through i18n).
+
+```java
+public enum Channel { WEB, APP, STORE }
+
+@JdbcTypeCode(SqlTypes.JSON)
+@EruptField(
+    views = @View(title = "Channels"),
+    edit = @Edit(title = "Channels") // inferred as MULTI_CHOICE with WEB / APP / STORE
+)
+private Set<Channel> channels;
+```
+
+Once `@MultiChoiceType` declares `vl` or `fetchHandler`, those win. The other inference rules are in [Auto Inference AUTO](/en/field-types/auto#inference-from-the-java-type).
+
+## Dynamic List
+
+Implement `ChoiceFetchHandler<T>` <Badge type="tip" text="MyModel 2.0.0+" />. The field declaration must use `@JdbcTypeCode(SqlTypes.JSON)` + `Set<String>`:
+
+```java
+@JdbcTypeCode(SqlTypes.JSON)
+@Column(length = 2000)
+@EruptField(
+    edit = @Edit(title = "Skills", type = EditType.MULTI_CHOICE,
+                 multiChoiceType = @MultiChoiceType(fetchHandler = SkillFetchHandler.class))
+)
+private Set<String> skills;
+```
+
+```java
+@Component
+public class SkillFetchHandler implements ChoiceFetchHandler<MyModel> {
+
+    @Override
+    public List<VLModel> fetch(String[] params) {
+        // Called on initial load — return the full option list
+        return skillService.findAll().stream()
+            .map(s -> new VLModel(s.getCode(), s.getName()))
+            .collect(toList());
+    }
+
+    @Override
+    public List<VLModel> fetchFilter(MyModel model, String[] params) {
+        // Linked filter — read other form fields to narrow options
+        String dept = model.getDept();
+        return skillService.findByDept(dept).stream()
+            .map(s -> new VLModel(s.getCode(), s.getName()))
+            .collect(toList());
+    }
+
+}
+```
+
+## Configuration
+
+```java
+public @interface MultiChoiceType {
+
+    Type type() default Type.CHECKBOX; // Display mode
+
+    VL[] vl() default {};              // Static option list
+
+    String[] fetchHandlerParams() default {}; // Parameters passed to fetchHandler
+
+    Class<? extends ChoiceFetchHandler>[] fetchHandler() default {}; // Dynamic option source
+
+    String dependField() default ""; // Linked field name (in the same entity)
+
+    boolean validate() default true; // Server-side check that every submitted value is one of the options (2.4.0+)
+
+    enum Type {
+        SELECT,   // Dropdown multi-select
+        CHECKBOX, // Checkbox group (default)
+        TRANSFER, // Transfer list, suits large option sets (2.3.0+)
+    }
+
+}
+```
+
+## Server-side Option Check <Badge type="tip" text="v2.4.0+" />
+
+`erupt.choice-validate` is **on by default**: on add, edit, cell edit and Excel import the server checks each submitted value against the options the user is actually offered (`vl`, the enum constants, what `fetchHandler` / `fetchFilter` return) and refuses the write when any one is missing. A value equal to the stored one passes, an option with `disable = true` cannot be newly picked, and a field that declares no options is not checked.
+
+```java
+@JdbcTypeCode(SqlTypes.JSON)
+@EruptField(
+    edit = @Edit(title = "Tags", type = EditType.MULTI_CHOICE,
+                 multiChoiceType = @MultiChoiceType(validate = false, fetchHandler = TagFetchHandler.class))
+)
+private Set<String> tags; // may hold values outside the options
+```
+
+Turn it off globally with `erupt.choice-validate=false` in `application.yml`, see [Configuration](/en/guide/configuration); the full rules are described under [Single Select CHOICE](/en/field-types/choice#server-side-option-check).
+
+## Transfer List <Badge type="tip" text="v2.3.0+" />
+
+When there are many options, switch to a searchable two-list transfer. The option source and storage stay the same; only the widget changes:
+
+```java
+@JdbcTypeCode(SqlTypes.JSON)
+@Column(length = 2000)
+@EruptField(
+    edit = @Edit(title = "Tools", type = EditType.MULTI_CHOICE,
+                 multiChoiceType = @MultiChoiceType(type = MultiChoiceType.Type.TRANSFER,
+                                                    fetchHandler = ToolFetchHandler.class))
+)
+private Set<String> tools;
+```
+
+:::tip
+For entity many-to-many relations (`@ManyToMany`) use [TRANSFER](/en/field-types/transfer) instead.
+:::
+
+## One-to-Many Table Storage
+
+When you need to store multi-select values in a separate join table (rather than as a JSON array in a single column), use JPA's `@ElementCollection`.
+
+```java
+@ElementCollection(fetch = FetchType.EAGER)
+// Creates a join table named multi_table; id is the primary key of the current table, forming a one-to-many relationship
+@CollectionTable(
+    name = "multi_table",
+    joinColumns = @JoinColumn(name = "id"),
+    foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)
+)
+@Column(name = "mid")
+@EruptField(
+    views = @View(title = "Multi-Select"),
+    edit = @Edit(
+        title = "Multi-Select",
+        type = EditType.MULTI_CHOICE,
+        multiChoiceType = @MultiChoiceType(
+            vl = {
+                @VL(value = "1", label = "A"),
+                @VL(value = "2", label = "B"),
+                @VL(value = "3", label = "C"),
+            }
+        )
+    )
+)
+private Set<Integer> mid;
+```
+
+Corresponding `multi_table` schema:
+
+| Column | Type | Description |
+| --- | --- | --- |
+| `id` | Same type as the primary key | Foreign key referencing the parent table |
+| `mid` | INT / VARCHAR | Stores the selected option value |
+
+:::tip
+Using `Set<Integer>` or `Set<String>` as the field type lets JPA automatically maintain inserts and deletes on the join table. Compared to the default single-column JSON storage, this approach is better suited for scenarios that require querying or joining by option value.
+:::

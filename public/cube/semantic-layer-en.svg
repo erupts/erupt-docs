@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="330" viewBox="0 0 900 330" role="img" aria-label="Semantic layer architecture">
+  <defs>
+    <marker id="arw" markerWidth="10" markerHeight="10" refX="7" refY="4" orient="auto">
+      <path d="M0 0 L8 4 L0 8 Z" fill="#2B2827"/>
+    </marker>
+  </defs>
+
+  <!-- card -->
+  <rect x="10" y="10" width="884" height="314" fill="#2B2827"/>
+  <rect x="3.5" y="3.5" width="884" height="314" fill="#FFFAEF" stroke="#2B2827" stroke-width="3"/>
+
+  <!-- title -->
+  <rect x="36" y="30" width="14" height="14" fill="#FFD440" stroke="#2B2827" stroke-width="2"/>
+  <text x="62" y="43" font-family="'Space Grotesk', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="17" font-weight="800" fill="#2B2827">Semantic layer · Define every metric once, reuse it everywhere</text>
+  <rect x="836" y="28" width="9" height="9" fill="#3BC4E8" stroke="#2B2827" stroke-width="2"/>
+  <rect x="852" y="40" width="7" height="7" fill="#FE7DA8" stroke="#2B2827" stroke-width="2"/>
+
+  <g font-family="'Space Grotesk', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+    <!-- column labels -->
+    <text x="118" y="82" text-anchor="middle" font-size="12" font-weight="700" fill="#6B6560">Data Sources</text>
+    <text x="445" y="82" text-anchor="middle" font-size="12" font-weight="700" fill="#6B6560">Semantic Model</text>
+    <text x="780" y="82" text-anchor="middle" font-size="12" font-weight="700" fill="#6B6560">Consumers</text>
+
+    <!-- datasources -->
+    <rect x="43" y="95" width="150" height="36" fill="#2B2827"/>
+    <rect x="40" y="92" width="150" height="36" fill="#FFFFFF" stroke="#2B2827" stroke-width="2"/>
+    <text x="115" y="115" text-anchor="middle" font-size="12" font-weight="700" fill="#2B2827">Doris / ClickHouse</text>
+    <rect x="43" y="141" width="150" height="36" fill="#2B2827"/>
+    <rect x="40" y="138" width="150" height="36" fill="#FFFFFF" stroke="#2B2827" stroke-width="2"/>
+    <text x="115" y="161" text-anchor="middle" font-size="12" font-weight="700" fill="#2B2827">MySQL / Oracle / PG</text>
+    <rect x="43" y="187" width="150" height="36" fill="#2B2827"/>
+    <rect x="40" y="184" width="150" height="36" fill="#FFFFFF" stroke="#2B2827" stroke-width="2"/>
+    <text x="115" y="207" text-anchor="middle" font-size="12" font-weight="700" fill="#2B2827">TiDB / OceanBase</text>
+    <rect x="43" y="233" width="150" height="36" fill="#2B2827"/>
+    <rect x="40" y="230" width="150" height="36" fill="#FFFFFF" stroke="#2B2827" stroke-width="2"/>
+    <text x="115" y="253" text-anchor="middle" font-size="12" font-weight="700" fill="#2B2827">Snowflake / BigQuery</text>
+
+    <!-- semantic model -->
+    <rect x="315" y="97" width="270" height="174" fill="#2B2827"/>
+    <rect x="310" y="92" width="270" height="174" fill="#FFD440" stroke="#2B2827" stroke-width="2.5"/>
+    <text x="445" y="122" text-anchor="middle" font-size="15" font-weight="800" fill="#2B2827">@EruptCube</text>
+    <rect x="335" y="138" width="220" height="30" fill="#FFFAEF" stroke="#2B2827" stroke-width="2"/>
+    <text x="445" y="158" text-anchor="middle" font-size="13" font-weight="700" fill="#2B2827">@Dimension</text>
+    <rect x="335" y="178" width="220" height="30" fill="#FFFAEF" stroke="#2B2827" stroke-width="2"/>
+    <text x="445" y="198" text-anchor="middle" font-size="13" font-weight="700" fill="#2B2827">@Measure</text>
+    <rect x="335" y="218" width="220" height="30" fill="#FFFAEF" stroke="#2B2827" stroke-width="2"/>
+    <text x="445" y="238" text-anchor="middle" font-size="13" font-weight="700" fill="#2B2827">@Explore · Query Views</text>
+
+    <!-- consumers -->
+    <rect x="703" y="98" width="160" height="34" fill="#2B2827"/>
+    <rect x="700" y="95" width="160" height="34" fill="#3BC4E8" stroke="#2B2827" stroke-width="2"/>
+    <text x="780" y="117" text-anchor="middle" font-size="13" font-weight="700" fill="#2B2827">Drag &amp; Drop Analysis</text>
+    <rect x="703" y="144" width="160" height="34" fill="#2B2827"/>
+    <rect x="700" y="141" width="160" height="34" fill="#FE7DA8" stroke="#2B2827" stroke-width="2"/>
+    <text x="780" y="163" text-anchor="middle" font-size="13" font-weight="700" fill="#2B2827">Dashboards</text>
+    <rect x="703" y="190" width="160" height="34" fill="#2B2827"/>
+    <rect x="700" y="187" width="160" height="34" fill="#FFFFFF" stroke="#2B2827" stroke-width="2"/>
+    <text x="780" y="209" text-anchor="middle" font-size="13" font-weight="700" fill="#2B2827">SQL Query Port</text>
+    <rect x="703" y="236" width="160" height="34" fill="#2B2827"/>
+    <rect x="700" y="233" width="160" height="34" fill="#FFD440" stroke="#2B2827" stroke-width="2"/>
+    <text x="780" y="255" text-anchor="middle" font-size="13" font-weight="700" fill="#2B2827">AI Queries</text>
+  </g>
+
+  <!-- arrows -->
+  <line x1="192" y1="110" x2="304" y2="128" stroke="#2B2827" stroke-width="2.5" marker-end="url(#arw)"/>
+  <line x1="192" y1="156" x2="304" y2="164" stroke="#2B2827" stroke-width="2.5" marker-end="url(#arw)"/>
+  <line x1="192" y1="202" x2="304" y2="196" stroke="#2B2827" stroke-width="2.5" marker-end="url(#arw)"/>
+  <line x1="192" y1="248" x2="304" y2="232" stroke="#2B2827" stroke-width="2.5" marker-end="url(#arw)"/>
+  <line x1="582" y1="128" x2="694" y2="112" stroke="#2B2827" stroke-width="2.5" marker-end="url(#arw)"/>
+  <line x1="582" y1="164" x2="694" y2="158" stroke="#2B2827" stroke-width="2.5" marker-end="url(#arw)"/>
+  <line x1="582" y1="196" x2="694" y2="204" stroke="#2B2827" stroke-width="2.5" marker-end="url(#arw)"/>
+  <line x1="582" y1="232" x2="694" y2="250" stroke="#2B2827" stroke-width="2.5" marker-end="url(#arw)"/>
+
+  <!-- caption -->
+  <text x="450" y="302" text-anchor="middle" font-family="'Space Grotesk', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" fill="#6B6560">All reports share one set of dimensions &amp; measures · Change once, applied everywhere · Reuses Erupt UPMS permissions</text>
+</svg>

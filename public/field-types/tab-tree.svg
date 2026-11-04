@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250">
+  <style>.s{font-family:-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}</style>
+  <rect width="400" height="250" rx="10" fill="#ffffff"/>
+  <rect x="40" y="32" width="320" height="186" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1.5"/>
+  <!-- level 1 -->
+  <path d="M62,62 l9,6 l-9,6 z" fill="#595959"/>
+  <rect x="84" y="58" width="20" height="20" rx="4" fill="#4b5cc4"/>
+  <path d="M89,68 l4.5,4.5 l8,-8" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="114" y="73" class="s" font-size="13" fill="#262626">Dept A</text>
+  <line x1="66" y1="80" x2="66" y2="150" stroke="#f0f0f0" stroke-width="1.5"/>
+  <!-- children -->
+  <line x1="66" y1="102" x2="84" y2="102" stroke="#f0f0f0" stroke-width="1.5"/>
+  <rect x="90" y="92" width="20" height="20" rx="4" fill="#4b5cc4"/>
+  <path d="M95,102 l4.5,4.5 l8,-8" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="120" y="107" class="s" font-size="13" fill="#262626">Team 1</text>
+  <line x1="66" y1="136" x2="84" y2="136" stroke="#f0f0f0" stroke-width="1.5"/>
+  <!-- half-checked -->
+  <rect x="90" y="126" width="20" height="20" rx="4" fill="#ffffff" stroke="#4b5cc4" stroke-width="2"/>
+  <rect x="95" y="134" width="10" height="4" rx="1" fill="#4b5cc4"/>
+  <text x="120" y="141" class="s" font-size="13" fill="#595959">Team 2</text>
+  <!-- level 1 collapsed -->
+  <path d="M62,172 l9,6 l-9,6 z" fill="#8c959f"/>
+  <rect x="84" y="168" width="20" height="20" rx="4" fill="#ffffff" stroke="#d9d9d9" stroke-width="2"/>
+  <text x="114" y="183" class="s" font-size="13" fill="#595959">Dept B</text>
+</svg>
