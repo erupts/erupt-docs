@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Erupt · AI 低代码平台
+title: Erupt · 模型驱动的企业级应用引擎
 gitChangelog: false
 ---
 

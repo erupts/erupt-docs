@@ -12,11 +12,11 @@ onUnmounted(() => document.documentElement.classList.remove('eh-home'))
 
 const dict = {
     zh: {
-        kicker: '开源 · Apache-2.0 · 注解驱动',
-        titleL1: '一个 Java 类，',
-        titleL2: '一套完整的',
-        titleHl: '管理系统。',
-        desc: '注解驱动的开源低代码引擎。零前端代码、零 CRUD 模板，内置 AI 大模型深度集成。为 Java 工程师打造。',
+        kicker: '开源 · Apache-2.0 · 模型驱动',
+        titleL1: '让模型成为',
+        titleL2: '唯一的',
+        titleHl: '事实来源。',
+        desc: '面向企业级应用的模型驱动引擎。数据、界面、权限与智能体共享同一份定义，变更即时生效，始终一致——无需代码生成，也无需前端开发。',
         ctaMain: '快速上手 →',
         ctaMainLink: '/zh/guide/quick-start',
         ctaDemo: '在线体验',
@@ -37,11 +37,11 @@ const dict = {
         uiCols: ['用户名', '状态', '操作'],
     },
     en: {
-        kicker: 'OPEN SOURCE · APACHE-2.0 · ANNOTATION-DRIVEN',
-        titleL1: 'One Java class.',
-        titleL2: 'One complete',
-        titleHl: 'admin system.',
-        desc: 'The annotation-driven open-source low-code engine. Zero frontend code, zero CRUD boilerplate, with deep AI / LLM integration. Built for Java engineers.',
+        kicker: 'OPEN SOURCE · APACHE-2.0 · MODEL-DRIVEN',
+        titleL1: 'Make the model',
+        titleL2: 'your single',
+        titleHl: 'source of truth.',
+        desc: 'The model-driven engine for enterprise applications. Data, UI, access control and AI agents share one definition — every change is live and consistent everywhere, with no codegen and no frontend work.',
         ctaMain: 'Quick Start →',
         ctaMainLink: '/en/guide/quick-start',
         ctaDemo: 'Live Demo',

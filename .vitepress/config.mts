@@ -12,7 +12,7 @@ const versionBadge = latestVersion ? ` <span class="VPBadge tip">v${latestVersio
 
 export default withMermaid(defineConfig({
     title: 'Erupt',
-    description: 'MDD & Annotation-driven Low-code Data platform & AI Harness',
+    description: 'Erupt · the model-driven engine for enterprise applications · AI Harness',
     lastUpdated: true,
     cleanUrls: true,
     ignoreDeadLinks: true,
