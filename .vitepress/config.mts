@@ -361,6 +361,12 @@ export default withMermaid(defineConfig({
                             ],
                         },
                         {
+                            text: 'Issue 27 · Modules',
+                            items: [
+                                {text: 'Switching a Module Off Is Not an Uninstall', link: '/en/topics/module-center-menu-reconcile'},
+                            ],
+                        },
+                        {
                             text: 'Issue 26 · Share',
                             items: [
                                 {text: 'A Public Link Should Not Be a Second Auth System', link: '/en/topics/share-link-scoped-session'},
@@ -1078,6 +1084,12 @@ export default withMermaid(defineConfig({
                             text: '专题',
                             items: [
                                 {text: '专题总览', link: '/zh/topics/'},
+                            ],
+                        },
+                        {
+                            text: '第 27 期 · Modules',
+                            items: [
+                                {text: '模块开关不是卸载', link: '/zh/topics/module-center-menu-reconcile'},
                             ],
                         },
                         {

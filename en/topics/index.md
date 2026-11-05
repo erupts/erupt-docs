@@ -24,6 +24,20 @@ outline: deep
 
 <div class="topic-list">
 
+<a class="topic-card" href="/topics/module-center-menu-reconcile">
+  <div class="topic-card__index">#27</div>
+  <div class="topic-card__body">
+    <div class="topic-card__tag">Modules</div>
+    <h3 class="topic-card__title">Switching a Module Off Is Not an Uninstall</h3>
+    <p class="topic-card__desc">With 46 modules installed, a newcomer faces a wall of menus. The module center in erupt-upms is not a plugin market: switching a module off is one column, e_upms_module.enabled, and the work is done by EruptMenuSeeder. It skips unchanged modules by fingerprint, otherwise merges every menu field three ways (database, last written, now declared) and keeps administrator edits; switching off takes the same path and disables menus instead of hiding them, since a hidden menu still grants access. The cost is stated: only the entrance closes, beans, endpoints and jobs keep running.</p>
+    <div class="topic-card__meta">
+      <span>2026-11-04</span>
+      <span>·</span>
+      <span>9 min read</span>
+    </div>
+  </div>
+</a>
+
 <a class="topic-card" href="/topics/share-link-scoped-session">
   <div class="topic-card__index">#26</div>
   <div class="topic-card__body">
