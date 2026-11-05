@@ -49,6 +49,7 @@ The following objects are available anywhere SQL is configured, via `${context_v
 | `__pageIndex__` | Page index |
 | `__pageSize__` | Page size |
 | `__export__` | true when exporting, false when querying (boolean) |
+| `tenantId` | Current tenant ID; present only with [erupt-tenant](/en/modules/pro/erupt-tenant/) in a tenant session |
 
 Usage
 
