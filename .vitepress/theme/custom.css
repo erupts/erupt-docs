@@ -340,3 +340,20 @@ html:has(.arch-embed),
 html:has(.arch-embed) body {
     overflow: hidden;
 }
+
+/* API 侧边栏：方法徽标 + 单行标题，过长省略；当前项高亮铺满整行 */
+.VPSidebar .OASidebarItem-text {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.VPSidebar .VPSidebarItem.is-active > .item > .link > .text:has(.OASidebarItem) {
+    display: block;
+}
+
+.VPSidebar .VPSidebarItem .link:has(.OASidebarItem),
+.VPSidebar .VPSidebarItem .link > .text:has(.OASidebarItem) {
+    min-width: 0;
+}

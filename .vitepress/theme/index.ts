@@ -2,9 +2,11 @@ import DefaultTheme from 'vitepress/theme'
 import './custom.css'
 
 import {h, onMounted, watch, nextTick} from 'vue'
-import {useRoute} from 'vitepress'
+import {useData, useRoute} from 'vitepress'
 import mediumZoom, {type Zoom} from 'medium-zoom'
 import Floating from './Floating.vue'
+import {theme as openapiTheme, useOpenapi, useTheme as useOpenapiTheme} from 'vitepress-openapi/client'
+import spec from '../../public/openapi/erupt.json'
 
 import {
     NolebaseEnhancedReadabilitiesMenu,
@@ -28,6 +30,8 @@ import {
     NolebaseGitChangelogPlugin,
 } from '@nolebase/vitepress-plugin-git-changelog/client'
 import '@nolebase/vitepress-plugin-git-changelog/client/style.css'
+// 必须排在 nolebase 样式之后：@nolebase/ui 自带同名的 .hidden/.block 工具类，后加载会盖掉 vitepress-openapi 的 sm:block 等响应式类
+import 'vitepress-openapi/dist/style.css'
 
 export default {
     extends: DefaultTheme,
@@ -71,12 +75,18 @@ export default {
             if (!localStorage.getItem(key))
                 localStorage.setItem(key, String(LayoutMode.FullWidth))
         }
+        // 隐藏接口页底部的「技术支持 VitePress OpenAPI」署名
+        useOpenapi({spec, config: {operation: {hiddenSlots: ['branding']}}})
+        openapiTheme.enhanceApp({app})
         app.use(NolebaseInlineLinkPreviewPlugin)
         app.use(NolebaseGitChangelogPlugin)
     },
 
     setup() {
         const route = useRoute()
+        // API 页面的界面文案跟随站点语言
+        const {lang} = useData()
+        watch(lang, l => useOpenapiTheme().setI18nConfig({locale: l.startsWith('zh') ? 'zh' : 'en'}), {immediate: true})
         let zoom: Zoom | null = null
         // 单实例：路由切换时先解绑旧图片再绑定新页面的图片，避免重复创建实例
         // 链接内的图片（如组件总览的卡片缩略图）点击应跳转而非放大，因此排除

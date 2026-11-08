@@ -4,7 +4,10 @@
     "vue": "^3.5.34"
   },
   "scripts": {
+    "docs:openapi": "node scripts/sync-openapi.mjs",
+    "predocs:dev": "node scripts/sync-openapi.mjs",
     "docs:dev": "vitepress dev",
+    "predocs:build": "node scripts/sync-openapi.mjs",
     "docs:build": "vitepress build",
     "docs:preview": "vitepress preview"
   },
@@ -15,6 +18,7 @@
     "@nolebase/vitepress-plugin-inline-link-preview": "^2.18.2",
     "medium-zoom": "^1.1.0",
     "mermaid": "^11.14.0",
+    "vitepress-openapi": "^0.2.12",
     "vitepress-plugin-mermaid": "^2.0.17"
   }
 }

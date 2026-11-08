@@ -4,6 +4,7 @@ import {InlineLinkPreviewElementTransform} from '@nolebase/vitepress-plugin-inli
 import {GitChangelog, GitChangelogMarkdownSection} from '@nolebase/vitepress-plugin-git-changelog/vite'
 import {readFileSync} from 'node:fs'
 import {fileURLToPath} from 'node:url'
+import {apiSidebar} from './openapi.mts'
 
 // 从中文更新日志的首个版本标题解析最新版本号，供侧边栏徽标与首页版本标签共用，发版后无需手改
 const latestVersion = readFileSync(fileURLToPath(new URL('../zh/guide/changelog.md', import.meta.url)), 'utf8')
@@ -16,6 +17,11 @@ export default withMermaid(defineConfig({
     lastUpdated: true,
     cleanUrls: true,
     ignoreDeadLinks: true,
+
+    // API 接口页由动态路由生成，标题取自接口 summary
+    transformPageData(pageData) {
+        if (pageData.params?.operationId) pageData.title = pageData.params.title
+    },
 
     markdown: {
         languageAlias: {
@@ -37,8 +43,8 @@ export default withMermaid(defineConfig({
                 repoURL: 'https://github.com/erupts/erupt-docs',
             }),
             GitChangelogMarkdownSection({
-                // iframe 嵌入页不需要贡献者 / 页面历史区块
-                exclude: (id: string) => id.includes('/embed/'),
+                // iframe 嵌入页、API 接口页不需要贡献者 / 页面历史区块
+                exclude: (id: string) => id.includes('/embed/') || id.includes('/api/'),
             }),
         ],
         build: {
@@ -65,6 +71,7 @@ export default withMermaid(defineConfig({
         ssr: {
             noExternal: [
                 /^@nolebase\/.*/,
+                'vitepress-openapi',
                 'vitepress-plugin-mermaid',
                 'mermaid',
                 'dayjs',
@@ -85,6 +92,7 @@ export default withMermaid(defineConfig({
                     {text: 'Advanced', link: '/en/advanced/', activeMatch: '/en/advanced/'},
                     {text: 'Modules', link: '/en/modules/', activeMatch: '/en/modules/'},
                     {text: 'Topics', link: '/en/topics/', activeMatch: '/en/topics/'},
+                    {text: 'API', link: '/en/api/', activeMatch: '/en/api/'},
                     {text: 'Architecture', link: '/en/guide/architecture'},
                     {text: 'Changelog', link: '/en/guide/changelog'},
                     {
@@ -353,6 +361,7 @@ export default withMermaid(defineConfig({
                         },
                     ],
 
+                    '/en/api/': apiSidebar('en'),
                     '/en/topics/': [
                         {
                             text: 'Topics',
@@ -811,6 +820,7 @@ export default withMermaid(defineConfig({
                     {text: '进阶', link: '/zh/advanced/', activeMatch: '/zh/advanced/'},
                     {text: '模块', link: '/zh/modules/', activeMatch: '/zh/modules/'},
                     {text: '专题', link: '/zh/topics/', activeMatch: '/zh/topics/'},
+                    {text: 'API', link: '/zh/api/', activeMatch: '/zh/api/'},
                     {text: '架构', link: '/zh/guide/architecture'},
                     {text: '更新日志', link: '/zh/guide/changelog'},
                     {
@@ -1079,6 +1089,7 @@ export default withMermaid(defineConfig({
                         },
                     ],
 
+                    '/zh/api/': apiSidebar('zh'),
                     '/zh/topics/': [
                         {
                             text: '专题',

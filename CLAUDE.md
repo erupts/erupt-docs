@@ -62,6 +62,12 @@ markdown — always download them first with `curl` and reference via `/module-n
 | Open-source Apps | apps/* — public apps from https://github.com/erupt-io (erupt-k8s-dashboard, erupt-pm, erupt-talent, erupt-sms, erupt-wechat, erupt-miniapp) |
 | Third Module | third-party/*                                                                                 |
 
+### API Reference (`/zh/api/`, `/en/api/`)
+
+The top-nav **API** menu renders the erupt OpenAPI spec with vitepress-openapi: one static page per operation via the `[operationId].md` dynamic route, sidebar built from `x-tagGroups` in `.vitepress/openapi.mts`.
+`scripts/sync-openapi.mjs` copies `$ERUPT_HOME/openapi/erupt.json` (default `../erupt`) to `public/openapi/erupt.json`;
+it runs automatically before `docs:dev` / `docs:build`, or manually via `yarn docs:openapi`. Never hand-edit the copy.
+
 ### Mermaid Diagrams
 
 `vitepress-plugin-mermaid` is configured — Mermaid diagram blocks (` ```mermaid `) render natively in any page.
