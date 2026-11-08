@@ -48,7 +48,7 @@ const dict = {
         kicker: 'ARCHITECTURE · 全景架构',
         title: '任意数据源，到任意界面。',
         titleHl: '每一层都可插拔。',
-        desc: '从接入入口到运行环境共九层：底层接任意数据源，中层 DataProxy 任意拦截、安全贯穿全链路，AI 作为内核能力内嵌其中，上层视图与组件由注解自动生成，最上层是一套开箱即用的现代化 UI。',
+        desc: '从接入入口到运行环境共十层：底层接任意数据源，任意语言以节点接入，中层 DataProxy 任意拦截、安全贯穿全链路，AI 作为内核能力内嵌其中，上层视图与组件由注解自动生成，最上层是一套开箱即用的现代化 UI。',
         traitsTitle: '内核特性',
         traits: [
             { icon: '⚡', color: 'amber', title: '极速启动', key: '2s ~ 5s 启动', sub: '2s ~ 5s 完成启动，热构建改注解不重启',
@@ -73,7 +73,7 @@ const dict = {
         railMore: '查看全部模块 →',
         layers: [
             {
-                num: 'L9', color: 'mint', title: '接入层', sub: '人、系统、AI 三类入口，同一套后端',
+                num: 'L10', color: 'mint', title: '接入层', sub: '人、系统、AI 三类入口，同一套后端',
                 panels: [
                     {
                         title: '人', sub: '浏览器与移动端', link: '/guide/ui',
@@ -90,7 +90,7 @@ const dict = {
                 ],
             },
             {
-                num: 'L8', color: 'purple', title: 'UI 体验层', sub: 'Angular 前端 · 开箱即用 · 零前端代码',
+                num: 'L9', color: 'purple', title: 'UI 体验层', sub: 'Angular 前端 · 开箱即用 · 零前端代码',
                 groups: [
                     { title: '外观', chips: [gd('7 套皮肤 默认 / Brutalist / Liquid Glass / Workspace / Classic / Material / Terminal', 'ui#外观'), gd('浅色 / 深色 / 跟随系统', 'ui'), gd('16 色主题 + 自定义取色', 'ui'), gd('紧凑模式', 'ui'), gd('登录页 5 种布局', 'ui#登录页布局'), gd('外观锁定 customizable', 'ui#外观'), md('1992 个图标', 'erupt-web'), gd('色弱 / 灰度模式', 'ui')] },
                     { title: '导航', chips: [gd('菜单模式 6 种 单列 / 分组 / 双列 / 分栏 / 顶部', 'ui#导航'), gd('多标签页', 'ui'), gd('面包屑', 'ui'), gd('菜单搜索', 'ui'), gd('侧栏按模块分组', 'ui'), md('模块中心', 'erupt-upms/menu'), gd('侧栏 / 树面板拖拽伸缩', 'ui'), gd('帮助入口', 'ui')] },
@@ -99,7 +99,7 @@ const dict = {
                 ],
             },
             {
-                num: 'L7', color: 'cyan', title: '视图层', sub: '同一模型 · 多种视图 · 顶部一键切换',
+                num: 'L8', color: 'cyan', title: '视图层', sub: '同一模型 · 多种视图 · 顶部一键切换',
                 groups: [
                     { title: '视图类型', chips: [an('表格', 'view'), an('树', 'tree'), an('左树右表', 'link-tree'), an('看板', 'vis-board'), an('日历', 'vis-calendar'), an('卡片', 'vis-card'), an('甘特图', 'vis-gantt'), an('时间线', 'vis-timeline'), an('地图', 'vis-map'), an('指标图表', 'vis-cube'), an('分组表格', 'vis'), an('数据钻取', 'drill')] },
                     { title: '表格能力', chips: [an('单元格编辑 / 批量编辑', 'power'), an('列统计 @View(statistic)', 'view'), an('拖拽排序', 'drag-sort'), an('自定义行操作', 'row-operation'), an('多级表头 @View(group)', 'view#group-多级表头'), gd('列显隐 / 固定 / 拖拽排序', 'ui'), gd('多字段排序', 'ui'), an('搜索操作符切换', 'search'), ad('合计行', 'extra-row'), gd('自动刷新', 'ui'), gd('一键复制行', 'ui'), gd('按模型记忆偏好', 'ui')] },
@@ -108,7 +108,7 @@ const dict = {
                 ],
             },
             {
-                num: 'L6', color: 'green', title: '组件层', sub: '38 种编辑组件 · 改一个枚举值即切换',
+                num: 'L7', color: 'green', title: '组件层', sub: '38 种编辑组件 · 改一个枚举值即切换',
                 groups: [
                     { title: '基础', chips: [...editTypesZh.slice(0, 13)] },
                     { title: '选择', chips: [...editTypesZh.slice(13, 17)] },
@@ -118,7 +118,7 @@ const dict = {
                 ],
             },
             {
-                num: 'L5', color: 'pink', title: '模型层', sub: '注解驱动 · 一个 Java 类声明即生成',
+                num: 'L6', color: 'pink', title: '模型层', sub: '注解驱动 · 一个 Java 类声明即生成',
                 groups: [
                     { title: '类级注解', chips: [an('@Erupt', 'erupt'), an('@Power', 'power'), an('@RowOperation', 'row-operation'), an('@Drill', 'drill'), an('@Filter', 'filter'), an('@OrderBy', 'order-by'), an('@Tree maxLevel', 'tree'), an('@LinkTree', 'link-tree'), an('@Layout', 'layout'), an('@DragSort', 'drag-sort'), an('@Vis', 'vis'), an('@EruptScope', 'erupt-scope'), an('@FormSteps', 'form-steps'), an('@Tpl', 'tpl')] },
                     { title: '字段级注解', chips: [an('@EruptField', 'erupt-field'), an('@View', 'view'), an('@Edit', 'edit'), an('@Search', 'search'), an('@Dynamic', 'dynamic'), an('@IfRender', 'if-render'), an('@OnChange', 'on-change')] },
@@ -127,7 +127,7 @@ const dict = {
                 ],
             },
             {
-                num: 'L4', color: 'coral', title: '智能层', sub: 'AI 是内核能力：模型即工具，注解即提示词',
+                num: 'L5', color: 'coral', title: '智能层', sub: 'AI 是内核能力：模型即工具，注解即提示词',
                 groups: [
                     { title: '模型与知识', chips: [md('17 个 LLM 适配器', 'erupt-ai'), md('Embedding 嵌入模型', 'erupt-ai-rag'), md('向量存储', 'erupt-ai-rag'), md('RAG / Agentic RAG', 'erupt-ai-rag'), md('多模态图片输入', 'erupt-ai'), md('thinking 思考模式', 'erupt-ai')] },
                     { title: '智能体与工具', chips: [md('Expert 智能体', 'erupt-ai'), md('AI Role 角色', 'erupt-ai'), md('@AiToolbox / @Tool 工具注册', 'erupt-ai'), md('EruptModelTools 模型增删改查', 'erupt-ai-claw'), an('@Power(ai) 模型级开关', 'power'), md('AI 调用审计', 'erupt-ai')] },
@@ -136,7 +136,7 @@ const dict = {
                 ],
             },
             {
-                num: 'L3', color: 'amber', title: '代理与安全', sub: 'DataProxy 任意拦截 · 安全贯穿全链路',
+                num: 'L4', color: 'amber', title: '代理与安全', sub: 'DataProxy 任意拦截 · 安全贯穿全链路',
                 panels: [
                     {
                         title: 'DataProxy 数据代理', sub: '增删改查全生命周期钩子', link: '/advanced/data-proxy',
@@ -169,6 +169,15 @@ const dict = {
                 ],
             },
             {
+                num: 'L3', color: 'cyan', title: '多语言层', sub: '任意语言声明模型 · 作为 erupt-cloud 节点接入',
+                groups: [
+                    { title: '语言 SDK', chips: [md('Python', 'erupt-sdk/python'), md('Go', 'erupt-sdk/go'), md('TypeScript / Node.js', 'erupt-sdk/typescript'), md('PHP', 'erupt-sdk/php'), md('C# / .NET', 'erupt-sdk/dotnet'), md('Rust', 'erupt-sdk/rust'), md('Ruby', 'erupt-sdk/ruby'), md('Swift', 'erupt-sdk/swift'), md('Java / Kotlin', 'erupt-sdk/java')] },
+                    { title: '节点接入', chips: [md('注册 + 心跳 自动上下线', 'erupt-sdk/'), md('签名转发 增删改查 / 行操作', 'cloud-server'), md('服务端代渲染 / 登录 / 权限', 'cloud-server'), md('模型与数据留在节点', 'erupt-sdk/'), md('Node Lite 无 Spring Java 节点', 'cloud-node-lite')] },
+                    { title: '节点能力', chips: [md('增删改查 搜索 / 排序 / 分页', 'erupt-sdk/'), md('组件按语言类型自动推断', 'erupt-sdk/'), md('表格 / 树引用', 'erupt-sdk/'), md('行操作 带表单 / 确认', 'erupt-sdk/'), md('DataProxy 钩子', 'erupt-sdk/'), md('按用户权限下发', 'erupt-sdk/')] },
+                    { title: '契约与一致性', chips: [md('注解 JSON Schema 契约', 'erupt-sdk/'), md('sync-schema 自动同步', 'erupt-sdk/'), md('conformance 一致性测试', 'erupt-sdk/'), { t: 'PROTOCOL.md 线协议 ↗', l: 'https://github.com/erupts/erupt/blob/develop/erupt-cloud/PROTOCOL.md' }] },
+                ],
+            },
+            {
                 num: 'L2', color: 'ink', title: '数据源层', sub: '任意数据源 · 统一建模 · 可自定义',
                 groups: [
                     { title: '关系型', chips: [gd('MySQL', 'database'), gd('PostgreSQL', 'database'), gd('Oracle', 'database'), gd('SQL Server', 'database'), gd('H2', 'database'), md('JDBC 单表', 'erupt-jdbc')] },
@@ -183,12 +192,12 @@ const dict = {
                 groups: [
                     { title: '运行环境', chips: [gd('Spring Boot 3.x', 'getting-started'), gd('JDK 17+', 'getting-started'), ad('接入现有项目', 'integration'), ad('多数据源', 'datasource'), gd('参数配置', 'configuration'), md('运行时配置 erupt-config', 'erupt-config'), ad('热构建', 'hot-build')] },
                     { title: '部署', chips: [gd('单体 Jar 部署', 'quick-start'), ad('前后端分离部署', 'separation'), md('Docker 部署', 'cloud-server'), ad('Redis Session', 'separation'), gd('升级指南', 'upgrade')] },
-                    { title: '分布式', chips: [md('erupt-cloud 分布式配置中心', 'erupt-cloud'), md('Cloud Server 注册调度', 'cloud-server'), md('Cloud Node 微节点', 'cloud-node'), md('Node Lite 无 Spring 节点', 'cloud-node-lite'), md('多语言节点 SDK', 'erupt-sdk/'), md('Job 定时任务 集群去重', 'erupt-job')] },
+                    { title: '分布式', chips: [md('erupt-cloud 分布式配置中心', 'erupt-cloud'), md('Cloud Server 注册调度', 'cloud-server'), md('Cloud Node 微节点', 'cloud-node'), md('Node Lite 无 Spring 节点', 'cloud-node-lite'), md('Job 定时任务 集群去重', 'erupt-job')] },
                     { title: '运维监控', chips: [md('Monitor 服务 / 诊断 / 缓存监控', 'erupt-monitor'), md('Erupt 类注册表', 'erupt-atlas#类注册表'), md('Terminal 浏览器终端', 'erupt-terminal'), md('Remote VNC / SSH / SFTP', 'erupt-remote'), md('登录日志 / 操作日志', 'erupt-upms'), gd('匿名遥测 可关闭', 'telemetry')] },
                 ],
             },
         ],
-        joins: ['承载', '渲染', '组合', '注解驱动 · 自动生成', 'Schema 即工具 · 注解即提示词', '工具调用 · 权限校验 · 审计', '统一读写', '部署 · 调度 · 监控'],
+        joins: ['承载', '渲染', '组合', '注解驱动 · 自动生成', 'Schema 即工具 · 注解即提示词', '工具调用 · 权限校验 · 审计', '签名转发 · 注册心跳', '节点自持数据', '部署 · 调度 · 监控'],
         rail: [
             {
                 title: 'AI', count: 8, color: 'pink',
@@ -224,7 +233,7 @@ const dict = {
         kicker: 'ARCHITECTURE AT A GLANCE',
         title: 'Any data source, to any UI.',
         titleHl: 'Every layer is pluggable.',
-        desc: 'Nine layers from entry points to runtime: any data source at the bottom, DataProxy intercepting anything in the middle with security spanning the whole chain, AI embedded as a kernel capability, views and components generated from annotations, topped by a modern UI that works out of the box.',
+        desc: 'Ten layers from entry points to runtime: any data source at the bottom, any language plugged in as a node, DataProxy intercepting anything in the middle with security spanning the whole chain, AI embedded as a kernel capability, views and components generated from annotations, topped by a modern UI that works out of the box.',
         traitsTitle: 'Core traits',
         traits: [
             { icon: '⚡', color: 'amber', title: 'Fast startup', key: 'Boots in 2s ~ 5s', sub: 'Boots in 2s ~ 5s; hot build applies annotation changes without restart',
@@ -249,7 +258,7 @@ const dict = {
         railMore: 'Browse all modules →',
         layers: [
             {
-                num: 'L9', color: 'mint', title: 'Access Layer', sub: 'Humans, systems and AI: three entry points, one backend',
+                num: 'L10', color: 'mint', title: 'Access Layer', sub: 'Humans, systems and AI: three entry points, one backend',
                 panels: [
                     {
                         title: 'Humans', sub: 'Browser and mobile', link: '/guide/ui',
@@ -266,7 +275,7 @@ const dict = {
                 ],
             },
             {
-                num: 'L8', color: 'purple', title: 'UI Layer', sub: 'Angular frontend · zero frontend code',
+                num: 'L9', color: 'purple', title: 'UI Layer', sub: 'Angular frontend · zero frontend code',
                 groups: [
                     { title: 'Appearance', chips: [gd('7 skins: Default / Brutalist / Liquid Glass / Workspace / Classic / Material / Terminal', 'ui#appearance'), gd('Light / Dark / System', 'ui'), gd('16 theme colors + custom picker', 'ui'), gd('Compact mode', 'ui'), gd('5 login page layouts', 'ui#login-page-layouts'), gd('Lockable appearance', 'ui#appearance'), md('1,992 icons', 'erupt-web'), gd('Color-weak / grayscale mode', 'ui')] },
                     { title: 'Navigation', chips: [gd('6 menu modes: sidebar / group / dual / split / top', 'ui#navigation'), gd('Multi-tab pages', 'ui'), gd('Breadcrumb', 'ui'), gd('Menu search', 'ui'), gd('Sidebar sections by module', 'ui'), md('Module center', 'erupt-upms/menu'), gd('Resizable sidebar / tree panel', 'ui'), gd('Help entry', 'ui')] },
@@ -275,7 +284,7 @@ const dict = {
                 ],
             },
             {
-                num: 'L7', color: 'cyan', title: 'View Layer', sub: 'One model · many views · switch at the top',
+                num: 'L8', color: 'cyan', title: 'View Layer', sub: 'One model · many views · switch at the top',
                 groups: [
                     { title: 'View types', chips: [an('Table', 'view'), an('Tree', 'tree'), an('Tree + Table', 'link-tree'), an('Board', 'vis-board'), an('Calendar', 'vis-calendar'), an('Card', 'vis-card'), an('Gantt', 'vis-gantt'), an('Timeline', 'vis-timeline'), an('Map', 'vis-map'), an('Cube charts', 'vis-cube'), an('Grouped table', 'vis'), an('Drill-down', 'drill')] },
                     { title: 'Table features', chips: [an('Cell / batch editing', 'power'), an('Column statistics @View(statistic)', 'view'), an('Drag sort', 'drag-sort'), an('Custom row operations', 'row-operation'), an('Multi-level headers @View(group)', 'view#group-multi-level-headers'), gd('Column show / pin / reorder', 'ui'), gd('Multi-field sort', 'ui'), an('Switchable search operators', 'search'), ad('Summary rows', 'extra-row'), gd('Auto refresh', 'ui'), gd('Copy row', 'ui'), gd('Per-model remembered prefs', 'ui')] },
@@ -284,7 +293,7 @@ const dict = {
                 ],
             },
             {
-                num: 'L6', color: 'green', title: 'Component Layer', sub: '38 edit components · switch by changing one enum',
+                num: 'L7', color: 'green', title: 'Component Layer', sub: '38 edit components · switch by changing one enum',
                 groups: [
                     { title: 'Basic', chips: [...editTypesEn.slice(0, 13)] },
                     { title: 'Selection', chips: [...editTypesEn.slice(13, 17)] },
@@ -294,7 +303,7 @@ const dict = {
                 ],
             },
             {
-                num: 'L5', color: 'pink', title: 'Model Layer', sub: 'Annotation-driven · one Java class declares it all',
+                num: 'L6', color: 'pink', title: 'Model Layer', sub: 'Annotation-driven · one Java class declares it all',
                 groups: [
                     { title: 'Class-level', chips: [an('@Erupt', 'erupt'), an('@Power', 'power'), an('@RowOperation', 'row-operation'), an('@Drill', 'drill'), an('@Filter', 'filter'), an('@OrderBy', 'order-by'), an('@Tree maxLevel', 'tree'), an('@LinkTree', 'link-tree'), an('@Layout', 'layout'), an('@DragSort', 'drag-sort'), an('@Vis', 'vis'), an('@EruptScope', 'erupt-scope'), an('@FormSteps', 'form-steps'), an('@Tpl', 'tpl')] },
                     { title: 'Field-level', chips: [an('@EruptField', 'erupt-field'), an('@View', 'view'), an('@Edit', 'edit'), an('@Search', 'search'), an('@Dynamic', 'dynamic'), an('@IfRender', 'if-render'), an('@OnChange', 'on-change')] },
@@ -303,7 +312,7 @@ const dict = {
                 ],
             },
             {
-                num: 'L4', color: 'coral', title: 'Intelligence Layer', sub: 'AI as a kernel capability: models are tools, annotations are prompts',
+                num: 'L5', color: 'coral', title: 'Intelligence Layer', sub: 'AI as a kernel capability: models are tools, annotations are prompts',
                 groups: [
                     { title: 'Models & knowledge', chips: [md('17 LLM adapters', 'erupt-ai'), md('Embedding models', 'erupt-ai-rag'), md('Vector stores', 'erupt-ai-rag'), md('RAG / Agentic RAG', 'erupt-ai-rag'), md('Multimodal image input', 'erupt-ai'), md('Thinking mode', 'erupt-ai')] },
                     { title: 'Agents & tools', chips: [md('Expert agents', 'erupt-ai'), md('AI Roles', 'erupt-ai'), md('@AiToolbox / @Tool registration', 'erupt-ai'), md('EruptModelTools model CRUD', 'erupt-ai-claw'), an('@Power(ai) per-model switch', 'power'), md('AI call audit', 'erupt-ai')] },
@@ -312,7 +321,7 @@ const dict = {
                 ],
             },
             {
-                num: 'L3', color: 'amber', title: 'Proxy & Security', sub: 'DataProxy intercepts anything · security spans the chain',
+                num: 'L4', color: 'amber', title: 'Proxy & Security', sub: 'DataProxy intercepts anything · security spans the chain',
                 panels: [
                     {
                         title: 'DataProxy', sub: 'Hooks across the whole CRUD lifecycle', link: '/advanced/data-proxy',
@@ -345,6 +354,15 @@ const dict = {
                 ],
             },
             {
+                num: 'L3', color: 'cyan', title: 'Polyglot Layer', sub: 'Declare models in any language · join as erupt-cloud nodes',
+                groups: [
+                    { title: 'Language SDKs', chips: [md('Python', 'erupt-sdk/python'), md('Go', 'erupt-sdk/go'), md('TypeScript / Node.js', 'erupt-sdk/typescript'), md('PHP', 'erupt-sdk/php'), md('C# / .NET', 'erupt-sdk/dotnet'), md('Rust', 'erupt-sdk/rust'), md('Ruby', 'erupt-sdk/ruby'), md('Swift', 'erupt-sdk/swift'), md('Java / Kotlin', 'erupt-sdk/java')] },
+                    { title: 'Node access', chips: [md('Register + heartbeat, auto online / offline', 'erupt-sdk/'), md('Signed forwarding: CRUD / row operations', 'cloud-server'), md('Server renders UI / login / permissions', 'cloud-server'), md('Models and data stay on the node', 'erupt-sdk/'), md('Node Lite: Java nodes without Spring', 'cloud-node-lite')] },
+                    { title: 'Node capabilities', chips: [md('CRUD with search / sort / paging', 'erupt-sdk/'), md('Components inferred from language types', 'erupt-sdk/'), md('Table / tree references', 'erupt-sdk/'), md('Row operations with forms / confirms', 'erupt-sdk/'), md('DataProxy hooks', 'erupt-sdk/'), md('Per-user permissions from the server', 'erupt-sdk/')] },
+                    { title: 'Contract & conformance', chips: [md('Annotation JSON Schema contract', 'erupt-sdk/'), md('sync-schema auto sync', 'erupt-sdk/'), md('Conformance test suite', 'erupt-sdk/'), { t: 'PROTOCOL.md wire protocol ↗', l: 'https://github.com/erupts/erupt/blob/develop/erupt-cloud/PROTOCOL.md' }] },
+                ],
+            },
+            {
                 num: 'L2', color: 'ink', title: 'Data Source Layer', sub: 'Any data source · unified modeling · customizable',
                 groups: [
                     { title: 'Relational', chips: [gd('MySQL', 'database'), gd('PostgreSQL', 'database'), gd('Oracle', 'database'), gd('SQL Server', 'database'), gd('H2', 'database'), md('JDBC single table', 'erupt-jdbc')] },
@@ -359,12 +377,12 @@ const dict = {
                 groups: [
                     { title: 'Runtime', chips: [gd('Spring Boot 3.x', 'getting-started'), gd('JDK 17+', 'getting-started'), ad('Integrate into existing projects', 'integration'), ad('Multiple data sources', 'datasource'), gd('Configuration', 'configuration'), md('Runtime settings erupt-config', 'erupt-config'), ad('Hot build', 'hot-build')] },
                     { title: 'Deployment', chips: [gd('Single Jar deployment', 'quick-start'), ad('Frontend / backend separation', 'separation'), md('Docker deployment', 'cloud-server'), ad('Redis Session', 'separation'), gd('Upgrade guide', 'upgrade')] },
-                    { title: 'Distributed', chips: [md('erupt-cloud distributed config center', 'erupt-cloud'), md('Cloud Server registration & dispatch', 'cloud-server'), md('Cloud Node micro-nodes', 'cloud-node'), md('Node Lite: nodes without Spring', 'cloud-node-lite'), md('Node SDKs for any language', 'erupt-sdk/'), md('Job scheduler, cluster-deduplicated', 'erupt-job')] },
+                    { title: 'Distributed', chips: [md('erupt-cloud distributed config center', 'erupt-cloud'), md('Cloud Server registration & dispatch', 'cloud-server'), md('Cloud Node micro-nodes', 'cloud-node'), md('Node Lite: nodes without Spring', 'cloud-node-lite'), md('Job scheduler, cluster-deduplicated', 'erupt-job')] },
                     { title: 'Ops & monitoring', chips: [md('Monitor: service / diagnostics / cache', 'erupt-monitor'), md('Erupt class registry', 'erupt-atlas#class-registry'), md('Terminal in the browser', 'erupt-terminal'), md('Remote VNC / SSH / SFTP', 'erupt-remote'), md('Login log / operation log', 'erupt-upms'), gd('Anonymous telemetry, opt-out', 'telemetry')] },
                 ],
             },
         ],
-        joins: ['serve', 'render', 'compose', 'annotation-driven · auto-generated', 'schema as tools · annotations as prompts', 'tool calls · authorization · audit', 'unified read / write', 'deploy · dispatch · monitor'],
+        joins: ['serve', 'render', 'compose', 'annotation-driven · auto-generated', 'schema as tools · annotations as prompts', 'tool calls · authorization · audit', 'signed forwarding · register & heartbeat', 'nodes own their data', 'deploy · dispatch · monitor'],
         rail: [
             {
                 title: 'AI', count: 8, color: 'pink',
