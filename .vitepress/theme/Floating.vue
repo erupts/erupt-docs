@@ -20,6 +20,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useData } from 'vitepress'
 
 
 const svgSpark = `<svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.5 L14.3 9.7 L21.5 12 L14.3 14.3 L12 21.5 L9.7 14.3 L2.5 12 L9.7 9.7 Z" fill="#4FC8EC" stroke="#14120B" stroke-width="1.8" stroke-linejoin="round"/></svg>`
@@ -27,35 +28,45 @@ const svgCube = `<svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://w
 const svgQuery = `<svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg"><circle cx="10.3" cy="10.3" r="6.8" fill="#F585B4" stroke="#14120B" stroke-width="1.8"/><line x1="15.3" y1="15.3" x2="21" y2="21" stroke="#14120B" stroke-width="2.6" stroke-linecap="round"/></svg>`
 const svgCloud = `<svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" fill="#BCA0F2" stroke="#14120B" stroke-width="1.8" stroke-linejoin="round"/></svg>`
 
+// 站内链接不带语言前缀，按当前语言补上；文案按语言取
 const items = [
   {
     icon: svgSpark,
     label: 'Erupt AI',
-    desc: '大模型深度集成，低代码构建 AI 应用',
+    desc: {zh: '大模型深度集成，低代码构建 AI 应用', en: 'LLM-native, low-code AI apps'},
     link: '/modules/erupt-ai/',
   },
   {
     icon: svgCube,
     label: 'Erupt Cube',
-    desc: '语义层 BI 平台，对标 Google Looker',
+    desc: {zh: '语义层 BI 平台，对标 Google Looker', en: 'Semantic BI, like Google Looker'},
     link: '/modules/pro/erupt-cube',
   },
   {
     icon: svgCloud,
     label: 'Erupt Cloud',
-    desc: '分布式配置管理，替代 Apollo / Nacos',
+    desc: {zh: '分布式配置管理，替代 Apollo / Nacos', en: 'Config center, vs Apollo / Nacos'},
     link: '/modules/erupt-cloud',
   },
   {
     icon: svgQuery,
     label: 'Linq.J',
-    desc: '作者新作：通用对象查询语言',
+    desc: {zh: '作者新作：通用对象查询语言', en: "New: object query language"},
     link: 'https://linq.erupt.xyz/',
   },
 ]
 
 const index = ref(0)
-const current = computed(() => items[index.value])
+const { lang } = useData()
+const locale = computed(() => lang.value.startsWith('zh') ? 'zh' : 'en')
+const current = computed(() => {
+  const item = items[index.value]
+  return {
+    ...item,
+    desc: item.desc[locale.value],
+    link: item.link.startsWith('/') ? `/${locale.value}${item.link}` : item.link,
+  }
+})
 
 let timer: ReturnType<typeof setInterval>
 
