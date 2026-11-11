@@ -8,7 +8,10 @@ This file provides guidance to coding agents (Claude Code, Codex, ...) when work
 yarn docs:dev       # Start local dev server (hot-reload)
 yarn docs:build     # Build for production
 yarn docs:preview   # Preview production build locally
+yarn docs:openapi   # Re-sync the OpenAPI spec only (also runs before docs:dev / docs:build)
 ```
+
+There are no tests and no linter; `yarn docs:build` is the check. `yarn.lock` is git-ignored and `.npmrc` sets `legacy-peer-deps=true`. Build output goes to `.vitepress/dist` (ignored).
 
 ## Architecture
 
@@ -39,11 +42,20 @@ zh/             # Chinese content (primary)
   annotation/     # @Erupt, @EruptField, @Edit, @View, @Search, etc.
   field-types/    # All edit component types (INPUT, DATE, CHOICE, etc.)
   advanced/       # DataProxy, auth, datasource, REST API, plugin dev
-  modules/        # Extension modules (pro/, third-party/ subdirs)
+  modules/        # Extension modules (apps/, pro/, third-party/ subdirs)
   topics/         # Long-form editorial articles ("Issues")
+  api/            # API reference, generated from the OpenAPI spec (see below)
+  embed/          # Pages embedded elsewhere through an iframe
 en/             # English content (mirrors zh/ structure)
 public/         # Static assets; images organized by module name
+index.md        # Root page: redirects to /zh/ or /en/ by browser language
 ```
+
+Old URLs without a locale prefix (`/guide/...`, `/modules/...`, ...) are redirected to the reader's locale in `.vitepress/theme/index.ts` (`knownPrefixes`), which is why links inside `topics/index.md` cards may omit the prefix.
+
+### Topics
+
+A topic is one article in `zh/topics/` and `en/topics/` plus two registrations per locale: an `Issue NN · <tag>` group at the top of the topics sidebar in `.vitepress/config.mts`, and a `topic-card` block at the top of `topics/index.md` (newest first, numbered `#NN`).
 
 ### Image Convention
 
@@ -54,19 +66,19 @@ markdown — always download them first with `curl` and reference via `/module-n
 
 | Group        | Contents                                                                                      |
 |--------------|-----------------------------------------------------------------------------------------------|
-| AI Module    | erupt-ai, erupt-ai-claw, erupt-ai-canvas, erupt-ai-rag, erupt-ai-staff, erupt-ai-decision, erupt-ai-dev, erupt-ai-skill (external link) |
-| Core Module  | upms, erupt-tpl/ (index + subpages), web, designer                                            |
-| Data Connectors | erupt-jpa, erupt-mongodb, erupt-jdbc, erupt-http, erupt-es, erupt-redis, erupt-memory, erupt-file, erupt-k8s, erupt-ldap, erupt-feishu, erupt-notion, erupt-s3/ (index + subpages) (artifactIds are `erupt-data-*`) |
-| Tool Moudle  | terminal, remote, atlas, comment, sso, share, webhook, config, revision, file-center, websocket, generator, job, notice, monitor, magic-api, print, cloud (cloud, cloud-server, cloud-node, cloud-node-lite), erupt-sdk/ (index + one page per language), erupt-report/ (index + subpages) |
-| Pro Module   | pro/erupt-flow/ (index + subpages), pro/erupt-tenant/ (index + subpages), pro/erupt-cube |
+| AI Modules   | erupt-ai/ (index + subpages), erupt-ai-claw/ (index + subpages), erupt-ai-canvas, erupt-ai-rag, erupt-ai-staff, erupt-ai-decision, erupt-ai-dev, erupt-ai-skill (external link) |
+| Core Modules | erupt-upms/ (index + subpages), erupt-tpl/ (index + subpages), web, designer                                            |
+| Data Connectors | erupt-jpa, erupt-mongodb, erupt-jdbc, erupt-http, erupt-es, erupt-redis, erupt-memory, erupt-file, erupt-k8s, erupt-ldap, erupt-feishu, erupt-notion, erupt-s3/ (index + subpages), erupt-dingtalk, erupt-airtable (artifactIds are `erupt-data-*`) |
+| Tool Modules | terminal, remote, atlas, comment, sso, share, webhook, config, revision, file-center, websocket, generator, job, notice, monitor, magic-api, print, cloud (cloud, cloud-server, cloud-node, cloud-node-lite), erupt-sdk/ (index + one page per language), erupt-report/ (index + subpages) |
+| Commercial Modules | pro/erupt-tenant/ (index + subpages), pro/erupt-flow/ (index + subpages), pro/erupt-cube (+ pro/erupt-cube/ subpages) |
 | Open-source Apps | apps/* — public apps from https://github.com/erupt-io (erupt-k8s-dashboard, erupt-pm, erupt-talent, erupt-sms, erupt-wechat, erupt-miniapp) |
-| Third Module | third-party/*                                                                                 |
+| Third-party Modules | third-party/*                                                                                 |
 
 ### API Reference (`/zh/api/`, `/en/api/`)
 
 The top-nav **API** menu renders the erupt OpenAPI spec with vitepress-openapi: one static page per operation via the `[operationId].md` dynamic route, sidebar built from `x-tagGroups` in `.vitepress/openapi.mts`.
 `scripts/sync-openapi.mjs` copies `$ERUPT_HOME/openapi/erupt.json` (default `../erupt`) to `public/openapi/erupt.json`;
-it runs automatically before `docs:dev` / `docs:build`, or manually via `yarn docs:openapi`. Never hand-edit the copy.
+it runs automatically before `docs:dev` / `docs:build`, or manually via `yarn docs:openapi`. When the source is missing the committed copy is kept. Never hand-edit the copy; the spec itself is regenerated in the erupt repo.
 
 ### Mermaid Diagrams
 
@@ -85,5 +97,10 @@ Use these (not `:::tips` — that's invalid):
 
 ### Theme
 
-Custom CSS at `.vitepress/theme/custom.css`. The `@nolebase/vitepress-plugin-enhanced-readabilities` plugin adds a
-reading-width toggle to the nav bar.
+The theme entry is `.vitepress/theme/index.ts`, extending the default theme, with custom CSS at
+`.vitepress/theme/custom.css` and the Vue components `EruptHome.vue`, `EruptArch.vue` and `Floating.vue` beside it.
+The `@nolebase/vitepress-plugin-enhanced-readabilities` plugin adds a reading-width toggle to the nav bar (full width by
+default); the other nolebase plugins add the git changelog / contributors section (switched off for `/embed/` and
+`/api/` pages in `config.mts`), inline link previews and targeted-heading highlight. Images in page content open in
+`medium-zoom`, except images inside a link. `vitepress-openapi/dist/style.css` must stay imported after the nolebase
+styles.
