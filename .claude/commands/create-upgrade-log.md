@@ -13,6 +13,7 @@
 | `erupt-site`（官网） | `master`  | 功能描述参考、新模块确认                    |
 | `erupt-cube`     | `master`  | 核心功能、API 变更、BUG 修复              |
 | `erupt-flow`     | `master`  | 核心功能、API 变更、BUG 修               |
+| `erupt-flow`     | `master`  | 核心功能、API 变更、BUG 修               |
 | `erupt-start`    | `master`  | 快速下载 erupt 项目，需要更新对应版本号与最新的项目结构 |
 
 ## 执行步骤
